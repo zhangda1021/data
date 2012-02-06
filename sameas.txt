@@ -1,4 +1,4 @@
-  set rr(r) /HAI/
+Set rr(r) /HAI/
 
                        loop(r$(not sameas(r,"HAI")),
                                  ....'
