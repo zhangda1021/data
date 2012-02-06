@@ -8,3 +8,18 @@
 4. Run readrawdata.gms;
 5. Run allsam.bat.
 
+Assumptions and adjustments in SAM:
+Account A:
+ca: from IO
+fa: from IO (labor:labor payment; cap: depreciation+surplus)
+ta: from IO (Production tax)
+ac: from IO
+
+Account C:
+ch: from IO
+gd: from IO
+der:from IO
+er: from IO
+cs: Capital formation + Error. If negative, balance it by decreasing hh and gov cons.
+
+
