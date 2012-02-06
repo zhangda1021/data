@@ -1,0 +1,10 @@
+1. Adjust HLJ inflow and outflow data;
+2. Run buildreadrawdata.gms;
+3. Replace "BAJ        " with "BAJ"...
+   Change rng="HAI!C8:BI57" to rng="HAI!C5:BI54"
+   add: $setglobal projectfolder '%gams.curdir%'
+        $setlocal inputfolder '%projectfolder%\data'
+        $call gdxmerge %inputfolder%\*.gdx o=%inputfolder%\merged.gdx
+4. Run readrawdata.gms;
+5. Run allsam.bat.
+

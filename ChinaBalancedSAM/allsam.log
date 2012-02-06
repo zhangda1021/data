@@ -1,0 +1,13 @@
+
+--- Job allsam.gms Start 01/27/12 14:59:30 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+          Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+--- Starting compilation
+--- allsam.gms(56) 3 Mb
+--- GDXin=E:\fromremovable\dataBalanced\ChinaBalancedSAM\data\gdx\merged.gdx
+--- allsam.gms(273) 5 Mb
+--- Starting execution: elapsed 0:00:00.031
+--- allsam.gms(273) 10 Mb
+*** Status: Normal completion
+--- Job allsam.gms Stop 01/27/12 14:59:31 elapsed 0:00:01.042
