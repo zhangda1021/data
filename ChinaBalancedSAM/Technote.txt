@@ -9,17 +9,23 @@
 5. Run allsam.bat.
 
 
-V1.0 of SAM (Principles: No negative value with least change)
+V1.0 of SAM (Principles: No negative value with least change and leave some space for future work)
 Assumptions and adjustments in SAM:
+
 Account A:
 ca: from IO
 fa: from IO (labor:labor payment; cap: depreciation+surplus)
 ta: from IO (Production tax)
 ac: from IO
 
+
 Account C:
+tc: set to be zero at this version
+drc:from IO
+rc: from IO
+
 ch: ch from IO + negative inventory + error
-gd: gd from IO + negative inventory + error
+g2d: gd from IO + negative inventory + error
 der:from IO
 er: from IO
 cs: Fixed capital formation + positive inventory + error
@@ -28,9 +34,34 @@ Q1: How to deal with the error in the IO table?
 A1:Compare Abs(error)/(ch+gd) and Abs(error)/cs, add error to the one which is smaller.
 Record all the ratios which are bigger than 1.
 
-Account F:
-hf(labor): from IO
 
+Account F:
+hf(labor): from IO, fa(labor)
+tf(labor):set to be zero at this version
+
+hf(capital): from IO, fa(capital)-dp
+g1f,g2f(capital):set to be zero at this version
+tf(capital):set to be zero at this version
+dp(capital): from IO
+
+
+Account H:
+drh/dhr, dhr/rh: calculated from IO, net domestic/international trade
+th: set to be zero at this version
+psv:residue
+hg1:set to be zero at this version
+hg2:residue
+
+
+Account G (G1:central government, G2:provincial government. In this version, we assume the central government can only transfer revenue and saving):
+g2g1:transfer from the central government to provincial government
+gsv1:central government saving
+g1g2:transfer from the provincial government to central government
+gsv2:set to be zero at this version
+
+
+Account T:
+tr: calculated from IO, ta+tc+tf+th
 
 
 
@@ -40,7 +71,7 @@ A2: Put this value in the household account. Reason 1: Household in SAM is relat
 
 
 
-
+f
 
 China features:
 1. SOE and state capital: taking a large proportion in the secondary industry, can not be modeled easily
