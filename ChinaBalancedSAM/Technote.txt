@@ -8,6 +8,8 @@
 4. Run readrawdata.gms;
 5. Run allsam.bat.
 
+
+V1.0 of SAM (Principles: No negative value with least change)
 Assumptions and adjustments in SAM:
 Account A:
 ca: from IO
@@ -16,10 +18,30 @@ ta: from IO (Production tax)
 ac: from IO
 
 Account C:
-ch: from IO
-gd: from IO
+ch: ch from IO + negative inventory + error
+gd: gd from IO + negative inventory + error
 der:from IO
 er: from IO
-cs: Capital formation + Error. If negative, balance it by decreasing hh and gov cons.
+cs: Fixed capital formation + positive inventory + error
+
+Q1: How to deal with the error in the IO table?
+A1:Compare Abs(error)/(ch+gd) and Abs(error)/cs, add error to the one which is smaller.
+Record all the ratios which are bigger than 1.
+
+Account F:
+hf(labor): from IO
 
 
+
+
+Q2: How to deal with the trade deficit or surplus?
+A2: Put this value in the household account. Reason 1: Household in SAM is related to production, capital and trade; Reason 2: In some cases, this value is too big (e.g. Zhejiang's export surplus is 3 times bigger than the government consumption), it will change less if we put this in the household
+
+
+
+
+
+
+China features:
+1. SOE and state capital: taking a large proportion in the secondary industry, can not be modeled easily
+2. Government income: land transfering fee... is the non-tax revenue out of the government budget... This is not a big issue in 2007, but in recent years, this revenue is crucial for the local government
