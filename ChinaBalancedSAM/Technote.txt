@@ -34,6 +34,9 @@ Q1: How to deal with the error in the IO table?
 A1:Compare Abs(error)/(ch+gd) and Abs(error)/cs, add error to the one which is smaller.
 Record all the ratios which are bigger than 1.
 
+Q2: How to deal with the trade deficit or surplus?
+A2: Put this value in the household account. Reason 1: Household in SAM is related to production, capital and trade; Reason 2: In some cases, this value is too big (e.g. Zhejiang's export surplus is 3 times bigger than the government consumption), it will change less if we put this in the household
+
 
 Account F:
 hf(labor): from IO, fa(labor)
@@ -64,14 +67,12 @@ Account T:
 tr: calculated from IO, ta+tc+tf+th
 
 
-
-Q2: How to deal with the trade deficit or surplus?
-A2: Put this value in the household account. Reason 1: Household in SAM is related to production, capital and trade; Reason 2: In some cases, this value is too big (e.g. Zhejiang's export surplus is 3 times bigger than the government consumption), it will change less if we put this in the household
-
-
+Account DX: auto-balanced
+Account X: auto-balanced
+Account I: auto-balanced
 
 
-f
+
 
 China features:
 1. SOE and state capital: taking a large proportion in the secondary industry, can not be modeled easily
