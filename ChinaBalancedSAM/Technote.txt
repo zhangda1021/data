@@ -15,6 +15,8 @@ Assumptions and adjustments in SAM:
 Account A:
 ca: from IO
 fa: from IO (labor:labor payment; cap: depreciation+surplus)
+Q0: How to deal with the negative capital?
+A0: If capital is negative, make it zero and reduce labor input value.
 ta: from IO (Production tax)
 ac: from IO
 
@@ -58,9 +60,9 @@ hg2:residue
 
 Account G (G1:central government, G2:provincial government. In this version, we assume the central government can only transfer revenue and saving):
 g2g1:transfer from the central government to provincial government
-gsv1:central government saving
+g1sv:central government saving
 g1g2:transfer from the provincial government to central government
-gsv2:set to be zero at this version
+g2sv:set to be zero at this version
 
 
 Account T:

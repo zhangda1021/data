@@ -3,10 +3,10 @@ $ontext
         Production activities   A (42)
         Commodities             C (42)
         Primary Factors         F (2)
-        Enterprises             E (1)
-        Private households      H (1)
-        Government              G (1)
-        Types of taxes          T (3)
+        Households              H (1)
+        Central Government      G1(1)
+        Provincial Government   G2(1)
+        Types of taxes          T (4)
         Rest of country         EX(1)
         Rest of world           X (1)
         Investment-savings      I (1)
@@ -15,27 +15,27 @@ Here is a "MAP" of the SAM with the names of the submatrices which
 contain data.  All cells with no labels are empty:
 
 
-           A       C        F      E       H       G       T        DX      X      I
+           A       C        F       H      G1      G2       T       DX      X      I
         --------------------------------------------------------------------------------
 A       |       |   ac  |       |       |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-C       |   ca  |       |       |       |   ch  |   gd  |       |   der |   er  |  cs   |
+C       |   ca  |       |       |   ch  |       |  g2d  |       |   der |   er  |  cs   |
         --------------------------------------------------------------------------------
 F       |   fa  |       |       |       |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-E       |       |       |   ef  |       |       |       |       |       |       |       |
+H       |       |       |   hf  |       |       |  hg2  |       |       |       |       |
         --------------------------------------------------------------------------------
-H       |       |       |   hf  |   he  |       |       |       |   dhr |   hr  |       |
+G1      |       |       |       |       |       |  g1g2 |       |   dhr |   hr  |       |
         --------------------------------------------------------------------------------
-G       |       |       |   gf  |       |       |       |   tr  |       |       |       |
+G2      |       |       |       |       | g2g1  |       |   tr  |       |       |       |
         --------------------------------------------------------------------------------
-T       |   ta  |   tc  |       |   te  |       |       |       |       |       |       |
+T       |   ta  |       |       |       |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-DX      |       |  drc  |  drf  |       |       |       |       |       |       |       |
+DX      |       |  drc  |       |  drh  |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-X       |       |   rc  |   rf  |       |       |       |       |       |       |       |
+X       |       |   rc  |       |   rh  |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-I       |       |       |   dp  |       |  psv  |   gsv |       |       |       |       |
+I       |       |       |   dp  |  psv  |  g1sv |       |       |       |       |       |
         --------------------------------------------------------------------------------
 $offtext
 
@@ -43,7 +43,7 @@ $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder '%projectfolder%\data\gdx'
 
 *SAM table
-set     i   SAM rows and colums indices   /1*95/;
+set     i   SAM rows and colums indices   /1*96/;
 alias (i,j);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
 parameter sam(r,i,j)
@@ -58,28 +58,24 @@ $load rawdata
 display rawdata
 
 
-
-parameter imptax;
-*set      c       commodities     /1*42/;
 parameter totrc(r),toter(r);
 parameter totdrc(r),totder(r);
-parameter sumrc,sumer,sumdrc,sumder,ch;
-parameter lkratio        Labor capital ratio in each province to determine the value of drf and rf ;
-parameter efgf;
-parameter psvgsv;
+*cs/(cs+ch+gd)
+parameter csratio(r);
+parameter sumrc,sumer,sumdrc,sumder;
+*ch/(ch+gd)
+parameter chratio;
 set     negval(r,i,j)     Flag for negative elements;
 set     empty(r,i,*)      Flag for empty rows and columns;
 parameter       chksam(r,i,*)       Consistency check of social accounts;
-parameter       flag                Check if the capital is not zero;
+parameter       flag                ;
+
+
 flag = 0 ;
-
-
 sumrc=0;
 sumer=0;
 sumdrc=0;
 sumder=0;ch=0;
-imptax=0.02;
-efgf=0.8;
 psvgsv=0.8;
 loop(r,
 totrc(r)=0;
@@ -89,12 +85,10 @@ totder(r)=0;
 );
 
 
-
 loop(r,
-flag=flag+1;
-if( rawdata(r,"46","43")+rawdata(r,"47","43")=0, display flag;);
+*flag=flag+1;
+*if( rawdata(r,"46","43")+rawdata(r,"47","43")=0, display flag;);
 
-lkratio=rawdata(r,"44","43")/(rawdata(r,"46","43")+rawdata(r,"47","43"));
 * ACCOUNT A
 * input ca
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
@@ -106,19 +100,18 @@ sam(r,i,j)=rawdata(r,ri,rj);
 );
 );
 );
-
-*input fa(labor)
-loop(j$((ord(j) ge 1) and (ord(j) le 42)),
-loop(rj$(ord(rj)=ord(j)),
-sam(r,"85",j)=rawdata(r,"44",rj);
-);
-);
 *input fa(kap)
 loop(j$((ord(j) ge 1) and (ord(j) le 42)),
 loop(rj$(ord(rj)=ord(j)),
-sam(r,"86",j)=rawdata(r,"47",rj)+rawdata(r,"46",rj);
+if (rawdata(r,"47",rj)+rawdata(r,"46",rj) ge 0, sam(r,"86",j)=rawdata(r,"47",rj)+rawdata(r,"46",rj););
+if (rawdata(r,"47",rj)+rawdata(r,"46",rj) le 0, sam(r,"86",j)=0;);
 );
 );
+*input fa(labor)
+loop(j$((ord(j) ge 1) and (ord(j) le 42)),
+loop(rj$(ord(rj)=ord(j)),
+if (rawdata(r,"47",rj)+rawdata(r,"46",rj) ge 0, sam(r,"85",j)=rawdata(r,"44",rj););
+if (rawdata(r,"47",rj)+rawdata(r,"46",rj) le 0, sam(r,"85",j)=rawdata(r,"44",rj)+rawdata(r,"47",rj)+rawdata(r,"46",rj););
 *input ta
 loop(j$((ord(j) ge 1) and (ord(j) le 42)),
 loop(rj$(ord(rj)=ord(j)),
@@ -135,68 +128,84 @@ sam(r,i,j)=rawdata(r,"49",rj);
 );
 
 
+
 *ACCOUNT C
+
 *input tc
-loop(j$((ord(j) ge 43) and (ord(j) le 84)),
-loop(ri$(ord(ri)=ord(j)-42),
-sam(r,"91",j)=rawdata(r,ri,"55")/1.02*0.02;
-);
-);
-*input rc
-loop(j$((ord(j) ge 43) and (ord(j) le 84)),
-loop(ri$(ord(ri)=ord(j)-42),
-sam(r,"94",j)=rawdata(r,ri,"55")/1.02;
-totrc(r)=totrc(r)+sam(r,"94",j);
-);
-);
-*display totrc;
+*loop(j$((ord(j) ge 43) and (ord(j) le 84)),
+*loop(ri$(ord(ri)=ord(j)-42),
+*sam(r,"91",j)=rawdata(r,ri,"55")/1.02*0.02;
+*);
+*);
+
 *input drc
 loop(j$((ord(j) ge 43) and (ord(j) le 84)),
 loop(ri$(ord(ri)=ord(j)-42),
-*sam(r,"93",j)=rawdata(r,ri,"56")*0.971461278391528;
-sam(r,"93",j)=rawdata(r,ri,"56");
-totdrc(r)=totdrc(r)+sam(r,"93",j);
-);
-);
-*display totdrc;
-*input ch
-loop(i$((ord(i) ge 43) and (ord(i) le 84)),
-loop(ri$(ord(ri)=ord(i)-42),
-* Household consumption= original household consumption - domestic inflow discrepancy
-*sam(r,i,"88")=rawdata(r,ri,"46")-rawdata(r,ri,"56")*(1-0.971461278391528);
-sam(r,i,"88")=rawdata(r,ri,"46");
-ch= ch+ sam(r,i,"88");
+sam(r,"94",j)=rawdata(r,ri,"56");
+totdrc(r)=totdrc(r)+sam(r,"94",j);
 );
 );
 
-*input gd
-loop(i$((ord(i) ge 43) and (ord(i) le 84)),
-loop(ri$(ord(ri)=ord(i)-42),
-sam(r,i,"89")=rawdata(r,ri,"47");
+*input rc
+loop(j$((ord(j) ge 43) and (ord(j) le 84)),
+loop(ri$(ord(ri)=ord(j)-42),
+sam(r,"95",j)=rawdata(r,ri,"55");
+totrc(r)=totrc(r)+sam(r,"95",j);
 );
 );
+
 *input der
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-sam(r,i,"93")=rawdata(r,ri,"53")+rawdata(r,ri,"57");
-totder(r)=totder(r)+rawdata(r,ri,"53")+rawdata(r,ri,"57");
+sam(r,i,"94")=rawdata(r,ri,"53");
+totder(r)=totder(r)+rawdata(r,ri,"53");
 );
 );
-*display totder;
+
 *input er
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-sam(r,i,"94")=rawdata(r,ri,"52");
+sam(r,i,"95")=rawdata(r,ri,"52");
 toter(r)=toter(r)+rawdata(r,ri,"52");
 );
 );
-*display toter;
+
 *input cs
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-sam(r,i,"95")=rawdata(r,ri,"51");
+if (rawdata(r,ri,"50") ge 0,
+sam(r,i,"96")=rawdata(r,ri,"49")+ rawdata(r,ri,"50");
+else sam(r,i,"96")=rawdata(r,ri,"49"););
 );
 );
+
+*input ch and g2d
+loop(i$((ord(i) ge 43) and (ord(i) le 84)),
+loop(ri$(ord(ri)=ord(i)-42),
+chratio=rawdata(r,ri,"46")/(rawdata(r,ri,"46")+rawdata(r,ri,"47"));
+if (rawdata(r,ri,"50") ge 0,
+sam(r,i,"87")=rawdata(r,ri,"46");
+sam(r,i,"89")=rawdata(r,ri,"47");
+else
+sam(r,i,"87")=rawdata(r,ri,"46")+rawdata(r,ri,"50")*chratio;
+sam(r,i,"89")=rawdata(r,ri,"47")+rawdata(r,ri,"50")*(1-chratio););
+);
+);
+
+
+*Compute csratio
+loop(i$((ord(i) ge 43) and (ord(i) le 84)),
+loop(ri$(ord(ri)=ord(i)-42),
+csratio(ri)=sam(r,i,"96")/(sam(r,i,"96")+sam(r,i,"87")+sam(r,i,"87"));
+);
+);
+
+*Adjust cs
+
+*Adjust ch and g2d
+
+*if (rawdata(r,ri,"49")+ rawdata(r,ri,"50")+rawdata(r,ri,"57") ge 0,
+
 
 
 *ACCOUNT F,H
