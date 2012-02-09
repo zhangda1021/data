@@ -1,4 +1,4 @@
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     01/27/12 14:19:45 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/09/12 15:06:56 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -65,116 +65,116 @@ C o m p i l a t i o n
   92   
   94   
   95   
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     01/27/12 14:19:45 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/09/12 15:06:56 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  E:\fromremovable\dataBalanced\ChinaBalancedSAM\readrawdata.gms
-     2        6 CALL           1       6  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\BEJ.gdx par=rawdata rng="BEJ!
-                                          C8:BI57" rdim=1 cdim=1
-     3        9 CALL           1       9  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\TAJ.gdx par=rawdata rng="TAJ!
-                                          C8:BI57" rdim=1 cdim=1
-     4       12 CALL           1      12  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HEB.gdx par=rawdata rng="HEB!
-                                          C8:BI57" rdim=1 cdim=1
-     5       15 CALL           1      15  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\SHX.gdx par=rawdata rng="SHX!
-                                          C8:BI57" rdim=1 cdim=1
-     6       18 CALL           1      18  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\NMG.gdx par=rawdata rng="NMG!
-                                          C8:BI57" rdim=1 cdim=1
-     7       21 CALL           1      21  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\LIA.gdx par=rawdata rng="LIA!
-                                          C8:BI57" rdim=1 cdim=1
-     8       24 CALL           1      24  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\JIL.gdx par=rawdata rng="JIL!
-                                          C8:BI57" rdim=1 cdim=1
-     9       27 CALL           1      27  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HLJ.gdx par=rawdata rng="HLJ!
-                                          C8:BI57" rdim=1 cdim=1
-    10       30 CALL           1      30  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\SHH.gdx par=rawdata rng="SHH!
-                                          C8:BI57" rdim=1 cdim=1
-    11       33 CALL           1      33  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\JSU.gdx par=rawdata rng="JSU!
-                                          C8:BI57" rdim=1 cdim=1
-    12       36 CALL           1      36  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\ZHJ.gdx par=rawdata rng="ZHJ!
-                                          C8:BI57" rdim=1 cdim=1
-    13       39 CALL           1      39  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\ANH.gdx par=rawdata rng="ANH!
-                                          C8:BI57" rdim=1 cdim=1
-    14       42 CALL           1      42  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\FUJ.gdx par=rawdata rng="FUJ!
-                                          C8:BI57" rdim=1 cdim=1
-    15       45 CALL           1      45  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\JXI.gdx par=rawdata rng="JXI!
-                                          C8:BI57" rdim=1 cdim=1
-    16       48 CALL           1      48  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\SHD.gdx par=rawdata rng="SHD!
-                                          C8:BI57" rdim=1 cdim=1
-    17       51 CALL           1      51  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HEN.gdx par=rawdata rng="HEN!
-                                          C8:BI57" rdim=1 cdim=1
-    18       54 CALL           1      54  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HUB.gdx par=rawdata rng="HUB!
-                                          C8:BI57" rdim=1 cdim=1
-    19       57 CALL           1      57  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HUN.gdx par=rawdata rng="HUN!
-                                          C8:BI57" rdim=1 cdim=1
-    20       60 CALL           1      60  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\GUD.gdx par=rawdata rng="GUD!
-                                          C8:BI57" rdim=1 cdim=1
-    21       63 CALL           1      63  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\GXI.gdx par=rawdata rng="GXI!
-                                          C8:BI57" rdim=1 cdim=1
-    22       66 CALL           1      66  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\HAI.gdx par=rawdata rng="HAI!
-                                          C5:BI54" rdim=1 cdim=1
-    23       69 CALL           1      69  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\CHQ.gdx par=rawdata rng="CHQ!
-                                          C8:BI57" rdim=1 cdim=1
-    24       72 CALL           1      72  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\SIC.gdx par=rawdata rng="SIC!
-                                          C8:BI57" rdim=1 cdim=1
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     01/27/12 14:19:45 Page 3
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\readrawdata.gms
+     2        6 CALL           1       6  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\BEJ.gdx par=rawdata rng="BEJ!C8:BI57" rdim=1 c
+                                          dim=1
+     3        9 CALL           1       9  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\TAJ.gdx par=rawdata rng="TAJ!C8:BI57" rdim=1 c
+                                          dim=1
+     4       12 CALL           1      12  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HEB.gdx par=rawdata rng="HEB!C8:BI57" rdim=1 c
+                                          dim=1
+     5       15 CALL           1      15  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\SHX.gdx par=rawdata rng="SHX!C8:BI57" rdim=1 c
+                                          dim=1
+     6       18 CALL           1      18  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\NMG.gdx par=rawdata rng="NMG!C8:BI57" rdim=1 c
+                                          dim=1
+     7       21 CALL           1      21  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\LIA.gdx par=rawdata rng="LIA!C8:BI57" rdim=1 c
+                                          dim=1
+     8       24 CALL           1      24  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\JIL.gdx par=rawdata rng="JIL!C8:BI57" rdim=1 c
+                                          dim=1
+     9       27 CALL           1      27  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HLJ.gdx par=rawdata rng="HLJ!C8:BI57" rdim=1 c
+                                          dim=1
+    10       30 CALL           1      30  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\SHH.gdx par=rawdata rng="SHH!C8:BI57" rdim=1 c
+                                          dim=1
+    11       33 CALL           1      33  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\JSU.gdx par=rawdata rng="JSU!C8:BI57" rdim=1 c
+                                          dim=1
+    12       36 CALL           1      36  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\ZHJ.gdx par=rawdata rng="ZHJ!C8:BI57" rdim=1 c
+                                          dim=1
+    13       39 CALL           1      39  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\ANH.gdx par=rawdata rng="ANH!C8:BI57" rdim=1 c
+                                          dim=1
+    14       42 CALL           1      42  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\FUJ.gdx par=rawdata rng="FUJ!C8:BI57" rdim=1 c
+                                          dim=1
+    15       45 CALL           1      45  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\JXI.gdx par=rawdata rng="JXI!C8:BI57" rdim=1 c
+                                          dim=1
+    16       48 CALL           1      48  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\SHD.gdx par=rawdata rng="SHD!C8:BI57" rdim=1 c
+                                          dim=1
+    17       51 CALL           1      51  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HEN.gdx par=rawdata rng="HEN!C8:BI57" rdim=1 c
+                                          dim=1
+    18       54 CALL           1      54  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HUB.gdx par=rawdata rng="HUB!C8:BI57" rdim=1 c
+                                          dim=1
+    19       57 CALL           1      57  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HUN.gdx par=rawdata rng="HUN!C8:BI57" rdim=1 c
+                                          dim=1
+    20       60 CALL           1      60  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\GUD.gdx par=rawdata rng="GUD!C8:BI57" rdim=1 c
+                                          dim=1
+    21       63 CALL           1      63  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\GXI.gdx par=rawdata rng="GXI!C8:BI57" rdim=1 c
+                                          dim=1
+    22       66 CALL           1      66  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\HAI.gdx par=rawdata rng="HAI!C5:BI54" rdim=1 c
+                                          dim=1
+    23       69 CALL           1      69  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\CHQ.gdx par=rawdata rng="CHQ!C8:BI57" rdim=1 c
+                                          dim=1
+    24       72 CALL           1      72  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\SIC.gdx par=rawdata rng="SIC!C8:BI57" rdim=1 c
+                                          dim=1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/09/12 15:06:56 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-    25       75 CALL           1      75  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\GZH.gdx par=rawdata rng="GZH!
-                                          C8:BI57" rdim=1 cdim=1
-    26       78 CALL           1      78  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\YUN.gdx par=rawdata rng="YUN!
-                                          C8:BI57" rdim=1 cdim=1
-    27       81 CALL           1      81  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\SHA.gdx par=rawdata rng="SHA!
-                                          C8:BI57" rdim=1 cdim=1
-    28       84 CALL           1      84  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\GAN.gdx par=rawdata rng="GAN!
-                                          C8:BI57" rdim=1 cdim=1
-    29       87 CALL           1      87  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\NXA.gdx par=rawdata rng="NXA!
-                                          C8:BI57" rdim=1 cdim=1
-    30       90 CALL           1      90  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\QIH.gdx par=rawdata rng="QIH!
-                                          C8:BI57" rdim=1 cdim=1
-    31       93 CALL           1      93  gdxxrw i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\chinaIO.xls o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\XIN.gdx par=rawdata rng="XIN!
-                                          C8:BI57" rdim=1 cdim=1
-    32       96 CALL           1      96  gdxmerge i=E:\fromremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\*.gdx o=E:\fr
-                                          omremovable\dataBalanced\ChinaBalancedSAM\\data\gdx\merged.gdx
+    25       75 CALL           1      75  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\GZH.gdx par=rawdata rng="GZH!C8:BI57" rdim=1 c
+                                          dim=1
+    26       78 CALL           1      78  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\YUN.gdx par=rawdata rng="YUN!C8:BI57" rdim=1 c
+                                          dim=1
+    27       81 CALL           1      81  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\SHA.gdx par=rawdata rng="SHA!C8:BI57" rdim=1 c
+                                          dim=1
+    28       84 CALL           1      84  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\GAN.gdx par=rawdata rng="GAN!C8:BI57" rdim=1 c
+                                          dim=1
+    29       87 CALL           1      87  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\NXA.gdx par=rawdata rng="NXA!C8:BI57" rdim=1 c
+                                          dim=1
+    30       90 CALL           1      90  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\QIH.gdx par=rawdata rng="QIH!C8:BI57" rdim=1 c
+                                          dim=1
+    31       93 CALL           1      93  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\\chinaIO.xls o=C:\Users\dzha
+                                          ng\data\ChinaBalancedSAM\\data\gdx\XIN.gdx par=rawdata rng="XIN!C8:BI57" rdim=1 c
+                                          dim=1
+    32       96 CALL           1      96  gdxmerge i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\gdx\*.gdx o=C:\Users\dzhan
+                                          g\data\ChinaBalancedSAM\\data\gdx\merged.gdx
 
 
-COMPILATION TIME     =       17.487 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+COMPILATION TIME     =       19.157 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
 EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
@@ -186,5 +186,5 @@ USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
 
 **** FILE SUMMARY
 
-Input      E:\fromremovable\dataBalanced\ChinaBalancedSAM\readrawdata.gms
-Output     E:\fromremovable\dataBalanced\ChinaBalancedSAM\listings\readrawdata.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\readrawdata.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\readrawdata.lst

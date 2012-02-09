@@ -2,6 +2,7 @@
 2. Run buildreadrawdata.gms;
 3. Replace "BAJ        " with "BAJ"...
    Change rng="HAI!C8:BI57" to rng="HAI!C5:BI54"
+   Change Jsu(30,55)=0;
    add: $setglobal projectfolder '%gams.curdir%'
         $setlocal inputfolder '%projectfolder%\data'
         $call gdxmerge %inputfolder%\*.gdx o=%inputfolder%\merged.gdx
@@ -15,8 +16,8 @@ Assumptions and adjustments in SAM:
 Account A:
 ca: from IO
 fa: from IO (labor:labor payment; cap: depreciation+surplus)
-Q0: How to deal with the negative capital?
-A0: If capital is negative, make it zero and reduce labor input value.
+Q0: How to deal with the negative capital (Shanxi 24,25; GANSU 11(we have to balance it later...))?
+A0: If capital is negative, make it zero and reduce labor input and tax value (if we only reduce labor value, some labor value will be negative).
 ta: from IO (Production tax)
 ac: from IO
 
