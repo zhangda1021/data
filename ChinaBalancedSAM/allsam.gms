@@ -23,9 +23,9 @@ C       |   ca  |       |       |   ch  |       |  g2d  |       |   der |   er  
         --------------------------------------------------------------------------------
 F       |   fa  |       |       |       |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-H       |       |       |   hf  |       |       |  hg2  |       |       |       |       |
+H       |       |       |   hf  |       |       |  hg2  |       |   dhr |   hr  |       |
         --------------------------------------------------------------------------------
-G1      |       |       |       |       |       |  g1g2 |       |   dhr |   hr  |       |
+G1      |       |       |       |       |       |  g1g2 |       |       |       |  cg1s |
         --------------------------------------------------------------------------------
 G2      |       |       |       |       | g2g1  |       |   tr  |       |       |       |
         --------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ DX      |       |  drc  |       |  drh  |       |       |       |       |       
         --------------------------------------------------------------------------------
 X       |       |   rc  |       |   rh  |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
-I       |       |       |   dp  |  psv  |  g1sv |       |       |       |       |       |
+I       |       |       |   dp  |  psv  |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
 $offtext
 
@@ -60,11 +60,13 @@ display rawdata
 
 parameter totrc(r),toter(r);
 parameter totdrc(r),totder(r);
+parameter ch(r),g2d(r);
 *cs/(cs+ch+gd)
-parameter csratio(r);
+parameter csratio(i),chratio(i),gdratio(i);
+parameter ratio1(i),ratio2(i),ratio3(i);
 parameter sumrc,sumer,sumdrc,sumder;
 *ch/(ch+gd)
-parameter chratio;
+parameter chgdratio;
 set     negval(r,i,j)     Flag for negative elements;
 set     empty(r,i,*)      Flag for empty rows and columns;
 parameter       chksam(r,i,*)       Consistency check of social accounts;
@@ -75,17 +77,28 @@ flag = 0 ;
 sumrc=0;
 sumer=0;
 sumdrc=0;
-sumder=0;ch=0;
-psvgsv=0.8;
+sumder=0;
+
 loop(r,
 totrc(r)=0;
 toter(r)=0;
 totdrc(r)=0;
 totder(r)=0;
+ch(r)=0;
+g2d(r)=0;
 );
 
 
 loop(r,
+
+loop(i,
+csratio(i)=0;
+chratio(i)=0;
+gdratio(i)=0;
+ratio1(i)=0;
+ratio2(i)=0;
+ratio3(i)=0;
+);
 *flag=flag+1;
 *if( rawdata(r,"46","43")+rawdata(r,"47","43")=0, display flag;);
 
@@ -112,6 +125,9 @@ loop(j$((ord(j) ge 1) and (ord(j) le 42)),
 loop(rj$(ord(rj)=ord(j)),
 if (rawdata(r,"47",rj)+rawdata(r,"46",rj) ge 0, sam(r,"85",j)=rawdata(r,"44",rj););
 if (rawdata(r,"47",rj)+rawdata(r,"46",rj) le 0, sam(r,"85",j)=rawdata(r,"44",rj)+rawdata(r,"47",rj)+rawdata(r,"46",rj););
+);
+);
+
 *input ta
 loop(j$((ord(j) ge 1) and (ord(j) le 42)),
 loop(rj$(ord(rj)=ord(j)),
@@ -127,9 +143,6 @@ sam(r,i,j)=rawdata(r,"49",rj);
 );
 );
 
-
-
-*ACCOUNT C
 
 *input tc
 *loop(j$((ord(j) ge 43) and (ord(j) le 84)),
@@ -182,79 +195,189 @@ else sam(r,i,"96")=rawdata(r,ri,"49"););
 *input ch and g2d
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-chratio=rawdata(r,ri,"46")/(rawdata(r,ri,"46")+rawdata(r,ri,"47"));
+chgdratio$(rawdata(r,ri,"46")+rawdata(r,ri,"47"))=rawdata(r,ri,"46")/(rawdata(r,ri,"46")+rawdata(r,ri,"47"));
 if (rawdata(r,ri,"50") ge 0,
 sam(r,i,"87")=rawdata(r,ri,"46");
 sam(r,i,"89")=rawdata(r,ri,"47");
 else
-sam(r,i,"87")=rawdata(r,ri,"46")+rawdata(r,ri,"50")*chratio;
-sam(r,i,"89")=rawdata(r,ri,"47")+rawdata(r,ri,"50")*(1-chratio););
+sam(r,i,"87")=rawdata(r,ri,"46")+rawdata(r,ri,"50")*chgdratio;
+sam(r,i,"89")=rawdata(r,ri,"47")+rawdata(r,ri,"50")*(1-chgdratio););
 );
 );
 
 
-*Compute csratio
+*Compute ratios and process errors
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-csratio(ri)=sam(r,i,"96")/(sam(r,i,"96")+sam(r,i,"87")+sam(r,i,"87"));
-);
-);
+csratio(i)=sam(r,i,"96")/(sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"));
+gdratio(i)=sam(r,i,"87")/(sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"));
+chratio(i)=sam(r,i,"85")/(sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"));
 
-*Adjust cs
-
-*Adjust ch and g2d
-
-*if (rawdata(r,ri,"49")+ rawdata(r,ri,"50")+rawdata(r,ri,"57") ge 0,
-
-
-
-*ACCOUNT F,H
-*input drf,dhr
-if
-((totder(r)>totdrc(r)),
-sam(r,"93","85")=(totder(r)-totdrc(r))/(1+lkratio)*lkratio;
-sam(r,"93","86")=(totder(r)-totdrc(r))/(1+lkratio);
+if (((chratio(i) ge gdratio(i)) and (gdratio(i) ge csratio(i))),
+ratio1(i)=chratio(i);
+ratio2(i)=gdratio(i);
+ratio3(i)=csratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
 else
-sam(r,"88","93")=totdrc(r)-totder(r);
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57");
+);
+);
 );
 
-*input rf,hr
-if
-((toter(r)>totrc(r)),
-sam(r,"94","85")=(toter(r)-totrc(r))/(1+lkratio)*lkratio;
-sam(r,"94","86")=(toter(r)-totrc(r))/(1+lkratio);
+if (((chratio(i) ge csratio(i)) and (csratio(i) ge gdratio(i))),
+ratio1(i)=chratio(i);
+ratio2(i)=csratio(i);
+ratio3(i)=gdratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
 else
-sam(r,"88","94")=totrc(r)-toter(r);
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57");
+);
+);
+);
+
+if (((gdratio(i) ge chratio(i)) and (chratio(i) ge csratio(i))),
+ratio1(i)=gdratio(i);
+ratio2(i)=chratio(i);
+ratio3(i)=csratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
+else
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57");
+);
+);
+);
+
+if (((gdratio(i) ge csratio(i)) and (csratio(i) ge chratio(i))),
+ratio1(i)=gdratio(i);
+ratio2(i)=csratio(i);
+ratio3(i)=chratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
+else
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57");
+);
+);
+);
+
+if (((csratio(i) ge gdratio(i)) and (gdratio(i) ge chratio(i))),
+ratio1(i)=csratio(i);
+ratio2(i)=gdratio(i);
+ratio3(i)=chratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
+else
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57");
+);
+);
+);
+
+if (((csratio(i) ge chratio(i)) and (chratio(i) ge gdratio(i))),
+ratio1(i)=csratio(i);
+ratio2(i)=chratio(i);
+ratio3(i)=gdratio(i);
+if ((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio3(i)+rawdata(r,ri,"57")*ratio3(i) ge 0,
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")*chratio(i);
+sam(r,i,"87")=sam(r,i,"87")+rawdata(r,ri,"57")*gdratio(i);
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")*csratio(i);
+else if((sam(r,i,"96")+sam(r,i,"85")+sam(r,i,"87"))*ratio2(i)+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i) ge 0,
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio1(i);
+sam(r,i,"85")=sam(r,i,"85")+rawdata(r,ri,"57")/(ratio1(i)+ratio2(i))*ratio2(i);
+else
+sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57");
+);
+);
+);
+
+
+ch(r)=ch(r)+sam(r,i,"87");
+g2d(r)=g2d(r)+sam(r,i,"89");
+);
 );
 
 
 *ACCOUNT F
 *input dp
-sam(r,"95","86")=rawdata(r,"46","43");
-*input hf                    hf(labor)= total labor - drf(labor)- rf(labor)
-sam(r,"88","85")=rawdata(r,"44","43")-sam(r,"93","85")- sam(r,"94","85");
-*input ef,gf                 ef + gf = total capital input from rawdata - drf(capital)-rf(capital)
-sam(r,"87","86")=(rawdata(r,"46","43")+ rawdata(r,"47","43")-  sam(r,"93","86")-sam(r,"94","86")-sam(r,"95","86"))*efgf;
-sam(r,"89","86")=(rawdata(r,"46","43")+ rawdata(r,"47","43")-  sam(r,"93","86")-sam(r,"94","86")-sam(r,"95","86"))*(1-efgf);
+sam(r,"96","86")=rawdata(r,"46","43");
+*input hf(labor)
+sam(r,"87","85")=rawdata(r,"44","43");
+*input hf(capital)
+sam(r,"87","86")=rawdata(r,"47","43");
 
-*ACCOUNT I
-*input psv,gsv     cs-dp
-sam(r,"95","88")=(sum(i$((ord(i) ge 43) and (ord(i) le 84)),sam(r,i,"95"))-sam(r,"95","86"))*psvgsv;
-sam(r,"95","89")=(sum(i$((ord(i) ge 43) and (ord(i) le 84)),sam(r,i,"95"))-sam(r,"95","86"))*(1-psvgsv);
 
 *ACCOUNT H
-*input he = ch + psv - hf(labor) - dhr - hr  (household consumption + household saving - labor income from production - labor income from export)
-sam(r,"88","87")= ch + sam(r,"95","88")- sam(r,"88","85")- sam(r,"88","93")-sam(r,"88","94");
+*input drh,dhr
+if
+((totder(r)>totdrc(r)),
+sam(r,"94","87")=totder(r)-totdrc(r);
+else
+sam(r,"87","94")=totdrc(r)-totder(r);
+);
+
+*input rf,hr
+if
+((toter(r)>totrc(r)),
+sam(r,"95","87")= toter(r)-totrc(r);
+else
+sam(r,"87","95")= totrc(r)-toter(r);
+);
+
+*input psv,hg2
+if (sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87") ge 0,
+sam(r,"96","87")=sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87")-ch(r);
+else
+sam(r,"87","89")=-sam(r,"87","85")-sam(r,"87","86")-sam(r,"87","94")-sam(r,"87","95")+sam(r,"94","87")+sam(r,"95","87")+ch(r);
+);
+
 
 *ACCOUNT T
-*input te = ef - he
-sam(r,"92","87")=sam(r,"87","86")-sam(r,"88","87");
 *input tr
 sam(r,"89","90")=rawdata(r,"45","43");
-sam(r,"89","91")=sum(j$((ord(j) ge 43) and (ord(j) le 84)),sam(r,"91",j));
-sam(r,"89","92")=sam(r,"92","87");
 
 
+*ACCOUNT G2
+*input g1g2,g2g1
+if (sam(r,"89","90")-g2d(r)-sam(r,"87","89") ge 0,
+sam(r,"88","89")=sam(r,"89","90")-g2d(r)-sam(r,"87","89");
+else
+sam(r,"89","88")=-sam(r,"89","90")+g2d(r)+sam(r,"87","89");
+);
+
+
+*ACCOUNT G1
+*input cg1s
+sam(r,"88","96")=sam(r,"89","88");
+
+);
+
+
+loop(r,
 negval(r,i,j) = yes$(sam(r,i,j) < 0);
 
 empty(r,i,"row") = 1$(sum(j, sam(r,i,j)) = 0);
@@ -265,6 +388,7 @@ chksam(r,i,"scale") = sum(j, sam(r,j,i));
 chksam(r,i,"%dev")$sum(j, sam(r,i,j)) = 100 * sum(j, sam(r,i,j)-sam(r,j,i)) / sum(j, sam(r,i,j));
 
 );
+
 
 *display sam;
 display negval;
