@@ -17,7 +17,7 @@ contain data.  All cells with no labels are empty:
 
            A       C        F       H      G1      G2       T       DX      X      I
         --------------------------------------------------------------------------------
-A       |       |   ac  |       |       |       |       |   sa  |       |       |       |
+A       |       |   ac  |       |       |       |       |       |       |       |       |
         --------------------------------------------------------------------------------
 C       |   ca  |       |       |   ch  |       |  g2d  |       |   der |   er  |  cs   |
         --------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ display rawdata
 
 parameter totrc(r),toter(r);
 parameter totdrc(r),totder(r);
-parameter ch(r),g2d(r),hflabor(r),hfcap(r),dp(r),ta(r),sa(r);
+parameter ch(r),g2d(r),hflabor(r),hfcap(r),dp(r),ta(r);
 *cs/(cs+ch+gd)
 parameter csratio(i),chratio(i),gdratio(i);
 parameter ratio1(i),ratio2(i),ratio3(i);
@@ -90,7 +90,6 @@ hflabor(r)=0;
 hfcap(r)=0;
 dp(r)=0;
 ta(r)=0;
-sa(r)=0;
 );
 
 
@@ -142,7 +141,7 @@ sam(r,"85",j)=rawdata(r,"44",rj)+(rawdata(r,"47",rj)+rawdata(r,"46",rj))/(rawdat
 hflabor(r)=hflabor(r)+sam(r,"85",j);
 );
 );
-*input ta,sa
+*input ta
 loop(j$((ord(j) ge 1) and (ord(j) le 42)),
 loop(rj$(ord(rj)=ord(j)),
 if (rawdata(r,"47",rj)+rawdata(r,"46",rj) ge 0,
@@ -150,12 +149,7 @@ sam(r,"90",j)=rawdata(r,"45",rj);
 else
 sam(r,"90",j)=rawdata(r,"45",rj)+(rawdata(r,"47",rj)+rawdata(r,"46",rj))/(rawdata(r,"44",rj)+rawdata(r,"45",rj))*rawdata(r,"45",rj);
 );
-if (sam(r,"90",j) le 0,
-sam(r,j,"90")=-sam(r,"90",j);
-sam(r,"90",j)=0;
-);
 ta(r)=ta(r)+sam(r,"90",j);
-sa(r)=sa(r)+sam(r,j,"90");
 );
 );
 
@@ -409,7 +403,7 @@ sam(r,"87","89")=-sam(r,"87","85")-sam(r,"87","86")-sam(r,"87","94")-sam(r,"87",
 
 *ACCOUNT T
 *input tr
-sam(r,"89","90")=ta(r)-sa(r);
+sam(r,"89","90")=ta(r);
 
 
 *ACCOUNT G2
