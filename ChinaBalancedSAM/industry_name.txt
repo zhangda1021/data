@@ -1,6 +1,6 @@
 AGR: Crop cultivation,Forestry,Livestock and livestock products and Fishery
 COAL: Coal mining and processing
-COIL: Crude petroleum products
+OIL: Crude petroleum products
 
 NG:natural gas products
 
@@ -14,9 +14,7 @@ leather, furs, down and related products
 LOG: Logging and transport of timber and furniture
 PAP: Paper, printing, record medium reproduction, cultural goods
 toys, sporting and recreation products
-"
-OIL: Petroleum refining, coking and nuclear fuels
-"
+ROIL: Petroleum refining, coking and nuclear fuels
 CHE: Chemical engineering
 NMP: Non-metallic mineral products
 MSP: Metal smelting and processing
@@ -27,12 +25,9 @@ EME: Electric machinery and equipment
 CCE: Communicatoin, computer and other electronic machinery and equipment
 IM: Instruments, meters ,other measuring equipment
 and cultural and office equipment
-"
 AC: Arts and crafts products and other manufacturing  products
-"
 WAS: Scrap and waste
 ELEH: Electricity production and supply, and steam and hot water production and supply
-"
 FG: Gas production and supply
 WT: Water production and supply
 CON: Construction
@@ -42,7 +37,7 @@ Post
 WRHR:
 Wholesale and retail trade
 Hotels and restraunts
-OTH£º
+OTH:
 Telecommunication and software
 Finance
 Real estate
