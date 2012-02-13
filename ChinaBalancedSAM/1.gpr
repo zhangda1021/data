@@ -199,7 +199,7 @@ PlaneRownr=-1
 [OPENWINDOW_1]
 FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.gms
 FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
-FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.gms
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
 MAXIM=1
 TOP=256
 LEFT=256
