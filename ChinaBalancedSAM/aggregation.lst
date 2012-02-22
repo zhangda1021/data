@@ -1,0 +1,325 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/22/12 16:28:54 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+       
+              Production activities   A (30)
+              Commodities             C (30)
+              Primary Factors         F (2)
+              Households              H (1)
+              Central Government      G1(1)
+              Provincial Government   G2(1)
+              Types of taxes          T (4)
+              Rest of country         EX(1)
+              Rest of world           X (1)
+              Investment-savings      I (1)
+       
+      Here is a "MAP" of the SAM with the names of the submatrices which
+      contain data.  All cells with no labels are empty:
+       
+       
+                 A       C        F       H      G1      G2       T       DX    
+        X      I
+              ------------------------------------------------------------------
+      --------------
+      A       |       |   ac  |       |       |       |       |   sa  |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      C       |   ca  |       |       |   ch  |       |  g2d  |       |   der | 
+        er  |  cs   |
+              ------------------------------------------------------------------
+      --------------
+      F       |   fa  |       |       |       |       |       |       |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      H       |       |       |   hf  |       |       |  hg2  |       |   dhr | 
+        hr  |       |
+              ------------------------------------------------------------------
+      --------------
+      G1      |       |       |       |       |       |  g1g2 |       |       | 
+            |  cg1s |
+              ------------------------------------------------------------------
+      --------------
+      G2      |       |       |       |       | g2g1  |       |   tr  |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      T       |   ta  |       |       |       |       |       |       |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      DX      |       |  drc  |       |  drh  |       |       |       |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      X       |       |   rc  |       |   rh  |       |       |       |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+      I       |       |       |   dp  |  psv  | g1sv  |       |       |       | 
+            |       |
+              ------------------------------------------------------------------
+      --------------
+  41   
+  44   
+  45  *SAM table
+  46  set     i   SAM rows and colums indices   /
+  47          1*30    Industries,
+  48          31*60   Commodities,
+  49          61      Labor,
+  50          62      Capital,
+  51          63      Household,
+  52          64      Central Government,
+  53          65      Local Government,
+  54          66      Production tax,
+  55          67      Commodity tax,
+  56          68      Factor tax,
+  57          69      Income tax,
+  58          70      Domestic trade,
+  59          71      Foreign trade,
+  60          72      Investment/;
+  61  alias (i,j);
+  62  alias (ni,i);
+  63  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+      ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
+      H,XIN/;
+  64  parameter sam2(r,i,j)
+  65   
+  66  *raw data
+  67  set     ri   oldsam rows indices   /1*96/;
+  68  set     rj   oldsam columns indices /1*96/;
+  69  alias (rj,nj);
+  70  parameter sam(r,ri,rj)          SAM v1.0
+  71  parameter sam15(r,ni,nj)        SAM V1.5
+  72   
+  73   
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
+--- LOAD  sam = 4:sam
+  76  display sam
+  77   
+  78  set     negval15(r,ni,nj)     Flag for negative elements;
+  79  set     empty15(r,ni,*)      Flag for empty rows and columns;
+  80  parameter       chksam15(r,ni,*)       Consistency check of social account
+      s;
+  81  set     negval2(r,i,j)     Flag for negative elements;
+  82  set     empty2(r,i,*)      Flag for empty rows and columns;
+  83  parameter       chksam2(r,i,*)       Consistency check of social accounts;
+  84   
+  85  *SAM15
+  86  loop(r,
+  87   
+  88  loop(ri$((ord(ri) le 27)),
+  89  loop(ni$(ord(ni)=ord(ri)),
+  90  loop(rj,
+  91  loop(nj$(ord(nj)=ord(rj)),
+  92  sam15(r,ni,nj)=sam(r,ri,rj);
+  93  );
+  94  );
+  95  );
+  96  );
+  97   
+  98  loop(rj,
+  99  loop(nj$(ord(nj)=ord(rj)),
+ 100  sam15(r,"28",nj)=sam(r,"30",rj);
+ 101  );
+ 102  );
+ 103   
+ 104   
+ 105  *AGGREGATION OF OTH PRODUCTION(other service industry)
+ 106  loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(r
+      i) = 29)),
+ 107  loop(rj,
+ 108  loop(nj$(ord(nj)=ord(rj)),
+ 109  sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
+ 110  );
+ 111  );
+ 112  );
+ 113   
+ 114  loop(ri$((ord(ri) ge 43) and (ord(ri) le 69)),
+ 115  loop(ni$(ord(ni)=ord(ri)-12),
+ 116  loop(rj,
+ 117  loop(nj$(ord(nj)=ord(rj)),
+ 118  sam15(r,ni,nj)=sam(r,ri,rj);
+ 119  );
+ 120  );
+ 121  );
+ 122  );
+ 123   
+ 124   
+ 125  loop(rj,
+ 126  loop(nj$(ord(nj)=ord(rj)),
+ 127  sam15(r,"58",nj)=sam(r,"72",rj);
+ 128  );
+ 129  );
+ 130   
+ 131  *AGGREGATION OF OTH COMMODITIES(other service industry)
+ 132  loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(r
+      i) = 71)),
+ 133  loop(rj,
+ 134  loop(nj$(ord(nj)=ord(rj)),
+ 135  sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
+ 136  );
+ 137  );
+ 138  );
+ 139   
+ 140  loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
+ 141  loop(ni$(ord(ni)=ord(ri)-24),
+ 142  loop(rj,
+ 143  loop(nj$(ord(nj)=ord(rj)),
+ 144  sam15(r,ni,nj)=sam(r,ri,rj);
+ 145  );
+ 146  );
+ 147  );
+ 148  );
+ 149  *end of loop r
+ 150  );
+ 151   
+ 152  loop(r,
+ 153  negval15(r,ni,nj) = yes$(sam15(r,ni,nj) < 0);
+ 154   
+ 155  empty15(r,ni,"row") = 1$(sum(nj, sam15(r,ni,nj)) = 0);
+ 156  empty15(r,nj,"col") = 1$(sum(ni, sam15(r,ni,nj)) = 0);
+****              $171
+ 157   
+ 158  chksam15(r,ni,"before") = sum(nj, sam15(r,ni,nj)-sam15(r,nj,ni));
+****                                                             $171,171
+ 159  chksam15(r,ni,"scale") = sum(nj, sam15(r,nj,ni));
+****                                             $171,171
+ 160  chksam15(r,ni,"%dev")$sum(nj, sam15(r,ni,nj)) = 100 * sum(nj, sam15(r,ni,n
+      j)-sam15(r,nj,ni)) / sum(nj, sam15(r,ni,nj));
+****               $171,171
+ 161   
+ 162  );
+ 163   
+ 164   
+ 165   
+ 166   
+ 167   
+ 168   
+ 169  *SAM2
+ 170   
+ 171   
+ 172  loop(r,
+ 173   
+ 174  loop(nj$(ord(nj) le 27),
+ 175  loop(j$(ord(j)=ord(nj)),
+ 176  loop(ni,
+ 177  loop(i$(ord(i)=ord(ni)),
+ 178  sam2(r,i,j)=sam15(r,ni,nj);
+ 179  );
+ 180  );
+ 181  );
+ 182  );
+ 183   
+ 184  loop(ni,
+ 185  loop(i$(ord(i)=ord(ni)),
+ 186  sam2(r,i,"28")=sam15(r,ni,"30");
+ 187  );
+ 188  );
+ 189   
+ 190   
+ 191  *AGGREGATION OF OTH PRODUCTION(other service industry)
+ 192  loop(nj$(((ord(nj) ge 31) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(n
+      j) = 29)),
+ 193  loop(ni,
+ 194  loop(i$(ord(i)=ord(ni)),
+ 195  sam2(r,i,"29")=sam2(r,i,"29")+sam15(r,ni,nj);
+ 196  );
+ 197  );
+ 198  );
+ 199   
+ 200  loop(nj$((ord(nj) ge 43) and (ord(nj) le 69)),
+ 201  loop(j$(ord(j)=ord(nj)-12),
+ 202  loop(ni,
+ 203  loop(i$(ord(i)=ord(ni)),
+ 204  sam2(r,i,j)=sam15(r,ni,nj);
+ 205  );
+ 206  );
+ 207  );
+ 208  );
+ 209   
+ 210   
+ 211  loop(ni,
+ 212  loop(i$(ord(i)=ord(ni)),
+ 213  sam2(r,i,"58")=sam15(r,ni,"72");
+ 214  );
+ 215  );
+ 216   
+ 217  *AGGREGATION OF OTH COMMODITIES(other service industry)
+ 218  loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(n
+      j) = 71)),
+ 219  loop(ni,
+ 220  loop(i$(ord(i)=ord(ni)),
+ 221  sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
+ 222  );
+ 223  );
+ 224  );
+ 225   
+ 226  loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
+ 227  loop(j$(ord(j)=ord(j)-24),
+ 228  loop(ni,
+ 229  loop(i$(ord(i)=ord(ni)),
+ 230  sam2(r,i,j)=sam15(r,ni,nj);
+ 231  );
+ 232  );
+ 233  );
+ 234  );
+ 235  *end of loop r
+ 236  );
+ 237   
+ 238   
+ 239   
+ 240   
+ 241   
+ 242  loop(r,
+ 243  negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
+ 244   
+ 245  empty2(r,i,"row") = 1$(sum(j, sam2(r,i,j)) = 0);
+ 246  empty2(r,j,"col") = 1$(sum(i, sam2(r,i,j)) = 0);
+ 247   
+ 248  chksam2(r,i,"before") = sum(j, sam2(r,i,j)-sam2(r,j,i));
+ 249  chksam2(r,i,"scale") = sum(j, sam2(r,j,i));
+ 250  chksam2(r,i,"%dev")$sum(j, sam2(r,i,j)) = 100 * sum(j, sam2(r,i,j)-sam2(r,
+      j,i)) / sum(j, sam2(r,i,j));
+ 251   
+ 252  );
+ 253   
+ 254   
+ 255   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/22/12 16:28:54 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+171  Domain violation for set
+
+**** 7 ERROR(S)   0 WARNING(S)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/22/12 16:28:54 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          aggregation.gms
+     2       74 GDXIN          1      74  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          data\gdx\allsam.gdx
+
+
+COMPILATION TIME     =        0.078 SECONDS      5 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
+
+**** USER ERROR(S) ENCOUNTERED

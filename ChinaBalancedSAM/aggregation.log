@@ -1,0 +1,30 @@
+
+--- Job aggregation.gms Start 02/22/12 16:28:54 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+          Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+--- Starting compilation
+--- aggregation.gms(74) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
+--- aggregation.gms(156) 5 Mb 1 Error
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+--- aggregation.gms(158) 5 Mb 3 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+--- aggregation.gms(159) 5 Mb 5 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+--- aggregation.gms(160) 5 Mb 7 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+    Domain violation for set
+--- aggregation.gms(255) 5 Mb 7 Errors
+*** Status: Compilation error(s)
+--- Job aggregation.gms Stop 02/22/12 16:28:54 elapsed 0:00:00.092
+Exit code = 2

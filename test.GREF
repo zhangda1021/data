@@ -1,0 +1,48 @@
+*!START Set, Parameter, Variable, Equation Declaration
+0,0,1,"m","","industries"
+1,0,1,"n","","states"
+2,1,1,"c1","n","state cons"
+3,1,1,"c2","m","industry cons"
+4,1,1,"output","n,m","output value of each industry in each state"
+5,2,1,"avg","m",""
+6,2,1,"j","",""
+7,2,1,"x","n,m","cons"
+8,3,1,"average","*","average"
+9,3,1,"criterion","","definition"
+10,3,1,"industry","*","industry equation"
+11,3,1,"state","*","state equation"
+*!!END
+*!START Element declaration
+0,"aa","aa"
+1,"bb","bb"
+2,"a","a"
+3,"b","b"
+4,"c","c"
+*!!END
+*!START Sets and Elements
+0,0
+0,1
+1,2
+1,3
+1,4
+*!!END
+*!START GDX inputs
+*!!END
+*!START Setglobal
+*!!END
+*!START Dimension
+*!!END
+*!START Recoding
+*!!END
+*!START Bounds
+*!!END
+*!START NonEdit
+*!!END
+*!START Info
+*!!END
+*!START Format
+*!!END
+*!START UserLevel
+*!!END
+*!START GDX datafiles
+*!!END

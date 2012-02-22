@@ -16,12 +16,13 @@
 1=
 
 [GDXDISP: chksam Par 3]
-PlaneDim=0
-RowDim=3
+PlaneDim=1
+RowDim=2
 Squeeze=1
-Order=1,2,3
+Order=3,1,2
 Decim=7
-PlaneRownr=-1
+PlaneRownr=2
+PlaneFilter1=%dev
 
 [GDXDISP: sam Par 3]
 PlaneDim=1
@@ -29,7 +30,7 @@ RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
-PlaneRownr=14
+PlaneRownr=-1
 PlaneFilter1=SHD
 
 [GDXDISP: imptax Par 0]
@@ -187,21 +188,82 @@ PlaneRownr=-1
 [RP:ALLSAM]
 1=
 
+[GDXDISP: ch Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: sam15 Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=2
+PlaneFilter1=HEB
+
+[GDXDISP: sam2 Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: ta Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: totrc Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: empty Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[RP:AGGREGATION]
+1=
+
 [MRUFILES]
-1=E:\fromremovable\USREP\cge\tza\tzamap.gms
-2=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
-3=E:\fromremovable\dataBalanced\ChinaBalancedSAM\data\gdx\allsam.gdx
-4=E:\fromremovable\dataBalanced\ChinaBalancedSAM\allsam.gms
-5=E:\fromremovable\dataBalanced\ChinaBalancedSAM\allsam.lst
-6=E:\fromremovable\dataBalanced\ChinaBalancedSAM\readrawdata.gms
-7=E:\from removable\dataBalanced\ChinaBalancedSAM\readrawdata.gms
+1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
+2=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
+3=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.gms
+4=E:\fromremovable\USREP\cge\tza\tzamap.gms
+5=E:\fromremovable\dataBalanced\ChinaBalancedSAM\data\gdx\allsam.gdx
+6=E:\fromremovable\dataBalanced\ChinaBalancedSAM\allsam.gms
+7=E:\fromremovable\dataBalanced\ChinaBalancedSAM\allsam.lst
 
 [OPENWINDOW_1]
-FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.gms
-FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
-FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
+FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
 MAXIM=1
-TOP=256
-LEFT=256
+TOP=85
+LEFT=153
 HEIGHT=587
 WIDTH=1392
+
+[GDXDISP: chksam15 Par 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1

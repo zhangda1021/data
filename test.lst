@@ -1,0 +1,290 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     14 PARAMETER c1  state cons
+
+a 40.000,    b 60.000,    c 80.000
+
+
+----     14 PARAMETER c2  industry cons
+
+aa  60.000,    bb 120.000
+
+
+----     14 PARAMETER output  output value of each industry in each state
+
+           aa          bb
+
+a     100.000     600.000
+b     200.000     800.000
+c     300.000    1000.000
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE gua Using QCP From line 42
+
+
+---- criterion  =E=  criterion definition
+
+criterion..  (0)*x(a,aa) + (0)*x(a,bb) + (0)*x(b,aa) + (0)*x(b,bb) + (0)*x(c,aa) + (0)*x(c,bb) + j + (0)*avg(aa)
+     
+      + (0)*avg(bb) =E= 0 ; (LHS = 0)
+     
+
+---- average  =E=  average
+
+average(aa)..  - 0.00333333333333333*x(a,aa) - 0.00166666666666667*x(b,aa) - 0.00111111111111111*x(c,aa) + avg(aa) =E= 0
+      ; (LHS = 0)
+     
+average(bb)..  - 0.000555555555555556*x(a,bb) - 0.000416666666666667*x(b,bb) - 0.000333333333333333*x(c,bb) + avg(bb)
+      =E= 0 ; (LHS = 0)
+     
+
+---- state  =E=  state equation
+
+state(a)..  - x(a,aa) - x(a,bb) =E= -40 ; (LHS = 0, INFES = 40 ****)
+     
+state(b)..  - x(b,aa) - x(b,bb) =E= -60 ; (LHS = 0, INFES = 60 ****)
+     
+state(c)..  - x(c,aa) - x(c,bb) =E= -80 ; (LHS = 0, INFES = 80 ****)
+     
+
+---- industry  =E=  industry equation
+
+industry(aa)..  - x(a,aa) - x(b,aa) - x(c,aa) =E= -60 ; (LHS = 0, INFES = 60 ****)
+     
+industry(bb)..  - x(a,bb) - x(b,bb) - x(c,bb) =E= -120 ; (LHS = 0, INFES = 120 ****)
+     
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE gua Using QCP From line 42
+
+
+---- x  cons
+
+x(a,aa)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0033  average(aa)
+       -1       state(a)
+       -1       industry(aa)
+
+x(a,bb)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0006  average(bb)
+       -1       state(a)
+       -1       industry(bb)
+
+x(b,aa)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0017  average(aa)
+       -1       state(b)
+       -1       industry(aa)
+
+x(b,bb)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0004  average(bb)
+       -1       state(b)
+       -1       industry(bb)
+
+x(c,aa)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0011  average(aa)
+       -1       state(c)
+       -1       industry(aa)
+
+x(c,bb)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       (0)      criterion
+       -0.0003  average(bb)
+       -1       state(c)
+       -1       industry(bb)
+
+
+---- j  obj
+
+j
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       criterion
+
+
+---- avg  
+
+avg(aa)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       (0)      criterion
+        1       average(aa)
+
+avg(bb)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       (0)      criterion
+        1       average(bb)
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE gua Using QCP From line 42
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS            8
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            9
+NON ZERO ELEMENTS            29     NON LINEAR N-Z              8
+DERIVATIVE POOL              15     CONSTANT POOL              16
+CODE LENGTH                  63
+
+
+GENERATION TIME      =        0.063 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+
+
+EXECUTION TIME       =        0.063 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE gua Using QCP From line 42
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   gua                 OBJECTIVE  j
+     TYPE    QCP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  42
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      2 Locally Optimal           
+**** OBJECTIVE VALUE             6376.0344
+
+ RESOURCE USAGE, LIMIT          0.000      1000.000
+ ITERATION COUNT, LIMIT         9    2000000000
+ EVALUATION ERRORS              0             0
+ 
+ 
+    C O N O P T 3   version 3.14T
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ Using default options.
+ 
+ 
+    The model has 9 variables and 8 constraints
+    with 29 Jacobian elements, 8 of which are nonlinear.
+    The Hessian of the Lagrangian has 8 elements on the diagonal,
+    6 elements below the diagonal, and 8 nonlinear variables.
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.020 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+ Workspace           =     0.04 Mbytes
+    Estimate         =     0.04 Mbytes
+    Max used         =     0.01 Mbytes
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU criterion           .              .              .             1.0000      
+
+  criterion  criterion definition
+
+---- EQU average  average
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+aa          .              .              .          -119.3996      
+bb          .              .              .          -239.7000      
+
+---- EQU state  state equation
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+a       -40.0000       -40.0000       -40.0000       -59.7039      
+b       -60.0000       -60.0000       -60.0000       -79.8200      
+c       -80.0000       -80.0000       -80.0000       -99.8632      
+
+---- EQU industry  industry equation
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+aa       -60.0000       -60.0000       -60.0000        40.2390      
+bb      -120.0000      -120.0000      -120.0000          .          
+
+---- VAR x  cons
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+a.aa          .            10.0315        +INF             .          
+a.bb          .            29.9685        +INF            EPS         
+b.aa          .            19.9901        +INF             .          
+b.bb          .            40.0099        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE gua Using QCP From line 42
+
+
+     VAR x  cons
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+c.aa          .            29.9785        +INF            EPS         
+c.bb          .            50.0215        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR j                 -INF         6376.0344        +INF             .          
+
+  j  obj
+
+---- VAR avg  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+aa        -INF            0.1001        +INF             .          
+bb        -INF            0.0500        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                  02/22/12 10:04:28 Page 8
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     44 VARIABLE x.L  cons
+
+           aa          bb
+
+a      10.031      29.969
+b      19.990      40.010
+c      29.978      50.022
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\test.gms
+Output     C:\Users\dzhang\data\test.lst
