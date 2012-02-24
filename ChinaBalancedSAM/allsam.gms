@@ -9,41 +9,43 @@ $ontext
         Types of taxes          T (4)
         Rest of country         EX(1)
         Rest of world           X (1)
-        Investment-savings      I (1)
+        Investment-savings      I (2)
 
 Here is a "MAP" of the SAM with the names of the submatrices which
 contain data.  All cells with no labels are empty:
 
 
-           A       C        F       H      G1      G2       T       DX      X      I
-        --------------------------------------------------------------------------------
-A       |       |   ac  |       |       |       |       |   sa  |       |       |       |
-        --------------------------------------------------------------------------------
-C       |   ca  |       |       |   ch  |       |  g2d  |       |   der |   er  |  cs   |
-        --------------------------------------------------------------------------------
-F       |   fa  |       |       |       |       |       |       |       |       |       |
-        --------------------------------------------------------------------------------
-H       |       |       |   hf  |       |       |  hg2  |       |   dhr |   hr  |       |
-        --------------------------------------------------------------------------------
-G1      |       |       |       |       |       |  g1g2 |       |       |       |  cg1s |
-        --------------------------------------------------------------------------------
-G2      |       |       |       |       | g2g1  |       |   tr  |       |       |       |
-        --------------------------------------------------------------------------------
-T       |   ta  |       |       |       |       |       |       |       |       |       |
-        --------------------------------------------------------------------------------
-DX      |       |  drc  |       |  drh  |       |       |       |       |       |       |
-        --------------------------------------------------------------------------------
-X       |       |   rc  |       |   rh  |       |       |       |       |       |       |
-        --------------------------------------------------------------------------------
-I       |       |       |   dp  |  psv  | g1sv  |       |       |       |       |       |
-        --------------------------------------------------------------------------------
+           A       C        F       H      G1      G2       T       DX      X      I1      I2
+        ----------------------------------------------------------------------------------------
+A       |       |   ac  |       |       |       |       |   sa  |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+C       |   ca  |       |       |   ch  |       |  g2d  |       |   der |   er  |  cs1  |  cs2  |
+        ----------------------------------------------------------------------------------------
+F       |   fa  |       |       |       |       |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+H       |       |       |   hf  |       |       |  hg2  |       |   dhr |   hr  |       |       |
+        ----------------------------------------------------------------------------------------
+G1      |       |       |       |       |       |  g1g2 |       |       |       |  cg1s |       |
+        ----------------------------------------------------------------------------------------
+G2      |       |       |       |       | g2g1  |       |   tr  |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+T       |   ta  |       |       |       |       |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+DX      |       |  drc  |       |  drh  |       |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+X       |       |   rc  |       |   rh  |       |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+I1      |       |       |   dp  |  psv1 | g1sv  |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
+I2      |       |   ic  |       |  psv2 |       |       |       |       |       |       |       |
+        ----------------------------------------------------------------------------------------
 $offtext
 
 $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder '%projectfolder%\data\gdx'
 
 *SAM table
-set     i   SAM rows and colums indices   /1*96/;
+set     i   SAM rows and colums indices   /1*97/;
 alias (i,j);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
 parameter sam(r,i,j)
@@ -65,6 +67,7 @@ parameter ch(r),g2d(r),hflabor(r),hfcap(r),dp(r),ta(r),sa(r);
 parameter csratio(i),chratio(i),gdratio(i);
 parameter ratio1(i),ratio2(i),ratio3(i);
 parameter sumrc,sumer,sumdrc,sumder;
+parameter psv2;
 *ch/(ch+gd)
 parameter chgdratio;
 set     negval(r,i,j)     Flag for negative elements;
@@ -78,6 +81,7 @@ sumrc=0;
 sumer=0;
 sumdrc=0;
 sumder=0;
+psv2=0
 
 loop(r,
 totrc(r)=0;
@@ -91,6 +95,7 @@ hfcap(r)=0;
 dp(r)=0;
 ta(r)=0;
 sa(r)=0;
+psv2=0;
 );
 
 
@@ -104,6 +109,7 @@ gdratio(i)=0;
 ratio1(i)=0;
 ratio2(i)=0;
 ratio3(i)=0;
+psv2=0;
 );
 *flag=flag+1;
 *if( rawdata(r,"46","43")+rawdata(r,"47","43")=0, display flag;);
@@ -200,23 +206,30 @@ toter(r)=toter(r)+sam(r,i,"95");
 );
 );
 
-*input cs
+*input cs1,cs2,ic,
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
+sam(r,i,"96")=rawdata(r,ri,"49");
+
 if (rawdata(r,ri,"50") ge 0,
-sam(r,i,"96")=rawdata(r,ri,"49")+ rawdata(r,ri,"50");
-else sam(r,i,"96")=rawdata(r,ri,"49"););
+sam(r,i,"97")=rawdata(r,ri,"50");
+else
+sam(r,"97",i)=0-rawdata(r,ri,"50"););
+psv2=psv2+rawdata(r,ri,"50");
 );
 );
 
+*input psv2
+sam(r,"97","87")=psv2;
 
 *input der, ch and g2d
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
-if (rawdata(r,ri,"50") ge 0,
+*if (rawdata(r,ri,"50") ge 0,
 sam(r,i,"94")=rawdata(r,ri,"53");
 sam(r,i,"87")=rawdata(r,ri,"46");
 sam(r,i,"89")=rawdata(r,ri,"47");
+$ontext
 else
 if (rawdata(r,ri,"50")+rawdata(r,ri,"46")+rawdata(r,ri,"47") ge 0,
 chgdratio$(rawdata(r,ri,"46")+rawdata(r,ri,"47"))=rawdata(r,ri,"46")/(rawdata(r,ri,"46")+rawdata(r,ri,"47"));
@@ -230,6 +243,7 @@ sam(r,i,"87")=rawdata(r,ri,"46");
 sam(r,i,"89")=rawdata(r,ri,"47");
 );
 );
+$offtext
 totder(r)=totder(r)+sam(r,i,"94");
 );
 );
@@ -399,11 +413,11 @@ else
 sam(r,"87","95")= totrc(r)-toter(r);
 );
 
-*input psv,hg2
-if (sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87") ge 0,
-sam(r,"96","87")=sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87")-ch(r);
+*input psv1,hg2
+if (sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87")-sam(r,"97","87")-ch(r) ge 0,
+sam(r,"96","87")=sam(r,"87","85")+sam(r,"87","86")+sam(r,"87","94")+sam(r,"87","95")-sam(r,"94","87")-sam(r,"95","87")-sam(r,"97","87")-ch(r);
 else
-sam(r,"87","89")=-sam(r,"87","85")-sam(r,"87","86")-sam(r,"87","94")-sam(r,"87","95")+sam(r,"94","87")+sam(r,"95","87")+ch(r);
+sam(r,"87","89")=-sam(r,"87","85")-sam(r,"87","86")-sam(r,"87","94")-sam(r,"87","95")+sam(r,"94","87")+sam(r,"95","87")+sam(r,"97","87")+ch(r);
 );
 
 
@@ -437,7 +451,8 @@ empty(r,i,"row") = 1$(sum(j, sam(r,i,j)) = 0);
 empty(r,j,"col") = 1$(sum(i, sam(r,i,j)) = 0);
 
 chksam(r,i,"before") = sum(j, sam(r,i,j)-sam(r,j,i));
-chksam(r,i,"scale") = sum(j, sam(r,j,i));
+chksam(r,i,"scale1") = sum(j, sam(r,j,i));
+chksam(r,i,"scale2") = sum(j, sam(r,i,j));
 chksam(r,i,"%dev")$sum(j, sam(r,i,j)) = 100 * sum(j, sam(r,i,j)-sam(r,j,i)) / sum(j, sam(r,i,j));
 
 );

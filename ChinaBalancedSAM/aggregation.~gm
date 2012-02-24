@@ -57,15 +57,16 @@ set     i   SAM rows and colums indices   /
         69      Income tax,
         70      Domestic trade,
         71      Foreign trade,
-        72      Investment/;
+        72      Investment,
+	73	Inventory/;
 alias (i,j);
-alias (ni,i);
+alias (i,ni);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
-parameter sam2(r,i,j)
+parameter sam2(r,i,j)		SAM v2.0
 
 *raw data
-set     ri   oldsam rows indices   /1*96/;
-set     rj   oldsam columns indices /1*96/;
+set     ri   oldsam rows indices   /1*97/;
+set     rj   oldsam columns indices /1*97/;
 alias (rj,nj);
 parameter sam(r,ri,rj)          SAM v1.0
 parameter sam15(r,ni,nj)        SAM V1.5
@@ -75,9 +76,7 @@ $gdxin '%inputfolder%\allsam.gdx'
 $load sam
 display sam
 
-set     negval15(r,ni,nj)     Flag for negative elements;
-set     empty15(r,ni,*)      Flag for empty rows and columns;
-parameter       chksam15(r,ni,*)       Consistency check of social accounts;
+
 set     negval2(r,i,j)     Flag for negative elements;
 set     empty2(r,i,*)      Flag for empty rows and columns;
 parameter       chksam2(r,i,*)       Consistency check of social accounts;
@@ -137,7 +136,7 @@ sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
 );
 );
 
-loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
+loop(ri$((ord(ri) ge 85) and (ord(ri) le 97)),
 loop(ni$(ord(ni)=ord(ri)-24),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
@@ -148,20 +147,6 @@ sam15(r,ni,nj)=sam(r,ri,rj);
 );
 *end of loop r
 );
-
-loop(r,
-negval15(r,ni,nj) = yes$(sam15(r,ni,nj) < 0);
-
-empty15(r,ni,"row") = 1$(sum(nj, sam15(r,ni,nj)) = 0);
-empty15(r,nj,"col") = 1$(sum(ni, sam15(r,ni,nj)) = 0);
-
-chksam15(r,ni,"before") = sum(nj, sam15(r,ni,nj)-sam15(r,nj,ni));
-chksam15(r,ni,"scale") = sum(nj, sam15(r,nj,ni));
-chksam15(r,ni,"%dev")$sum(nj, sam15(r,ni,nj)) = 100 * sum(nj, sam15(r,ni,nj)-sam15(r,nj,ni)) / sum(nj, sam15(r,ni,nj));
-
-);
-
-
 
 
 
@@ -223,8 +208,8 @@ sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
 );
 );
 
-loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
-loop(j$(ord(j)=ord(j)-24),
+loop(nj$((ord(nj) ge 85) and (ord(nj) le 97)),
+loop(j$(ord(j)=ord(nj)-24),
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
 sam2(r,i,j)=sam15(r,ni,nj);

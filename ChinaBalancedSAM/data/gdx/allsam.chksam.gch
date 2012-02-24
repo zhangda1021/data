@@ -1,0 +1,11 @@
+[CHART]
+VERID=GAMSIDE Chart(s) V1
+GDXFILE=allsam.gdx
+TITLE=chksam
+SUBTITLE=Consistency check of social accounts
+
+[SERIES1]
+SYMBOL=chksam
+TYPE=scatter2d
+MAP=3,1,2
+FILTER=*,*,"%dev"

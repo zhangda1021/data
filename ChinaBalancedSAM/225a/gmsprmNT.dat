@@ -1,0 +1,6 @@
+Input=aggregation
+Output=listings\aggregation.lst
+ScrDir=225a
+SysDir="C:\Program Files\GAMS23.4"
+ScriptNext=225a\gamsnext.cmd
+GDX=data\gdx\aggregation

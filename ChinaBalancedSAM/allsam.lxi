@@ -1,11 +1,3 @@
 B 2 C o m p i l a t i o n
-B 511 Include File Summary
-B 525 E x e c u t i o n
-I 526 rawdata
-I 14452 negval
-I 14545 empty
-I 14669 chksam
-I 17438 sumrc
-I 17439 sumer
-I 17440 sumdrc
-I 17441 sumder
+B 533 Error Messages
+B 541 Include File Summary
