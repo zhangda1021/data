@@ -9,7 +9,7 @@ $ontext
         Types of taxes          T (4)
         Rest of country         EX(1)
         Rest of world           X (1)
-        Investment-savings      I (1)
+        Investment-savings      I (2)
 
 Here is a "MAP" of the SAM with the names of the submatrices which
 contain data.  All cells with no labels are empty:
@@ -61,16 +61,15 @@ set     i   SAM rows and colums indices   /
         69      Income tax,
         70      Domestic trade,
         71      Foreign trade,
-        72      Investment,
-        73      Inventory/;
+        72      Investment/;
 alias (i,j);
 alias (i,ni);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
-parameter sam2(r,i,j)           SAM v2.0
+parameter sam2(r,i,j)		SAM v2.0
 
 *raw data
-set     ri   oldsam rows indices   /1*97/;
-set     rj   oldsam columns indices /1*97/;
+set     ri   oldsam rows indices   /1*96/;
+set     rj   oldsam columns indices /1*96/;
 alias (rj,nj);
 parameter sam(r,ri,rj)          SAM v1.0
 parameter sam15(r,ni,nj)        SAM V1.5
@@ -98,16 +97,15 @@ sam15(r,ni,nj)=sam(r,ri,rj);
 );
 );
 
-*WRHR
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"28",nj)=sam(r,"30",rj)+sam(r,"31",rj);
+sam15(r,"28",nj)=sam(r,"30",rj);
 );
 );
 
 
 *AGGREGATION OF OTH PRODUCTION(other service industry)
-loop(ri$(((ord(ri) ge 32) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
+loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
 sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
@@ -128,12 +126,12 @@ sam15(r,ni,nj)=sam(r,ri,rj);
 
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"58",nj)=sam(r,"72",rj)+sam(r,"73",rj);
+sam15(r,"58",nj)=sam(r,"72",rj);
 );
 );
 
 *AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(ri$(((ord(ri) ge 74) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
+loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
 sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
@@ -141,7 +139,7 @@ sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
 );
 );
 
-loop(ri$((ord(ri) ge 85) and (ord(ri) le 97)),
+loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
 loop(ni$(ord(ni)=ord(ri)-24),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
@@ -213,7 +211,7 @@ sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
 );
 );
 
-loop(nj$((ord(nj) ge 85) and (ord(nj) le 97)),
+loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
 loop(j$(ord(j)=ord(nj)-24),
 loop(ni,
 loop(i$(ord(i)=ord(ni)),

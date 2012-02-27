@@ -98,15 +98,16 @@ sam15(r,ni,nj)=sam(r,ri,rj);
 );
 );
 
+*WRHR
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"28",nj)=sam(r,"30",rj);
+sam15(r,"28",nj)=sam(r,"30",rj)+sam(r,"31",rj);
 );
 );
 
 
 *AGGREGATION OF OTH PRODUCTION(other service industry)
-loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
+loop(ri$(((ord(ri) ge 32) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
 sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
@@ -127,12 +128,12 @@ sam15(r,ni,nj)=sam(r,ri,rj);
 
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"58",nj)=sam(r,"72",rj);
+sam15(r,"58",nj)=sam(r,"72",rj)+sam(r,"73",rj);
 );
 );
 
 *AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
+loop(ri$(((ord(ri) ge 74) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
 loop(rj,
 loop(nj$(ord(nj)=ord(rj)),
 sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
@@ -172,7 +173,7 @@ sam2(r,i,j)=sam15(r,ni,nj);
 
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"28")=sam15(r,ni,"30");
+sam2(r,i,"28")=sam15(r,ni,"30")+sam15(r,ni,"31");
 );
 );
 
@@ -199,12 +200,12 @@ sam2(r,i,j)=sam15(r,ni,nj);
 
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"58")=sam15(r,ni,"72");
+sam2(r,i,"58")=sam15(r,ni,"72")+sam15(r,ni,"73");
 );
 );
 
 *AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
+loop(nj$(((ord(nj) ge 74) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
 sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);

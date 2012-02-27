@@ -39,3 +39,5 @@ A4: To add the discrepancy on the production.
 Q5: In the final consumption block, the subtotal is not equal to the sum of all items... 
 A5: To add the discrepancy on the residential consumption.
 
+Q6: Why the sequence of gdx read is different from xls?
+A6: GDX neglect the empty element firstly when it read the data.

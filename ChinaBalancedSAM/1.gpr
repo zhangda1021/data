@@ -251,9 +251,6 @@ PlaneFilter1=%dev
 [RP:ALLSAM]
 1=
 
-[RP:AGGREGATION]
-1=
-
 [GDXDISP: othe Par 2]
 PlaneDim=0
 RowDim=2
@@ -278,9 +275,6 @@ Order=1
 Decim=7
 PlaneRownr=-1
 
-[RP:READEGYDATA]
-1=
-
 [GDXDISP: coal Par 3]
 PlaneDim=0
 RowDim=3
@@ -298,36 +292,85 @@ RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
-PlaneRownr=1
-PlaneFilter1=prov
+PlaneRownr=-1
+PlaneFilter1=PROV
 
 [GDXDISP: prov Par 3]
 PlaneDim=1
 RowDim=1
 Squeeze=1
-Order=2,1,3
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+PlaneFilter1=NG
+
+[GDXDISP: nj Alias 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
 Decim=7
 PlaneRownr=-1
 
+[GDXDISP: ni Alias 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: negval2 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: empty2 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[RP:READEGYDATA]
+1=
+
+[RP:OILGAS]
+1=
+
+[RP:AGGREGATION]
+1=
+
+[GDXDISP: indprov Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[RP:EGYDATABALANCE]
+1=
+
 [MRUFILES]
-1=C:\Users\DaZHANG\data\ChinaBalancedSAM\readegydata.gms
-2=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egydata.gdx
-3=C:\Users\DaZHANG\data\ChinaBalancedSAM\allsam.lst
-4=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\allsam.gdx
-5=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
-6=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\allsam.chksam.gch
-7=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
-8=C:\Users\dzhang\data\ChinaBalancedSAM\allsam.lst
+1=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.lst
+2=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+3=C:\Users\dzhang\data\ChinaBalancedSAM\oilgas.lst
+4=C:\Users\dzhang\data\ChinaBalancedSAM\oilgas.gms
+5=C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
+6=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+7=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
 
 [OPENWINDOW_1]
-FILE0=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.gms
-FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.lst
-FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\allsam.gms
-FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
-FILE4=C:\Users\DaZHANG\data\ChinaBalancedSAM\readrawdata.gms
-FILE5=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
+FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
 MAXIM=1
-TOP=85
-LEFT=153
+TOP=216
+LEFT=314
 HEIGHT=587
 WIDTH=1296

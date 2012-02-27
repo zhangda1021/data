@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/25/12 13:01:53 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/27/12 16:53:01 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -6,57 +6,56 @@ C o m p i l a t i o n
    1   
    5   
   16   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/25/12 13:01:53 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/27/12 16:53:01 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\readegydata.gms
-     2        6 CALL           1       6  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_ind.xlsm o=C
-                                          :\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\ind.gdx par=ind  rng="ind!
-                                          A1:G25" rdim=1 cdim=1
-     3        7 CALL           1       7  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_ind.xlsm o=C
-                                          :\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\prov.gdx par=ind  rng="pro
-                                          v!A1:H31" rdim=1 cdim=1
-     4        8 CALL           1       8  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\coal.gdx par=prov  rng="c
-                                          oal!A1:u31" rdim=1 cdim=1
-     5        9 CALL           1       9  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\fg.gdx par=prov  rng="fg!
-                                          A1:u31" rdim=1 cdim=1
-     6       10 CALL           1      10  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\oil.gdx par=prov  rng="oi
-                                          l!A1:u31" rdim=1 cdim=1
-     7       11 CALL           1      11  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\roil.gdx par=prov  rng="r
-                                          oil!A1:u31" rdim=1 cdim=1
-     8       12 CALL           1      12  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\ng.gdx par=prov  rng="ng!
-                                          A1:u31" rdim=1 cdim=1
-     9       13 CALL           1      13  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\eleh.gdx par=prov  rng="e
-                                          leh!A1:u31" rdim=1 cdim=1
-    10       14 CALL           1      14  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\egycons_prov.xlsm o=
-                                          C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\othe.gdx par=prov  rng="o
-                                          the!A1:u31" rdim=1 cdim=1
-    11       15 CALL           1      15  gdxmerge i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\*.gdx o=C:\Use
-                                          rs\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\egydata.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
+     2        6 CALL           1       6  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_ind.xls o=C:\
+                                          Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\IND.gdx par=ind rng="IND!A1:G
+                                          25" rdim=1 cdim=1
+     3        7 CALL           1       7  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_ind.xls o=C:\
+                                          Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\PROV.gdx par=indprov rng="IND
+                                          PROV!A1:H31" rdim=1 cdim=1
+     4        8 CALL           1       8  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\COAL.gdx par=prov  rng="COAL
+                                          !A1:u31" rdim=1 cdim=1
+     5        9 CALL           1       9  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\FG.gdx par=prov  rng="FG!A1:
+                                          u31" rdim=1 cdim=1
+     6       10 CALL           1      10  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\OIL.gdx par=prov  rng="OIL!A
+                                          1:u31" rdim=1 cdim=1
+     7       11 CALL           1      11  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\ROIL.gdx par=prov  rng="ROIL
+                                          !A1:u31" rdim=1 cdim=1
+     8       12 CALL           1      12  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\NG.gdx par=prov  rng="NG!A1:
+                                          u31" rdim=1 cdim=1
+     9       13 CALL           1      13  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\ELEH.gdx par=prov  rng="ELEH
+                                          !A1:u31" rdim=1 cdim=1
+    10       14 CALL           1      14  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\egycons_prov.xls o=C:
+                                          \Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\OTHE.gdx par=prov  rng="OTHE
+                                          !A1:u31" rdim=1 cdim=1
+    11       15 CALL           1      15  gdxmerge i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\*.gdx o=C:\User
+                                          s\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\egydata.gdx
 
 
-COMPILATION TIME     =       24.087 SECONDS      2 Mb  WIN234-234 May 21, 2010
+COMPILATION TIME     =        4.665 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.000 SECONDS      2 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
-USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
-      TsingHua Univerrsity                                       DC8455
-      License for teaching and research at degree granting institutions
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
 
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\readegydata.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\readegydata.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\readegydata.lst
