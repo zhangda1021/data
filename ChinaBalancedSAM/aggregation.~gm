@@ -58,11 +58,11 @@ set     i   SAM rows and colums indices   /
         70      Domestic trade,
         71      Foreign trade,
         72      Investment,
-	73	Inventory/;
+        73      Inventory/;
 alias (i,j);
 alias (i,ni);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
-parameter sam2(r,i,j)		SAM v2.0
+parameter sam2(r,i,j)           SAM v2.0
 
 *raw data
 set     ri   oldsam rows indices   /1*97/;

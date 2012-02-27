@@ -252,6 +252,7 @@ totder(r)=totder(r)+sam(r,i,"94");
 *Compute ratios and process errors
 loop(i$((ord(i) ge 43) and (ord(i) le 84)),
 loop(ri$(ord(ri)=ord(i)-42),
+$ontext
 if ((sam(r,i,"96")+sam(r,i,"87")+sam(r,i,"89"))=0,
 sam(r,i,"87")=0;
 sam(r,i,"89")=0;
@@ -378,7 +379,9 @@ sam(r,i,"96")=sam(r,i,"96")+rawdata(r,ri,"57");
 );
 );
 );
+
 $label next
+$offtext
 ch(r)=ch(r)+sam(r,i,"87");
 g2d(r)=g2d(r)+sam(r,i,"89");
 );
