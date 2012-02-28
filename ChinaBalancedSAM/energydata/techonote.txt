@@ -41,3 +41,5 @@ A5: To add the discrepancy on the residential consumption.
 
 Q6: Why the sequence of gdx read is different from xls?
 A6: GDX neglect the empty element firstly when it read the data.
+
+NOTE: There is a fatal wrong of sign in 0401.xls (export should be negative for kerosene, coke input should be negative for coke and other coking products)

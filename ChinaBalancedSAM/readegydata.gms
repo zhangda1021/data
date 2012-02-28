@@ -13,4 +13,3 @@ $call gdxxrw i=%inputfolder%\egycons_prov.xls o=%outputfolder%\NG.gdx par=ng  rn
 $call gdxxrw i=%inputfolder%\egycons_prov.xls o=%outputfolder%\ELEH.gdx par=eleh rng="ELEH!A1:u31" rdim=1 cdim=1
 $call gdxxrw i=%inputfolder%\egycons_prov.xls o=%outputfolder%\OTHE.gdx par=othe  rng="OTHE!A1:u31" rdim=1 cdim=1
 
-

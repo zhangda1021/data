@@ -101,6 +101,13 @@ parameter roil(r,i)           roil ebt
 parameter ng(r,i)           ng ebt
 parameter eleh(r,i)           eleh ebt
 parameter othe(r,i)           othe ebt
+parameter coal_bench(i,*)
+parameter fg_bench(i,*)
+parameter oil_bench(i,*)
+parameter roil_bench(i,*)
+parameter ng_bench(i,*)
+parameter eleh_bench(i,*)
+parameter othe_bench(i,*)
 parameter ind(*,indi,e)           egy cons of egy by intensive ind
 parameter indprov(*,r,e)       egy cons of egy product by province
 
@@ -112,50 +119,39 @@ $label readdata
 $gdxin '%inputfolder%\%egyprod%.gdx'
 $load %egyprod%
 display %egyprod%
+$gdxin '%inputfolder%\%egyprod%_bench.gdx'
+$load %egyprod%_bench
+display %egyprod%_bench
 
-$ontext
-set     negval2(r,i,j)     Flag for negative elements;
-set     empty2(r,i,*)      Flag for empty rows and columns;
-parameter       chksam2(r,i,*)       Consistency check of social accounts;
+variables	x(r,i)	adjusted value
+variable	j	obj function
 
-positive variables x(r,i) adjusted values 
-variables j	objective value
-
-equations 
-
-*SAM2
-
-
-loop(r,
-
-loop(nj$(ord(nj) le 27),
-loop(j$(ord(j)=ord(nj)),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,j)=sam15(r,ni,nj);
-);
-);
-);
-);
-
-*end of loop r
-);
+Equations  criterion criterion definition
+           bench   benchmark egy 
+           balance  input output balance
+	   trade   domestic trade balance;
 
 
+criterion..
+j=e=sum(r,sum(i,sqr(x(r,i)-%egyprod%(r,i))));
 
+*No bench for dx and drc
+bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+sum(r,x(r,i)) =e= %egyprod%_bench(i,"value");
 
+*coal
+balance(r)$(sameas('%egyprod%','COAL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT")-x(r,"X")-x(r,"DX"))=e=sum(i,x(r,i));
 
-loop(r,
-negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
+*fg...
 
-empty2(r,i,"row") = 1$(sum(j, sam2(r,i,j)) = 0);
-empty2(r,j,"col") = 1$(sum(i, sam2(r,i,j)) = 0);
+trade..
+sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
 
-chksam2(r,i,"before") = sum(j, sam2(r,i,j)-sam2(r,j,i));
-chksam2(r,i,"scale") = sum(j, sam2(r,j,i));
-chksam2(r,i,"%dev")$sum(j, sam2(r,i,j)) = 100 * sum(j, sam2(r,i,j)-sam2(r,j,i)) / sum(j, sam2(r,i,j));
+Model gua /all/;
 
-);
-$offtext
+Solve gua minimizing j using qcp;
+
+Display x.l;
 
 

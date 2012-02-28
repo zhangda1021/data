@@ -1,0 +1,45 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:01:46 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\readegybench.gms
+     2        4 CALL           1       4  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\coal_bench.xls o=C:\U
+                                          sers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\coal_bench.gdx par=coal_bench 
+                                          rng="sheet1!a1:b19" rdim=1 cdim=1
+     3        5 CALL           1       5  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\fg_bench.xls o=C:\Use
+                                          rs\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\fg_bench.gdx par=fg_bench  rng="
+                                          sheet1!a1:b19" rdim=1 cdim=1
+     4        6 CALL           1       6  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\oil_bench.xls o=C:\Us
+                                          ers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\oil_bench.gdx par=oil_bench  rn
+                                          g="sheet1!A1:b19" rdim=1 cdim=1
+     5        7 CALL           1       7  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\roil_bench.xls o=C:\U
+                                          sers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\roil_bench.gdx par=roil_bench 
+                                          rng="sheet1!A1:b19" rdim=1 cdim=1
+     6        8 CALL           1       8  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\ng_bench.xls o=C:\Use
+                                          rs\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\ng_bench.gdx par=ng_bench  rng="
+                                          sheet1!A1:b19" rdim=1 cdim=1
+     7        9 CALL           1       9  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\eleh_bench.xls o=C:\U
+                                          sers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\eleh_bench.gdx par=eleh_bench 
+                                          rng="sheet1!A1:b19" rdim=1 cdim=1
+     8       10 CALL           1      10  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\othe_bench.xls o=C:\U
+                                          sers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\othe_bench.gdx par=othe_bench 
+                                          rng="sheet1!A1:b19" rdim=1 cdim=1
+
+
+COMPILATION TIME     =        4.025 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+
+
+EXECUTION TIME       =        0.016 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\readegybench.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\readegybench.lst

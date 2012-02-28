@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -34,7 +34,7 @@ C o m p i l a t i o n
        
       After the rebalancing work, we can estimate detailed industry energy consumption of each province.
        
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 2
 Read a single state file
 C o m p i l a t i o n
 
@@ -106,207 +106,80 @@ C o m p i l a t i o n
  101  parameter ng(r,i)           ng ebt
  102  parameter eleh(r,i)           eleh ebt
  103  parameter othe(r,i)           othe ebt
- 104  parameter ind(*,indi,e)           egy cons of egy by intensive ind
- 105  parameter indprov(*,r,e)       egy cons of egy product by province
- 106   
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
+ 104  parameter coal_bench(i,*)
+ 105  parameter fg_bench(i,*)
+ 106  parameter oil_bench(i,*)
+ 107  parameter roil_bench(i,*)
+ 108  parameter ng_bench(i,*)
+ 109  parameter eleh_bench(i,*)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 3
+Read a single state file
+C o m p i l a t i o n
+
+
+ 110  parameter othe_bench(i,*)
+ 111  parameter ind(*,indi,e)           egy cons of egy by intensive ind
+ 112  parameter indprov(*,r,e)       egy cons of egy product by province
+ 113   
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
 --- LOAD  oil = 1:oil
- 110  display OIL
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 3
-Read a single state file
-C o m p i l a t i o n
-
-
- 111   
-      set     negval2(r,i,j)     Flag for negative elements;
-      set     empty2(r,i,*)      Flag for empty rows and columns;
-      parameter       chksam2(r,i,*)       Consistency check of social accounts;
-       
-      *SAM15
-      loop(r,
-       
-      loop(ri$((ord(ri) le 27)),
-      loop(ni$(ord(ni)=ord(ri)),
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,ni,nj)=sam(r,ri,rj);
-      );
-      );
-      );
-      );
-       
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,"28",nj)=sam(r,"30",rj);
-      );
-      );
-       
-       
-      *AGGREGATION OF OTH PRODUCTION(other service industry)
-      loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
-      );
-      );
-      );
-       
-      loop(ri$((ord(ri) ge 43) and (ord(ri) le 69)),
-      loop(ni$(ord(ni)=ord(ri)-12),
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,ni,nj)=sam(r,ri,rj);
-      );
-      );
-      );
-      );
-       
-       
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,"58",nj)=sam(r,"72",rj);
-      );
-      );
-       
-      *AGGREGATION OF OTH COMMODITIES(other service industry)
-      loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
-      );
-      );
-      );
-       
-      loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
-      loop(ni$(ord(ni)=ord(ri)-24),
-      loop(rj,
-      loop(nj$(ord(nj)=ord(rj)),
-      sam15(r,ni,nj)=sam(r,ri,rj);
-      );
-      );
-      );
-      );
-      *end of loop r
-      );
-       
-       
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 4
-Read a single state file
-C o m p i l a t i o n
-
-
-       
-       
-      *SAM2
-       
-       
-      loop(r,
-       
-      loop(nj$(ord(nj) le 27),
-      loop(j$(ord(j)=ord(nj)),
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,j)=sam15(r,ni,nj);
-      );
-      );
-      );
-      );
-       
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,"28")=sam15(r,ni,"30");
-      );
-      );
-       
-       
-      *AGGREGATION OF OTH PRODUCTION(other service industry)
-      loop(nj$(((ord(nj) ge 31) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(nj) = 29)),
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,"29")=sam2(r,i,"29")+sam15(r,ni,nj);
-      );
-      );
-      );
-       
-      loop(nj$((ord(nj) ge 43) and (ord(nj) le 69)),
-      loop(j$(ord(j)=ord(nj)-12),
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,j)=sam15(r,ni,nj);
-      );
-      );
-      );
-      );
-       
-       
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,"58")=sam15(r,ni,"72");
-      );
-      );
-       
-      *AGGREGATION OF OTH COMMODITIES(other service industry)
-      loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
-      );
-      );
-      );
-       
-      loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
-      loop(j$(ord(j)=ord(nj)-24),
-      loop(ni,
-      loop(i$(ord(i)=ord(ni)),
-      sam2(r,i,j)=sam15(r,ni,nj);
-      );
-      );
-      );
-      );
-      *end of loop r
-      );
-       
-       
-       
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 5
-Read a single state file
-C o m p i l a t i o n
-
-
-       
-       
-      loop(r,
-      negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
-       
-      empty2(r,i,"row") = 1$(sum(j, sam2(r,i,j)) = 0);
-      empty2(r,j,"col") = 1$(sum(i, sam2(r,i,j)) = 0);
-       
-      chksam2(r,i,"before") = sum(j, sam2(r,i,j)-sam2(r,j,i));
-      chksam2(r,i,"scale") = sum(j, sam2(r,j,i));
-      chksam2(r,i,"%dev")$sum(j, sam2(r,i,j)) = 100 * sum(j, sam2(r,i,j)-sam2(r,j,i)) / sum(j, sam2(r,i,j));
-       
-      );
- 272   
- 273   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 6
+ 117  display OIL
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OIL_bench.gdx
+--- LOAD  oil_bench = 1:oil_bench
+ 120  display OIL_bench
+ 121   
+ 122  variables       x(r,i)  adjusted value
+ 123  variable        j       obj function
+ 124   
+ 125  Equations  criterion criterion definition
+ 126             bench   benchmark egy
+ 127             balance  input output balance
+ 128             trade   domestic trade balance;
+ 129   
+ 130   
+ 131  criterion..
+ 132  j=e=sum(r,sum(i,sqr(x(r,i)-OIL(r,i))));
+ 133   
+ 134  *No bench for dx and drc
+ 135  bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+ 136  sum(r,x(r,i)) =e= OIL_bench(i,"value");
+ 137   
+ 138  *coal
+ 139  balance(r)$(sameas('OIL','COAL'))..
+ 140  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT")-x(r,"X")-x(r,"DX"))=e=sum(i,x(r,i));
+ 141   
+ 142  *fg...
+ 143   
+ 144  trade..
+ 145  sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
+ 146   
+ 147  Model gua /all/;
+ 148   
+ 149  Solve gua minimizing j using qcp;
+ 150   
+ 151  Display x.l;
+ 152   
+ 153   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 4
 Read a single state file
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-     2      107 IF EXIST       1     107  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
-     3      108 GDXIN          1     112  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+     2      114 IF EXIST       1     114  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
+     3      115 GDXIN          1     119  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OIL.gdx
+     4      118 GDXIN          1     122  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OIL_bench.gdx
 
 
-COMPILATION TIME     =        0.000 SECONDS      3 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 7
+COMPILATION TIME     =        0.016 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 5
 Read a single state file
 E x e c u t i o n
 
 
-----    110 PARAMETER oil  oil ebt
+----    117 PARAMETER oil  oil ebt
 
            PROD          DX           X         DRC          RC       ROILT       ELEHT         IND         OTH          FU
 
@@ -371,9 +244,1312 @@ QIH       6.400
 XIN     146.832
 
 
+----    120 PARAMETER oil_bench  
 
-EXECUTION TIME       =        0.000 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:00 Page 8
+            value
+
+PROD    26617.418
+X         554.830
+RC      23309.052
+COALT -1.00000E-4
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 6
+Read a single state file
+E x e c u t i o n
+
+
+        120 PARAMETER oil_bench  
+
+            value
+
+FGT   -1.00000E-4
+OILT  1.000000E-4
+ROILT   46904.678
+NGT   1.000000E-4
+ELEHT      23.586
+OTHET 1.000000E-4
+AGR   1.000000E-4
+IND      1405.914
+CON   1.000000E-4
+TR    1.000000E-4
+WRHR  1.000000E-4
+OTH   1.000000E-4
+FU        283.363
+INV       749.160
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 7
+Read a single state file
+Equation Listing    SOLVE gua Using QCP From line 149
+
+
+---- criterion  =E=  criterion definition
+
+criterion..  (134.516976)*x(BEJ,PROD) + (0.0285719999998306)*x(BEJ,DX) + (0)*x(BEJ,X) + (1725.091644)*x(BEJ,DRC)
+     
+      + (1005.648684)*x(BEJ,RC) + (0)*x(BEJ,COALT) + (0)*x(BEJ,FGT) + (0)*x(BEJ,OILT) + (2709.282756)*x(BEJ,ROILT)
+     
+      + (0)*x(BEJ,NGT) + (0)*x(BEJ,ELEHT) + (0)*x(BEJ,OTHET) + (0)*x(BEJ,AGR) + (0)*x(BEJ,IND) + (0)*x(BEJ,CON)
+     
+      + (0)*x(BEJ,TR) + (0)*x(BEJ,WRHR) + (0)*x(BEJ,hotel) + (0)*x(BEJ,OTH) + (7.657296)*x(BEJ,FU) + (148.28868)*x(BEJ,INV)
+     
+      + (5734.171824)*x(TAJ,PROD) + (3767.389632)*x(TAJ,DX) + (536.86788)*x(TAJ,X) + (141.345684)*x(TAJ,DRC)
+     
+      + (1436.31444)*x(TAJ,RC) + (0)*x(TAJ,COALT) + (0)*x(TAJ,FGT) + (0)*x(TAJ,OILT) + (2646.310068)*x(TAJ,ROILT)
+     
+      + (0)*x(TAJ,NGT) + (0)*x(TAJ,ELEHT) + (0)*x(TAJ,OTHET) + (0)*x(TAJ,AGR) + (34.57212)*x(TAJ,IND) + (0)*x(TAJ,CON)
+     
+      + (0)*x(TAJ,TR) + (0)*x(TAJ,WRHR) + (0)*x(TAJ,hotel) + (0)*x(TAJ,OTH) + (33.85782)*x(TAJ,FU)
+     
+      + (292.834428)*x(TAJ,INV) + (1990.525524)*x(HEB,PROD) + (400.265148)*x(HEB,DX) + (0)*x(HEB,X)
+     
+      + (821.591934367201)*x(HEB,DRC) + (930.504324)*x(HEB,RC) + (0)*x(HEB,COALT) + (0)*x(HEB,FGT) + (0)*x(HEB,OILT)
+     
+      + (3069.004236)*x(HEB,ROILT) + (0)*x(HEB,NGT) + (0)*x(HEB,ELEHT) + (0)*x(HEB,OTHET) + (0)*x(HEB,AGR)
+     
+      + (102.9775623672)*x(HEB,IND) + (0)*x(HEB,CON) + (0)*x(HEB,TR) + (0)*x(HEB,WRHR) + (0)*x(HEB,hotel) + (0)*x(HEB,OTH)
+     
+      + (41.71512)*x(HEB,FU) + (128.659716)*x(HEB,INV) + (0)*x(SHX,PROD) + (0)*x(SHX,DX) + (0)*x(SHX,X) + (0)*x(SHX,DRC)
+     
+      + (0)*x(SHX,RC) + (0)*x(SHX,COALT) + (0)*x(SHX,FGT) + (0)*x(SHX,OILT) + (0)*x(SHX,ROILT) + (0)*x(SHX,NGT)
+     
+      + (0)*x(SHX,ELEHT) + (0)*x(SHX,OTHET) + (0)*x(SHX,AGR) + (0)*x(SHX,IND) + (0)*x(SHX,CON) + (0)*x(SHX,TR)
+     
+      + (0)*x(SHX,WRHR) + (0)*x(SHX,hotel) + (0)*x(SHX,OTH) + (0)*x(SHX,FU) + (0)*x(SHX,INV) + (512.35196112)*x(NMG,PROD)
+     
+      + (247.976388)*x(NMG,DX) + (0)*x(NMG,X) + (0.0071429999999529)*x(NMG,DRC) + (171.403428)*x(NMG,RC) + (0)*x(NMG,COALT)
+     
+      + (0)*x(NMG,FGT) + (0)*x(NMG,OILT) + (380.13731688)*x(NMG,ROILT) + (0)*x(NMG,NGT) + (0)*x(NMG,ELEHT)
+     
+      + (0)*x(NMG,OTHET) + (0)*x(NMG,AGR) + (27.93713016)*x(NMG,IND) + (0)*x(NMG,CON) + (0)*x(NMG,TR) + (0)*x(NMG,WRHR)
+     
+      + (0)*x(NMG,hotel) + (0)*x(NMG,OTH) + (0)*x(NMG,FU) + (27.71169708)*x(NMG,INV) + (4066.538472)*x(LIA,PROD)
+     
+      + (11.4288)*x(LIA,DX) + (34.943556)*x(LIA,X) + (10179.91788)*x(LIA,DRC) + (3274.3512)*x(LIA,RC) + (0)*x(LIA,COALT)
+     
+      + (0)*x(LIA,FGT) + (0)*x(LIA,OILT) + (16148.46582)*x(LIA,ROILT) + (0)*x(LIA,NGT) + (2.400048)*x(LIA,ELEHT)
+     
+      + (0)*x(LIA,OTHET) + (0)*x(LIA,AGR) + (576.697248)*x(LIA,IND) + (0)*x(LIA,CON) + (0)*x(LIA,TR) + (0)*x(LIA,WRHR)
+     
+      + (0)*x(LIA,hotel) + (31.4292)*x(LIA,OTH) + (79.801596)*x(LIA,FU) + (635.641284)*x(LIA,INV)
+     
+      + (1855.637112)*x(JIL,PROD) + (0)*x(JIL,DX) + (0)*x(JIL,X) + (1056.049692)*x(JIL,DRC) + (0)*x(JIL,RC)
+     
+      + (0)*x(JIL,COALT) + (0)*x(JIL,FGT) + (0)*x(JIL,OILT) + (1874.008908)*x(JIL,ROILT) + (0)*x(JIL,NGT)
+     
+      + (0)*x(JIL,ELEHT) + (0)*x(JIL,OTHET) + (0)*x(JIL,AGR) + (942.2502732)*x(JIL,IND) + (0)*x(JIL,CON) + (0)*x(JIL,TR)
+     
+      + (0)*x(JIL,WRHR) + (0)*x(JIL,hotel) + (0)*x(JIL,OTH) + (1.17145200000007)*x(JIL,FU) + (94.259028)*x(JIL,INV)
+     
+      + (12056.326836)*x(HLJ,PROD) + (7258.516596)*x(HLJ,DX) + (0)*x(HLJ,X) + (236.776164)*x(HLJ,DRC)
+     
+      + (506.29584)*x(HLJ,RC) + (0)*x(HLJ,COALT) + (0)*x(HLJ,FGT) + (0)*x(HLJ,OILT) + (4405.402392)*x(HLJ,ROILT)
+     
+      + (0)*x(HLJ,NGT) + (0)*x(HLJ,ELEHT) + (0)*x(HLJ,OTHET) + (0)*x(HLJ,AGR) + (840.388236)*x(HLJ,IND) + (0)*x(HLJ,CON)
+     
+      + (0)*x(HLJ,TR) + (0)*x(HLJ,WRHR) + (0)*x(HLJ,hotel) + (0)*x(HLJ,OTH) + (142.945716)*x(HLJ,FU)
+     
+      + (152.1459)*x(HLJ,INV) + (239.861939999999)*x(SHH,PROD) + (22.114728)*x(SHH,DX) + (0)*x(SHH,X)
+     
+      + (490.352664)*x(SHH,DRC) + (4440.774528)*x(SHH,RC) + (0)*x(SHH,COALT) + (0)*x(SHH,FGT) + (0)*x(SHH,OILT)
+     
+      + (4900.298004)*x(SHH,ROILT) + (0)*x(SHH,NGT) + (0)*x(SHH,ELEHT) + (0)*x(SHH,OTHET) + (0)*x(SHH,AGR) + (0)*x(SHH,IND)
+     
+      + (0)*x(SHH,CON) + (0)*x(SHH,TR) + (0)*x(SHH,WRHR) + (0)*x(SHH,hotel) + (0)*x(SHH,OTH) + (12.8574)*x(SHH,FU)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 8
+Read a single state file
+Equation Listing    SOLVE gua Using QCP From line 149
+
+
+     criterion  =E=  criterion definition     
+     
+      + (235.719)*x(SHH,INV) + (729.128868)*x(JSU,PROD) + (57.086856)*x(JSU,DX) + (0)*x(JSU,X) + (2158.90032)*x(JSU,DRC)
+     
+      + (4327.257972)*x(JSU,RC) + (0)*x(JSU,COALT) + (0)*x(JSU,FGT) + (0)*x(JSU,OILT) + (6939.453072)*x(JSU,ROILT)
+     
+      + (0)*x(JSU,NGT) + (0)*x(JSU,ELEHT) + (0)*x(JSU,OTHET) + (0)*x(JSU,AGR) + (44.029452)*x(JSU,IND) + (0)*x(JSU,CON)
+     
+      + (0)*x(JSU,TR) + (0)*x(JSU,WRHR) + (0)*x(JSU,hotel) + (0)*x(JSU,OTH) + (28.086276)*x(JSU,FU)
+     
+      + (146.631504)*x(JSU,INV) + (237.404748000001)*x(ZHJ,PROD) + (0.0131431200003305)*x(ZHJ,DX) + (0)*x(ZHJ,X)
+     
+      + (1279.682736)*x(ZHJ,DRC) + (5118.31665)*x(ZHJ,RC) + (0)*x(ZHJ,COALT) + (0)*x(ZHJ,FGT) + (0)*x(ZHJ,OILT)
+     
+      + (6381.33419556)*x(ZHJ,ROILT) + (0)*x(ZHJ,NGT) + (43.28915148)*x(ZHJ,ELEHT) + (0)*x(ZHJ,OTHET) + (0)*x(ZHJ,AGR)
+     
+      + (0.45915204)*x(ZHJ,IND) + (0)*x(ZHJ,CON) + (0)*x(ZHJ,TR) + (0)*x(ZHJ,WRHR) + (0)*x(ZHJ,hotel) + (0)*x(ZHJ,OTH)
+     
+      + (0)*x(ZHJ,FU) + (210.3084918)*x(ZHJ,INV) + (27.114828)*x(ANH,PROD) + (3.62864400000004)*x(ANH,DX) + (0)*x(ANH,X)
+     
+      + (779.644164)*x(ANH,DRC) + (498.924264)*x(ANH,RC) + (0)*x(ANH,COALT) + (0)*x(ANH,FGT) + (0)*x(ANH,OILT)
+     
+      + (1278.568428)*x(ANH,ROILT) + (0)*x(ANH,NGT) + (0)*x(ANH,ELEHT) + (0)*x(ANH,OTHET) + (0)*x(ANH,AGR)
+     
+      + (10.257348)*x(ANH,IND) + (0)*x(ANH,CON) + (0)*x(ANH,TR) + (0)*x(ANH,WRHR) + (0)*x(ANH,hotel) + (0)*x(ANH,OTH)
+     
+      + (0)*x(ANH,FU) + (13.228836)*x(ANH,INV) + (63.3155519999999)*x(FUJ,PROD) + (0)*x(FUJ,DX) + (0)*x(FUJ,X)
+     
+      + (991.762692)*x(FUJ,DRC) + (0)*x(FUJ,RC) + (0)*x(FUJ,COALT) + (0)*x(FUJ,FGT) + (0)*x(FUJ,OILT)
+     
+      + (1006.677276)*x(FUJ,ROILT) + (0)*x(FUJ,NGT) + (0)*x(FUJ,ELEHT) + (0)*x(FUJ,OTHET) + (0)*x(FUJ,AGR) + (0)*x(FUJ,IND)
+     
+      + (0)*x(FUJ,CON) + (0)*x(FUJ,TR) + (0)*x(FUJ,WRHR) + (0)*x(FUJ,hotel) + (0)*x(FUJ,OTH) + (0)*x(FUJ,FU)
+     
+      + (48.400968)*x(FUJ,INV) + (29.9148840000001)*x(JXI,PROD) + (0)*x(JXI,DX) + (0)*x(JXI,X) + (695.928204)*x(JXI,DRC)
+     
+      + (426.57996)*x(JXI,RC) + (0)*x(JXI,COALT) + (0)*x(JXI,FGT) + (0)*x(JXI,OILT) + (1126.479672)*x(JXI,ROILT)
+     
+      + (0)*x(JXI,NGT) + (0)*x(JXI,ELEHT) + (0)*x(JXI,OTHET) + (0)*x(JXI,AGR) + (0)*x(JXI,IND) + (0)*x(JXI,CON)
+     
+      + (0)*x(JXI,TR) + (0)*x(JXI,WRHR) + (0)*x(JXI,hotel) + (0)*x(JXI,OTH) + (6.314412)*x(JXI,FU) + (19.628964)*x(JXI,INV)
+     
+      + (8373.16746)*x(SHD,PROD) + (4571.52)*x(SHD,DX) + (0)*x(SHD,X) + (3118.3609374)*x(SHD,DRC) + (5142.96)*x(SHD,RC)
+     
+      + (0)*x(SHD,COALT) + (0)*x(SHD,FGT) + (0)*x(SHD,OILT) + (11245.996344)*x(SHD,ROILT) + (0)*x(SHD,NGT)
+     
+      + (0)*x(SHD,ELEHT) + (0)*x(SHD,OTHET) + (0)*x(SHD,AGR) + (399.009022877999)*x(SHD,IND) + (0)*x(SHD,CON)
+     
+      + (0)*x(SHD,TR) + (0)*x(SHD,WRHR) + (0)*x(SHD,hotel) + (0)*x(SHD,OTH) + (0)*x(SHD,FU) + (417.963030522)*x(SHD,INV)
+     
+      + (1502.344332)*x(HEN,PROD) + (361.378656)*x(HEN,DX) + (0)*x(HEN,X) + (316.00632)*x(HEN,DRC) + (645.7272)*x(HEN,RC)
+     
+      + (0)*x(HEN,COALT) + (0)*x(HEN,FGT) + (0)*x(HEN,OILT) + (1975.496652)*x(HEN,ROILT) + (0)*x(HEN,NGT)
+     
+      + (1.228596)*x(HEN,ELEHT) + (0)*x(HEN,OTHET) + (0)*x(HEN,AGR) + (49.115268)*x(HEN,IND) + (0)*x(HEN,CON)
+     
+      + (0)*x(HEN,TR) + (0)*x(HEN,WRHR) + (0)*x(HEN,hotel) + (0)*x(HEN,OTH) + (13.71456)*x(HEN,FU) + (63.14412)*x(HEN,INV)
+     
+      + (371.921724)*x(HUB,PROD) + (0)*x(HUB,DX) + (0)*x(HUB,X) + (2300.846016)*x(HUB,DRC) + (0)*x(HUB,RC)
+     
+      + (0)*x(HUB,COALT) + (0)*x(HUB,FGT) + (0)*x(HUB,OILT) + (2558.279736)*x(HUB,ROILT) + (0)*x(HUB,NGT)
+     
+      + (0)*x(HUB,ELEHT) + (0)*x(HUB,OTHET) + (0)*x(HUB,AGR) + (27.314832)*x(HUB,IND) + (0)*x(HUB,CON) + (0)*x(HUB,TR)
+     
+      + (0)*x(HUB,WRHR) + (0)*x(HUB,hotel) + (0)*x(HUB,OTH) + (14.457432)*x(HUB,FU) + (72.71574)*x(HUB,INV)
+     
+      + (94.8590399999998)*x(HUN,PROD) + (0)*x(HUN,DX) + (0)*x(HUN,X) + (1290.654384)*x(HUN,DRC) + (576.525816)*x(HUN,RC)
+     
+      + (0)*x(HUN,COALT) + (0)*x(HUN,FGT) + (0)*x(HUN,OILT) + (1904.066652)*x(HUN,ROILT) + (0)*x(HUN,NGT)
+     
+      + (0)*x(HUN,ELEHT) + (0)*x(HUN,OTHET) + (0)*x(HUN,AGR) + (12.28596)*x(HUN,IND) + (0)*x(HUN,CON) + (0)*x(HUN,TR)
+     
+      + (0)*x(HUN,WRHR) + (0)*x(HUN,hotel) + (0)*x(HUN,OTH) + (2.742912)*x(HUN,FU) + (42.943716)*x(HUN,INV)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:54:57 Page 9
+Read a single state file
+Equation Listing    SOLVE gua Using QCP From line 149
+
+
+     criterion  =E=  criterion definition     
+     
+      + (4082.424504)*x(GUD,PROD) + (0)*x(GUD,DX) + (44.42946)*x(GUD,X) + (1033.506384)*x(GUD,DRC)
+     
+      + (3681.616488)*x(GUD,RC) + (0)*x(GUD,COALT) + (0)*x(GUD,FGT) + (0)*x(GUD,OILT) + (8327.109396)*x(GUD,ROILT)
+     
+      + (0)*x(GUD,NGT) + (0)*x(GUD,ELEHT) + (0)*x(GUD,OTHET) + (0)*x(GUD,AGR) + (60.058344)*x(GUD,IND) + (0)*x(GUD,CON)
+     
+      + (0)*x(GUD,TR) + (0)*x(GUD,WRHR) + (0)*x(GUD,hotel) + (0)*x(GUD,OTH) + (13.28598)*x(GUD,FU)
+     
+      + (352.664196)*x(GUD,INV) + (44.9328986400001)*x(GXI,PROD) + (0)*x(GXI,DX) + (0)*x(GXI,X) + (410.50478136)*x(GXI,DRC)
+     
+      + (0)*x(GXI,RC) + (0)*x(GXI,COALT) + (0)*x(GXI,FGT) + (0)*x(GXI,OILT) + (436.408728)*x(GXI,ROILT) + (0)*x(GXI,NGT)
+     
+      + (0)*x(GXI,ELEHT) + (0)*x(GXI,OTHET) + (0)*x(GXI,AGR) + (0.685728)*x(GXI,IND) + (0)*x(GXI,CON) + (0)*x(GXI,TR)
+     
+      + (0)*x(GXI,WRHR) + (0)*x(GXI,hotel) + (0)*x(GXI,OTH) + (0)*x(GXI,FU) + (18.343224)*x(GXI,INV)
+     
+      + (30.4577519999998)*x(HAI,PROD) + (0)*x(HAI,DX) + (0)*x(HAI,X) + (230.233176)*x(HAI,DRC) + (2042.869428)*x(HAI,RC)
+     
+      + (0)*x(HAI,COALT) + (0)*x(HAI,FGT) + (0)*x(HAI,OILT) + (2314.131996)*x(HAI,ROILT) + (0)*x(HAI,NGT)
+     
+      + (0)*x(HAI,ELEHT) + (0)*x(HAI,OTHET) + (0)*x(HAI,AGR) + (9.057324)*x(HAI,IND) + (0)*x(HAI,CON) + (0)*x(HAI,TR)
+     
+      + (0)*x(HAI,WRHR) + (0)*x(HAI,hotel) + (0)*x(HAI,OTH) + (9.085896)*x(HAI,FU) - (28.71486)*x(HAI,INV)
+     
+      + (0.542868)*x(CHQ,PROD) + (0)*x(CHQ,DX) + (0)*x(CHQ,X) + (0)*x(CHQ,DRC) + (0)*x(CHQ,RC) + (0)*x(CHQ,COALT)
+     
+      + (0)*x(CHQ,FGT) + (0)*x(CHQ,OILT) + (0)*x(CHQ,ROILT) + (0)*x(CHQ,NGT) + (0)*x(CHQ,ELEHT) + (0)*x(CHQ,OTHET)
+     
+      + (0)*x(CHQ,AGR) + (0.371436)*x(CHQ,IND) + (0)*x(CHQ,CON) + (0)*x(CHQ,TR) + (0)*x(CHQ,WRHR) + (0)*x(CHQ,hotel)
+     
+      + (0)*x(CHQ,OTH) + (0)*x(CHQ,FU) + (0.171432)*x(CHQ,INV) + (51.829608)*x(SIC,PROD) + (0)*x(SIC,DX) + (0)*x(SIC,X)
+     
+      + (650.670156)*x(SIC,DRC) + (0)*x(SIC,RC) + (0)*x(SIC,COALT) + (0)*x(SIC,FGT) + (0)*x(SIC,OILT)
+     
+      + (676.070664)*x(SIC,ROILT) + (0)*x(SIC,NGT) + (0)*x(SIC,ELEHT) + (0)*x(SIC,OTHET) + (0)*x(SIC,AGR)
+     
+      + (7.42872)*x(SIC,IND) + (0)*x(SIC,CON) + (0)*x(SIC,TR) + (0)*x(SIC,WRHR) + (0)*x(SIC,hotel) + (0)*x(SIC,OTH)
+     
+      + (2.085756)*x(SIC,FU) + (16.914624)*x(SIC,INV) + (0)*x(GZH,PROD) + (0)*x(GZH,DX) + (0)*x(GZH,X) + (0)*x(GZH,DRC)
+     
+      + (0)*x(GZH,RC) + (0)*x(GZH,COALT) + (0)*x(GZH,FGT) + (0)*x(GZH,OILT) + (0)*x(GZH,ROILT) + (0)*x(GZH,NGT)
+     
+      + (0)*x(GZH,ELEHT) + (0)*x(GZH,OTHET) + (0)*x(GZH,AGR) + (0)*x(GZH,IND) + (0)*x(GZH,CON) + (0)*x(GZH,TR)
+     
+      + (0)*x(GZH,WRHR) + (0)*x(GZH,hotel) + (0)*x(GZH,OTH) + (0)*x(GZH,FU) + (0)*x(GZH,INV) + (0.457152)*x(YUN,PROD)
+     
+      + (0)*x(YUN,DX) + (0)*x(YUN,X) + (0)*x(YUN,DRC) + (0)*x(YUN,RC) + (0)*x(YUN,COALT) + (0)*x(YUN,FGT) + (0)*x(YUN,OILT)
+     
+      + (0)*x(YUN,ROILT) + (0)*x(YUN,NGT) + (0)*x(YUN,ELEHT) + (0)*x(YUN,OTHET) + (0)*x(YUN,AGR) + (0.314292)*x(YUN,IND)
+     
+      + (0)*x(YUN,CON) + (0)*x(YUN,TR) + (0)*x(YUN,WRHR) + (0)*x(YUN,hotel) + (0)*x(YUN,OTH) + (0)*x(YUN,FU)
+     
+      + (0.14286)*x(YUN,INV) + (6552.216756)*x(SHA,PROD) + (112.516536)*x(SHA,DX) + (914.304)*x(SHA,X) + (0)*x(SHA,DRC)
+     
+      + (0)*x(SHA,RC) + (0)*x(SHA,COALT) + (0)*x(SHA,FGT) + (0)*x(SHA,OILT) + (4590.8061)*x(SHA,ROILT) + (0)*x(SHA,NGT)
+     
+      + (0)*x(SHA,ELEHT) + (0)*x(SHA,OTHET) + (0)*x(SHA,AGR) + (6.00012)*x(SHA,IND) + (0)*x(SHA,CON) + (0)*x(SHA,TR)
+     
+      + (0)*x(SHA,WRHR) + (0)*x(SHA,hotel) + (0)*x(SHA,OTH) + (0)*x(SHA,FU) + (928.59)*x(SHA,INV)
+     
+      + (1100.507724)*x(GAN,PROD) + (0)*x(GAN,DX) + (0)*x(GAN,X) + (3100.34772)*x(GAN,DRC) + (0)*x(GAN,RC)
+     
+      + (0)*x(GAN,COALT) + (0)*x(GAN,FGT) + (0)*x(GAN,OILT) + (4077.595836)*x(GAN,ROILT) + (0)*x(GAN,NGT)
+     
+      + (0)*x(GAN,ELEHT) + (0)*x(GAN,OTHET) + (0)*x(GAN,AGR) + (16.400328)*x(GAN,IND) + (0)*x(GAN,CON) + (0)*x(GAN,TR)
+     
+      + (0)*x(GAN,WRHR) + (0)*x(GAN,hotel) + (0)*x(GAN,OTH) + (0)*x(GAN,FU) + (106.85928)*x(GAN,INV)
+     
+      + (661.91123796)*x(NXA,PROD) + (320.04725796)*x(NXA,DX) + (0)*x(NXA,X) + (0)*x(NXA,DRC) + (0)*x(NXA,RC)
+     
+      + (0)*x(NXA,COALT) + (0)*x(NXA,FGT) + (0)*x(NXA,OILT) + (300.006)*x(NXA,ROILT) + (0)*x(NXA,NGT) + (0)*x(NXA,ELEHT)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 10
+Read a single state file
+Equation Listing    SOLVE gua Using QCP From line 149
+
+
+     criterion  =E=  criterion definition     
+     
+      + (0)*x(NXA,OTHET) + (0)*x(NXA,AGR) + (9.685908)*x(NXA,IND) + (0)*x(NXA,CON) + (0)*x(NXA,TR) + (0)*x(NXA,WRHR)
+     
+      + (0)*x(NXA,hotel) + (0)*x(NXA,OTH) + (5.028672)*x(NXA,FU) + (27.1434)*x(NXA,INV) + (34.35697284)*x(QIH,PROD)
+     
+      + (0.0134288400000398)*x(QIH,DX) + (0)*x(QIH,X) + (426.408528)*x(QIH,DRC) + (0)*x(QIH,RC) + (0)*x(QIH,COALT)
+     
+      + (0)*x(QIH,FGT) + (0)*x(QIH,OILT) + (447.951816)*x(QIH,ROILT) + (0)*x(QIH,NGT) + (0)*x(QIH,ELEHT) + (0)*x(QIH,OTHET)
+     
+      + (0)*x(QIH,AGR) + (0)*x(QIH,IND) + (0)*x(QIH,CON) + (0)*x(QIH,TR) + (0)*x(QIH,WRHR) + (0)*x(QIH,hotel)
+     
+      + (0)*x(QIH,OTH) + (0)*x(QIH,FU) + (12.800256)*x(QIH,INV) + (7851.671316)*x(XIN,PROD) + (2698.6254)*x(XIN,DX)
+     
+      + (0)*x(XIN,X) + (0)*x(XIN,DRC) + (493.209864)*x(XIN,RC) + (0)*x(XIN,COALT) + (0)*x(XIN,FGT) + (0)*x(XIN,OILT)
+     
+      + (4855.354248)*x(XIN,ROILT) + (0)*x(XIN,NGT) + (0.257148)*x(XIN,ELEHT) + (0)*x(XIN,OTHET) + (0)*x(XIN,AGR)
+     
+      + (224.690208)*x(XIN,IND) + (0)*x(XIN,CON) + (0)*x(XIN,TR) + (0)*x(XIN,WRHR) + (0)*x(XIN,hotel) + (0)*x(XIN,OTH)
+     
+      + (272.29116)*x(XIN,FU) + (293.663016)*x(XIN,INV) + j =E= 0 ; (LHS = -367960679.930824
+     , INFES = 367960679.930824 ****)
+     
+
+---- bench  =E=  benchmark egy
+
+bench(PROD)..  x(BEJ,PROD) + x(TAJ,PROD) + x(HEB,PROD) + x(SHX,PROD) + x(NMG,PROD) + x(LIA,PROD) + x(JIL,PROD)
+     
+      + x(HLJ,PROD) + x(SHH,PROD) + x(JSU,PROD) + x(ZHJ,PROD) + x(ANH,PROD) + x(FUJ,PROD) + x(JXI,PROD) + x(SHD,PROD)
+     
+      + x(HEN,PROD) + x(HUB,PROD) + x(HUN,PROD) + x(GUD,PROD) + x(GXI,PROD) + x(HAI,PROD) + x(CHQ,PROD) + x(SIC,PROD)
+     
+      + x(GZH,PROD) + x(YUN,PROD) + x(SHA,PROD) + x(GAN,PROD) + x(NXA,PROD) + x(QIH,PROD) + x(XIN,PROD) =E= 26617.418052 ;
+     
+      (LHS = 0, INFES = 26617.418052 ****)
+     
+bench(X)..  x(BEJ,X) + x(TAJ,X) + x(HEB,X) + x(SHX,X) + x(NMG,X) + x(LIA,X) + x(JIL,X) + x(HLJ,X) + x(SHH,X) + x(JSU,X)
+     
+      + x(ZHJ,X) + x(ANH,X) + x(FUJ,X) + x(JXI,X) + x(SHD,X) + x(HEN,X) + x(HUB,X) + x(HUN,X) + x(GUD,X) + x(GXI,X)
+     
+      + x(HAI,X) + x(CHQ,X) + x(SIC,X) + x(GZH,X) + x(YUN,X) + x(SHA,X) + x(GAN,X) + x(NXA,X) + x(QIH,X) + x(XIN,X) =E= 
+     554.83 ; (LHS = 0, INFES = 554.83 ****)
+     
+bench(RC)..  x(BEJ,RC) + x(TAJ,RC) + x(HEB,RC) + x(SHX,RC) + x(NMG,RC) + x(LIA,RC) + x(JIL,RC) + x(HLJ,RC) + x(SHH,RC)
+     
+      + x(JSU,RC) + x(ZHJ,RC) + x(ANH,RC) + x(FUJ,RC) + x(JXI,RC) + x(SHD,RC) + x(HEN,RC) + x(HUB,RC) + x(HUN,RC)
+     
+      + x(GUD,RC) + x(GXI,RC) + x(HAI,RC) + x(CHQ,RC) + x(SIC,RC) + x(GZH,RC) + x(YUN,RC) + x(SHA,RC) + x(GAN,RC)
+     
+      + x(NXA,RC) + x(QIH,RC) + x(XIN,RC) =E= 23309.051886 ; (LHS = 0, INFES = 23309.051886 ****)
+     
+REMAINING 16 ENTRIES SKIPPED
+
+
+---- balance  =E=  input output balance
+
+                NONE
+
+
+---- trade  =E=  domestic trade balance
+
+trade..  x(BEJ,DX) - x(BEJ,DRC) + x(TAJ,DX) - x(TAJ,DRC) + x(HEB,DX) - x(HEB,DRC) + x(SHX,DX) - x(SHX,DRC) + x(NMG,DX)
+     
+      - x(NMG,DRC) + x(LIA,DX) - x(LIA,DRC) + x(JIL,DX) - x(JIL,DRC) + x(HLJ,DX) - x(HLJ,DRC) + x(SHH,DX) - x(SHH,DRC)
+     
+      + x(JSU,DX) - x(JSU,DRC) + x(ZHJ,DX) - x(ZHJ,DRC) + x(ANH,DX) - x(ANH,DRC) + x(FUJ,DX) - x(FUJ,DRC) + x(JXI,DX)
+     
+      - x(JXI,DRC) + x(SHD,DX) - x(SHD,DRC) + x(HEN,DX) - x(HEN,DRC) + x(HUB,DX) - x(HUB,DRC) + x(HUN,DX) - x(HUN,DRC)
+     
+      + x(GUD,DX) - x(GUD,DRC) + x(GXI,DX) - x(GXI,DRC) + x(HAI,DX) - x(HAI,DRC) + x(CHQ,DX) - x(CHQ,DRC) + x(SIC,DX)
+     
+      - x(SIC,DRC) + x(GZH,DX) - x(GZH,DRC) + x(YUN,DX) - x(YUN,DRC) + x(SHA,DX) - x(SHA,DRC) + x(GAN,DX) - x(GAN,DRC)
+     
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 11
+Read a single state file
+Equation Listing    SOLVE gua Using QCP From line 149
+
+
+     trade  =E=  domestic trade balance     
+     
+      + x(NXA,DX) - x(NXA,DRC) + x(QIH,DX) - x(QIH,DRC) + x(XIN,DX) - x(XIN,DRC) =E= 0 ; (LHS = 0)
+     
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 12
+Read a single state file
+Column Listing      SOLVE gua Using QCP From line 149
+
+
+---- x  adjusted value
+
+x(BEJ,PROD)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+     (134.517)  criterion
+        1       bench(PROD)
+
+x(BEJ,DX)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       (0.0286) criterion
+        1       trade
+
+x(BEJ,X)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       (0)      criterion
+        1       bench(X)
+
+REMAINING 627 ENTRIES SKIPPED
+
+---- j  obj function
+
+j
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       criterion
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 13
+Read a single state file
+Model Statistics    SOLVE gua Using QCP From line 149
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS           21
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES          631
+NON ZERO ELEMENTS         1,261     NON LINEAR N-Z            630
+DERIVATIVE POOL             636     CONSTANT POOL             203
+CODE LENGTH               3,970
+
+
+GENERATION TIME      =        0.046 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+
+
+EXECUTION TIME       =        0.046 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 14
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   gua                 OBJECTIVE  j
+     TYPE    QCP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  149
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      2 Locally Optimal           
+**** OBJECTIVE VALUE          2317958.6588
+
+ RESOURCE USAGE, LIMIT          0.016      1000.000
+ ITERATION COUNT, LIMIT         7    2000000000
+ EVALUATION ERRORS              0             0
+ 
+ 
+    C O N O P T 3   version 3.14T
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ Using default options.
+ 
+ 
+    The model has 631 variables and 21 constraints
+    with 1261 Jacobian elements, 630 of which are nonlinear.
+    The Hessian of the Lagrangian has 630 elements on the diagonal,
+    0 elements below the diagonal, and 630 nonlinear variables.
+ 
+ ** Warning **  The number of nonlinear derivatives equal to zero
+                in the initial point is large (= 35 percent).
+                A better initial point will probably help the
+                optimization.
+ 
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.034 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+             Directional 2nd Derivative       0.000 =  0.0%
+ 
+ Workspace           =     1.69 Mbytes
+    Estimate         =     1.69 Mbytes
+    Max used         =     0.44 Mbytes
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU criterion           .              .              .             1.0000      
+
+  criterion  criterion definition
+
+---- EQU bench  benchmark egy
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+PROD      26617.4181     26617.4181     26617.4181      -173.1858      
+X           554.8300       554.8300       554.8300       -14.0295      
+RC        23309.0519     23309.0519     23309.0519       396.6275      
+COALT        -0.0001        -0.0001        -0.0001   -6.666667E-6      
+FGT          -0.0001        -0.0001        -0.0001   -6.666667E-6      
+OILT          0.0001         0.0001         0.0001   6.6666667E-6      
+ROILT     46904.6775     46904.6775     46904.6775       -92.1780      
+NGT           0.0001         0.0001         0.0001   6.6666667E-6      
+ELEHT        23.5862        23.5862        23.5862   -8.571600E-5      
+OTHET         0.0001         0.0001         0.0001   6.6666667E-6      
+AGR           0.0001         0.0001         0.0001   6.6666667E-6      
+IND        1405.9138      1405.9138      1405.9138       -19.6719      
+CON           0.0001         0.0001         0.0001   6.6666667E-6      
+TR            0.0001         0.0001         0.0001   6.6666667E-6      
+WRHR          0.0001         0.0001         0.0001   6.6666667E-6      
+hotel          .              .              .             EPS         
+OTH           0.0001         0.0001         0.0001        -1.0476      
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 15
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     EQU bench  benchmark egy
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+FU          283.3634       283.3634       283.3634        -4.0124      
+INV         749.1600       749.1600       749.1600       -99.3494      
+
+---- EQU balance  input output balance
+
+                NONE
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU trade               .              .              .           226.7007      
+
+  trade  domestic trade balance
+
+---- VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+BEJ.PROD         -INF          -19.3344        +INF             .          
+BEJ.DX           -INF          113.3646        +INF             .          
+BEJ.X            -INF           -7.0147        +INF             .          
+BEJ.DRC          -INF          749.1955        +INF            EPS         
+BEJ.RC           -INF          701.1381        +INF             .          
+BEJ.COALT        -INF      -3.333333E-6        +INF             .          
+BEJ.FGT          -INF      -3.333333E-6        +INF             .          
+BEJ.OILT         -INF      3.3333333E-6        +INF             .          
+BEJ.ROILT        -INF         1308.5524        +INF             .          
+BEJ.NGT          -INF      3.3333333E-6        +INF             .          
+BEJ.ELEHT        -INF      -4.285800E-5        +INF             .          
+BEJ.OTHET        -INF      3.3333333E-6        +INF             .          
+BEJ.AGR          -INF      3.3333333E-6        +INF             .          
+BEJ.IND          -INF           -9.8360        +INF             .          
+BEJ.CON          -INF      3.3333333E-6        +INF             .          
+BEJ.TR           -INF      3.3333333E-6        +INF             .          
+BEJ.WRHR         -INF      3.3333333E-6        +INF             .          
+BEJ.hotel        -INF             .            +INF             .          
+BEJ.OTH          -INF           -0.5238        +INF             .          
+BEJ.FU           -INF            1.8224        +INF             .          
+BEJ.INV          -INF           24.4696        +INF             .          
+TAJ.PROD         -INF         2780.4930        +INF            EPS         
+TAJ.DX           -INF         1997.0451        +INF            EPS         
+TAJ.X            -INF          261.4192        +INF            EPS         
+TAJ.DRC          -INF          -42.6775        +INF            EPS         
+TAJ.RC           -INF          916.4709        +INF            EPS         
+TAJ.COALT        -INF      -3.333333E-6        +INF            EPS         
+TAJ.FGT          -INF      -3.333333E-6        +INF            EPS         
+TAJ.OILT         -INF      3.3333333E-6        +INF            EPS         
+TAJ.ROILT        -INF         1277.0660        +INF            EPS         
+TAJ.NGT          -INF      3.3333333E-6        +INF            EPS         
+TAJ.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+TAJ.OTHET        -INF      3.3333333E-6        +INF            EPS         
+TAJ.AGR          -INF      3.3333333E-6        +INF            EPS         
+TAJ.IND          -INF            7.4501        +INF            EPS         
+TAJ.CON          -INF      3.3333333E-6        +INF            EPS         
+TAJ.TR           -INF      3.3333333E-6        +INF            EPS         
+TAJ.WRHR         -INF      3.3333333E-6        +INF            EPS         
+TAJ.hotel        -INF             .            +INF            EPS         
+TAJ.OTH          -INF           -0.5238        +INF            EPS         
+TAJ.FU           -INF           14.9227        +INF            EPS         
+TAJ.INV          -INF           96.7425        +INF            EPS         
+HEB.PROD         -INF          908.6698        +INF            EPS         
+HEB.DX           -INF          313.4829        +INF            EPS         
+HEB.X            -INF           -7.0147        +INF            EPS         
+HEB.DRC          -INF          297.4456        +INF            EPS         
+HEB.RC           -INF          663.5659        +INF            EPS         
+HEB.COALT        -INF      -3.333333E-6        +INF            EPS         
+HEB.FGT          -INF      -3.333333E-6        +INF            EPS         
+HEB.OILT         -INF      3.3333333E-6        +INF            EPS         
+HEB.ROILT        -INF         1488.4131        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 16
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+HEB.NGT          -INF      3.3333333E-6        +INF            EPS         
+HEB.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+HEB.OTHET        -INF      3.3333333E-6        +INF            EPS         
+HEB.AGR          -INF      3.3333333E-6        +INF            EPS         
+HEB.IND          -INF           41.6528        +INF            EPS         
+HEB.CON          -INF      3.3333333E-6        +INF            EPS         
+HEB.TR           -INF      3.3333333E-6        +INF            EPS         
+HEB.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HEB.hotel        -INF             .            +INF            EPS         
+HEB.OTH          -INF           -0.5238        +INF            EPS         
+HEB.FU           -INF           18.8513        +INF            EPS         
+HEB.INV          -INF           14.6551        +INF            EPS         
+SHX.PROD         -INF          -86.5929        +INF            EPS         
+SHX.DX           -INF          113.3503        +INF            EPS         
+SHX.X            -INF           -7.0147        +INF            EPS         
+SHX.DRC          -INF         -113.3503        +INF            EPS         
+SHX.RC           -INF          198.3137        +INF            EPS         
+SHX.COALT        -INF      -3.333333E-6        +INF            EPS         
+SHX.FGT          -INF      -3.333333E-6        +INF            EPS         
+SHX.OILT         -INF      3.3333333E-6        +INF            EPS         
+SHX.ROILT        -INF          -46.0890        +INF            EPS         
+SHX.NGT          -INF      3.3333333E-6        +INF            EPS         
+SHX.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+SHX.OTHET        -INF      3.3333333E-6        +INF            EPS         
+SHX.AGR          -INF      3.3333333E-6        +INF            EPS         
+SHX.IND          -INF           -9.8360        +INF            EPS         
+SHX.CON          -INF      3.3333333E-6        +INF            EPS         
+SHX.TR           -INF      3.3333333E-6        +INF            EPS         
+SHX.WRHR         -INF      3.3333333E-6        +INF            EPS         
+SHX.hotel        -INF             .            +INF            EPS         
+SHX.OTH          -INF           -0.5238        +INF            EPS         
+SHX.FU           -INF           -2.0062        +INF            EPS         
+SHX.INV          -INF          -49.6747        +INF            EPS         
+NMG.PROD         -INF          169.5831        +INF            EPS         
+NMG.DX           -INF          237.3385        +INF            EPS         
+NMG.X            -INF           -7.0147        +INF            EPS         
+NMG.DRC          -INF         -113.3468        +INF            EPS         
+NMG.RC           -INF          284.0154        +INF            EPS         
+NMG.COALT        -INF      -3.333333E-6        +INF            EPS         
+NMG.FGT          -INF      -3.333333E-6        +INF            EPS         
+NMG.OILT         -INF      3.3333333E-6        +INF            EPS         
+NMG.ROILT        -INF          143.9796        +INF            EPS         
+NMG.NGT          -INF      3.3333333E-6        +INF            EPS         
+NMG.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+NMG.OTHET        -INF      3.3333333E-6        +INF            EPS         
+NMG.AGR          -INF      3.3333333E-6        +INF            EPS         
+NMG.IND          -INF            4.1326        +INF            EPS         
+NMG.CON          -INF      3.3333333E-6        +INF            EPS         
+NMG.TR           -INF      3.3333333E-6        +INF            EPS         
+NMG.WRHR         -INF      3.3333333E-6        +INF            EPS         
+NMG.hotel        -INF             .            +INF            EPS         
+NMG.OTH          -INF           -0.5238        +INF            EPS         
+NMG.FU           -INF           -2.0062        +INF            EPS         
+NMG.INV          -INF          -35.8189        +INF            EPS         
+LIA.PROD         -INF         1946.6763        +INF            EPS         
+LIA.DX           -INF          119.0647        +INF            EPS         
+LIA.X            -INF           10.4570        +INF            EPS         
+LIA.DRC          -INF         4976.6086        +INF            EPS         
+LIA.RC           -INF         1835.4893        +INF            EPS         
+LIA.COALT        -INF      -3.333333E-6        +INF            EPS         
+LIA.FGT          -INF      -3.333333E-6        +INF            EPS         
+LIA.OILT         -INF      3.3333333E-6        +INF            EPS         
+LIA.ROILT        -INF         8028.1439        +INF            EPS         
+LIA.NGT          -INF      3.3333333E-6        +INF            EPS         
+LIA.ELEHT        -INF            1.2000        +INF            EPS         
+LIA.OTHET        -INF      3.3333333E-6        +INF            EPS         
+LIA.AGR          -INF      3.3333333E-6        +INF            EPS         
+LIA.IND          -INF          278.5127        +INF            EPS         
+LIA.CON          -INF      3.3333333E-6        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 17
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+LIA.TR           -INF      3.3333333E-6        +INF            EPS         
+LIA.WRHR         -INF      3.3333333E-6        +INF            EPS         
+LIA.hotel        -INF             .            +INF            EPS         
+LIA.OTH          -INF           15.1908        +INF            EPS         
+LIA.FU           -INF           37.8946        +INF            EPS         
+LIA.INV          -INF          268.1459        +INF            EPS         
+JIL.PROD         -INF          841.2256        +INF            EPS         
+JIL.DX           -INF          113.3503        +INF            EPS         
+JIL.X            -INF           -7.0147        +INF            EPS         
+JIL.DRC          -INF          414.6745        +INF            EPS         
+JIL.RC           -INF          198.3137        +INF            EPS         
+JIL.COALT        -INF      -3.333333E-6        +INF            EPS         
+JIL.FGT          -INF      -3.333333E-6        +INF            EPS         
+JIL.OILT         -INF      3.3333333E-6        +INF            EPS         
+JIL.ROILT        -INF          890.9154        +INF            EPS         
+JIL.NGT          -INF      3.3333333E-6        +INF            EPS         
+JIL.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+JIL.OTHET        -INF      3.3333333E-6        +INF            EPS         
+JIL.AGR          -INF      3.3333333E-6        +INF            EPS         
+JIL.IND          -INF          461.2892        +INF            EPS         
+JIL.CON          -INF      3.3333333E-6        +INF            EPS         
+JIL.TR           -INF      3.3333333E-6        +INF            EPS         
+JIL.WRHR         -INF      3.3333333E-6        +INF            EPS         
+JIL.hotel        -INF             .            +INF            EPS         
+JIL.OTH          -INF           -0.5238        +INF            EPS         
+JIL.FU           -INF           -1.4205        +INF            EPS         
+JIL.INV          -INF           -2.5452        +INF            EPS         
+HLJ.PROD         -INF         5941.5705        +INF            EPS         
+HLJ.DX           -INF         3742.6086        +INF            EPS         
+HLJ.X            -INF           -7.0147        +INF            EPS         
+HLJ.DRC          -INF            5.0378        +INF            EPS         
+HLJ.RC           -INF          451.4616        +INF            EPS         
+HLJ.COALT        -INF      -3.333333E-6        +INF            EPS         
+HLJ.FGT          -INF      -3.333333E-6        +INF            EPS         
+HLJ.OILT         -INF      3.3333333E-6        +INF            EPS         
+HLJ.ROILT        -INF         2156.6122        +INF            EPS         
+HLJ.NGT          -INF      3.3333333E-6        +INF            EPS         
+HLJ.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+HLJ.OTHET        -INF      3.3333333E-6        +INF            EPS         
+HLJ.AGR          -INF      3.3333333E-6        +INF            EPS         
+HLJ.IND          -INF          410.3581        +INF            EPS         
+HLJ.CON          -INF      3.3333333E-6        +INF            EPS         
+HLJ.TR           -INF      3.3333333E-6        +INF            EPS         
+HLJ.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HLJ.hotel        -INF             .            +INF            EPS         
+HLJ.OTH          -INF           -0.5238        +INF            EPS         
+HLJ.FU           -INF           69.4666        +INF            EPS         
+HLJ.INV          -INF           26.3982        +INF            EPS         
+SHH.PROD         -INF           33.3381        +INF            EPS         
+SHH.DX           -INF          124.4077        +INF            EPS         
+SHH.X            -INF           -7.0147        +INF            EPS         
+SHH.DRC          -INF          131.8260        +INF            EPS         
+SHH.RC           -INF         2418.7010        +INF            EPS         
+SHH.COALT        -INF      -3.333333E-6        +INF            EPS         
+SHH.FGT          -INF      -3.333333E-6        +INF            EPS         
+SHH.OILT         -INF      3.3333333E-6        +INF            EPS         
+SHH.ROILT        -INF         2404.0600        +INF            EPS         
+SHH.NGT          -INF      3.3333333E-6        +INF            EPS         
+SHH.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+SHH.OTHET        -INF      3.3333333E-6        +INF            EPS         
+SHH.AGR          -INF      3.3333333E-6        +INF            EPS         
+SHH.IND          -INF           -9.8360        +INF            EPS         
+SHH.CON          -INF      3.3333333E-6        +INF            EPS         
+SHH.TR           -INF      3.3333333E-6        +INF            EPS         
+SHH.WRHR         -INF      3.3333333E-6        +INF            EPS         
+SHH.hotel        -INF             .            +INF            EPS         
+SHH.OTH          -INF           -0.5238        +INF            EPS         
+SHH.FU           -INF            4.4225        +INF            EPS         
+SHH.INV          -INF           68.1848        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 18
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+JSU.PROD         -INF          277.9715        +INF            EPS         
+JSU.DX           -INF          141.8938        +INF            EPS         
+JSU.X            -INF           -7.0147        +INF            EPS         
+JSU.DRC          -INF          966.0998        +INF            EPS         
+JSU.RC           -INF         2361.9427        +INF            EPS         
+JSU.COALT        -INF      -3.333333E-6        +INF            EPS         
+JSU.FGT          -INF      -3.333333E-6        +INF            EPS         
+JSU.OILT         -INF      3.3333333E-6        +INF            EPS         
+JSU.ROILT        -INF         3423.6375        +INF            EPS         
+JSU.NGT          -INF      3.3333333E-6        +INF            EPS         
+JSU.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+JSU.OTHET        -INF      3.3333333E-6        +INF            EPS         
+JSU.AGR          -INF      3.3333333E-6        +INF            EPS         
+JSU.IND          -INF           12.1788        +INF            EPS         
+JSU.CON          -INF      3.3333333E-6        +INF            EPS         
+JSU.TR           -INF      3.3333333E-6        +INF            EPS         
+JSU.WRHR         -INF      3.3333333E-6        +INF            EPS         
+JSU.hotel        -INF             .            +INF            EPS         
+JSU.OTH          -INF           -0.5238        +INF            EPS         
+JSU.FU           -INF           12.0369        +INF            EPS         
+JSU.INV          -INF           23.6410        +INF            EPS         
+ZHJ.PROD         -INF           32.1095        +INF            EPS         
+ZHJ.DX           -INF          113.3569        +INF            EPS         
+ZHJ.X            -INF           -7.0147        +INF            EPS         
+ZHJ.DRC          -INF          526.4910        +INF            EPS         
+ZHJ.RC           -INF         2757.4721        +INF            EPS         
+ZHJ.COALT        -INF      -3.333333E-6        +INF            EPS         
+ZHJ.FGT          -INF      -3.333333E-6        +INF            EPS         
+ZHJ.OILT         -INF      3.3333333E-6        +INF            EPS         
+ZHJ.ROILT        -INF         3144.5781        +INF            EPS         
+ZHJ.NGT          -INF      3.3333333E-6        +INF            EPS         
+ZHJ.ELEHT        -INF           21.6445        +INF            EPS         
+ZHJ.OTHET        -INF      3.3333333E-6        +INF            EPS         
+ZHJ.AGR          -INF      3.3333333E-6        +INF            EPS         
+ZHJ.IND          -INF           -9.6064        +INF            EPS         
+ZHJ.CON          -INF      3.3333333E-6        +INF            EPS         
+ZHJ.TR           -INF      3.3333333E-6        +INF            EPS         
+ZHJ.WRHR         -INF      3.3333333E-6        +INF            EPS         
+ZHJ.hotel        -INF             .            +INF            EPS         
+ZHJ.OTH          -INF           -0.5238        +INF            EPS         
+ZHJ.FU           -INF           -2.0062        +INF            EPS         
+ZHJ.INV          -INF           55.4795        +INF            EPS         
+ANH.PROD         -INF          -73.0355        +INF            EPS         
+ANH.DX           -INF          115.1647        +INF            EPS         
+ANH.X            -INF           -7.0147        +INF            EPS         
+ANH.DRC          -INF          276.4718        +INF            EPS         
+ANH.RC           -INF          447.7759        +INF            EPS         
+ANH.COALT        -INF      -3.333333E-6        +INF            EPS         
+ANH.FGT          -INF      -3.333333E-6        +INF            EPS         
+ANH.OILT         -INF      3.3333333E-6        +INF            EPS         
+ANH.ROILT        -INF          593.1952        +INF            EPS         
+ANH.NGT          -INF      3.3333333E-6        +INF            EPS         
+ANH.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+ANH.OTHET        -INF      3.3333333E-6        +INF            EPS         
+ANH.AGR          -INF      3.3333333E-6        +INF            EPS         
+ANH.IND          -INF           -4.7073        +INF            EPS         
+ANH.CON          -INF      3.3333333E-6        +INF            EPS         
+ANH.TR           -INF      3.3333333E-6        +INF            EPS         
+ANH.WRHR         -INF      3.3333333E-6        +INF            EPS         
+ANH.hotel        -INF             .            +INF            EPS         
+ANH.OTH          -INF           -0.5238        +INF            EPS         
+ANH.FU           -INF           -2.0062        +INF            EPS         
+ANH.INV          -INF          -43.0603        +INF            EPS         
+FUJ.PROD         -INF          -54.9351        +INF            EPS         
+FUJ.DX           -INF          113.3503        +INF            EPS         
+FUJ.X            -INF           -7.0147        +INF            EPS         
+FUJ.DRC          -INF          382.5310        +INF            EPS         
+FUJ.RC           -INF          198.3137        +INF            EPS         
+FUJ.COALT        -INF      -3.333333E-6        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 19
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+FUJ.FGT          -INF      -3.333333E-6        +INF            EPS         
+FUJ.OILT         -INF      3.3333333E-6        +INF            EPS         
+FUJ.ROILT        -INF          457.2496        +INF            EPS         
+FUJ.NGT          -INF      3.3333333E-6        +INF            EPS         
+FUJ.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+FUJ.OTHET        -INF      3.3333333E-6        +INF            EPS         
+FUJ.AGR          -INF      3.3333333E-6        +INF            EPS         
+FUJ.IND          -INF           -9.8360        +INF            EPS         
+FUJ.CON          -INF      3.3333333E-6        +INF            EPS         
+FUJ.TR           -INF      3.3333333E-6        +INF            EPS         
+FUJ.WRHR         -INF      3.3333333E-6        +INF            EPS         
+FUJ.hotel        -INF             .            +INF            EPS         
+FUJ.OTH          -INF           -0.5238        +INF            EPS         
+FUJ.FU           -INF           -2.0062        +INF            EPS         
+FUJ.INV          -INF          -25.4742        +INF            EPS         
+JXI.PROD         -INF          -71.6355        +INF            EPS         
+JXI.DX           -INF          113.3503        +INF            EPS         
+JXI.X            -INF           -7.0147        +INF            EPS         
+JXI.DRC          -INF          234.6138        +INF            EPS         
+JXI.RC           -INF          411.6037        +INF            EPS         
+JXI.COALT        -INF      -3.333333E-6        +INF            EPS         
+JXI.FGT          -INF      -3.333333E-6        +INF            EPS         
+JXI.OILT         -INF      3.3333333E-6        +INF            EPS         
+JXI.ROILT        -INF          517.1508        +INF            EPS         
+JXI.NGT          -INF      3.3333333E-6        +INF            EPS         
+JXI.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+JXI.OTHET        -INF      3.3333333E-6        +INF            EPS         
+JXI.AGR          -INF      3.3333333E-6        +INF            EPS         
+JXI.IND          -INF           -9.8360        +INF            EPS         
+JXI.CON          -INF      3.3333333E-6        +INF            EPS         
+JXI.TR           -INF      3.3333333E-6        +INF            EPS         
+JXI.WRHR         -INF      3.3333333E-6        +INF            EPS         
+JXI.hotel        -INF             .            +INF            EPS         
+JXI.OTH          -INF           -0.5238        +INF            EPS         
+JXI.FU           -INF            1.1510        +INF            EPS         
+JXI.INV          -INF          -39.8602        +INF            EPS         
+SHD.PROD         -INF         4099.9908        +INF            EPS         
+SHD.DX           -INF         2399.1103        +INF            EPS         
+SHD.X            -INF           -7.0147        +INF            EPS         
+SHD.DRC          -INF         1445.8301        +INF            EPS         
+SHD.RC           -INF         2769.7937        +INF            EPS         
+SHD.COALT        -INF      -3.333333E-6        +INF            EPS         
+SHD.FGT          -INF      -3.333333E-6        +INF            EPS         
+SHD.OILT         -INF      3.3333333E-6        +INF            EPS         
+SHD.ROILT        -INF         5576.9092        +INF            EPS         
+SHD.NGT          -INF      3.3333333E-6        +INF            EPS         
+SHD.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+SHD.OTHET        -INF      3.3333333E-6        +INF            EPS         
+SHD.AGR          -INF      3.3333333E-6        +INF            EPS         
+SHD.IND          -INF          189.6685        +INF            EPS         
+SHD.CON          -INF      3.3333333E-6        +INF            EPS         
+SHD.TR           -INF      3.3333333E-6        +INF            EPS         
+SHD.WRHR         -INF      3.3333333E-6        +INF            EPS         
+SHD.hotel        -INF             .            +INF            EPS         
+SHD.OTH          -INF           -0.5238        +INF            EPS         
+SHD.FU           -INF           -2.0062        +INF            EPS         
+SHD.INV          -INF          159.3068        +INF            EPS         
+HEN.PROD         -INF          664.5793        +INF            EPS         
+HEN.DX           -INF          294.0397        +INF            EPS         
+HEN.X            -INF           -7.0147        +INF            EPS         
+HEN.DRC          -INF           44.6528        +INF            EPS         
+HEN.RC           -INF          521.1773        +INF            EPS         
+HEN.COALT        -INF      -3.333333E-6        +INF            EPS         
+HEN.FGT          -INF      -3.333333E-6        +INF            EPS         
+HEN.OILT         -INF      3.3333333E-6        +INF            EPS         
+HEN.ROILT        -INF          941.6593        +INF            EPS         
+HEN.NGT          -INF      3.3333333E-6        +INF            EPS         
+HEN.ELEHT        -INF            0.6143        +INF            EPS         
+HEN.OTHET        -INF      3.3333333E-6        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 20
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+HEN.AGR          -INF      3.3333333E-6        +INF            EPS         
+HEN.IND          -INF           14.7217        +INF            EPS         
+HEN.CON          -INF      3.3333333E-6        +INF            EPS         
+HEN.TR           -INF      3.3333333E-6        +INF            EPS         
+HEN.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HEN.hotel        -INF             .            +INF            EPS         
+HEN.OTH          -INF           -0.5238        +INF            EPS         
+HEN.FU           -INF            4.8511        +INF            EPS         
+HEN.INV          -INF          -18.1026        +INF            EPS         
+HUB.PROD         -INF           99.3679        +INF            EPS         
+HUB.DX           -INF          113.3503        +INF            EPS         
+HUB.X            -INF           -7.0147        +INF            EPS         
+HUB.DRC          -INF         1037.0727        +INF            EPS         
+HUB.RC           -INF          198.3137        +INF            EPS         
+HUB.COALT        -INF      -3.333333E-6        +INF            EPS         
+HUB.FGT          -INF      -3.333333E-6        +INF            EPS         
+HUB.OILT         -INF      3.3333333E-6        +INF            EPS         
+HUB.ROILT        -INF         1233.0508        +INF            EPS         
+HUB.NGT          -INF      3.3333333E-6        +INF            EPS         
+HUB.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+HUB.OTHET        -INF      3.3333333E-6        +INF            EPS         
+HUB.AGR          -INF      3.3333333E-6        +INF            EPS         
+HUB.IND          -INF            3.8214        +INF            EPS         
+HUB.CON          -INF      3.3333333E-6        +INF            EPS         
+HUB.TR           -INF      3.3333333E-6        +INF            EPS         
+HUB.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HUB.hotel        -INF             .            +INF            EPS         
+HUB.OTH          -INF           -0.5238        +INF            EPS         
+HUB.FU           -INF            5.2225        +INF            EPS         
+HUB.INV          -INF          -13.3168        +INF            EPS         
+HUN.PROD         -INF          -39.1634        +INF            EPS         
+HUN.DX           -INF          113.3503        +INF            EPS         
+HUN.X            -INF           -7.0147        +INF            EPS         
+HUN.DRC          -INF          531.9769        +INF            EPS         
+HUN.RC           -INF          486.5766        +INF            EPS         
+HUN.COALT        -INF      -3.333333E-6        +INF            EPS         
+HUN.FGT          -INF      -3.333333E-6        +INF            EPS         
+HUN.OILT         -INF      3.3333333E-6        +INF            EPS         
+HUN.ROILT        -INF          905.9443        +INF            EPS         
+HUN.NGT          -INF      3.3333333E-6        +INF            EPS         
+HUN.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+HUN.OTHET        -INF      3.3333333E-6        +INF            EPS         
+HUN.AGR          -INF      3.3333333E-6        +INF            EPS         
+HUN.IND          -INF           -3.6930        +INF            EPS         
+HUN.CON          -INF      3.3333333E-6        +INF            EPS         
+HUN.TR           -INF      3.3333333E-6        +INF            EPS         
+HUN.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HUN.hotel        -INF             .            +INF            EPS         
+HUN.OTH          -INF           -0.5238        +INF            EPS         
+HUN.FU           -INF           -0.6348        +INF            EPS         
+HUN.INV          -INF          -28.2029        +INF            EPS         
+GUD.PROD         -INF         1954.6193        +INF            EPS         
+GUD.DX           -INF          113.3503        +INF            EPS         
+GUD.X            -INF           15.2000        +INF            EPS         
+GUD.DRC          -INF          403.4029        +INF            EPS         
+GUD.RC           -INF         2039.1220        +INF            EPS         
+GUD.COALT        -INF      -3.333333E-6        +INF            EPS         
+GUD.FGT          -INF      -3.333333E-6        +INF            EPS         
+GUD.OILT         -INF      3.3333333E-6        +INF            EPS         
+GUD.ROILT        -INF         4117.4657        +INF            EPS         
+GUD.NGT          -INF      3.3333333E-6        +INF            EPS         
+GUD.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+GUD.OTHET        -INF      3.3333333E-6        +INF            EPS         
+GUD.AGR          -INF      3.3333333E-6        +INF            EPS         
+GUD.IND          -INF           20.1932        +INF            EPS         
+GUD.CON          -INF      3.3333333E-6        +INF            EPS         
+GUD.TR           -INF      3.3333333E-6        +INF            EPS         
+GUD.WRHR         -INF      3.3333333E-6        +INF            EPS         
+GUD.hotel        -INF             .            +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 21
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+GUD.OTH          -INF           -0.5238        +INF            EPS         
+GUD.FU           -INF            4.6368        +INF            EPS         
+GUD.INV          -INF          126.6574        +INF            EPS         
+GXI.PROD         -INF          -64.1265        +INF            EPS         
+GXI.DX           -INF          113.3503        +INF            EPS         
+GXI.X            -INF           -7.0147        +INF            EPS         
+GXI.DRC          -INF           91.9021        +INF            EPS         
+GXI.RC           -INF          198.3137        +INF            EPS         
+GXI.COALT        -INF      -3.333333E-6        +INF            EPS         
+GXI.FGT          -INF      -3.333333E-6        +INF            EPS         
+GXI.OILT         -INF      3.3333333E-6        +INF            EPS         
+GXI.ROILT        -INF          172.1153        +INF            EPS         
+GXI.NGT          -INF      3.3333333E-6        +INF            EPS         
+GXI.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+GXI.OTHET        -INF      3.3333333E-6        +INF            EPS         
+GXI.AGR          -INF      3.3333333E-6        +INF            EPS         
+GXI.IND          -INF           -9.4931        +INF            EPS         
+GXI.CON          -INF      3.3333333E-6        +INF            EPS         
+GXI.TR           -INF      3.3333333E-6        +INF            EPS         
+GXI.WRHR         -INF      3.3333333E-6        +INF            EPS         
+GXI.hotel        -INF             .            +INF            EPS         
+GXI.OTH          -INF           -0.5238        +INF            EPS         
+GXI.FU           -INF           -2.0062        +INF            EPS         
+GXI.INV          -INF          -40.5031        +INF            EPS         
+HAI.PROD         -INF          -71.3640        +INF            EPS         
+HAI.DX           -INF          113.3503        +INF            EPS         
+HAI.X            -INF           -7.0147        +INF            EPS         
+HAI.DRC          -INF            1.7663        +INF            EPS         
+HAI.RC           -INF         1219.7484        +INF            EPS         
+HAI.COALT        -INF      -3.333333E-6        +INF            EPS         
+HAI.FGT          -INF      -3.333333E-6        +INF            EPS         
+HAI.OILT         -INF      3.3333333E-6        +INF            EPS         
+HAI.ROILT        -INF         1110.9770        +INF            EPS         
+HAI.NGT          -INF      3.3333333E-6        +INF            EPS         
+HAI.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+HAI.OTHET        -INF      3.3333333E-6        +INF            EPS         
+HAI.AGR          -INF      3.3333333E-6        +INF            EPS         
+HAI.IND          -INF           -5.3073        +INF            EPS         
+HAI.CON          -INF      3.3333333E-6        +INF            EPS         
+HAI.TR           -INF      3.3333333E-6        +INF            EPS         
+HAI.WRHR         -INF      3.3333333E-6        +INF            EPS         
+HAI.hotel        -INF             .            +INF            EPS         
+HAI.OTH          -INF           -0.5238        +INF            EPS         
+HAI.FU           -INF            2.5367        +INF            EPS         
+HAI.INV          -INF          -64.0321        +INF            EPS         
+CHQ.PROD         -INF          -86.3215        +INF            EPS         
+CHQ.DX           -INF          113.3503        +INF            EPS         
+CHQ.X            -INF           -7.0147        +INF            EPS         
+CHQ.DRC          -INF         -113.3503        +INF            EPS         
+CHQ.RC           -INF          198.3137        +INF            EPS         
+CHQ.COALT        -INF      -3.333333E-6        +INF            EPS         
+CHQ.FGT          -INF      -3.333333E-6        +INF            EPS         
+CHQ.OILT         -INF      3.3333333E-6        +INF            EPS         
+CHQ.ROILT        -INF          -46.0890        +INF            EPS         
+CHQ.NGT          -INF      3.3333333E-6        +INF            EPS         
+CHQ.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+CHQ.OTHET        -INF      3.3333333E-6        +INF            EPS         
+CHQ.AGR          -INF      3.3333333E-6        +INF            EPS         
+CHQ.IND          -INF           -9.6503        +INF            EPS         
+CHQ.CON          -INF      3.3333333E-6        +INF            EPS         
+CHQ.TR           -INF      3.3333333E-6        +INF            EPS         
+CHQ.WRHR         -INF      3.3333333E-6        +INF            EPS         
+CHQ.hotel        -INF             .            +INF            EPS         
+CHQ.OTH          -INF           -0.5238        +INF            EPS         
+CHQ.FU           -INF           -2.0062        +INF            EPS         
+CHQ.INV          -INF          -49.5890        +INF            EPS         
+SIC.PROD         -INF          -60.6781        +INF            EPS         
+SIC.DX           -INF          113.3503        +INF            EPS         
+SIC.X            -INF           -7.0147        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 22
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+SIC.DRC          -INF          211.9847        +INF            EPS         
+SIC.RC           -INF          198.3137        +INF            EPS         
+SIC.COALT        -INF      -3.333333E-6        +INF            EPS         
+SIC.FGT          -INF      -3.333333E-6        +INF            EPS         
+SIC.OILT         -INF      3.3333333E-6        +INF            EPS         
+SIC.ROILT        -INF          291.9463        +INF            EPS         
+SIC.NGT          -INF      3.3333333E-6        +INF            EPS         
+SIC.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+SIC.OTHET        -INF      3.3333333E-6        +INF            EPS         
+SIC.AGR          -INF      3.3333333E-6        +INF            EPS         
+SIC.IND          -INF           -6.1216        +INF            EPS         
+SIC.CON          -INF      3.3333333E-6        +INF            EPS         
+SIC.TR           -INF      3.3333333E-6        +INF            EPS         
+SIC.WRHR         -INF      3.3333333E-6        +INF            EPS         
+SIC.hotel        -INF             .            +INF            EPS         
+SIC.OTH          -INF           -0.5238        +INF            EPS         
+SIC.FU           -INF           -0.9633        +INF            EPS         
+SIC.INV          -INF          -41.2174        +INF            EPS         
+GZH.PROD         -INF          -86.5929        +INF            EPS         
+GZH.DX           -INF          113.3503        +INF            EPS         
+GZH.X            -INF           -7.0147        +INF            EPS         
+GZH.DRC          -INF         -113.3503        +INF            EPS         
+GZH.RC           -INF          198.3137        +INF            EPS         
+GZH.COALT        -INF      -3.333333E-6        +INF            EPS         
+GZH.FGT          -INF      -3.333333E-6        +INF            EPS         
+GZH.OILT         -INF      3.3333333E-6        +INF            EPS         
+GZH.ROILT        -INF          -46.0890        +INF            EPS         
+GZH.NGT          -INF      3.3333333E-6        +INF            EPS         
+GZH.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+GZH.OTHET        -INF      3.3333333E-6        +INF            EPS         
+GZH.AGR          -INF      3.3333333E-6        +INF            EPS         
+GZH.IND          -INF           -9.8360        +INF            EPS         
+GZH.CON          -INF      3.3333333E-6        +INF            EPS         
+GZH.TR           -INF      3.3333333E-6        +INF            EPS         
+GZH.WRHR         -INF      3.3333333E-6        +INF            EPS         
+GZH.hotel        -INF             .            +INF            EPS         
+GZH.OTH          -INF           -0.5238        +INF            EPS         
+GZH.FU           -INF           -2.0062        +INF            EPS         
+GZH.INV          -INF          -49.6747        +INF            EPS         
+YUN.PROD         -INF          -86.3643        +INF            EPS         
+YUN.DX           -INF          113.3503        +INF            EPS         
+YUN.X            -INF           -7.0147        +INF            EPS         
+YUN.DRC          -INF         -113.3503        +INF            EPS         
+YUN.RC           -INF          198.3137        +INF            EPS         
+YUN.COALT        -INF      -3.333333E-6        +INF            EPS         
+YUN.FGT          -INF      -3.333333E-6        +INF            EPS         
+YUN.OILT         -INF      3.3333333E-6        +INF            EPS         
+YUN.ROILT        -INF          -46.0890        +INF            EPS         
+YUN.NGT          -INF      3.3333333E-6        +INF            EPS         
+YUN.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+YUN.OTHET        -INF      3.3333333E-6        +INF            EPS         
+YUN.AGR          -INF      3.3333333E-6        +INF            EPS         
+YUN.IND          -INF           -9.6788        +INF            EPS         
+YUN.CON          -INF      3.3333333E-6        +INF            EPS         
+YUN.TR           -INF      3.3333333E-6        +INF            EPS         
+YUN.WRHR         -INF      3.3333333E-6        +INF            EPS         
+YUN.hotel        -INF             .            +INF            EPS         
+YUN.OTH          -INF           -0.5238        +INF            EPS         
+YUN.FU           -INF           -2.0062        +INF            EPS         
+YUN.INV          -INF          -49.6033        +INF            EPS         
+SHA.PROD         -INF         3189.5155        +INF            EPS         
+SHA.DX           -INF          169.6086        +INF            EPS         
+SHA.X            -INF          450.1373        +INF            EPS         
+SHA.DRC          -INF         -113.3503        +INF            EPS         
+SHA.RC           -INF          198.3137        +INF            EPS         
+SHA.COALT        -INF      -3.333333E-6        +INF            EPS         
+SHA.FGT          -INF      -3.333333E-6        +INF            EPS         
+SHA.OILT         -INF      3.3333333E-6        +INF            EPS         
+SHA.ROILT        -INF         2249.3140        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 23
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+SHA.NGT          -INF      3.3333333E-6        +INF            EPS         
+SHA.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+SHA.OTHET        -INF      3.3333333E-6        +INF            EPS         
+SHA.AGR          -INF      3.3333333E-6        +INF            EPS         
+SHA.IND          -INF           -6.8359        +INF            EPS         
+SHA.CON          -INF      3.3333333E-6        +INF            EPS         
+SHA.TR           -INF      3.3333333E-6        +INF            EPS         
+SHA.WRHR         -INF      3.3333333E-6        +INF            EPS         
+SHA.hotel        -INF             .            +INF            EPS         
+SHA.OTH          -INF           -0.5238        +INF            EPS         
+SHA.FU           -INF           -2.0062        +INF            EPS         
+SHA.INV          -INF          414.6203        +INF            EPS         
+GAN.PROD         -INF          463.6609        +INF            EPS         
+GAN.DX           -INF          113.3503        +INF            EPS         
+GAN.X            -INF           -7.0147        +INF            EPS         
+GAN.DRC          -INF         1436.8235        +INF            EPS         
+GAN.RC           -INF          198.3137        +INF            EPS         
+GAN.COALT        -INF      -3.333333E-6        +INF            EPS         
+GAN.FGT          -INF      -3.333333E-6        +INF            EPS         
+GAN.OILT         -INF      3.3333333E-6        +INF            EPS         
+GAN.ROILT        -INF         1992.7089        +INF            EPS         
+GAN.NGT          -INF      3.3333333E-6        +INF            EPS         
+GAN.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+GAN.OTHET        -INF      3.3333333E-6        +INF            EPS         
+GAN.AGR          -INF      3.3333333E-6        +INF            EPS         
+GAN.IND          -INF           -1.6358        +INF            EPS         
+GAN.CON          -INF      3.3333333E-6        +INF            EPS         
+GAN.TR           -INF      3.3333333E-6        +INF            EPS         
+GAN.WRHR         -INF      3.3333333E-6        +INF            EPS         
+GAN.hotel        -INF             .            +INF            EPS         
+GAN.OTH          -INF           -0.5238        +INF            EPS         
+GAN.FU           -INF           -2.0062        +INF            EPS         
+GAN.INV          -INF            3.7549        +INF            EPS         
+NXA.PROD         -INF          244.3627        +INF            EPS         
+NXA.DX           -INF          273.3740        +INF            EPS         
+NXA.X            -INF           -7.0147        +INF            EPS         
+NXA.DRC          -INF         -113.3503        +INF            EPS         
+NXA.RC           -INF          198.3137        +INF            EPS         
+NXA.COALT        -INF      -3.333333E-6        +INF            EPS         
+NXA.FGT          -INF      -3.333333E-6        +INF            EPS         
+NXA.OILT         -INF      3.3333333E-6        +INF            EPS         
+NXA.ROILT        -INF          103.9140        +INF            EPS         
+NXA.NGT          -INF      3.3333333E-6        +INF            EPS         
+NXA.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+NXA.OTHET        -INF      3.3333333E-6        +INF            EPS         
+NXA.AGR          -INF      3.3333333E-6        +INF            EPS         
+NXA.IND          -INF           -4.9930        +INF            EPS         
+NXA.CON          -INF      3.3333333E-6        +INF            EPS         
+NXA.TR           -INF      3.3333333E-6        +INF            EPS         
+NXA.WRHR         -INF      3.3333333E-6        +INF            EPS         
+NXA.hotel        -INF             .            +INF            EPS         
+NXA.OTH          -INF           -0.5238        +INF            EPS         
+NXA.FU           -INF            0.5081        +INF            EPS         
+NXA.INV          -INF          -36.1030        +INF            EPS         
+QIH.PROD         -INF          -69.4144        +INF            EPS         
+QIH.DX           -INF          113.3570        +INF            EPS         
+QIH.X            -INF           -7.0147        +INF            EPS         
+QIH.DRC          -INF           99.8539        +INF            EPS         
+QIH.RC           -INF          198.3137        +INF            EPS         
+QIH.COALT        -INF      -3.333333E-6        +INF            EPS         
+QIH.FGT          -INF      -3.333333E-6        +INF            EPS         
+QIH.OILT         -INF      3.3333333E-6        +INF            EPS         
+QIH.ROILT        -INF          177.8869        +INF            EPS         
+QIH.NGT          -INF      3.3333333E-6        +INF            EPS         
+QIH.ELEHT        -INF      -4.285800E-5        +INF            EPS         
+QIH.OTHET        -INF      3.3333333E-6        +INF            EPS         
+QIH.AGR          -INF      3.3333333E-6        +INF            EPS         
+QIH.IND          -INF           -9.8360        +INF            EPS         
+QIH.CON          -INF      3.3333333E-6        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 24
+Read a single state file
+Solution Report     SOLVE gua Using QCP From line 149
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+QIH.TR           -INF      3.3333333E-6        +INF            EPS         
+QIH.WRHR         -INF      3.3333333E-6        +INF            EPS         
+QIH.hotel        -INF             .            +INF            EPS         
+QIH.OTH          -INF           -0.5238        +INF            EPS         
+QIH.FU           -INF           -2.0062        +INF            EPS         
+QIH.INV          -INF          -43.2746        +INF            EPS         
+XIN.PROD         -INF         3839.2427        +INF            EPS         
+XIN.DX           -INF         1462.6630        +INF            EPS         
+XIN.X            -INF           -7.0147        +INF            EPS         
+XIN.DRC          -INF         -113.3503        +INF            EPS         
+XIN.RC           -INF          444.9187        +INF            EPS         
+XIN.COALT        -INF      -3.333333E-6        +INF            EPS         
+XIN.FGT          -INF      -3.333333E-6        +INF            EPS         
+XIN.OILT         -INF      3.3333333E-6        +INF            EPS         
+XIN.ROILT        -INF         2381.5881        +INF            EPS         
+XIN.NGT          -INF      3.3333333E-6        +INF            EPS         
+XIN.ELEHT        -INF            0.1285        +INF            EPS         
+XIN.OTHET        -INF      3.3333333E-6        +INF            EPS         
+XIN.AGR          -INF      3.3333333E-6        +INF            EPS         
+XIN.IND          -INF          102.5091        +INF            EPS         
+XIN.CON          -INF      3.3333333E-6        +INF            EPS         
+XIN.TR           -INF      3.3333333E-6        +INF            EPS         
+XIN.WRHR         -INF      3.3333333E-6        +INF            EPS         
+XIN.hotel        -INF             .            +INF            EPS         
+XIN.OTH          -INF           -0.5238        +INF            EPS         
+XIN.FU           -INF          134.1394        +INF            EPS         
+XIN.INV          -INF           97.1568        +INF            EPS         
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR j                 -INF      2317958.6588        +INF             .          
+
+  j  obj function
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 25
+Read a single state file
+E x e c u t i o n
+
+
+----    151 VARIABLE x.L  adjusted value
+
+           PROD          DX           X         DRC          RC       COALT         FGT        OILT       ROILT         NGT
+
+BEJ     -19.334     113.365      -7.015     749.195     701.138 -3.33333E-6 -3.33333E-6 3.333333E-6    1308.552 3.333333E-6
+TAJ    2780.493    1997.045     261.419     -42.677     916.471 -3.33333E-6 -3.33333E-6 3.333333E-6    1277.066 3.333333E-6
+HEB     908.670     313.483      -7.015     297.446     663.566 -3.33333E-6 -3.33333E-6 3.333333E-6    1488.413 3.333333E-6
+SHX     -86.593     113.350      -7.015    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     -46.089 3.333333E-6
+NMG     169.583     237.339      -7.015    -113.347     284.015 -3.33333E-6 -3.33333E-6 3.333333E-6     143.980 3.333333E-6
+LIA    1946.676     119.065      10.457    4976.609    1835.489 -3.33333E-6 -3.33333E-6 3.333333E-6    8028.144 3.333333E-6
+JIL     841.226     113.350      -7.015     414.675     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     890.915 3.333333E-6
+HLJ    5941.571    3742.609      -7.015       5.038     451.462 -3.33333E-6 -3.33333E-6 3.333333E-6    2156.612 3.333333E-6
+SHH      33.338     124.408      -7.015     131.826    2418.701 -3.33333E-6 -3.33333E-6 3.333333E-6    2404.060 3.333333E-6
+JSU     277.972     141.894      -7.015     966.100    2361.943 -3.33333E-6 -3.33333E-6 3.333333E-6    3423.638 3.333333E-6
+ZHJ      32.109     113.357      -7.015     526.491    2757.472 -3.33333E-6 -3.33333E-6 3.333333E-6    3144.578 3.333333E-6
+ANH     -73.035     115.165      -7.015     276.472     447.776 -3.33333E-6 -3.33333E-6 3.333333E-6     593.195 3.333333E-6
+FUJ     -54.935     113.350      -7.015     382.531     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     457.250 3.333333E-6
+JXI     -71.635     113.350      -7.015     234.614     411.604 -3.33333E-6 -3.33333E-6 3.333333E-6     517.151 3.333333E-6
+SHD    4099.991    2399.110      -7.015    1445.830    2769.794 -3.33333E-6 -3.33333E-6 3.333333E-6    5576.909 3.333333E-6
+HEN     664.579     294.040      -7.015      44.653     521.177 -3.33333E-6 -3.33333E-6 3.333333E-6     941.659 3.333333E-6
+HUB      99.368     113.350      -7.015    1037.073     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6    1233.051 3.333333E-6
+HUN     -39.163     113.350      -7.015     531.977     486.577 -3.33333E-6 -3.33333E-6 3.333333E-6     905.944 3.333333E-6
+GUD    1954.619     113.350      15.200     403.403    2039.122 -3.33333E-6 -3.33333E-6 3.333333E-6    4117.466 3.333333E-6
+GXI     -64.126     113.350      -7.015      91.902     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     172.115 3.333333E-6
+HAI     -71.364     113.350      -7.015       1.766    1219.748 -3.33333E-6 -3.33333E-6 3.333333E-6    1110.977 3.333333E-6
+CHQ     -86.321     113.350      -7.015    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     -46.089 3.333333E-6
+SIC     -60.678     113.350      -7.015     211.985     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     291.946 3.333333E-6
+GZH     -86.593     113.350      -7.015    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     -46.089 3.333333E-6
+YUN     -86.364     113.350      -7.015    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     -46.089 3.333333E-6
+SHA    3189.515     169.609     450.137    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6    2249.314 3.333333E-6
+GAN     463.661     113.350      -7.015    1436.824     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6    1992.709 3.333333E-6
+NXA     244.363     273.374      -7.015    -113.350     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     103.914 3.333333E-6
+QIH     -69.414     113.357      -7.015      99.854     198.314 -3.33333E-6 -3.33333E-6 3.333333E-6     177.887 3.333333E-6
+XIN    3839.243    1462.663      -7.015    -113.350     444.919 -3.33333E-6 -3.33333E-6 3.333333E-6    2381.588 3.333333E-6
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+BEJ -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       1.822      24.470
+TAJ -4.28580E-5 3.333333E-6 3.333333E-6       7.450 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      14.923      96.743
+HEB -4.28580E-5 3.333333E-6 3.333333E-6      41.653 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      18.851      14.655
+SHX -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -49.675
+NMG -4.28580E-5 3.333333E-6 3.333333E-6       4.133 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -35.819
+LIA       1.200 3.333333E-6 3.333333E-6     278.513 3.333333E-6 3.333333E-6 3.333333E-6      15.191      37.895     268.146
+JIL -4.28580E-5 3.333333E-6 3.333333E-6     461.289 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -1.420      -2.545
+HLJ -4.28580E-5 3.333333E-6 3.333333E-6     410.358 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      69.467      26.398
+SHH -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       4.422      68.185
+JSU -4.28580E-5 3.333333E-6 3.333333E-6      12.179 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      12.037      23.641
+ZHJ      21.645 3.333333E-6 3.333333E-6      -9.606 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006      55.480
+ANH -4.28580E-5 3.333333E-6 3.333333E-6      -4.707 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -43.060
+FUJ -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -25.474
+JXI -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       1.151     -39.860
+SHD -4.28580E-5 3.333333E-6 3.333333E-6     189.669 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     159.307
+HEN       0.614 3.333333E-6 3.333333E-6      14.722 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       4.851     -18.103
+HUB -4.28580E-5 3.333333E-6 3.333333E-6       3.821 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       5.223     -13.317
+HUN -4.28580E-5 3.333333E-6 3.333333E-6      -3.693 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -0.635     -28.203
+GUD -4.28580E-5 3.333333E-6 3.333333E-6      20.193 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       4.637     126.657
+GXI -4.28580E-5 3.333333E-6 3.333333E-6      -9.493 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -40.503
+HAI -4.28580E-5 3.333333E-6 3.333333E-6      -5.307 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       2.537     -64.032
+CHQ -4.28580E-5 3.333333E-6 3.333333E-6      -9.650 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -49.589
+SIC -4.28580E-5 3.333333E-6 3.333333E-6      -6.122 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -0.963     -41.217
+GZH -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -49.675
+YUN -4.28580E-5 3.333333E-6 3.333333E-6      -9.679 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -49.603
+SHA -4.28580E-5 3.333333E-6 3.333333E-6      -6.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     414.620
+GAN -4.28580E-5 3.333333E-6 3.333333E-6      -1.636 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006       3.755
+NXA -4.28580E-5 3.333333E-6 3.333333E-6      -4.993 3.333333E-6 3.333333E-6 3.333333E-6      -0.524       0.508     -36.103
+QIH -4.28580E-5 3.333333E-6 3.333333E-6      -9.836 3.333333E-6 3.333333E-6 3.333333E-6      -0.524      -2.006     -43.275
+XIN       0.129 3.333333E-6 3.333333E-6     102.509 3.333333E-6 3.333333E-6 3.333333E-6      -0.524     134.139      97.157
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/28/12 14:54:57 Page 26
 Read a single state file
 E x e c u t i o n
 
@@ -385,5 +1561,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\OIL_balance.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\OIL_balance.lst
