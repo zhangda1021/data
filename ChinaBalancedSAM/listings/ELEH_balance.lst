@@ -1,0 +1,393 @@
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+       
+       
+      Here is a "MAP" of the EBT (coal, fuelgas, oil, refined oil, natural gas, electricity and heat, other energy)
+       
+       
+       
+                 PROD    DX       X      DRC     RC     COAL     FG     OIL      ROIL     NG     ELEH    OTHE
+       
+              ------------------------------------------------------------------------------------------------
+      BEJ     |       |       |       |       |       |       |       |       |       |       |       |       |
+              ------------------------------------------------------------------------------------------------
+      ...
+              ------------------------------------------------------------------------------------------------
+      XIN     |       |       |       |       |       |       |       |       |       |       |       |       |
+              ------------------------------------------------------------------------------------------------
+       
+                 AGR     IND     CON     TR     WRHR    OTH      FU       INV
+              ------------------------------------------------------------------------------------------------
+      BEJ     |       |       |       |       |       |       |       |       |       |       |       |       |
+              ------------------------------------------------------------------------------------------------
+      ...
+              ------------------------------------------------------------------------------------------------
+      XIN     |       |       |       |       |       |       |       |       |       |       |       |       |
+              ------------------------------------------------------------------------------------------------
+       
+      We need rebalance EBT in order to:
+      a) All the data is consitent with the national EBT (0401.xls)
+      b) SUM(DX)=SUM(DRC)
+       
+      After the rebalancing work, we can estimate detailed industry energy consumption of each province.
+       
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 2
+Read a single state file
+C o m p i l a t i o n
+
+
+  35   
+  39   
+  40  *SAM table
+  41  set     e       energy product  /
+  42           coal    Coal,
+  43           fg      Fuel gas,
+  44           oil     Crude oil,
+  45           roil    Refined oil,
+  46           ng      Natural gas,
+  47           eleh    Electricity & heat,
+  48           othe    Other energy/;
+  49  set     indi    egy-intensive sectors    /
+  50           COAL,
+  51           OIL,
+  52           MM,
+  53           NM,
+  54           FBT,
+  55           TXT,
+  56           CLO,
+  57           LOG,
+  58           PAP,
+  59           ROIL,
+  60           CHE,
+  61           NMP,
+  62           MSP,
+  63           MP,
+  64           GSM,
+  65           TME,
+  66           EME,
+  67           CCE,
+  68           IM,
+  69           AC,
+  70           WAS,
+  71           ELEH,
+  72           FG,
+  73           WT/;
+  74  set     i       accounts /
+  75           PROD    Production,
+  76           DX      Domestic outflow,
+  77           X       Export,
+  78           DRC     Domestic inflow,
+  79           RC      Import,
+  80           COALT   Coal converted from other energy product,
+  81           FGT     Fuel gas converted from other energy product,
+  82           OILT   Crude oil converted from other energy product,
+  83           ROILT   Refined oil converted from other energy product,
+  84           NGT     Natural gas converted from other energy productconverted from other energy product,
+  85           ELEHT   Electricity & heat converted from other energy product,
+  86           OTHET   Other energy converted from other energy product,
+  87           AGR     Agriculture,
+  88           IND     Industry,
+  89           CON     Construction,
+  90           TR      Transportation,
+  91           WRHR    Wholesale & retail, hotel & restraurant,
+  92           OTH     Other service industry,
+  93           FU      Final use,
+  94           INV     Inventory change/;
+  95   
+  96  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI
+      ,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
+  97  parameter coal(r,i)           coal ebt
+  98  parameter fg(r,i)           fg ebt
+  99  parameter oil(r,i)           oil ebt
+ 100  parameter roil(r,i)           roil ebt
+ 101  parameter ng(r,i)           ng ebt
+ 102  parameter eleh(r,i)           eleh ebt
+ 103  parameter othe(r,i)           othe ebt
+ 104  parameter ind(*,indi,e)           egy cons of egy by intensive ind
+ 105  parameter indprov(*,r,e)       egy cons of egy product by province
+ 106   
+GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+--- LOAD  eleh = 1:eleh
+ 110  display ELEH
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 3
+Read a single state file
+C o m p i l a t i o n
+
+
+ 111   
+      set     negval2(r,i,j)     Flag for negative elements;
+      set     empty2(r,i,*)      Flag for empty rows and columns;
+      parameter       chksam2(r,i,*)       Consistency check of social accounts;
+       
+      *SAM15
+      loop(r,
+       
+      loop(ri$((ord(ri) le 27)),
+      loop(ni$(ord(ni)=ord(ri)),
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,ni,nj)=sam(r,ri,rj);
+      );
+      );
+      );
+      );
+       
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,"28",nj)=sam(r,"30",rj);
+      );
+      );
+       
+       
+      *AGGREGATION OF OTH PRODUCTION(other service industry)
+      loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
+      );
+      );
+      );
+       
+      loop(ri$((ord(ri) ge 43) and (ord(ri) le 69)),
+      loop(ni$(ord(ni)=ord(ri)-12),
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,ni,nj)=sam(r,ri,rj);
+      );
+      );
+      );
+      );
+       
+       
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,"58",nj)=sam(r,"72",rj);
+      );
+      );
+       
+      *AGGREGATION OF OTH COMMODITIES(other service industry)
+      loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
+      );
+      );
+      );
+       
+      loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
+      loop(ni$(ord(ni)=ord(ri)-24),
+      loop(rj,
+      loop(nj$(ord(nj)=ord(rj)),
+      sam15(r,ni,nj)=sam(r,ri,rj);
+      );
+      );
+      );
+      );
+      *end of loop r
+      );
+       
+       
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 4
+Read a single state file
+C o m p i l a t i o n
+
+
+       
+       
+      *SAM2
+       
+       
+      loop(r,
+       
+      loop(nj$(ord(nj) le 27),
+      loop(j$(ord(j)=ord(nj)),
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,j)=sam15(r,ni,nj);
+      );
+      );
+      );
+      );
+       
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,"28")=sam15(r,ni,"30");
+      );
+      );
+       
+       
+      *AGGREGATION OF OTH PRODUCTION(other service industry)
+      loop(nj$(((ord(nj) ge 31) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(nj) = 29)),
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,"29")=sam2(r,i,"29")+sam15(r,ni,nj);
+      );
+      );
+      );
+       
+      loop(nj$((ord(nj) ge 43) and (ord(nj) le 69)),
+      loop(j$(ord(j)=ord(nj)-12),
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,j)=sam15(r,ni,nj);
+      );
+      );
+      );
+      );
+       
+       
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,"58")=sam15(r,ni,"72");
+      );
+      );
+       
+      *AGGREGATION OF OTH COMMODITIES(other service industry)
+      loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
+      );
+      );
+      );
+       
+      loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
+      loop(j$(ord(j)=ord(nj)-24),
+      loop(ni,
+      loop(i$(ord(i)=ord(ni)),
+      sam2(r,i,j)=sam15(r,ni,nj);
+      );
+      );
+      );
+      );
+      *end of loop r
+      );
+       
+       
+       
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 5
+Read a single state file
+C o m p i l a t i o n
+
+
+       
+       
+      loop(r,
+      negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
+       
+      empty2(r,i,"row") = 1$(sum(j, sam2(r,i,j)) = 0);
+      empty2(r,j,"col") = 1$(sum(i, sam2(r,i,j)) = 0);
+       
+      chksam2(r,i,"before") = sum(j, sam2(r,i,j)-sam2(r,j,i));
+      chksam2(r,i,"scale") = sum(j, sam2(r,j,i));
+      chksam2(r,i,"%dev")$sum(j, sam2(r,i,j)) = 100 * sum(j, sam2(r,i,j)-sam2(r,j,i)) / sum(j, sam2(r,i,j));
+       
+      );
+ 272   
+ 273   
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 6
+Read a single state file
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+     2      107 IF EXIST       1     107  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+     3      108 GDXIN          1     112  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+
+
+COMPILATION TIME     =        0.016 SECONDS      3 Mb  WIN234-234 May 21, 2010
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 7
+Read a single state file
+E x e c u t i o n
+
+
+----    110 PARAMETER eleh  eleh ebt
+
+           PROD          DX           X         DRC          RC       ELEHT         AGR         IND         CON          TR
+
+BEJ       8.844       0.307                 555.472                 709.708      16.419     470.902      23.344      60.132
+TAJ                   1.168                 133.362                 897.235      13.851     628.544       8.205      14.910
+HEB      13.584      94.046                 460.826                2622.068     176.349    2099.624      15.824      55.134
+SHX      31.647     568.486                  62.507                2441.272      34.879    1520.344      10.004      50.401
+NMG      67.746     843.019                                        2714.257      43.749    1422.790       9.818      41.450
+LIA      58.427      26.522                 329.225       0.516    2547.133      30.713    1769.154      16.214      37.759
+JIL      90.072      47.181             3.410000E-4                1059.352      10.717     781.727       5.740      26.571
+HLJ      17.218     169.221       0.049       0.553      82.220    1341.379      19.885     702.472       4.474      10.815
+SHH      19.142      19.947                 426.184                1123.021       6.477    1013.005      23.124      24.856
+JSU     131.122     238.254                 393.956                4192.626      30.074    3521.257      28.931      23.966
+ZHJ     477.867      76.016                 209.873                3312.258      19.223    2950.376      29.011      20.574
+ANH      18.017     130.961                   8.837                1217.371      14.759     835.877       9.553      10.995
+FUJ     404.119      49.811                   1.942                1011.158      13.101     916.020      17.120      15.842
+JXI      95.739       5.641                  26.337                 586.530      26.227     461.860       4.891       9.390
+SHD      23.466      12.696                                        5155.311      86.731    4159.391      38.572      40.926
+HEN     105.067     109.421                  51.729                2711.987      91.551    2046.635      10.148      45.213
+HUB    1118.525     820.161                 141.630                1074.547      46.591    1169.254      10.741      14.662
+HUN     422.535     108.398                 161.233                 815.522      89.397     792.533       8.726      29.766
+GUD     539.851       5.150     145.464     964.187      49.590    2963.699      90.835    2823.655      53.044      45.768
+GXI     398.763      82.589                  78.183                 536.506      21.580     668.566       5.671       8.787
+HAI      16.088       0.019                   2.311                 129.978       7.300      79.865       1.118       1.880
+CHQ      75.166      63.785                 179.594                 429.104       2.507     399.214      14.232       9.832
+SIC     952.954     104.293                  44.305                 666.435      21.753    1051.753      20.549      27.911
+GZH     371.370     465.079                   0.124                1094.556       6.551     783.178       8.443      24.531
+YUN     529.650     172.429      31.413       8.444                 611.837      18.669     675.341      15.276      16.100
+SHA     106.542     246.686                                        1053.660      44.269     543.264      13.130      40.090
+GAN     238.905       4.941                                         770.037      64.707     726.531       5.481      30.246
+NXA     232.157      42.659                  61.232                 108.289       0.890     322.981       2.814       1.245
+QIH      24.482      24.396                  10.399                 587.727      12.732     489.889       3.559       8.770
+XIN      79.553                                                     919.671      46.518     625.455       4.131      14.817
+
+  +        WRHR         OTH          FU
+
+BEJ     110.812     330.877     261.231
+TAJ      51.426      45.357     267.136
+HEB      43.257      87.554     524.690
+SHX      18.681      42.818     289.812
+NMG      49.957      50.734     320.488
+LIA      49.455     146.110     859.374
+JIL      20.849      48.736     207.902
+HLJ      18.484      46.026     469.944
+SHH      78.755     162.261     239.921
+JSU      90.295     172.183     612.746
+ZHJ     248.812     179.333     476.654
+ANH      23.679      42.417     175.983
+FUJ      39.279      73.261     292.785
+JXI      16.579      29.459     154.559
+SHD     129.500     166.524     544.437
+HEN      46.688      81.083     438.044
+HUB      45.719      54.482     173.092
+HUN      23.769      51.962     294.739
+GUD     231.027     337.274     785.110
+GXI      19.585      35.693     170.981
+HAI       9.820      20.991      27.382
+CHQ      24.936      36.145     133.211
+SIC      37.214      64.461     335.760
+GZH      10.029      19.492     148.748
+YUN      13.445      22.036     185.223
+SHA      21.643      49.346     201.776
+GAN       9.365      19.971     147.700
+NXA       3.047       6.731      21.311
+QIH      10.269      13.373      59.619
+XIN      24.783      28.252     255.268
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 Mb  WIN234-234 May 21, 2010
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/28/12 12:20:02 Page 8
+Read a single state file
+E x e c u t i o n
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\ELEH_balance.lst

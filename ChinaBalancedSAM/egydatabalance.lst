@@ -1,4 +1,4 @@
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/27/12 16:56:39 Page 1
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             02/28/12 12:14:08 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -49,82 +49,87 @@ C o m p i l a t i o n
       After the rebalancing work, we can estimate detailed industry energy consu
       mption of each province.
        
-  34   
-  37   
-  38  *SAM table
-  39  set     e       energy product  /
-  40           coal    Coal,
-  41           fg      Fuel gas,
-  42           oil     Crude oil,
-  43           roil    Refined oil,
-  44           ng      Natural gas,
-  45           eleh    Electricity & heat,
-  46           othe    Other energy/;
-  47  set     indi    egy-intensive sectors    /
-  48           COAL,
-  49           OIL,
-  50           MM,
-  51           NM,
-  52           FBT,
-  53           TXT,
-  54           CLO,
-  55           LOG,
-  56           PAP,
-  57           ROIL,
-  58           CHE,
-  59           NMP,
-  60           MSP,
-  61           MP,
-  62           GSM,
-  63           TME,
-  64           EME,
-  65           CCE,
-  66           IM,
-  67           AC,
-  68           WAS,
-  69           ELEH,
-  70           FG,
-  71           WT/;
-  72  set     i       sectors /
-  73           PROD    Production,
-  74           DX      Domestic outflow,
-  75           X       Export,
-  76           DRC     Domestic inflow,
-  77           RC      Import,
-  78           COALT   Coal converted from other energy product,
-  79           FGT     Fuel gas converted from other energy product,
-  80           OILT   Crude oil converted from other energy product,
-  81           ROILT   Refined oil converted from other energy product,
-  82           NGT     Natural gas converted from other energy productconverted 
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             02/28/12 12:14:08 Page 2
+Read a single state file
+C o m p i l a t i o n
+
+
+  35   
+  39   
+  40  *SAM table
+  41  set     e       energy product  /
+  42           coal    Coal,
+  43           fg      Fuel gas,
+  44           oil     Crude oil,
+  45           roil    Refined oil,
+  46           ng      Natural gas,
+  47           eleh    Electricity & heat,
+  48           othe    Other energy/;
+  49  set     indi    egy-intensive sectors    /
+  50           COAL,
+  51           OIL,
+  52           MM,
+  53           NM,
+  54           FBT,
+  55           TXT,
+  56           CLO,
+  57           LOG,
+  58           PAP,
+  59           ROIL,
+  60           CHE,
+  61           NMP,
+  62           MSP,
+  63           MP,
+  64           GSM,
+  65           TME,
+  66           EME,
+  67           CCE,
+  68           IM,
+  69           AC,
+  70           WAS,
+  71           ELEH,
+  72           FG,
+  73           WT/;
+  74  set     i       accounts /
+  75           PROD    Production,
+  76           DX      Domestic outflow,
+  77           X       Export,
+  78           DRC     Domestic inflow,
+  79           RC      Import,
+  80           COALT   Coal converted from other energy product,
+  81           FGT     Fuel gas converted from other energy product,
+  82           OILT   Crude oil converted from other energy product,
+  83           ROILT   Refined oil converted from other energy product,
+  84           NGT     Natural gas converted from other energy productconverted 
       from other energy product,
-  83           ELEHT   Electricity & heat converted from other energy product,
-  84           OTHET   Other energy converted from other energy product,
-  85           AGR     Agriculture,
-  86           IND     Industry,
-  87           CON     Construction,
-  88           TR      Transportation,
-  89           WRHR    Wholesale & retail, hotel & restraurant,
-  90           OTH     Other service industry,
-  91           FU      Final use,
-  92           INV     Inventory change/;
-  93   
-  94  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+  85           ELEHT   Electricity & heat converted from other energy product,
+  86           OTHET   Other energy converted from other energy product,
+  87           AGR     Agriculture,
+  88           IND     Industry,
+  89           CON     Construction,
+  90           TR      Transportation,
+  91           WRHR    Wholesale & retail, hotel & restraurant,
+  92           OTH     Other service industry,
+  93           FU      Final use,
+  94           INV     Inventory change/;
+  95   
+  96  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
       ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
       H,XIN/;
-  95  parameter prov(e,r,i)           prov ebt
-  96  parameter ind(*,indi,e)           egy cons of egy by intensive ind
-  97  parameter indprov(*,r,e)       egy cons of egy product by province
-  98   
-GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- LOAD  prov = 1:prov
- 101  display prov
-GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- LOAD  ind = 2:ind
- 104  display ind
-GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- LOAD  indprov = 3:indprov
- 107  display indprov
- 108   
+  97  parameter egyprod(r,i)           prov ebt
+  98  parameter ind(*,indi,e)           egy cons of egy by intensive ind
+  99  parameter indprov(*,r,e)       egy cons of egy product by province
+ 100   
+GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
+ 103  $load coal
+****           $140
+**** LINE    107 INPUT       C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalan
+                             ce.gms
+ 104  display egyprod
+****                $141
+**** LINE    108 INPUT       C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalan
+                             ce.gms
+ 105   
       set     negval2(r,i,j)     Flag for negative elements;
       set     empty2(r,i,*)      Flag for empty rows and columns;
       parameter       chksam2(r,i,*)       Consistency check of social accounts;
@@ -288,868 +293,44 @@ GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
       j,i)) / sum(j, sam2(r,i,j));
        
       );
- 269   
- 270   
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/27/12 16:56:39 Page 2
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+ 266   
+ 267   
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             02/28/12 12:14:08 Page 3
+Read a single state file
+Error Messages
+
+
+140  Unknown symbol
+141  Symbol neither initialized nor assigned
+        A wild shot: You may have spurious commas in the explanatory
+        text of a declaration. Check symbol reference list.
+
+**** 2 ERROR(S)   0 WARNING(S)
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             02/28/12 12:14:08 Page 4
+Read a single state file
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\
-                                          egydatabalance.gms
-     2       99 GDXIN          1      99  C:\Users\dzhang\data\ChinaBalancedSAM\
-                                          data\gdx\egygdx\egydata.gdx
-     3      102 GDXIN          1     102  C:\Users\dzhang\data\ChinaBalancedSAM\
-                                          data\gdx\egygdx\egydata.gdx
-     4      105 GDXIN          1     105  C:\Users\dzhang\data\ChinaBalancedSAM\
-                                          data\gdx\egygdx\egydata.gdx
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \egydatabalance.gms
+     2      101 IF EXIST       1     101  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \data\gdx\egygdx\coal.gdx
+     3      102 GDXIN          1     106  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \data\gdx\egygdx\coal.gdx
 
 
-COMPILATION TIME     =        0.016 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          02/27/12 16:56:39 Page 3
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-E x e c u t i o n
+COMPILATION TIME     =        0.031 SECONDS      3 Mb  WIN234-234 May 21, 2010
 
 
-----    101 PARAMETER prov  prov ebt
-
-                PROD          DX           X         DRC          RC       COALT
-
-coal.BEJ     629.562     303.241     137.002    2177.618 1.000000E-6      -0.157
-coal.TAJ     173.723       0.036                2974.521
-coal.HEB    7027.326    1888.408     204.510   14427.528       8.950    -794.071
-coal.SHX   45925.096   37044.565    2121.490   16144.711                 838.143
-coal.NMG   26714.081   12604.833     935.267    1156.075     513.205    -765.805
-coal.LIA    5572.080     756.537                7450.477     126.840    -852.567
-coal.JIL    2910.216     501.636      12.909    3839.577       9.509     -40.355
-coal.HLJ    7883.148    2365.059       6.886    2326.821       1.015    -737.255
-coal.SHH     137.074    3179.402                7184.098
-coal.JSU    2292.432     358.976      47.837   13194.537     173.952     -88.860
-coal.ZHJ     466.614       0.006                9320.633     139.245       4.652
-coal.ANH    7037.788    2161.353                2454.429      59.589    -210.334
-coal.FUJ    1744.202     241.961                2995.711     133.001       6.377
-coal.JXI    2350.123     418.097                2060.075                -210.353
-coal.SHD   12097.897    2975.814     169.740   15584.171                 -86.966
-coal.HEN   15069.740    5068.744                7634.783                -349.981
-coal.HUB     644.767                            7528.747                  -0.026
-coal.HUN    5521.016    1030.573                3247.541                -101.007
-coal.GUD     431.625       0.002      18.446    8122.682    1082.735      -9.346
-coal.GXI     707.211     942.511                2976.456     984.278      -0.376
-coal.HAI                   0.840                 237.916      63.819
-coal.CHQ    3222.022     970.680                 798.036                 -59.283
-coal.SIC    6927.450     562.769       5.085     538.142                -563.615
-coal.GZH    8306.838    1873.748       4.291    1599.315                -535.361
-coal.YUN    5889.641     768.712                 950.163                -111.310
-coal.SHA   14167.844    7582.072       0.152      72.732                 -82.549
-coal.GAN    3224.239     681.312                1074.545                   5.793
-coal.NXA     707.446     148.353                 303.509                  -0.610
-coal.QIH    3211.362     984.848      16.326     999.631                 -69.119
-coal.XIN    3940.072     176.018       0.022     145.690       1.834      13.662
-fg  .BEJ       1.046      61.235                  67.615
-fg  .TAJ      79.099      55.830                   2.263       0.926
-fg  .HEB    1011.650      79.288                  39.991       0.017
-fg  .SHX     345.120                              11.606
-fg  .NMG     492.367       0.007                  10.966
-fg  .LIA     764.668     178.647       0.051      23.794       0.069
-fg  .JIL     151.281                              57.616
-fg  .HLJ       0.034      35.006
-fg  .SHH     300.714       9.240                  42.653      29.897
-fg  .JSU     638.349      32.160                   0.480      54.858
-fg  .ZHJ      44.264                  -0.654     138.355      88.400
-fg  .ANH     122.275       0.228                   8.632
-fg  .FUJ     176.372                             142.013
-fg  .JXI     546.439      29.092                  64.824
-fg  .SHD     106.279       0.029                 111.118
-fg  .HEN     316.891      31.438                  20.059
-fg  .HUB      33.936                              11.177
-fg  .HUN       0.480      16.610                  46.800
-fg  .GUD     279.741       4.286                 344.576     499.084
-fg  .GXI     301.636                             147.773
-fg  .HAI                  76.938       0.583       6.091
-fg  .CHQ      26.977                              17.400
-fg  .SIC                   0.016                  76.182
-fg  .GZH      45.028                              21.154
-fg  .YUN       1.064       0.003                  24.723
-fg  .SHA                   0.291                  94.641
-fg  .GAN       9.583      43.406
-fg  .NXA                   6.600
-fg  .QIH       0.259       9.420
-fg  .XIN     152.773     122.459
-oil .BEJ      67.258       0.014                 862.546     502.824
-oil .TAJ    2867.086    1883.695     268.434      70.673     718.157
-oil .HEB     995.263     200.133                 410.796     465.252
-oil .NMG     256.176     123.988                   0.004      85.702
-oil .LIA    2033.269       5.714      17.472    5089.959    1637.176
-oil .JIL     927.819                             528.025
-oil .HLJ    6028.163    3629.258                 118.388     253.148
-oil .SHH     119.931      11.057                 245.176    2220.387
-oil .JSU     364.564      28.543                1079.450    2163.629
-oil .ZHJ     118.702       0.007                 639.841    2559.158
-oil .ANH      13.557       1.814                 389.822     249.462
-oil .FUJ      31.658                             495.881
-oil .JXI      14.957                             347.964     213.290
-oil .SHD    4186.584    2285.760                1559.180    2571.480
-oil .HEN     751.172     180.689                 158.003     322.864
-oil .HUB     185.961                            1150.423
-oil .HUN      47.430                             645.327     288.263
-oil .GUD    2041.212                  22.215     516.753    1840.808
-oil .GXI      22.466                             205.252
-oil .HAI      15.229                             115.117    1021.435
-oil .CHQ       0.271
-oil .SIC      25.915                             325.335
-oil .YUN       0.229
-oil .SHA    3276.108      56.258     457.152
-oil .GAN     550.254                            1550.174
-oil .NXA     330.956     160.024
-oil .QIH      17.178       0.007                 213.204
-oil .XIN    3925.836    1349.313                             246.605
-roil.BEJ     104.880     917.877     115.478    1430.363     345.411
-roil.TAJ      83.768    4079.929      75.666    4164.929     213.218
-roil.HEB     412.529     785.173      24.249    2192.117       8.714
-roil.SHX     738.179    7499.360                 677.003
-roil.NMG     396.919     267.683                1064.562      13.855
-roil.LIA     218.456    4493.634     519.292     997.921      85.793
-roil.JIL      30.520       6.554       1.299     278.242       0.383
-roil.HLJ      51.566     845.525                 204.000
-roil.SHH     126.457    4504.361     209.395    4911.392    1296.035
-roil.JSU     156.885    1162.050      22.867    1768.891      48.121
-roil.ZHJ     166.258    2847.836      93.438    2586.062     119.407
-roil.ANH     157.727     218.312                 467.545       6.756
-roil.FUJ      24.837      15.076                1225.401
-roil.JXI      48.234     490.690                 734.973
-roil.SHD     502.065    1692.573                 738.037
-roil.HEN     164.006     927.028                 793.217
-roil.HUB     136.930                            1155.353
-roil.HUN      74.311     292.999                1185.746
-roil.GUD     334.584    2433.071     322.347    4678.791    1223.242
-roil.GXI      59.745      94.142       7.723    1038.898
-roil.HAI                 929.935     112.831     161.224     205.330
-roil.CHQ      35.625                             546.894
-roil.SIC                  26.925       2.722    1212.314      10.535
-roil.GZH      42.946     338.505                 501.827
-roil.YUN     128.505     124.805       0.515    1163.954       0.515
-roil.SHA     118.293     409.467     481.595       0.406       1.162
-roil.GAN     125.904    1061.536     208.089     204.509
-roil.NXA      21.139      31.964                  56.853
-roil.QIH      35.327     216.498                  53.511
-roil.XIN      90.145    1176.874      55.352      48.894      10.444
-ng  .BEJ                                         620.312
-ng  .TAJ     177.422     125.419                 137.788
-ng  .HEB      94.962      56.392                 121.703
-ng  .SHX      91.903
-ng  .NMG     937.379     584.826
-ng  .LIA     115.976                              73.416
-ng  .JIL      32.053                              53.998
-ng  .HLJ     339.150                              69.160
-ng  .SHH      67.431                             301.981
-ng  .JSU       7.714       0.399                 585.599
-ng  .ZHJ                  22.798                 240.597
-ng  .ANH                   0.274                  53.865
-ng  .FUJ                                           6.384
-ng  .JXI       5.852                               7.980
-ng  .SHD     109.060                             201.294
-ng  .HEN     209.608      22.876                 254.030
-ng  .HUB      16.492                              98.287
-ng  .HUN                                          77.672
-ng  .GUD     711.683     864.899      99.085     333.165     534.660
-ng  .GXI                                          17.879
-ng  .HAI      26.999                 246.582     530.803
-ng  .CHQ     903.469     418.817                  94.297
-ng  .SIC    2283.743     792.148
-ng  .GZH                                          68.362
-ng  .YUN       2.660       0.023                  70.357
-ng  .SHA    1464.330     928.872
-ng  .GAN      19.817                             152.684
-ng  .NXA     456.205     187.530                   0.712
-ng  .QIH                                         119.567
-ng  .XIN    2797.389    1868.916
-eleh.BEJ       8.844       0.307                 555.472
-eleh.TAJ                   1.168                 133.362
-eleh.HEB      13.584      94.046                 460.826
-eleh.SHX      31.647     568.486                  62.507
-eleh.NMG      67.746     843.019
-eleh.LIA      58.427      26.522                 329.225       0.516
-eleh.JIL      90.072      47.181             3.410000E-4
-eleh.HLJ      17.218     169.221       0.049       0.553      82.220
-eleh.SHH      19.142      19.947                 426.184
-eleh.JSU     131.122     238.254                 393.956
-eleh.ZHJ     477.867      76.016                 209.873
-eleh.ANH      18.017     130.961                   8.837
-eleh.FUJ     404.119      49.811                   1.942
-eleh.JXI      95.739       5.641                  26.337
-eleh.SHD      23.466      12.696
-eleh.HEN     105.067     109.421                  51.729
-eleh.HUB    1118.525     820.161                 141.630
-eleh.HUN     422.535     108.398                 161.233
-eleh.GUD     539.851       5.150     145.464     964.187      49.590
-eleh.GXI     398.763      82.589                  78.183
-eleh.HAI      16.088       0.019                   2.311
-eleh.CHQ      75.166      63.785                 179.594
-eleh.SIC     952.954     104.293                  44.305
-eleh.GZH     371.370     465.079                   0.124
-eleh.YUN     529.650     172.429      31.413       8.444
-eleh.SHA     106.542     246.686
-eleh.GAN     238.905       4.941
-eleh.NXA     232.157      42.659                  61.232
-eleh.QIH      24.482      24.396                  10.399
-eleh.XIN      79.553
-othe.BEJ       4.810       0.060                   8.610
-othe.TAJ      29.300                               8.630
-othe.HEB     218.840                                                      -0.180
-othe.SHX     402.090
-othe.NMG      93.731                               5.264
-othe.LIA     124.330
-othe.JIL     153.920                               7.640
-othe.HLJ       0.080                             120.510                 -15.180
-othe.SHH      10.120
-othe.JSU      39.380
-othe.ZHJ     109.250       0.003
-othe.ANH       7.970       0.340
-othe.FUJ      94.770
-othe.JXI      72.600
-othe.SHD      82.858                             198.596
-othe.HEN      25.160                              88.910
-othe.HUB                                         197.900
-othe.HUN     208.010                              41.720                  -1.470
-othe.GUD       2.730                             160.630
-othe.GXI     301.150
-othe.CHQ     428.650
-othe.GZH      44.100
-othe.YUN     200.857                               0.004
-othe.SHA     180.000                               2.290                 -12.470
-othe.GAN     128.370
-othe.NXA             5.100000E-4                   1.600
-othe.QIH                                         158.070
-
-       +         FGT        OILT       ROILT       ELEHT       OTHET         AGR
-
-coal.BEJ 1.000000E-6 1.000000E-6     205.529     984.844 1.000000E-6      36.900
-coal.TAJ                             380.106    1753.704                  12.394
-coal.HEB      16.471                4725.494    6443.440                  15.915
-coal.SHX      22.863               12198.768    6106.224                  72.734
-coal.NMG                            1785.075    8427.630                  84.940
-coal.LIA       7.083                2074.518    5526.734                  88.433
-coal.JIL     107.346                 345.087    2835.208                  55.599
-coal.HLJ     142.261                 887.045    3556.731                  32.384
-coal.SHH      33.501                 999.396    2207.835                   1.450
-coal.JSU       2.839                1337.712    9197.217                  45.670
-coal.ZHJ                             131.695    6739.954                   6.625
-coal.ANH      44.415                 764.385    3038.677                  26.825
-coal.FUJ       0.790                  98.120    2371.930                  45.329
-coal.JXI     120.121                 529.047    1711.977                  19.722
-coal.SHD                            3659.703   11613.157                 198.595
-coal.HEN     180.013                2366.073    7420.906                  72.480
-coal.HUB      28.984                1005.716    2746.180                  64.275
-coal.HUN      19.579                 611.277    2145.312                 242.279
-coal.GUD      10.597                 117.738    6282.943                  40.132
-coal.GXI      13.525                 316.557    1397.356                  23.447
-coal.HAI                                         245.751
-coal.CHQ                             343.228    1259.001                 175.107
-coal.SIC                            1139.841    2471.482                  22.048
-coal.GZH                            1010.267    3303.281                 173.952
-coal.YUN     101.802                1282.696    2369.654                 149.051
-coal.SHA      11.070                1486.167    2552.546                  15.670
-coal.GAN       5.842                 464.936    1709.477                  27.397
-coal.NXA                              97.965     350.136                   3.001
-coal.QIH                             310.193    1705.306                   3.262
-coal.XIN                             493.458    1796.909                  73.603
-fg  .BEJ     291.569                -266.450      94.489                   0.103
-fg  .TAJ                            -136.426      26.281
-fg  .HEB      19.268                -681.556     465.332                   0.274
-fg  .SHX      31.809               -1091.980     365.774
-fg  .NMG                            -143.662     178.965
-fg  .LIA     988.418                -978.150     467.842
-fg  .JIL      22.321                -135.248      34.902
-fg  .HLJ     114.467                -360.114      59.145
-fg  .SHH      67.464                -422.441     290.938
-fg  .JSU       0.727                -454.711     338.047
-fg  .ZHJ                            -293.361      13.043
-fg  .ANH      12.973                -215.460     148.550
-fg  .FUJ       0.203                 -61.082      45.653                   0.034
-fg  .JXI      16.255                -143.190      94.488
-fg  .SHD                            -634.358     197.763
-fg  .HEN     139.889                -222.840     105.935
-fg  .HUB                            -354.540     163.751
-fg  .HUN     237.759                -235.812      79.104
-fg  .GUD      41.990                -353.723      21.631
-fg  .GXI      19.931                 -83.164      95.665                   8.383
-fg  .HAI                            -125.587       3.064
-fg  .CHQ                              -9.399       5.590                   1.886
-fg  .SIC                             -13.097      76.166
-fg  .GZH                             -21.623      19.596
-fg  .YUN     339.414                              73.263
-fg  .SHA      -1.485                -151.881      46.735                   0.049
-fg  .GAN       3.854                -239.981      42.386
-fg  .NXA                             -23.126
-fg  .QIH                             -35.825
-fg  .XIN                            -248.780      57.869
-oil .BEJ                            1354.641
-oil .TAJ                            1323.155
-oil .HEB                            1534.502
-oil .NMG                             190.069
-oil .LIA                            8074.233       1.200
-oil .JIL                             937.004
-oil .HLJ                            2202.701
-oil .SHH                            2450.149
-oil .JSU                            3469.727
-oil .ZHJ                            3190.667      21.645
-oil .ANH                             639.284
-oil .FUJ                             503.339
-oil .JXI                             563.240
-oil .SHD                            5622.998
-oil .HEN                             987.748       0.614
-oil .HUB                            1279.140
-oil .HUN                             952.033
-oil .GUD                            4163.555
-oil .GXI                             218.204
-oil .HAI                            1157.066
-oil .SIC                             338.035
-oil .SHA                            2295.403
-oil .GAN                            2038.798
-oil .NXA                             150.003
-oil .QIH                             223.976
-oil .XIN                            2427.677       0.129
-roil.BEJ     115.529                1253.489      82.380                  19.333
-roil.TAJ                            1415.238       1.829                  30.619
-roil.HEB       9.325                5248.931       4.032                  47.910
-roil.SHX                           10005.147                              75.142
-roil.NMG                            1671.293       0.921                 117.931
-roil.LIA     615.081                8690.691      79.617                 138.897
-roil.JIL     -72.952                1124.276       2.532                 134.151
-roil.HLJ      44.325                2500.937      68.242                 238.629
-roil.SHH      48.538                3013.558     116.499                  58.381
-roil.JSU       0.233                4080.132      16.270                 206.669
-roil.ZHJ                            3061.856      82.150                 295.279
-roil.ANH     -32.672                1203.477       0.058                  93.357
-roil.FUJ                             549.438       5.418                 207.246
-roil.JXI     -97.859                 933.355       4.887                  90.412
-roil.SHD                            7480.781      59.068                 409.437
-roil.HEN                            2857.888       7.182                 149.322
-roil.HUB                            1802.968      23.279                 220.602
-roil.HUN     189.782                1196.322      15.420                  22.148
-roil.GUD      17.048                3825.094     803.313                 144.208
-roil.GXI                             458.199       5.383                  30.718
-roil.HAI                            1038.635       2.945                  36.910
-roil.CHQ                             288.605       3.741                  39.562
-roil.SIC                            1304.652       3.044                 156.505
-roil.GZH                             819.520                              41.823
-roil.YUN      90.533                1208.007       5.425                  34.042
-roil.SHA                            3222.548       1.807                  48.774
-roil.GAN       0.350                2087.688       7.366                  40.204
-roil.NXA                             207.612       0.665                   4.255
-roil.QIH                             429.594                               8.031
-roil.XIN                            2517.461      56.532                 105.317
-ng  .BEJ                                         113.449
-ng  .TAJ                                          10.108
-ng  .SHX                                           7.182
-ng  .NMG                                          56.208
-ng  .LIA                                           0.665
-ng  .JIL                                           8.911
-ng  .HLJ                                          64.638
-ng  .SHH      34.846                              86.051
-ng  .JSU       0.665                             295.260
-ng  .ZHJ                                         147.484
-ng  .SHD                                           5.119
-ng  .HEN                                           4.655
-ng  .HUB                                           2.394                   0.532
-ng  .GUD      15.694                             427.861
-ng  .HAI                                          81.396
-ng  .CHQ                                           3.857                   7.980
-ng  .SIC                                          26.334                   0.266
-ng  .SHA                             -14.364      28.329
-ng  .GAN                                           8.246
-ng  .NXA                                          33.600                   0.133
-ng  .QIH                                           3.724
-ng  .XIN                                         179.550
-eleh.BEJ                                         709.708                  16.419
-eleh.TAJ                                         897.235                  13.851
-eleh.HEB                                        2622.068                 176.349
-eleh.SHX                                        2441.272                  34.879
-eleh.NMG                                        2714.257                  43.749
-eleh.LIA                                        2547.133                  30.713
-eleh.JIL                                        1059.352                  10.717
-eleh.HLJ                                        1341.379                  19.885
-eleh.SHH                                        1123.021                   6.477
-eleh.JSU                                        4192.626                  30.074
-eleh.ZHJ                                        3312.258                  19.223
-eleh.ANH                                        1217.371                  14.759
-eleh.FUJ                                        1011.158                  13.101
-eleh.JXI                                         586.530                  26.227
-eleh.SHD                                        5155.311                  86.731
-eleh.HEN                                        2711.987                  91.551
-eleh.HUB                                        1074.547                  46.591
-eleh.HUN                                         815.522                  89.397
-eleh.GUD                                        2963.699                  90.835
-eleh.GXI                                         536.506                  21.580
-eleh.HAI                                         129.978                   7.300
-eleh.CHQ                                         429.104                   2.507
-eleh.SIC                                         666.435                  21.753
-eleh.GZH                                        1094.556                   6.551
-eleh.YUN                                         611.837                  18.669
-eleh.SHA                                        1053.660                  44.269
-eleh.GAN                                         770.037                  64.707
-eleh.NXA                                         108.289                   0.890
-eleh.QIH                                         587.727                  12.732
-eleh.XIN                                         919.671                  46.518
-othe.BEJ                                          11.940
-othe.HEB                                          96.060
-othe.SHX                                         373.500
-othe.NMG                                          30.752
-othe.LIA                                          15.330
-othe.JIL                                           7.570
-othe.HLJ                                          58.060
-othe.SHH                                          10.120
-othe.JSU                                          39.030
-othe.ZHJ                                          48.728
-othe.ANH                                           7.520
-othe.FUJ                                          13.640
-othe.JXI                                          25.600
-othe.SHD                                         225.755
-othe.HEN                                          72.400
-othe.HUB                                          35.950
-othe.HUN                                          29.460                   5.200
-othe.GUD                                         119.500
-othe.GXI                                          94.180
-othe.CHQ                                          23.210
-othe.GZH                                          44.100
-othe.YUN                                          50.302                  21.660
-othe.SHA                                          94.360
-othe.GAN                                          10.670                   3.100
-
-       +         IND         CON          TR        WRHR         OTH          FU
-
-coal.BEJ     499.728      11.575      19.780      43.647     195.899     200.770
-coal.TAJ     642.861      16.069      11.227      28.717      39.560      54.708
-coal.HEB    5223.119      26.927      32.046      34.247     153.305     705.411
-coal.SHX    2765.539      42.952      39.581      47.557      26.629     512.589
-coal.NMG    1525.519      68.561      96.604     162.778     162.762     437.535
-coal.LIA    2391.690      56.515      64.804      22.048      37.668     340.675
-coal.JIL    1761.739      58.100      65.449     125.666     191.898     194.949
-coal.HLJ    1551.882       3.544      91.194                             109.148
-coal.SHH     631.349       7.538       4.291      30.572      34.066      71.813
-coal.JSU    3817.265       3.262      30.659      28.992                  68.186
-coal.ZHJ    2496.990       7.248       2.839      21.358                  54.337
-coal.ANH    2636.813      27.579      11.068      46.387      19.932     258.720
-coal.FUJ    1755.372       5.726       4.204      20.635      46.271      97.486
-coal.JXI    1072.316                   2.008       5.074       0.725     133.670
-coal.SHD    6584.052      44.213      52.113      73.577      57.259     447.348
-coal.HEN    5544.920                  14.496      18.120                 772.909
-coal.HUB    3282.369      66.029     100.385     105.727      41.241     393.777
-coal.HUN    3780.457      15.806       7.241     234.190       8.698     346.191
-coal.GUD    2599.857       1.747       1.210      20.236                  56.593
-coal.GXI    1688.243                  14.054      29.884      16.591      22.899
-coal.HAI      52.613                               0.528                   0.930
-coal.CHQ     977.196      13.460      15.895       0.863       0.761     108.720
-coal.SIC    2056.509      11.735       9.210      35.830      10.258     495.992
-coal.GZH    1774.767       4.784       6.414     114.994     158.366     705.846
-coal.YUN    1373.190      18.988      18.089      12.191      11.901     220.475
-coal.SHA    1471.897       8.698      18.728     143.510                  60.790
-coal.GAN     687.402      18.120      39.567      16.670      11.234     288.754
-coal.NXA     246.365       1.888       8.161       1.962       6.212      59.801
-coal.QIH     644.359       4.711       9.676       2.899       2.899      69.885
-coal.XIN     980.100      12.394      39.864      26.818      28.992     154.382
-fg  .BEJ     369.847       1.114       1.097      47.332       3.514      47.263
-fg  .TAJ     109.925       0.274                   5.640       3.000      17.353
-fg  .HEB    1048.139       0.137       0.073       1.689       9.820     147.680
-fg  .SHX    1009.101       0.103                  23.943       0.103      81.491
-fg  .NMG     440.491                                                      27.532
-fg  .LIA    1883.731       6.926       0.274      47.725      11.255     158.270
-fg  .JIL     233.207                               1.076                  97.143
-fg  .HLJ     221.531                                                     158.898
-fg  .SHH     411.037       0.234      11.768      23.771      23.969      88.182
-fg  .JSU     645.019                   0.309      12.072                 120.969
-fg  .ZHJ     189.458                              42.858      17.143     300.002
-fg  .ANH     142.212                                                      68.249
-fg  .FUJ     180.262                   0.017       6.274                 147.173
-fg  .JXI     569.372                   0.034      20.122                  57.360
-fg  .SHD     299.820                  13.457      38.972      17.886     278.485
-fg  .HEN     483.264                              11.233                  67.055
-fg  .HUB     134.656                              13.372                  87.806
-fg  .HUN     309.364       1.509       0.034      43.680                  70.601
-fg  .GUD     647.878       1.097      62.418      48.030       2.674     721.380
-fg  .GXI     285.724                              23.246       1.526     125.189
-fg  .HAI      33.231                               6.000                  11.143
-fg  .CHQ      31.060       0.909       1.371       5.657                   7.303
-fg  .SIC      13.097
-fg  .GZH      35.821                   2.641      10.072       0.120      19.556
-fg  .YUN     252.162                               6.720       0.394      31.495
-fg  .SHA      38.916                               0.629                  91.558
-fg  .GAN     154.888                   1.286       0.034                  11.159
-fg  .NXA       7.353                                                       9.172
-fg  .QIH      21.829                                                       4.834
-fg  .XIN     180.985                   4.286       6.514       3.549      25.892
-oil .BEJ                                                                   3.829
-oil .TAJ      17.286                                                      16.929
-oil .HEB      51.489                                                      20.858
-oil .NMG      13.969
-oil .LIA     288.349                                          15.715      39.901
-oil .JIL     471.125                                                       0.586
-oil .HLJ     420.194                                                      71.473
-oil .SHH                                                                   6.429
-oil .JSU      22.015                                                      14.043
-oil .ZHJ       0.230
-oil .ANH       5.129
-oil .JXI                                                                   3.157
-oil .SHD     199.505
-oil .HEN      24.558                                                       6.857
-oil .HUB      13.657                                                       7.229
-oil .HUN       6.143                                                       1.371
-oil .GUD      30.029                                                       6.643
-oil .GXI       0.343
-oil .HAI       4.529                                                       4.543
-oil .CHQ       0.186
-oil .SIC       3.714                                                       1.043
-oil .YUN       0.157
-oil .SHA       3.000
-oil .GAN       8.200
-oil .NXA       4.843                                                       2.514
-oil .XIN     112.345                                                     136.146
-roil.BEJ     697.235      40.035     633.750      60.257      96.449     240.147
-roil.TAJ     925.877      34.692     306.482     160.136      37.209      64.149
-roil.HEB    5637.721     142.319     625.955      30.232      56.735      52.774
-roil.SHX    2722.707      24.619     328.593      59.063      32.219      26.987
-roil.NMG    1553.075      39.259     705.839     128.176      73.719      34.520
-roil.LIA    2473.424      27.948    1278.630       8.743      65.648       1.427
-roil.JIL     709.591      33.255     294.613      72.874     131.845      87.858
-roil.HLJ     591.905                 413.190     270.290      67.655     188.881
-roil.SHH    1833.390     110.244    1752.996     162.935     231.449     176.957
-roil.JSU    3189.855     134.292     952.290      10.289      20.957     183.815
-roil.ZHJ    1095.550     150.339     900.624      43.799      67.427     149.911
-roil.ANH    1017.336      21.978     375.220       2.186                  13.243
-roil.FUJ     871.237      21.978     449.774      39.809     126.196      44.496
-roil.JXI     744.631      17.991     332.367      10.098      29.491      31.425
-roil.SHD    3599.756     414.497    1887.376     158.541     188.404      18.681
-roil.HEN    1861.617      37.694     620.687      17.983      20.542       5.482
-roil.HUB    1445.593      90.051     952.346      62.686      86.813     106.697
-roil.HUN     975.024      92.662     660.599     111.728       2.664      19.746
-roil.GUD    3273.134      78.956    1995.548     248.517      79.565     293.214
-roil.GXI     597.443      27.977     553.652      32.833      57.406      92.419
-roil.HAI      94.665      11.265     160.089      10.497      19.092      11.151
-roil.CHQ     355.677      22.766     397.634      18.419      10.191       9.415
-roil.SIC    1291.014      79.143     732.338      99.192     102.846      16.724
-roil.GZH     544.551      14.346     297.556      17.878      67.034       2.329
-roil.YUN    1315.777      32.802     607.199      22.856      20.988      86.946
-roil.SHA     490.430      22.644     449.003      63.013      26.271     139.711
-roil.GAN     719.093      28.186     186.603       6.975      10.472       2.938
-roil.NXA     149.600       6.920      55.802       3.578      10.311       0.955
-roil.QIH     121.048       5.128     115.431       7.328       7.328       1.972
-roil.XIN     619.187      27.532     376.066      49.164      67.655      23.551
-ng  .BEJ      71.288       4.655      28.462      74.347     175.028     153.083
-ng  .TAJ      92.036                              34.846       0.931      51.870
-ng  .HEB     142.917                   4.652       2.628       5.373       4.703
-ng  .SHX      57.456                   7.315       2.926       1.596      15.428
-ng  .NMG     224.972                   3.990       2.394       3.458      61.530
-ng  .LIA     185.003                               3.724
-ng  .JIL      71.288                               0.665                   5.187
-ng  .HLJ     328.909                                                      14.763
-ng  .SHH     141.184       0.133       2.527       7.714      21.280      75.677
-ng  .JSU     240.331                   2.926       3.990                  49.742
-ng  .ZHJ      55.860                               1.330                  13.126
-ng  .ANH      28.188                   0.266       5.320                  19.817
-ng  .FUJ       6.384
-ng  .JXI       5.320                               3.591                   4.921
-ng  .SHD     199.500                   9.975      15.960      14.630      65.170
-ng  .HEN     355.908                   0.266       6.783                  73.150
-ng  .HUB      69.958                                                      41.895
-ng  .HUN      46.683       0.399       0.399      13.965                  16.226
-ng  .GUD      61.845                                                     102.277
-ng  .GXI       7.904                                                       9.975
-ng  .HAI     222.775                   3.724       3.325
-ng  .CHQ     412.167       0.665       1.330      33.383       0.798     118.769
-ng  .SIC     934.990      40.964      27.531      54.796       1.862     404.852
-ng  .GZH      67.032                                                       1.330
-ng  .YUN      70.334                                                       2.660
-ng  .SHA     278.236                              73.150                 170.107
-ng  .GAN     135.394       0.399       9.842       5.985       3.059       9.576
-ng  .NXA      54.796       0.243       5.985      30.058      65.569      79.002
-ng  .QIH      94.563                   1.330                              19.950
-ng  .XIN     640.129                  41.230      14.896       6.916      45.752
-eleh.BEJ     470.902      23.344      60.132     110.812     330.877     261.231
-eleh.TAJ     628.544       8.205      14.910      51.426      45.357     267.136
-eleh.HEB    2099.624      15.824      55.134      43.257      87.554     524.690
-eleh.SHX    1520.344      10.004      50.401      18.681      42.818     289.812
-eleh.NMG    1422.790       9.818      41.450      49.957      50.734     320.488
-eleh.LIA    1769.154      16.214      37.759      49.455     146.110     859.374
-eleh.JIL     781.727       5.740      26.571      20.849      48.736     207.902
-eleh.HLJ     702.472       4.474      10.815      18.484      46.026     469.944
-eleh.SHH    1013.005      23.124      24.856      78.755     162.261     239.921
-eleh.JSU    3521.257      28.931      23.966      90.295     172.183     612.746
-eleh.ZHJ    2950.376      29.011      20.574     248.812     179.333     476.654
-eleh.ANH     835.877       9.553      10.995      23.679      42.417     175.983
-eleh.FUJ     916.020      17.120      15.842      39.279      73.261     292.785
-eleh.JXI     461.860       4.891       9.390      16.579      29.459     154.559
-eleh.SHD    4159.391      38.572      40.926     129.500     166.524     544.437
-eleh.HEN    2046.635      10.148      45.213      46.688      81.083     438.044
-eleh.HUB    1169.254      10.741      14.662      45.719      54.482     173.092
-eleh.HUN     792.533       8.726      29.766      23.769      51.962     294.739
-eleh.GUD    2823.655      53.044      45.768     231.027     337.274     785.110
-eleh.GXI     668.566       5.671       8.787      19.585      35.693     170.981
-eleh.HAI      79.865       1.118       1.880       9.820      20.991      27.382
-eleh.CHQ     399.214      14.232       9.832      24.936      36.145     133.211
-eleh.SIC    1051.753      20.549      27.911      37.214      64.461     335.760
-eleh.GZH     783.178       8.443      24.531      10.029      19.492     148.748
-eleh.YUN     675.341      15.276      16.100      13.445      22.036     185.223
-eleh.SHA     543.264      13.130      40.090      21.643      49.346     201.776
-eleh.GAN     726.531       5.481      30.246       9.365      19.971     147.700
-eleh.NXA     322.981       2.814       1.245       3.047       6.731      21.311
-eleh.QIH     489.889       3.559       8.770      10.269      13.373      59.619
-eleh.XIN     625.455       4.131      14.817      24.783      28.252     255.268
-othe.BEJ       1.420
-othe.TAJ      36.170
-othe.HEB     122.850
-othe.SHX      28.590
-othe.NMG      53.758
-othe.LIA     108.940
-othe.JIL      91.290                                                      62.700
-othe.HLJ      77.670
-othe.JSU       0.350
-othe.ZHJ      60.518
-othe.FUJ      81.130
-othe.JXI      47.000
-othe.SHD      54.774
-othe.HEN      41.670
-othe.HUB     161.950
-othe.HUN      79.210                                                     137.260
-othe.GUD      41.230
-othe.GXI     202.470                                                       4.500
-othe.CHQ     402.130
-othe.YUN      82.689                                                      43.470
-othe.SHA      97.510
-othe.GAN     110.600       4.000
-othe.NXA       1.599
-othe.QIH     158.070
-
-       +         INV
-
-coal.BEJ     168.109
-coal.TAJ     208.863
-coal.HEB    1200.440
-coal.SHX    1906.461
-coal.NMG    1326.052
-coal.LIA     930.122
-coal.JIL     463.362
-coal.HLJ     727.595
-coal.SHH     119.960
-coal.JSU     633.445
-coal.ZHJ     470.092
-coal.ANH     305.318
-coal.FUJ     191.467
-coal.JXI     187.089
-coal.SHD    1719.529
-coal.HEN     895.883
-coal.HUB     338.806
-coal.HUN     225.949
-coal.GUD     478.195
-coal.GXI     202.501
-coal.HAI       1.073
-coal.CHQ      95.865
-coal.SIC      81.219
-coal.GZH     240.080
-coal.YUN     401.745
-coal.SHA     806.726
-coal.GAN     353.865
-coal.NXA      86.500
-coal.QIH     387.510
-coal.XIN     318.700
-fg  .BEJ       0.686
-fg  .TAJ       0.411
-fg  .HEB       0.051
-fg  .LIA       0.377
-fg  .JIL       0.137
-fg  .HLJ       0.034
-fg  .SHH       4.029
-fg  .JSU       0.549
-fg  .ZHJ       2.529
-fg  .ANH       0.103
-fg  .FUJ       0.257
-fg  .JXI       0.240
-fg  .SHD       5.343
-fg  .HEN       0.754
-fg  .HUB       0.069
-fg  .HUN      -0.051
-fg  .GUD       9.720
-fg  .GXI      12.772
-fg  .HAI       0.720
-fg  .YUN       1.166
-fg  .SHA      66.858
-fg  .GAN       0.257
-oil .BEJ      74.144
-oil .TAJ     146.417
-oil .HEB      64.330
-oil .NMG      13.856
-oil .LIA     317.821
-oil .JIL      47.130
-oil .HLJ      76.073
-oil .SHH     117.860
-oil .JSU      73.316
-oil .ZHJ     105.154
-oil .ANH       6.614
-oil .FUJ      24.200
-oil .JXI       9.814
-oil .SHD     208.982
-oil .HEN      31.572
-oil .HUB      36.358
-oil .HUN      21.472
-oil .GUD     176.332
-oil .GXI       9.172
-oil .HAI     -14.357
-oil .CHQ       0.086
-oil .SIC       8.457
-oil .YUN       0.071
-oil .SHA     464.295
-oil .GAN      53.430
-oil .NXA      13.572
-oil .QIH       6.400
-oil .XIN     146.832
-roil.BEJ     115.674
-roil.TAJ     160.566
-roil.HEB     445.865
-roil.SHX     651.641
-roil.NMG     225.505
-roil.LIA     290.520
-roil.JIL      31.803
-roil.HLJ      27.862
-roil.SHH     142.295
-roil.JSU     154.441
-roil.ZHJ     207.231
-roil.ANH     126.488
-roil.FUJ      18.446
-roil.JXI      62.429
-roil.SHD     292.551
-roil.HEN     167.574
-roil.HUB     107.185
-roil.HUN      73.607
-roil.GUD     372.789
-roil.GXI      57.148
-roil.HAI      15.808
-roil.CHQ      13.718
-roil.SIC      17.048
-roil.GZH      40.271
-roil.YUN     159.092
-roil.SHA    1209.693
-roil.GAN     146.288
-roil.NXA      21.555
-roil.QIH      35.667
-roil.XIN     109.715
-ng  .GUD       7.847
-othe.TAJ       1.760
-othe.HEB       0.110
-othe.NMG      14.486
-othe.LIA       0.060
-othe.HLJ       0.040
-othe.ANH       0.110
-othe.SHD       0.925
-othe.HUN       0.070
-othe.GUD       2.630
-othe.CHQ       3.310
-othe.YUN       2.740
-othe.SHA       2.890
-
-
-----    104 PARAMETER ind  egy cons of egy by intensive ind
-
-                coal          fg         oil        roil          ng        eleh
-
-IND.coal    3663.082      12.784 1.000000E-7     173.508      28.908     761.956
-IND.fg        56.552     191.027       0.360      23.586      83.447      63.552
-IND.oil       98.581      58.328     813.546     376.947     920.070     480.464
-IND.roil     821.813    1735.231     249.784    5646.344     269.431    1494.112
-IND.eleh    1915.262       6.054       1.669     173.688       5.985    3409.763
-IND.MM       153.043       4.146                 203.786       0.756     634.142
-IND.NM       293.836       0.771                 108.864       0.532     269.675
-IND.FBT     1757.607      27.082       0.920     261.274      38.714    1152.478
-IND.TXT     1213.891       7.232       0.273     158.096       9.938    2087.560
-IND.CLO      194.216       1.507       0.414     116.833       1.873     282.086
-IND.LOG      265.505       2.318       0.243      50.417       2.925     247.835
-IND.PAP     1220.466      14.715       0.861     154.211      13.703    1099.188
-IND.CHE     6212.229     311.171     314.624    6190.788    2949.523    7016.468
-IND.NMP    11407.396     253.252      20.946    1665.893     415.598    2348.712
-IND.MSP     4977.224    3933.715       0.589   26354.901     266.044    8490.996
-IND.MP       185.002      26.590       0.079     228.648      13.703     857.872
-IND.GSM      503.304      81.423       0.460     863.670      93.105     925.507
-IND.TME      381.061      19.733       0.157     303.542      93.454     614.531
-IND.EME       99.172      34.210       0.343     145.196      23.864     463.946
-IND.CCE       64.242      11.484       0.576     130.231      88.557     628.219
-IND.IM        14.123       0.773       0.050      24.013       1.694      80.232
-IND.AC       192.036       6.537       0.013      36.534       0.771     381.358
-IND.WAS        4.029       0.627                   5.944                  13.998
-IND.WT        21.435       0.007 8.689116E-4       8.779       1.080     276.321
-
-
-----    107 PARAMETER indprov  egy cons of egy product by province
-
-                coal          fg         oil        roil          ng        eleh
-
-PROV.BEJ     499.728     369.847 1.000000E-6     697.235      71.288     470.902
-PROV.TAJ     642.861     109.925      17.286     925.877      92.036     628.544
-PROV.HEB    5223.119    1048.139      51.489    5637.721     142.917    2099.624
-PROV.SHX    2765.539    1009.101                2722.707      57.456    1520.344
-PROV.NMG    1525.519     440.491      13.969    1553.075     224.972    1422.790
-PROV.LIA    2391.690    1883.731     288.349    2473.424     185.003    1769.154
-PROV.JIL    1761.739     233.207     471.125     709.591      71.288     781.727
-PROV.HLJ    1551.882     221.531     420.194     591.905     328.909     702.472
-PROV.SHH     631.349     411.037                1833.390     141.184    1013.005
-PROV.JSU    3817.265     645.019      22.015    3189.855     240.331    3521.257
-PROV.ZHJ    2496.990     189.458       0.230    1095.550      55.860    2950.376
-PROV.ANH    2636.813     142.212       5.129    1017.336      28.188     835.877
-PROV.FUJ    1755.372     180.262                 871.237       6.384     916.020
-PROV.JXI    1072.316     569.372                 744.631       5.320     461.860
-PROV.SHD    6584.052     299.820     199.505    3599.756     199.500    4159.391
-PROV.HEN    5544.920     483.264      24.558    1861.617     355.908    2046.635
-PROV.HUB    3282.369     134.656      13.657    1445.593      69.958    1169.254
-PROV.HUN    3780.457     309.364       6.143     975.024      46.683     792.533
-PROV.GUD    2599.857     647.878      30.029    3273.134      61.845    2823.655
-PROV.GXI    1688.243     285.724       0.343     597.443       7.904     668.566
-PROV.HAI      52.613      33.231       4.529      94.665     222.775      79.865
-PROV.CHQ     977.196      31.060       0.186     355.677     412.167     399.214
-PROV.SIC    2056.509      13.097       3.714    1291.014     934.990    1051.753
-PROV.GZH    1774.767      35.821                 544.551      67.032     783.178
-PROV.YUN    1373.190     252.162       0.157    1315.777      70.334     675.341
-PROV.SHA    1471.897      38.916       3.000     490.430     278.236     543.264
-PROV.GAN     687.402     154.888       8.200     719.093     135.394     726.531
-PROV.NXA     246.365       7.353       4.843     149.600      54.796     322.981
-PROV.QIH     644.359      21.829                 121.048      94.563     489.889
-PROV.XIN     980.100     180.985     112.345     619.187     640.129     625.455
-
-       +        othe
-
-PROV.BEJ       1.420
-PROV.TAJ      36.170
-PROV.HEB     122.850
-PROV.SHX      28.590
-PROV.NMG      53.758
-PROV.LIA     108.940
-PROV.JIL      91.290
-PROV.HLJ      77.670
-PROV.JSU       0.350
-PROV.ZHJ      60.518
-PROV.FUJ      81.130
-PROV.JXI      47.000
-PROV.SHD      54.774
-PROV.HEN      41.670
-PROV.HUB     161.950
-PROV.HUN      79.210
-PROV.GUD      41.230
-PROV.GXI     202.470
-PROV.CHQ     402.130
-PROV.YUN      82.689
-PROV.SHA      97.510
-PROV.GAN     110.600
-PROV.NXA       1.599
-PROV.QIH     158.070
-
-
-
-EXECUTION TIME       =        0.000 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
-
-
-USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
-      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+USER: Matt Mowers                                    G100419:1834CP-WIN
+      National Renewable Energy Laboratory (NREL)                DC8246
 
 
 **** FILE SUMMARY
 
-Input      C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
-Output     C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.lst
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.lst
+
+**** USER ERROR(S) ENCOUNTERED

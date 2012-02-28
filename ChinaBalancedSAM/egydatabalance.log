@@ -1,17 +1,20 @@
 
---- Job egydatabalance.gms Start 02/27/12 16:56:39 WEX-WEI 23.2.1 x86_64/MS Windows     
-GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
-Licensee: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
-          Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+--- Job egydatabalance.gms Start 02/28/12 12:14:08 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+Licensee: Matt Mowers                                    G100419:1834CP-WIN
+          National Renewable Energy Laboratory (NREL)                DC8246
 --- Starting compilation
---- egydatabalance.gms(99) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- egydatabalance.gms(102) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- egydatabalance.gms(105) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\egydata.gdx
---- egydatabalance.gms(270) 3 Mb
---- Starting execution: elapsed 0:00:00.010
---- egydatabalance.gms(107) 4 Mb
-*** Status: Normal completion
---- Job egydatabalance.gms Stop 02/27/12 16:56:39 elapsed 0:00:00.027
+--- egydatabalance.gms(106) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
+--- egydatabalance.gms(107) 3 Mb 1 Error
+*** Error 140 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    Unknown symbol
+--- egydatabalance.gms(108) 3 Mb 2 Errors
+*** Error 141 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- egydatabalance.gms(271) 3 Mb 2 Errors
+*** Status: Compilation error(s)
+--- Job egydatabalance.gms Stop 02/28/12 12:14:08 elapsed 0:00:00.086
+Exit code = 2
