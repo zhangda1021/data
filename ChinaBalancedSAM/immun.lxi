@@ -1,0 +1,178 @@
+B 2 C o m p i l a t i o n
+B 41 Liability Information
+B 92 security information
+B 183 immunization model equations
+B 228 factor loading model
+B 312 bond dedication model
+B 352 combination matching (horizon matching)
+B 374 minimum cashflow variance model
+B 399 E x e c u t i o n
+I 402 pl
+I 404 kl
+I 406 ql
+I 408 k
+I 414 q
+B 422 Equation Listing    SOLVE immun1 Using LP From line 203
+D 423 objdef1
+D 437 pvm
+D 448 ddm
+B 462 Column Listing      SOLVE immun1 Using LP From line 203
+E 463 omega
+E 471 x
+B 495 Model Statistics    SOLVE immun1 Using LP From line 203
+B 511 Solution Report     SOLVE immun1 Using LP From line 203
+F 537 objdef1
+F 538 pvm
+F 539 ddm
+G 544 omega
+G 550 x
+B 570 Equation Listing    SOLVE immun2 Using LP From line 205
+D 571 objdef2
+D 585 pvm
+D 596 ddm
+B 610 Column Listing      SOLVE immun2 Using LP From line 205
+E 611 omega
+E 619 x
+B 643 Model Statistics    SOLVE immun2 Using LP From line 205
+B 659 Solution Report     SOLVE immun2 Using LP From line 205
+F 685 objdef2
+F 686 pvm
+F 687 ddm
+G 692 omega
+G 698 x
+B 718 Equation Listing    SOLVE immun3 Using LP From line 207
+D 719 objdef3
+D 733 pvm
+D 744 ddm
+D 756 dcm
+B 770 Column Listing      SOLVE immun3 Using LP From line 207
+E 771 omega
+E 779 x
+B 806 Model Statistics    SOLVE immun3 Using LP From line 207
+B 822 Solution Report     SOLVE immun3 Using LP From line 207
+F 848 objdef3
+F 849 pvm
+F 850 ddm
+F 851 dcm
+G 857 omega
+G 863 x
+B 883 Equation Listing    SOLVE factor1 Using LP From line 286
+D 884 objdef1
+D 898 pvm
+D 909 fm
+B 942 Column Listing      SOLVE factor1 Using LP From line 286
+E 943 omega
+E 951 x
+B 981 Model Statistics    SOLVE factor1 Using LP From line 286
+B 997 Solution Report     SOLVE factor1 Using LP From line 286
+F 1023 objdef1
+F 1024 pvm
+F 1033 fm
+G 1036 omega
+G 1042 x
+B 1065 Equation Listing    SOLVE factor2 Using LP From line 287
+D 1066 objdef4
+D 1082 pvm
+D 1093 diffm
+B 1127 Column Listing      SOLVE factor2 Using LP From line 287
+E 1128 omega
+E 1136 x
+E 1164 dif
+B 1184 Model Statistics    SOLVE factor2 Using LP From line 287
+B 1200 Solution Report     SOLVE factor2 Using LP From line 287
+F 1226 objdef4
+F 1227 pvm
+F 1236 diffm
+G 1239 omega
+G 1245 x
+G 1258 dif
+B 1273 Equation Listing    SOLVE dedic Using LP From line 322
+D 1274 objdef5
+D 1286 cbal
+B 1317 Column Listing      SOLVE dedic Using LP From line 322
+E 1318 omega
+E 1326 x
+E 1348 s
+E 1368 l
+B 1388 Model Statistics    SOLVE dedic Using LP From line 322
+B 1404 Solution Report     SOLVE dedic Using LP From line 322
+F 1430 objdef5
+F 1438 cbal
+G 1444 omega
+G 1450 x
+G 1463 s
+G 1474 l
+B 1492 Equation Listing    SOLVE comb1 Using LP From line 337
+D 1493 objdef5
+D 1503 cbal
+D 1532 hm
+B 1549 Column Listing      SOLVE comb1 Using LP From line 337
+E 1550 omega
+E 1558 x
+E 1583 s
+E 1604 l
+B 1622 Model Statistics    SOLVE comb1 Using LP From line 337
+B 1638 Solution Report     SOLVE comb1 Using LP From line 337
+F 1664 objdef5
+F 1672 cbal
+F 1681 hm
+G 1684 omega
+G 1690 x
+G 1703 s
+G 1714 l
+B 1732 Equation Listing    SOLVE comb2 Using LP From line 338
+D 1733 objdef5
+D 1745 cbal
+D 1774 ddm
+B 1788 Column Listing      SOLVE comb2 Using LP From line 338
+E 1789 omega
+E 1797 x
+E 1822 s
+E 1842 l
+B 1860 Model Statistics    SOLVE comb2 Using LP From line 338
+B 1876 Solution Report     SOLVE comb2 Using LP From line 338
+F 1902 objdef5
+F 1910 cbal
+F 1919 ddm
+G 1922 omega
+G 1928 x
+G 1941 s
+G 1952 l
+B 1970 Equation Listing    SOLVE comb3 Using LP From line 340
+D 1971 objdef5
+D 1983 cbal
+D 2010 fm
+B 2044 Column Listing      SOLVE comb3 Using LP From line 340
+E 2045 omega
+E 2053 x
+E 2084 s
+E 2104 l
+B 2122 Model Statistics    SOLVE comb3 Using LP From line 340
+B 2138 Solution Report     SOLVE comb3 Using LP From line 340
+F 2164 objdef5
+F 2172 cbal
+F 2183 fm
+G 2186 omega
+G 2192 x
+G 2205 s
+G 2216 l
+B 2234 Equation Listing    SOLVE sigma Using QCP From line 359
+D 2235 objdef6
+D 2245 cbal
+D 2270 objdef2
+B 2285 Column Listing      SOLVE sigma Using QCP From line 359
+E 2286 omega
+E 2295 x
+E 2317 s
+E 2336 l
+E 2355 variance
+B 2364 Model Statistics    SOLVE sigma Using QCP From line 359
+B 2382 Solution Report     SOLVE sigma Using QCP From line 359
+F 2409 objdef6
+F 2417 cbal
+F 2426 objdef2
+G 2429 omega
+G 2435 x
+G 2448 s
+G 2459 l
+G 2470 variance

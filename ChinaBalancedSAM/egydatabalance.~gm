@@ -88,7 +88,7 @@ set     i       accounts /
          IND     Industry,
          CON     Construction,
          TR      Transportation,
-         WRHR    Wholesale & retail, hotel & restraurant,
+         WRHR    Wholesale & retail & hotel & restraurant,
          OTH     Other service industry,
          FU      Final use,
          INV     Inventory change/;
@@ -101,6 +101,13 @@ parameter roil(r,i)           roil ebt
 parameter ng(r,i)           ng ebt
 parameter eleh(r,i)           eleh ebt
 parameter othe(r,i)           othe ebt
+parameter coal_bench(i,*)
+parameter fg_bench(i,*)
+parameter oil_bench(i,*)
+parameter roil_bench(i,*)
+parameter ng_bench(i,*)
+parameter eleh_bench(i,*)
+parameter othe_bench(i,*)
 parameter ind(*,indi,e)           egy cons of egy by intensive ind
 parameter indprov(*,r,e)       egy cons of egy product by province
 
@@ -112,166 +119,69 @@ $label readdata
 $gdxin '%inputfolder%\%egyprod%.gdx'
 $load %egyprod%
 display %egyprod%
+$gdxin '%inputfolder%\%egyprod%_bench.gdx'
+$load %egyprod%_bench
+display %egyprod%_bench
 
-$ontext
-set     negval2(r,i,j)     Flag for negative elements;
-set     empty2(r,i,*)      Flag for empty rows and columns;
-parameter       chksam2(r,i,*)       Consistency check of social accounts;
+variables       x(r,i)  adjusted value
+variable        j       obj function
 
-*SAM15
-loop(r,
-
-loop(ri$((ord(ri) le 27)),
-loop(ni$(ord(ni)=ord(ri)),
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,ni,nj)=sam(r,ri,rj);
-);
-);
-);
-);
-
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"28",nj)=sam(r,"30",rj);
-);
-);
+Equations  criterion criterion definition
+           bench   benchmark egy
+           balance_coal  input output balance
+           balance_fg
+           balance_oil
+           balance_roil
+           balance_ng
+           balance_eleh
+           balance_othe
+           trade   domestic trade balance
+           sign    no sign change;
 
 
-*AGGREGATION OF OTH PRODUCTION(other service industry)
-loop(ri$(((ord(ri) ge 31) and (ord(ri) le 42)) or (ord(ri) = 28) or (ord(ri) = 29)),
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"29",nj)=sam15(r,"29",nj)+sam(r,ri,rj);
-);
-);
-);
-
-loop(ri$((ord(ri) ge 43) and (ord(ri) le 69)),
-loop(ni$(ord(ni)=ord(ri)-12),
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,ni,nj)=sam(r,ri,rj);
-);
-);
-);
-);
+criterion..
+j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i)));
+*j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
 
 
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"58",nj)=sam(r,"72",rj);
-);
-);
+*No bench for dx and drc
+bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+sum(r,x(r,i)) =e= %egyprod%_bench(i,"value");
+*coal
+balance_coal(r)$(sameas('%egyprod%','COAL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
 
-*AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(ri$(((ord(ri) ge 73) and (ord(ri) le 84)) or (ord(ri) = 70) or (ord(ri) = 71)),
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,"59",nj)=sam15(r,"59",nj)+sam(r,ri,rj);
-);
-);
-);
+*fg
+balance_fg(r)$(sameas('%egyprod%','FG'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
+*oil
+balance_oil(r)$(sameas('%egyprod%','OIL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
+*roil
+balance_roil(r)$(sameas('%egyprod%','ROIL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
+*ng
+balance_ng(r)$(sameas('%egyprod%','NG'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
+*eleh
+balance_eleh(r)$(sameas('%egyprod%','ELEH'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
+*othe
+balance_othe(r)$(sameas('%egyprod%','OTHE'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
 
-loop(ri$((ord(ri) ge 85) and (ord(ri) le 96)),
-loop(ni$(ord(ni)=ord(ri)-24),
-loop(rj,
-loop(nj$(ord(nj)=ord(rj)),
-sam15(r,ni,nj)=sam(r,ri,rj);
-);
-);
-);
-);
-*end of loop r
-);
-
-
-
-
-*SAM2
+trade..
+sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
 
 
-loop(r,
+sign(r,i)$((ord(i)<>2) and (ord(i)<>4))..
+x(r,i)*%egyprod%(r,i)=g=0;
 
-loop(nj$(ord(nj) le 27),
-loop(j$(ord(j)=ord(nj)),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,j)=sam15(r,ni,nj);
-);
-);
-);
-);
+Model gua /all/;
+x.l(r,i)= %egyprod%(r,i);
+gua.iterlim=1000;
+Solve gua minimizing j using nlp;
 
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"28")=sam15(r,ni,"30");
-);
-);
-
-
-*AGGREGATION OF OTH PRODUCTION(other service industry)
-loop(nj$(((ord(nj) ge 31) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(nj) = 29)),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"29")=sam2(r,i,"29")+sam15(r,ni,nj);
-);
-);
-);
-
-loop(nj$((ord(nj) ge 43) and (ord(nj) le 69)),
-loop(j$(ord(j)=ord(nj)-12),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,j)=sam15(r,ni,nj);
-);
-);
-);
-);
-
-
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"58")=sam15(r,ni,"72");
-);
-);
-
-*AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);
-);
-);
-);
-
-loop(nj$((ord(nj) ge 85) and (ord(nj) le 96)),
-loop(j$(ord(j)=ord(nj)-24),
-loop(ni,
-loop(i$(ord(i)=ord(ni)),
-sam2(r,i,j)=sam15(r,ni,nj);
-);
-);
-);
-);
-*end of loop r
-);
-
-
-
-
-
-loop(r,
-negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
-
-empty2(r,i,"row") = 1$(sum(j, sam2(r,i,j)) = 0);
-empty2(r,j,"col") = 1$(sum(i, sam2(r,i,j)) = 0);
-
-chksam2(r,i,"before") = sum(j, sam2(r,i,j)-sam2(r,j,i));
-chksam2(r,i,"scale") = sum(j, sam2(r,j,i));
-chksam2(r,i,"%dev")$sum(j, sam2(r,i,j)) = 100 * sum(j, sam2(r,i,j)-sam2(r,j,i)) / sum(j, sam2(r,i,j));
-
-);
-$offtext
+Display x.l;
 
 

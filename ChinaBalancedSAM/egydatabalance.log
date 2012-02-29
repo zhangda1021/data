@@ -1,20 +1,25 @@
 
---- Job egydatabalance.gms Start 02/28/12 12:14:08 WIN-VS8 23.4.3 x86/MS Windows        
+--- Job egydatabalance.gms Start 02/29/12 13:36:14 WIN-VS8 23.4.3 x86/MS Windows        
 GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
 Licensee: Matt Mowers                                    G100419:1834CP-WIN
           National Renewable Energy Laboratory (NREL)                DC8246
 --- Starting compilation
---- egydatabalance.gms(106) 3 Mb
+--- egydatabalance.gms(119) 3 Mb
 --- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
---- egydatabalance.gms(107) 3 Mb 1 Error
+--- egydatabalance.gms(122) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal_bench.gdx
+--- egydatabalance.gms(178) 3 Mb 3 Errors
 *** Error 140 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
     Unknown symbol
---- egydatabalance.gms(108) 3 Mb 2 Errors
-*** Error 141 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    Symbol neither initialized nor assigned
-       A wild shot: You may have spurious commas in the explanatory
-       text of a declaration. Check symbol reference list.
---- egydatabalance.gms(271) 3 Mb 2 Errors
+*** Error  37 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    '=l=' or '=e=' or '=g=' operator expected
+*** Error 409 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- egydatabalance.gms(183) 3 Mb 4 Errors
+*** Error 257 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    Solve statement not checked because of previous errors
+--- egydatabalance.gms(187) 3 Mb 4 Errors
 *** Status: Compilation error(s)
---- Job egydatabalance.gms Stop 02/28/12 12:14:08 elapsed 0:00:00.086
+--- Job egydatabalance.gms Stop 02/29/12 13:36:14 elapsed 0:00:00.100
 Exit code = 2

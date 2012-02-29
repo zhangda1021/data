@@ -1,0 +1,25 @@
+B 2 C o m p i l a t i o n
+B 54 E x e c u t i o n
+I 55 c1
+I 61 c2
+I 66 output
+B 77 Equation Listing    SOLVE gua Using QCP From line 42
+D 78 criterion
+D 86 average
+D 97 state
+D 106 industry
+B 119 Column Listing      SOLVE gua Using QCP From line 42
+E 120 x
+E 146 j
+E 153 avg
+B 168 Model Statistics    SOLVE gua Using QCP From line 42
+B 186 Solution Report     SOLVE gua Using QCP From line 42
+F 213 criterion
+F 221 average
+F 228 state
+F 236 industry
+G 238 x
+G 249 j
+G 255 avg
+B 270 E x e c u t i o n
+I 271 x

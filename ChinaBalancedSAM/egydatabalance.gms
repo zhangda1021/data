@@ -88,7 +88,7 @@ set     i       accounts /
          IND     Industry,
          CON     Construction,
          TR      Transportation,
-         WRHR    Wholesale & retail, hotel & restraurant,
+         WRHR    Wholesale & retail & hotel & restraurant,
          OTH     Other service industry,
          FU      Final use,
          INV     Inventory change/;
@@ -123,34 +123,64 @@ $gdxin '%inputfolder%\%egyprod%_bench.gdx'
 $load %egyprod%_bench
 display %egyprod%_bench
 
-variables	x(r,i)	adjusted value
-variable	j	obj function
+variables       x(r,i)  adjusted value
+variable        j       obj function
 
 Equations  criterion criterion definition
-           bench   benchmark egy 
-           balance  input output balance
-	   trade   domestic trade balance;
+           bench   benchmark egy
+           balance_coal  input output balance
+           balance_fg
+           balance_oil
+           balance_roil
+           balance_ng
+           balance_eleh
+           balance_othe
+           trade   domestic trade balance
+           sign    negative only for t and inv;
 
 
 criterion..
-j=e=sum(r,sum(i,sqr(x(r,i)-%egyprod%(r,i))));
+j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i)));
+*j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
+
 
 *No bench for dx and drc
 bench(i)$((ord(i)<>2) and (ord(i)<>4))..
 sum(r,x(r,i)) =e= %egyprod%_bench(i,"value");
-
 *coal
-balance(r)$(sameas('%egyprod%','COAL'))..
-2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT")-x(r,"X")-x(r,"DX"))=e=sum(i,x(r,i));
+balance_coal(r)$(sameas('%egyprod%','COAL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
 
-*fg...
+*fg
+balance_fg(r)$(sameas('%egyprod%','FG'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
+*oil
+balance_oil(r)$(sameas('%egyprod%','OIL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
+*roil
+balance_roil(r)$(sameas('%egyprod%','ROIL'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
+*ng
+balance_ng(r)$(sameas('%egyprod%','NG'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
+*eleh
+balance_eleh(r)$(sameas('%egyprod%','ELEH'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
+*othe
+balance_othe(r)$(sameas('%egyprod%','OTHE'))..
+2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
 
 trade..
 sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
 
-Model gua /all/;
 
-Solve gua minimizing j using qcp;
+sign(r,i)$((ord(i)<>2) and (ord(i)<>4) and (ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<>12))..
+x(r,i)=g=0;
+
+Model gua /all/;
+x.l(r,i)= %egyprod%(r,i);
+gua.iterlim=1000;
+Solve gua minimizing j using nlp;
 
 Display x.l;
 
