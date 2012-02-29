@@ -1,4 +1,4 @@
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/28/12 14:01:46 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 11:47:26 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -32,11 +32,12 @@ Include File Summary
 COMPILATION TIME     =        4.025 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.016 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
-USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
-      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
 
 
 **** FILE SUMMARY

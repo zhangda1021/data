@@ -110,6 +110,8 @@ parameter eleh_bench(i,*)
 parameter othe_bench(i,*)
 parameter ind(*,indi,e)           egy cons of egy by intensive ind
 parameter indprov(*,r,e)       egy cons of egy product by province
+parameter columnsum(i)
+parameter benchvalue(i)
 
 $if exist %inputfolder%\%egyprod%.gdx       $goto readdata
 $log "Error -- cannot find %egyprod%'
@@ -122,6 +124,15 @@ display %egyprod%
 $gdxin '%inputfolder%\%egyprod%_bench.gdx'
 $load %egyprod%_bench
 display %egyprod%_bench
+
+loop(i,
+columnsum(i)=sum(r, %egyprod%(r,i)););
+display columnsum
+
+loop(i$ ((ord(i)<>2) and (ord(i)<>4)),
+benchvalue(i)= %egyprod%_bench(i,"value");
+);
+display benchvalue
 
 variables       x(r,i)  adjusted value
 variable        j       obj function
@@ -140,12 +151,13 @@ Equations  criterion criterion definition
 
 
 criterion..
-j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i)));
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1));
 *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
+*j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i))/100000);
 
 *No bench for dx and drc
 bench(i)$((ord(i)<>2) and (ord(i)<>4))..
-sum(r,x(r,i)) =e= %egyprod%_bench(i,"value");
+sum(r,x(r,i)) =e= benchvalue(i);
 *coal
 balance_coal(r)$(sameas('%egyprod%','COAL'))..
 2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
@@ -178,10 +190,15 @@ x(r,i)=g=0;
 
 Model gua /all/;
 x.l(r,i)= %egyprod%(r,i);
-x.fx(r,i)$(not %egyprod%(r,i)) = 0;
+*x.l(r,i)$((ord(i)<>2) and (ord(i)<>4) and (abs(columnsum(i))>0.01))= %egyprod%(r,i)/columnsum(i)*benchvalue(i);
+Display x.l;
+x.fx(r,i)$(abs(x.l(r,i))<0.0001) = 0;
+*x.up(r,i)=max(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+*x.lo(r,i)=min(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+
 gua.iterlim=1000;
 Solve gua minimizing j using nlp;
 
-Display x.l;
+
 
 

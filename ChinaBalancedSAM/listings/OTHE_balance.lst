@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -34,7 +34,7 @@ C o m p i l a t i o n
        
       After the rebalancing work, we can estimate detailed industry energy consumption of each province.
        
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 2
 Read a single state file
 C o m p i l a t i o n
 
@@ -112,7 +112,7 @@ C o m p i l a t i o n
  107  parameter roil_bench(i,*)
  108  parameter ng_bench(i,*)
  109  parameter eleh_bench(i,*)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 3
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 3
 Read a single state file
 C o m p i l a t i o n
 
@@ -120,357 +120,331 @@ C o m p i l a t i o n
  110  parameter othe_bench(i,*)
  111  parameter ind(*,indi,e)           egy cons of egy by intensive ind
  112  parameter indprov(*,r,e)       egy cons of egy product by province
- 113   
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
+ 113  parameter columnsum(i)
+ 114  parameter benchvalue(i)
+ 115   
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
 --- LOAD  othe = 1:othe
- 117  display OTHE
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE_bench.gdx
+ 119  display OTHE
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE_bench.gdx
 --- LOAD  othe_bench = 1:othe_bench
- 120  display OTHE_bench
- 121   
- 122  variables       x(r,i)  adjusted value
- 123  variable        j       obj function
- 124   
- 125  Equations  criterion criterion definition
- 126             bench   benchmark egy
- 127             balance_coal  input output balance
- 128             balance_fg
- 129             balance_oil
- 130             balance_roil
- 131             balance_ng
- 132             balance_eleh
- 133             balance_othe
- 134             trade   domestic trade balance
- 135             sign    negative only for t and inv;
- 136   
- 137   
- 138  criterion..
- 139  j=e=sum((r,i),sqr(x(r,i)-OTHE(r,i)));
- 140  *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
- 141   
- 142  *No bench for dx and drc
- 143  bench(i)$((ord(i)<>2) and (ord(i)<>4))..
- 144  sum(r,x(r,i)) =e= OTHE_bench(i,"value");
- 145  *coal
- 146  balance_coal(r)$(sameas('OTHE','COAL'))..
- 147  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
+ 122  display OTHE_bench
+ 123   
+ 124  loop(i,
+ 125  columnsum(i)=sum(r, OTHE(r,i)););
+ 126  display columnsum
+ 127   
+ 128  loop(i$ ((ord(i)<>2) and (ord(i)<>4)),
+ 129  benchvalue(i)= OTHE_bench(i,"value");
+ 130  );
+ 131  display benchvalue
+ 132   
+ 133  variables       x(r,i)  adjusted value
+ 134  variable        j       obj function
+ 135   
+ 136  Equations  criterion criterion definition
+ 137             bench   benchmark egy
+ 138             balance_coal  input output balance
+ 139             balance_fg
+ 140             balance_oil
+ 141             balance_roil
+ 142             balance_ng
+ 143             balance_eleh
+ 144             balance_othe
+ 145             trade   domestic trade balance
+ 146             sign    negative only for t and inv;
+ 147   
  148   
- 149  *fg
- 150  balance_fg(r)$(sameas('OTHE','FG'))..
- 151  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
- 152  *oil
- 153  balance_oil(r)$(sameas('OTHE','OIL'))..
- 154  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
- 155  *roil
- 156  balance_roil(r)$(sameas('OTHE','ROIL'))..
- 157  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
- 158  *ng
- 159  balance_ng(r)$(sameas('OTHE','NG'))..
- 160  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
- 161  *eleh
- 162  balance_eleh(r)$(sameas('OTHE','ELEH'))..
- 163  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
- 164  *othe
- 165  balance_othe(r)$(sameas('OTHE','OTHE'))..
- 166  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
- 167   
- 168  trade..
- 169  sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
- 170   
- 171   
- 172  sign(r,i)$((ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<
-      >12))..
- 173  x(r,i)=g=0;
- 174   
- 175  Model gua /all/;
- 176  x.l(r,i)= OTHE(r,i);
- 177  x.fx(r,i)$(not OTHE(r,i)) = 0;
- 178  gua.iterlim=1000;
- 179  Solve gua minimizing j using nlp;
- 180   
- 181  Display x.l;
+ 149  criterion..
+ 150  j=e=sum((r,i)$(OTHE(r,i)<>0),sqr(x(r,i)/OTHE(r,i)-1));
+ 151  *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
+ 152  *j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i))/100000);
+ 153   
+ 154  *No bench for dx and drc
+ 155  bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+ 156  sum(r,x(r,i)) =e= benchvalue(i);
+ 157  *coal
+ 158  balance_coal(r)$(sameas('OTHE','COAL'))..
+ 159  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
+ 160   
+ 161  *fg
+ 162  balance_fg(r)$(sameas('OTHE','FG'))..
+ 163  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
+ 164  *oil
+ 165  balance_oil(r)$(sameas('OTHE','OIL'))..
+ 166  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
+ 167  *roil
+ 168  balance_roil(r)$(sameas('OTHE','ROIL'))..
+ 169  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
+ 170  *ng
+ 171  balance_ng(r)$(sameas('OTHE','NG'))..
+ 172  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
+ 173  *eleh
+ 174  balance_eleh(r)$(sameas('OTHE','ELEH'))..
+ 175  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
+ 176  *othe
+ 177  balance_othe(r)$(sameas('OTHE','OTHE'))..
+ 178  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
+ 179   
+ 180  trade..
+ 181  sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
  182   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 4
+ 183   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 4
 Read a single state file
 C o m p i l a t i o n
 
 
- 183   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 5
+ 184  sign(r,i)$((ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<
+      >12))..
+ 185  x(r,i)=g=0;
+ 186   
+ 187  Model gua /all/;
+ 188  x.l(r,i)= OTHE(r,i);
+ 189  *x.l(r,i)$((ord(i)<>2) and (ord(i)<>4) and (abs(columnsum(i))>0.01))= %egyprod%(r,i)/columnsum(i)*benchvalue(i);
+ 190  Display x.l;
+ 191  x.fx(r,i)$(abs(x.l(r,i))<0.0001) = 0;
+ 192  *x.up(r,i)=max(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+ 193  *x.lo(r,i)=min(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+ 194   
+ 195  gua.iterlim=1000;
+ 196  Solve gua minimizing j using nlp;
+ 197   
+ 198   
+ 199   
+ 200   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 5
 Read a single state file
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-     2      114 IF EXIST       1     114  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
-     3      115 GDXIN          1     119  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
-     4      118 GDXIN          1     122  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE_bench.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+     2      116 IF EXIST       1     116  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
+     3      117 GDXIN          1     121  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE.gdx
+     4      120 GDXIN          1     124  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\OTHE_bench.gdx
 
 
-COMPILATION TIME     =        0.016 SECONDS      3 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 6
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 6
 Read a single state file
 E x e c u t i o n
 
 
-----    117 PARAMETER othe  othe ebt
+----    119 PARAMETER othe  othe ebt
 
-           PROD          DX         DRC       COALT       ELEHT         AGR         IND         CON          FU         INV
+           PROD          DX           X         DRC          RC       COALT         FGT        OILT       ROILT         NGT
 
-BEJ       4.810       0.060       8.610                  11.940                   1.420
-TAJ      29.300                   8.630                                          36.170                               1.760
-HEB     218.840                              -0.180      96.060                 122.850                               0.110
-SHX     402.090                                         373.500                  28.590
-NMG      93.731                   5.264                  30.752                  53.758                              14.486
-LIA     124.330                                          15.330                 108.940                               0.060
-JIL     153.920                   7.640                   7.570                  91.290                  62.700
-HLJ       0.080                 120.510     -15.180      58.060                  77.670                               0.040
-SHH      10.120                                          10.120
-JSU      39.380                                          39.030                   0.350
-ZHJ     109.250       0.003                              48.728                  60.518
-ANH       7.970       0.340                               7.520                                                       0.110
-FUJ      94.770                                          13.640                  81.130
-JXI      72.600                                          25.600                  47.000
-SHD      82.858                 198.596                 225.755                  54.774                               0.925
-HEN      25.160                  88.910                  72.400                  41.670
-HUB                             197.900                  35.950                 161.950
-HUN     208.010                  41.720      -1.470      29.460       5.200      79.210                 137.260       0.070
-GUD       2.730                 160.630                 119.500                  41.230                               2.630
-GXI     301.150                                          94.180                 202.470                   4.500
-CHQ     428.650                                          23.210                 402.130                               3.310
-GZH      44.100                                          44.100
-YUN     200.857                   0.004                  50.302      21.660      82.689                  43.470       2.740
-SHA     180.000                   2.290     -12.470      94.360                  97.510                               2.890
-GAN     128.370                                          10.670       3.100     110.600       4.000
-NXA             5.100000E-4       1.600                                           1.599
-QIH                             158.070                                         158.070
+BEJ       4.810       0.060 1.000000E-6       8.610 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ      29.300                               8.630
+HEB     218.840                                                      -0.180
+SHX     402.090
+NMG      93.731                               5.264
+LIA     124.330
+JIL     153.920                               7.640
+HLJ       0.080                             120.510                 -15.180
+SHH      10.120
+JSU      39.380
+ZHJ     109.250       0.003
+ANH       7.970       0.340
+FUJ      94.770
+JXI      72.600
+SHD      82.858                             198.596
+HEN      25.160                              88.910
+HUB                                         197.900
+HUN     208.010                              41.720                  -1.470
+GUD       2.730                             160.630
+GXI     301.150
+CHQ     428.650
+GZH      44.100
+YUN     200.857                               0.004
+SHA     180.000                               2.290                 -12.470
+GAN     128.370
+NXA             5.100000E-4                   1.600
+QIH                                         158.070
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+BEJ      11.940 1.000000E-6 1.000000E-6       1.420 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ                                          36.170                                                                   1.760
+HEB      96.060                             122.850                                                                   0.110
+SHX     373.500                              28.590
+NMG      30.752                              53.758                                                                  14.486
+LIA      15.330                             108.940                                                                   0.060
+JIL       7.570                              91.290                                                      62.700
+HLJ      58.060                              77.670                                                                   0.040
+SHH      10.120
+JSU      39.030                               0.350
+ZHJ      48.728                              60.518
+ANH       7.520                                                                                                       0.110
+FUJ      13.640                              81.130
+JXI      25.600                              47.000
+SHD     225.755                              54.774                                                                   0.925
+HEN      72.400                              41.670
+HUB      35.950                             161.950
+HUN      29.460                   5.200      79.210                                                     137.260       0.070
+GUD     119.500                              41.230                                                                   2.630
+GXI      94.180                             202.470                                                       4.500
+CHQ      23.210                             402.130                                                                   3.310
+GZH      44.100
+YUN      50.302                  21.660      82.689                                                      43.470       2.740
+SHA      94.360                              97.510                                                                   2.890
+GAN      10.670                   3.100     110.600       4.000
+NXA                                           1.599
+QIH                                         158.070
 
 
-----    120 PARAMETER othe_bench  
+----    122 PARAMETER othe_bench  
 
             value
 
 PROD      918.420
-X     1.000000E-4
-RC    1.000000E-4
-COALT -1.00000E-4
-FGT   -1.00000E-4
-OILT  1.000000E-4
 ROILT       5.500
-NGT   1.000000E-4
 ELEHT     494.586
-OTHET 1.000000E-4
-AGR   1.000000E-4
 IND       418.008
-CON   1.000000E-4
-TR    1.000000E-4
-WRHR  1.000000E-4
-OTH   1.000000E-4
-FU    1.000000E-4
-INV   1.000000E-4
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 7
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 7
 Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
+E x e c u t i o n
+
+
+----    126 PARAMETER columnsum  
+
+PROD     2963.076,    DX          0.404,    X     1.000000E-6,    DRC      1000.374,    RC    1.000000E-6
+COALT     -29.300,    FGT   1.000000E-6,    OILT  1.000000E-6,    ROILT 1.000000E-6,    NGT   1.000000E-6
+ELEHT    1537.738,    OTHET 1.000000E-6,    AGR        29.960,    IND      2143.588,    CON         4.000
+TR    1.000000E-6,    WRHR  1.000000E-6,    OTH   1.000000E-6,    FU        247.930,    INV        29.131
+
+
+----    131 PARAMETER benchvalue  
+
+PROD  918.420,    ROILT   5.500,    ELEHT 494.586,    IND   418.008
+
+
+----    190 VARIABLE x.L  adjusted value
+
+           PROD          DX           X         DRC          RC       COALT         FGT        OILT       ROILT         NGT
+
+BEJ       4.810       0.060 1.000000E-6       8.610 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ      29.300                               8.630
+HEB     218.840                                                      -0.180
+SHX     402.090
+NMG      93.731                               5.264
+LIA     124.330
+JIL     153.920                               7.640
+HLJ       0.080                             120.510                 -15.180
+SHH      10.120
+JSU      39.380
+ZHJ     109.250       0.003
+ANH       7.970       0.340
+FUJ      94.770
+JXI      72.600
+SHD      82.858                             198.596
+HEN      25.160                              88.910
+HUB                                         197.900
+HUN     208.010                              41.720                  -1.470
+GUD       2.730                             160.630
+GXI     301.150
+CHQ     428.650
+GZH      44.100
+YUN     200.857                               0.004
+SHA     180.000                               2.290                 -12.470
+GAN     128.370
+NXA             5.100000E-4                   1.600
+QIH                                         158.070
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+BEJ      11.940 1.000000E-6 1.000000E-6       1.420 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ                                          36.170                                                                   1.760
+HEB      96.060                             122.850                                                                   0.110
+SHX     373.500                              28.590
+NMG      30.752                              53.758                                                                  14.486
+LIA      15.330                             108.940                                                                   0.060
+JIL       7.570                              91.290                                                      62.700
+HLJ      58.060                              77.670                                                                   0.040
+SHH      10.120
+JSU      39.030                               0.350
+ZHJ      48.728                              60.518
+ANH       7.520                                                                                                       0.110
+FUJ      13.640                              81.130
+JXI      25.600                              47.000
+SHD     225.755                              54.774                                                                   0.925
+HEN      72.400                              41.670
+HUB      35.950                             161.950
+HUN      29.460                   5.200      79.210                                                     137.260       0.070
+GUD     119.500                              41.230                                                                   2.630
+GXI      94.180                             202.470                                                       4.500
+CHQ      23.210                             402.130                                                                   3.310
+GZH      44.100
+YUN      50.302                  21.660      82.689                                                      43.470       2.740
+SHA      94.360                              97.510                                                                   2.890
+GAN      10.670                   3.100     110.600       4.000
+NXA                                           1.599
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 8
+Read a single state file
+E x e c u t i o n
+
+
+        190 VARIABLE x.L  adjusted value
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+QIH                                         158.070
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 9
+Read a single state file
+Equation Listing    SOLVE gua Using NLP From line 196
 
 
 ---- criterion  =E=  criterion definition
 
-criterion..  (0)*x(BEJ,PROD) + (0)*x(BEJ,DX) + (0)*x(BEJ,X) + (0)*x(BEJ,DRC) + (0)*x(BEJ,RC) + (0)*x(BEJ,COALT)
+criterion..  (0)*x(BEJ,PROD) + (0)*x(BEJ,DX) + (2000000)*x(BEJ,X) + (0)*x(BEJ,DRC) + (2000000)*x(BEJ,RC)
      
-      + (0)*x(BEJ,FGT) + (0)*x(BEJ,OILT) + (0)*x(BEJ,ROILT) + (0)*x(BEJ,NGT) + (0)*x(BEJ,ELEHT) + (0)*x(BEJ,OTHET)
+      + (2000000)*x(BEJ,COALT) + (2000000)*x(BEJ,FGT) + (2000000)*x(BEJ,OILT) + (2000000)*x(BEJ,ROILT)
      
-      + (0)*x(BEJ,AGR) + (0)*x(BEJ,IND) + (0)*x(BEJ,CON) + (0)*x(BEJ,TR) + (0)*x(BEJ,WRHR) + (0)*x(BEJ,OTH) + (0)*x(BEJ,FU)
+      + (2000000)*x(BEJ,NGT) + (0)*x(BEJ,ELEHT) + (2000000)*x(BEJ,OTHET) + (2000000)*x(BEJ,AGR) + (0)*x(BEJ,IND)
      
-      + (0)*x(BEJ,INV) + (0)*x(TAJ,PROD) + (0)*x(TAJ,DX) + (0)*x(TAJ,X) + (0)*x(TAJ,DRC) + (0)*x(TAJ,RC) + (0)*x(TAJ,COALT)
+      + (2000000)*x(BEJ,CON) + (2000000)*x(BEJ,TR) + (2000000)*x(BEJ,WRHR) + (2000000)*x(BEJ,OTH) + (2000000)*x(BEJ,FU)
      
-      + (0)*x(TAJ,FGT) + (0)*x(TAJ,OILT) + (0)*x(TAJ,ROILT) + (0)*x(TAJ,NGT) + (0)*x(TAJ,ELEHT) + (0)*x(TAJ,OTHET)
+      + (2000000)*x(BEJ,INV) + (0)*x(TAJ,PROD) + (0)*x(TAJ,DRC) + (0)*x(TAJ,IND) + (0)*x(TAJ,INV) + (0)*x(HEB,PROD)
      
-      + (0)*x(TAJ,AGR) + (0)*x(TAJ,IND) + (0)*x(TAJ,CON) + (0)*x(TAJ,TR) + (0)*x(TAJ,WRHR) + (0)*x(TAJ,OTH) + (0)*x(TAJ,FU)
+      + (0)*x(HEB,COALT) + (0)*x(HEB,ELEHT) + (0)*x(HEB,IND) + (0)*x(HEB,INV) + (0)*x(SHX,PROD) + (0)*x(SHX,ELEHT)
      
-      + (0)*x(TAJ,INV) + (0)*x(HEB,PROD) + (0)*x(HEB,DX) + (0)*x(HEB,X) + (0)*x(HEB,DRC) + (0)*x(HEB,RC) + (0)*x(HEB,COALT)
+      + (0)*x(SHX,IND) + (0)*x(NMG,PROD) + (0)*x(NMG,DRC) + (0)*x(NMG,ELEHT) + (0)*x(NMG,IND) + (0)*x(NMG,INV)
      
-      + (0)*x(HEB,FGT) + (0)*x(HEB,OILT) + (0)*x(HEB,ROILT) + (0)*x(HEB,NGT) + (0)*x(HEB,ELEHT) + (0)*x(HEB,OTHET)
+      + (0)*x(LIA,PROD) + (0)*x(LIA,ELEHT) + (0)*x(LIA,IND) + (0)*x(LIA,INV) + (0)*x(JIL,PROD) + (0)*x(JIL,DRC)
      
-      + (0)*x(HEB,AGR) + (0)*x(HEB,IND) + (0)*x(HEB,CON) + (0)*x(HEB,TR) + (0)*x(HEB,WRHR) + (0)*x(HEB,OTH) + (0)*x(HEB,FU)
+      + (0)*x(JIL,ELEHT) + (0)*x(JIL,IND) + (0)*x(JIL,FU) + (0)*x(HLJ,PROD) + (0)*x(HLJ,DRC) + (0)*x(HLJ,COALT)
      
-      + (0)*x(HEB,INV) + (0)*x(SHX,PROD) + (0)*x(SHX,DX) + (0)*x(SHX,X) + (0)*x(SHX,DRC) + (0)*x(SHX,RC) + (0)*x(SHX,COALT)
+      + (0)*x(HLJ,ELEHT) + (0)*x(HLJ,IND) + (0)*x(HLJ,INV) + (0)*x(SHH,PROD) + (0)*x(SHH,ELEHT) + (0)*x(JSU,PROD)
      
-      + (0)*x(SHX,FGT) + (0)*x(SHX,OILT) + (0)*x(SHX,ROILT) + (0)*x(SHX,NGT) + (0)*x(SHX,ELEHT) + (0)*x(SHX,OTHET)
+      + (0)*x(JSU,ELEHT) + (0)*x(JSU,IND) + (0)*x(ZHJ,PROD) + (0)*x(ZHJ,DX) + (0)*x(ZHJ,ELEHT) + (0)*x(ZHJ,IND)
      
-      + (0)*x(SHX,AGR) + (0)*x(SHX,IND) + (0)*x(SHX,CON) + (0)*x(SHX,TR) + (0)*x(SHX,WRHR) + (0)*x(SHX,OTH) + (0)*x(SHX,FU)
+      + (0)*x(ANH,PROD) + (0)*x(ANH,DX) + (0)*x(ANH,ELEHT) + (0)*x(ANH,INV) + (0)*x(FUJ,PROD) + (0)*x(FUJ,ELEHT)
      
-      + (0)*x(SHX,INV) + (0)*x(NMG,PROD) + (0)*x(NMG,DX) + (0)*x(NMG,X) + (0)*x(NMG,DRC) + (0)*x(NMG,RC) + (0)*x(NMG,COALT)
+      + (0)*x(FUJ,IND) + (0)*x(JXI,PROD) + (0)*x(JXI,ELEHT) + (0)*x(JXI,IND) + (0)*x(SHD,PROD) + (0)*x(SHD,DRC)
      
-      + (0)*x(NMG,FGT) + (0)*x(NMG,OILT) + (0)*x(NMG,ROILT) + (0)*x(NMG,NGT) + (0)*x(NMG,ELEHT) + (0)*x(NMG,OTHET)
+      + (0)*x(SHD,ELEHT) + (0)*x(SHD,IND) + (0)*x(SHD,INV) + (0)*x(HEN,PROD) + (0)*x(HEN,DRC) + (0)*x(HEN,ELEHT)
      
-      + (0)*x(NMG,AGR) + (0)*x(NMG,IND) + (0)*x(NMG,CON) + (0)*x(NMG,TR) + (0)*x(NMG,WRHR) + (0)*x(NMG,OTH) + (0)*x(NMG,FU)
+      + (0)*x(HEN,IND) + (0)*x(HUB,DRC) + (0)*x(HUB,ELEHT) + (0)*x(HUB,IND) + (0)*x(HUN,PROD) + (0)*x(HUN,DRC)
      
-      + (0)*x(NMG,INV) + (0)*x(LIA,PROD) + (0)*x(LIA,DX) + (0)*x(LIA,X) + (0)*x(LIA,DRC) + (0)*x(LIA,RC) + (0)*x(LIA,COALT)
+      + (0)*x(HUN,COALT) + (0)*x(HUN,ELEHT) + (0)*x(HUN,AGR) + (0)*x(HUN,IND) + (0)*x(HUN,FU) + (0)*x(HUN,INV)
      
-      + (0)*x(LIA,FGT) + (0)*x(LIA,OILT) + (0)*x(LIA,ROILT) + (0)*x(LIA,NGT) + (0)*x(LIA,ELEHT) + (0)*x(LIA,OTHET)
+      + (0)*x(GUD,PROD) + (0)*x(GUD,DRC) + (0)*x(GUD,ELEHT) + (0)*x(GUD,IND) + (0)*x(GUD,INV) + (0)*x(GXI,PROD)
      
-      + (0)*x(LIA,AGR) + (0)*x(LIA,IND) + (0)*x(LIA,CON) + (0)*x(LIA,TR) + (0)*x(LIA,WRHR) + (0)*x(LIA,OTH) + (0)*x(LIA,FU)
+      + (0)*x(GXI,ELEHT) + (0)*x(GXI,IND) + (0)*x(GXI,FU) + (0)*x(CHQ,PROD) + (0)*x(CHQ,ELEHT) + (0)*x(CHQ,IND)
      
-      + (0)*x(LIA,INV) + (0)*x(JIL,PROD) + (0)*x(JIL,DX) + (0)*x(JIL,X) + (0)*x(JIL,DRC) + (0)*x(JIL,RC) + (0)*x(JIL,COALT)
+      + (0)*x(CHQ,INV) + (0)*x(GZH,PROD) + (0)*x(GZH,ELEHT) + (0)*x(YUN,PROD) + (0)*x(YUN,DRC) + (0)*x(YUN,ELEHT)
      
-      + (0)*x(JIL,FGT) + (0)*x(JIL,OILT) + (0)*x(JIL,ROILT) + (0)*x(JIL,NGT) + (0)*x(JIL,ELEHT) + (0)*x(JIL,OTHET)
+      + (0)*x(YUN,AGR) + (0)*x(YUN,IND) + (0)*x(YUN,FU) + (0)*x(YUN,INV) + (0)*x(SHA,PROD) + (0)*x(SHA,DRC)
      
-      + (0)*x(JIL,AGR) + (0)*x(JIL,IND) + (0)*x(JIL,CON) + (0)*x(JIL,TR) + (0)*x(JIL,WRHR) + (0)*x(JIL,OTH) + (0)*x(JIL,FU)
+      + (0)*x(SHA,COALT) + (0)*x(SHA,ELEHT) + (0)*x(SHA,IND) + (0)*x(SHA,INV) + (0)*x(GAN,PROD) + (0)*x(GAN,ELEHT)
      
-      + (0)*x(JIL,INV) + (0)*x(HLJ,PROD) + (0)*x(HLJ,DX) + (0)*x(HLJ,X) + (0)*x(HLJ,DRC) + (0)*x(HLJ,RC) + (0)*x(HLJ,COALT)
+      + (0)*x(GAN,AGR) + (0)*x(GAN,IND) + (0)*x(GAN,CON) + (0)*x(NXA,DX) + (0)*x(NXA,DRC) + (0)*x(NXA,IND) + (0)*x(QIH,DRC)
      
-      + (0)*x(HLJ,FGT) + (0)*x(HLJ,OILT) + (0)*x(HLJ,ROILT) + (0)*x(HLJ,NGT) + (0)*x(HLJ,ELEHT) + (0)*x(HLJ,OTHET)
-     
-      + (0)*x(HLJ,AGR) + (0)*x(HLJ,IND) + (0)*x(HLJ,CON) + (0)*x(HLJ,TR) + (0)*x(HLJ,WRHR) + (0)*x(HLJ,OTH) + (0)*x(HLJ,FU)
-     
-      + (0)*x(HLJ,INV) + (0)*x(SHH,PROD) + (0)*x(SHH,DX) + (0)*x(SHH,X) + (0)*x(SHH,DRC) + (0)*x(SHH,RC) + (0)*x(SHH,COALT)
-     
-      + (0)*x(SHH,FGT) + (0)*x(SHH,OILT) + (0)*x(SHH,ROILT) + (0)*x(SHH,NGT) + (0)*x(SHH,ELEHT) + (0)*x(SHH,OTHET)
-     
-      + (0)*x(SHH,AGR) + (0)*x(SHH,IND) + (0)*x(SHH,CON) + (0)*x(SHH,TR) + (0)*x(SHH,WRHR) + (0)*x(SHH,OTH) + (0)*x(SHH,FU)
-     
-      + (0)*x(SHH,INV) + (0)*x(JSU,PROD) + (0)*x(JSU,DX) + (0)*x(JSU,X) + (0)*x(JSU,DRC) + (0)*x(JSU,RC) + (0)*x(JSU,COALT)
-     
-      + (0)*x(JSU,FGT) + (0)*x(JSU,OILT) + (0)*x(JSU,ROILT) + (0)*x(JSU,NGT) + (0)*x(JSU,ELEHT) + (0)*x(JSU,OTHET)
-     
-      + (0)*x(JSU,AGR) + (0)*x(JSU,IND) + (0)*x(JSU,CON) + (0)*x(JSU,TR) + (0)*x(JSU,WRHR) + (0)*x(JSU,OTH) + (0)*x(JSU,FU)
-     
-      + (0)*x(JSU,INV) + (0)*x(ZHJ,PROD) + (0)*x(ZHJ,DX) + (0)*x(ZHJ,X) + (0)*x(ZHJ,DRC) + (0)*x(ZHJ,RC) + (0)*x(ZHJ,COALT)
-     
-      + (0)*x(ZHJ,FGT) + (0)*x(ZHJ,OILT) + (0)*x(ZHJ,ROILT) + (0)*x(ZHJ,NGT) + (0)*x(ZHJ,ELEHT) + (0)*x(ZHJ,OTHET)
-     
-      + (0)*x(ZHJ,AGR) + (0)*x(ZHJ,IND) + (0)*x(ZHJ,CON) + (0)*x(ZHJ,TR) + (0)*x(ZHJ,WRHR) + (0)*x(ZHJ,OTH) + (0)*x(ZHJ,FU)
-     
-      + (0)*x(ZHJ,INV) + (0)*x(ANH,PROD) + (0)*x(ANH,DX) + (0)*x(ANH,X) + (0)*x(ANH,DRC) + (0)*x(ANH,RC) + (0)*x(ANH,COALT)
-     
-      + (0)*x(ANH,FGT) + (0)*x(ANH,OILT) + (0)*x(ANH,ROILT) + (0)*x(ANH,NGT) + (0)*x(ANH,ELEHT) + (0)*x(ANH,OTHET)
-     
-      + (0)*x(ANH,AGR) + (0)*x(ANH,IND) + (0)*x(ANH,CON) + (0)*x(ANH,TR) + (0)*x(ANH,WRHR) + (0)*x(ANH,OTH) + (0)*x(ANH,FU)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 8
-Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
-
-
-     criterion  =E=  criterion definition     
-     
-      + (0)*x(ANH,INV) + (0)*x(FUJ,PROD) + (0)*x(FUJ,DX) + (0)*x(FUJ,X) + (0)*x(FUJ,DRC) + (0)*x(FUJ,RC) + (0)*x(FUJ,COALT)
-     
-      + (0)*x(FUJ,FGT) + (0)*x(FUJ,OILT) + (0)*x(FUJ,ROILT) + (0)*x(FUJ,NGT) + (0)*x(FUJ,ELEHT) + (0)*x(FUJ,OTHET)
-     
-      + (0)*x(FUJ,AGR) + (0)*x(FUJ,IND) + (0)*x(FUJ,CON) + (0)*x(FUJ,TR) + (0)*x(FUJ,WRHR) + (0)*x(FUJ,OTH) + (0)*x(FUJ,FU)
-     
-      + (0)*x(FUJ,INV) + (0)*x(JXI,PROD) + (0)*x(JXI,DX) + (0)*x(JXI,X) + (0)*x(JXI,DRC) + (0)*x(JXI,RC) + (0)*x(JXI,COALT)
-     
-      + (0)*x(JXI,FGT) + (0)*x(JXI,OILT) + (0)*x(JXI,ROILT) + (0)*x(JXI,NGT) + (0)*x(JXI,ELEHT) + (0)*x(JXI,OTHET)
-     
-      + (0)*x(JXI,AGR) + (0)*x(JXI,IND) + (0)*x(JXI,CON) + (0)*x(JXI,TR) + (0)*x(JXI,WRHR) + (0)*x(JXI,OTH) + (0)*x(JXI,FU)
-     
-      + (0)*x(JXI,INV) + (0)*x(SHD,PROD) + (0)*x(SHD,DX) + (0)*x(SHD,X) + (0)*x(SHD,DRC) + (0)*x(SHD,RC) + (0)*x(SHD,COALT)
-     
-      + (0)*x(SHD,FGT) + (0)*x(SHD,OILT) + (0)*x(SHD,ROILT) + (0)*x(SHD,NGT) + (0)*x(SHD,ELEHT) + (0)*x(SHD,OTHET)
-     
-      + (0)*x(SHD,AGR) + (0)*x(SHD,IND) + (0)*x(SHD,CON) + (0)*x(SHD,TR) + (0)*x(SHD,WRHR) + (0)*x(SHD,OTH) + (0)*x(SHD,FU)
-     
-      + (0)*x(SHD,INV) + (0)*x(HEN,PROD) + (0)*x(HEN,DX) + (0)*x(HEN,X) + (0)*x(HEN,DRC) + (0)*x(HEN,RC) + (0)*x(HEN,COALT)
-     
-      + (0)*x(HEN,FGT) + (0)*x(HEN,OILT) + (0)*x(HEN,ROILT) + (0)*x(HEN,NGT) + (0)*x(HEN,ELEHT) + (0)*x(HEN,OTHET)
-     
-      + (0)*x(HEN,AGR) + (0)*x(HEN,IND) + (0)*x(HEN,CON) + (0)*x(HEN,TR) + (0)*x(HEN,WRHR) + (0)*x(HEN,OTH) + (0)*x(HEN,FU)
-     
-      + (0)*x(HEN,INV) + (0)*x(HUB,PROD) + (0)*x(HUB,DX) + (0)*x(HUB,X) + (0)*x(HUB,DRC) + (0)*x(HUB,RC) + (0)*x(HUB,COALT)
-     
-      + (0)*x(HUB,FGT) + (0)*x(HUB,OILT) + (0)*x(HUB,ROILT) + (0)*x(HUB,NGT) + (0)*x(HUB,ELEHT) + (0)*x(HUB,OTHET)
-     
-      + (0)*x(HUB,AGR) + (0)*x(HUB,IND) + (0)*x(HUB,CON) + (0)*x(HUB,TR) + (0)*x(HUB,WRHR) + (0)*x(HUB,OTH) + (0)*x(HUB,FU)
-     
-      + (0)*x(HUB,INV) + (0)*x(HUN,PROD) + (0)*x(HUN,DX) + (0)*x(HUN,X) + (0)*x(HUN,DRC) + (0)*x(HUN,RC) + (0)*x(HUN,COALT)
-     
-      + (0)*x(HUN,FGT) + (0)*x(HUN,OILT) + (0)*x(HUN,ROILT) + (0)*x(HUN,NGT) + (0)*x(HUN,ELEHT) + (0)*x(HUN,OTHET)
-     
-      + (0)*x(HUN,AGR) + (0)*x(HUN,IND) + (0)*x(HUN,CON) + (0)*x(HUN,TR) + (0)*x(HUN,WRHR) + (0)*x(HUN,OTH) + (0)*x(HUN,FU)
-     
-      + (0)*x(HUN,INV) + (0)*x(GUD,PROD) + (0)*x(GUD,DX) + (0)*x(GUD,X) + (0)*x(GUD,DRC) + (0)*x(GUD,RC) + (0)*x(GUD,COALT)
-     
-      + (0)*x(GUD,FGT) + (0)*x(GUD,OILT) + (0)*x(GUD,ROILT) + (0)*x(GUD,NGT) + (0)*x(GUD,ELEHT) + (0)*x(GUD,OTHET)
-     
-      + (0)*x(GUD,AGR) + (0)*x(GUD,IND) + (0)*x(GUD,CON) + (0)*x(GUD,TR) + (0)*x(GUD,WRHR) + (0)*x(GUD,OTH) + (0)*x(GUD,FU)
-     
-      + (0)*x(GUD,INV) + (0)*x(GXI,PROD) + (0)*x(GXI,DX) + (0)*x(GXI,X) + (0)*x(GXI,DRC) + (0)*x(GXI,RC) + (0)*x(GXI,COALT)
-     
-      + (0)*x(GXI,FGT) + (0)*x(GXI,OILT) + (0)*x(GXI,ROILT) + (0)*x(GXI,NGT) + (0)*x(GXI,ELEHT) + (0)*x(GXI,OTHET)
-     
-      + (0)*x(GXI,AGR) + (0)*x(GXI,IND) + (0)*x(GXI,CON) + (0)*x(GXI,TR) + (0)*x(GXI,WRHR) + (0)*x(GXI,OTH) + (0)*x(GXI,FU)
-     
-      + (0)*x(GXI,INV) + (0)*x(HAI,PROD) + (0)*x(HAI,DX) + (0)*x(HAI,X) + (0)*x(HAI,DRC) + (0)*x(HAI,RC) + (0)*x(HAI,COALT)
-     
-      + (0)*x(HAI,FGT) + (0)*x(HAI,OILT) + (0)*x(HAI,ROILT) + (0)*x(HAI,NGT) + (0)*x(HAI,ELEHT) + (0)*x(HAI,OTHET)
-     
-      + (0)*x(HAI,AGR) + (0)*x(HAI,IND) + (0)*x(HAI,CON) + (0)*x(HAI,TR) + (0)*x(HAI,WRHR) + (0)*x(HAI,OTH) + (0)*x(HAI,FU)
-     
-      + (0)*x(HAI,INV) + (0)*x(CHQ,PROD) + (0)*x(CHQ,DX) + (0)*x(CHQ,X) + (0)*x(CHQ,DRC) + (0)*x(CHQ,RC) + (0)*x(CHQ,COALT)
-     
-      + (0)*x(CHQ,FGT) + (0)*x(CHQ,OILT) + (0)*x(CHQ,ROILT) + (0)*x(CHQ,NGT) + (0)*x(CHQ,ELEHT) + (0)*x(CHQ,OTHET)
-     
-      + (0)*x(CHQ,AGR) + (0)*x(CHQ,IND) + (0)*x(CHQ,CON) + (0)*x(CHQ,TR) + (0)*x(CHQ,WRHR) + (0)*x(CHQ,OTH) + (0)*x(CHQ,FU)
-     
-      + (0)*x(CHQ,INV) + (0)*x(SIC,PROD) + (0)*x(SIC,DX) + (0)*x(SIC,X) + (0)*x(SIC,DRC) + (0)*x(SIC,RC) + (0)*x(SIC,COALT)
-     
-      + (0)*x(SIC,FGT) + (0)*x(SIC,OILT) + (0)*x(SIC,ROILT) + (0)*x(SIC,NGT) + (0)*x(SIC,ELEHT) + (0)*x(SIC,OTHET)
-     
-      + (0)*x(SIC,AGR) + (0)*x(SIC,IND) + (0)*x(SIC,CON) + (0)*x(SIC,TR) + (0)*x(SIC,WRHR) + (0)*x(SIC,OTH) + (0)*x(SIC,FU)
-     
-      + (0)*x(SIC,INV) + (0)*x(GZH,PROD) + (0)*x(GZH,DX) + (0)*x(GZH,X) + (0)*x(GZH,DRC) + (0)*x(GZH,RC) + (0)*x(GZH,COALT)
-     
-      + (0)*x(GZH,FGT) + (0)*x(GZH,OILT) + (0)*x(GZH,ROILT) + (0)*x(GZH,NGT) + (0)*x(GZH,ELEHT) + (0)*x(GZH,OTHET)
-     
-      + (0)*x(GZH,AGR) + (0)*x(GZH,IND) + (0)*x(GZH,CON) + (0)*x(GZH,TR) + (0)*x(GZH,WRHR) + (0)*x(GZH,OTH) + (0)*x(GZH,FU)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 9
-Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
-
-
-     criterion  =E=  criterion definition     
-     
-      + (0)*x(GZH,INV) + (0)*x(YUN,PROD) + (0)*x(YUN,DX) + (0)*x(YUN,X) + (0)*x(YUN,DRC) + (0)*x(YUN,RC) + (0)*x(YUN,COALT)
-     
-      + (0)*x(YUN,FGT) + (0)*x(YUN,OILT) + (0)*x(YUN,ROILT) + (0)*x(YUN,NGT) + (0)*x(YUN,ELEHT) + (0)*x(YUN,OTHET)
-     
-      + (0)*x(YUN,AGR) + (0)*x(YUN,IND) + (0)*x(YUN,CON) + (0)*x(YUN,TR) + (0)*x(YUN,WRHR) + (0)*x(YUN,OTH) + (0)*x(YUN,FU)
-     
-      + (0)*x(YUN,INV) + (0)*x(SHA,PROD) + (0)*x(SHA,DX) + (0)*x(SHA,X) + (0)*x(SHA,DRC) + (0)*x(SHA,RC) + (0)*x(SHA,COALT)
-     
-      + (0)*x(SHA,FGT) + (0)*x(SHA,OILT) + (0)*x(SHA,ROILT) + (0)*x(SHA,NGT) + (0)*x(SHA,ELEHT) + (0)*x(SHA,OTHET)
-     
-      + (0)*x(SHA,AGR) + (0)*x(SHA,IND) + (0)*x(SHA,CON) + (0)*x(SHA,TR) + (0)*x(SHA,WRHR) + (0)*x(SHA,OTH) + (0)*x(SHA,FU)
-     
-      + (0)*x(SHA,INV) + (0)*x(GAN,PROD) + (0)*x(GAN,DX) + (0)*x(GAN,X) + (0)*x(GAN,DRC) + (0)*x(GAN,RC) + (0)*x(GAN,COALT)
-     
-      + (0)*x(GAN,FGT) + (0)*x(GAN,OILT) + (0)*x(GAN,ROILT) + (0)*x(GAN,NGT) + (0)*x(GAN,ELEHT) + (0)*x(GAN,OTHET)
-     
-      + (0)*x(GAN,AGR) + (0)*x(GAN,IND) + (0)*x(GAN,CON) + (0)*x(GAN,TR) + (0)*x(GAN,WRHR) + (0)*x(GAN,OTH) + (0)*x(GAN,FU)
-     
-      + (0)*x(GAN,INV) + (0)*x(NXA,PROD) + (0)*x(NXA,DX) + (0)*x(NXA,X) + (0)*x(NXA,DRC) + (0)*x(NXA,RC) + (0)*x(NXA,COALT)
-     
-      + (0)*x(NXA,FGT) + (0)*x(NXA,OILT) + (0)*x(NXA,ROILT) + (0)*x(NXA,NGT) + (0)*x(NXA,ELEHT) + (0)*x(NXA,OTHET)
-     
-      + (0)*x(NXA,AGR) + (0)*x(NXA,IND) + (0)*x(NXA,CON) + (0)*x(NXA,TR) + (0)*x(NXA,WRHR) + (0)*x(NXA,OTH) + (0)*x(NXA,FU)
-     
-      + (0)*x(NXA,INV) + (0)*x(QIH,PROD) + (0)*x(QIH,DX) + (0)*x(QIH,X) + (0)*x(QIH,DRC) + (0)*x(QIH,RC) + (0)*x(QIH,COALT)
-     
-      + (0)*x(QIH,FGT) + (0)*x(QIH,OILT) + (0)*x(QIH,ROILT) + (0)*x(QIH,NGT) + (0)*x(QIH,ELEHT) + (0)*x(QIH,OTHET)
-     
-      + (0)*x(QIH,AGR) + (0)*x(QIH,IND) + (0)*x(QIH,CON) + (0)*x(QIH,TR) + (0)*x(QIH,WRHR) + (0)*x(QIH,OTH) + (0)*x(QIH,FU)
-     
-      + (0)*x(QIH,INV) + (0)*x(XIN,PROD) + (0)*x(XIN,DX) + (0)*x(XIN,X) + (0)*x(XIN,DRC) + (0)*x(XIN,RC) + (0)*x(XIN,COALT)
-     
-      + (0)*x(XIN,FGT) + (0)*x(XIN,OILT) + (0)*x(XIN,ROILT) + (0)*x(XIN,NGT) + (0)*x(XIN,ELEHT) + (0)*x(XIN,OTHET)
-     
-      + (0)*x(XIN,AGR) + (0)*x(XIN,IND) + (0)*x(XIN,CON) + (0)*x(XIN,TR) + (0)*x(XIN,WRHR) + (0)*x(XIN,OTH) + (0)*x(XIN,FU)
-     
-      + (0)*x(XIN,INV) + j =E= 0 ; (LHS = 0)
+      + (0)*x(QIH,IND) + j =E= 0 ; (LHS = -15, INFES = 15 ****)
      
 
 ---- bench  =E=  benchmark egy
@@ -489,22 +463,26 @@ bench(X)..  x(BEJ,X) + x(TAJ,X) + x(HEB,X) + x(SHX,X) + x(NMG,X) + x(LIA,X) + x(
      
       + x(ZHJ,X) + x(ANH,X) + x(FUJ,X) + x(JXI,X) + x(SHD,X) + x(HEN,X) + x(HUB,X) + x(HUN,X) + x(GUD,X) + x(GXI,X)
      
-      + x(HAI,X) + x(CHQ,X) + x(SIC,X) + x(GZH,X) + x(YUN,X) + x(SHA,X) + x(GAN,X) + x(NXA,X) + x(QIH,X) + x(XIN,X) =E= 
-     0.0001 ; (LHS = 0, INFES = 0.0001 ****)
+      + x(HAI,X) + x(CHQ,X) + x(SIC,X) + x(GZH,X) + x(YUN,X) + x(SHA,X) + x(GAN,X) + x(NXA,X) + x(QIH,X) + x(XIN,X) =E= 0 ;
+     
+      (LHS = 0)
      
 bench(RC)..  x(BEJ,RC) + x(TAJ,RC) + x(HEB,RC) + x(SHX,RC) + x(NMG,RC) + x(LIA,RC) + x(JIL,RC) + x(HLJ,RC) + x(SHH,RC)
      
       + x(JSU,RC) + x(ZHJ,RC) + x(ANH,RC) + x(FUJ,RC) + x(JXI,RC) + x(SHD,RC) + x(HEN,RC) + x(HUB,RC) + x(HUN,RC)
      
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 10
+Read a single state file
+Equation Listing    SOLVE gua Using NLP From line 196
+
+
+     bench  =E=  benchmark egy     
+     
       + x(GUD,RC) + x(GXI,RC) + x(HAI,RC) + x(CHQ,RC) + x(SIC,RC) + x(GZH,RC) + x(YUN,RC) + x(SHA,RC) + x(GAN,RC)
      
-      + x(NXA,RC) + x(QIH,RC) + x(XIN,RC) =E= 0.0001 ; (LHS = 0, INFES = 0.0001 ****)
+      + x(NXA,RC) + x(QIH,RC) + x(XIN,RC) =E= 0 ; (LHS = 0)
      
 REMAINING 15 ENTRIES SKIPPED
-
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 10
-Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
 
 
 ---- balance_coal  =E=  input output balance
@@ -571,6 +549,12 @@ trade..  x(BEJ,DX) - x(BEJ,DRC) + x(TAJ,DX) - x(TAJ,DRC) + x(HEB,DX) - x(HEB,DRC
       - x(JXI,DRC) + x(SHD,DX) - x(SHD,DRC) + x(HEN,DX) - x(HEN,DRC) + x(HUB,DX) - x(HUB,DRC) + x(HUN,DX) - x(HUN,DRC)
      
       + x(GUD,DX) - x(GUD,DRC) + x(GXI,DX) - x(GXI,DRC) + x(HAI,DX) - x(HAI,DRC) + x(CHQ,DX) - x(CHQ,DRC) + x(SIC,DX)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 11
+Read a single state file
+Equation Listing    SOLVE gua Using NLP From line 196
+
+
+     trade  =E=  domestic trade balance     
      
       - x(SIC,DRC) + x(GZH,DX) - x(GZH,DRC) + x(YUN,DX) - x(YUN,DRC) + x(SHA,DX) - x(SHA,DRC) + x(GAN,DX) - x(GAN,DRC)
      
@@ -578,10 +562,6 @@ trade..  x(BEJ,DX) - x(BEJ,DRC) + x(TAJ,DX) - x(TAJ,DRC) + x(HEB,DX) - x(HEB,DRC
      
       (LHS = -999.970159, INFES = 999.970159 ****)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 11
-Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
-
 
 ---- sign  =G=  negative only for t and inv
 
@@ -593,9 +573,9 @@ sign(BEJ,X)..  x(BEJ,X) =G= 0 ; (LHS = 0)
      
 REMAINING 387 ENTRIES SKIPPED
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 12
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 12
 Read a single state file
-Column Listing      SOLVE gua Using NLP From line 179
+Column Listing      SOLVE gua Using NLP From line 196
 
 
 ---- x  adjusted value
@@ -616,7 +596,7 @@ x(BEJ,DX)
 
 x(BEJ,X)
                 (.LO, .L, .UP, .M = 0, 0, 0, 0)
-       (0)      criterion
+ (2000000)      criterion
         1       bench(X)
        -1       balance_othe(BEJ)
         1       sign(BEJ,X)
@@ -629,34 +609,34 @@ j
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       criterion
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 13
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 13
 Read a single state file
-Model Statistics    SOLVE gua Using NLP From line 179
+Model Statistics    SOLVE gua Using NLP From line 196
 
 
 MODEL STATISTICS
 
 BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          440
 BLOCKS OF VARIABLES           2     SINGLE VARIABLES          601
-NON ZERO ELEMENTS         2,191     NON LINEAR N-Z            600
-DERIVATIVE POOL             606     CONSTANT POOL             126
-CODE LENGTH               3,717
+NON ZERO ELEMENTS         1,720     NON LINEAR N-Z            129
+DERIVATIVE POOL             135     CONSTANT POOL             127
+CODE LENGTH               1,164
 
 
-GENERATION TIME      =        0.047 SECONDS      4 Mb  WIN234-234 May 21, 2010
+GENERATION TIME      =        0.015 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.047 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 14
+EXECUTION TIME       =        0.047 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 14
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
                S O L V E      S U M M A R Y
 
      MODEL   gua                 OBJECTIVE  j
      TYPE    NLP                 DIRECTION  MINIMIZE
-     SOLVER  CONOPT              FROM LINE  179
+     SOLVER  CONOPT              FROM LINE  196
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      4 Infeasible                
@@ -676,42 +656,36 @@ Solution Report     SOLVE gua Using NLP From line 179
  
  
     The model has 601 variables and 440 constraints
-    with 2191 Jacobian elements, 600 of which are nonlinear.
-    The Hessian of the Lagrangian has 600 elements on the diagonal,
-    0 elements below the diagonal, and 600 nonlinear variables.
- 
- ** Warning **  The number of nonlinear derivatives equal to zero
-                in the initial point is large (= 27 percent).
-                A better initial point will probably help the
-                optimization.
- 
+    with 1720 Jacobian elements, 129 of which are nonlinear.
+    The Hessian of the Lagrangian has 129 elements on the diagonal,
+    0 elements below the diagonal, and 129 nonlinear variables.
  
  ** An equation is inconsistent with other equations in the
     pre-triangular part of the model.
  
-    Residual=           1.00000000E-04
+    Residual=           5.5000000
     Tolerance (Rtnwtr)= 2.00000000E-08
  
-    bench(OTH): Inconsistency in pre-triangular part of model.
+    bench(ROILT): Inconsistency in pre-triangular part of model.
 
     The solution order of the critical equations and
     variables is:
 
-    All variables in equation bench(OTH) are now fixed
-    and the equation is infeasible. Residual =-1.0000000000E-04
+    All variables in equation bench(ROILT) are now fixed
+    and the equation is infeasible. Residual =-5.5000000000E+00
 
  
- CONOPT time Total                            0.024 seconds
+ CONOPT time Total                            0.018 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
- Workspace           =     2.49 Mbytes
-    Estimate         =     2.49 Mbytes
-    Max used         =     0.88 Mbytes
+ Workspace           =     2.06 Mbytes
+    Estimate         =     2.06 Mbytes
+    Max used         =     0.70 Mbytes
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- EQU criterion           .              .              .             EPS         
+---- EQU criterion           .           -15.0000          .             EPS    INFES
 
   criterion  criterion definition
 
@@ -720,32 +694,32 @@ Solution Report     SOLVE gua Using NLP From line 179
              LOWER          LEVEL          UPPER         MARGINAL
 
 PROD        918.4200      2963.0763       918.4200         EPS    INFES
-X             0.0001          .             0.0001         EPS    INFES
-RC            0.0001          .             0.0001         EPS    INFES
-COALT        -0.0001       -29.3000        -0.0001         EPS    INFES
-FGT          -0.0001          .            -0.0001         EPS    INFES
-OILT          0.0001          .             0.0001         EPS    INFES
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 15
+X              .              .              .             EPS         
+RC             .              .              .             EPS         
+COALT          .           -29.3000          .             EPS    INFES
+FGT            .              .              .             EPS         
+OILT           .              .              .             EPS         
+ROILT         5.5000          .             5.5000         1.0000 INFES
+NGT            .              .              .             EPS         
+ELEHT       494.5860      1537.7378       494.5860         EPS    INFES
+OTHET          .              .              .             EPS         
+AGR            .            29.9600          .             EPS    INFES
+IND         418.0080      2143.5878       418.0080         EPS    INFES
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 15
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      EQU bench  benchmark egy
 
              LOWER          LEVEL          UPPER         MARGINAL
 
-ROILT         5.5000          .             5.5000         EPS    INFES
-NGT           0.0001          .             0.0001         EPS    INFES
-ELEHT       494.5860      1537.7378       494.5860         EPS    INFES
-OTHET         0.0001          .             0.0001         EPS    INFES
-AGR           0.0001        29.9600         0.0001         EPS    INFES
-IND         418.0080      2143.5878       418.0080         EPS    INFES
-CON           0.0001         4.0000         0.0001         EPS    INFES
-TR            0.0001          .             0.0001         EPS    INFES
-WRHR          0.0001          .             0.0001         EPS    INFES
-OTH           0.0001          .             0.0001         1.0000 INFES
-FU            0.0001       247.9300         0.0001         EPS    INFES
-INV           0.0001        29.1309         0.0001         EPS    INFES
+CON            .             4.0000          .             EPS    INFES
+TR             .              .              .             EPS         
+WRHR           .              .              .             EPS         
+OTH            .              .              .             EPS         
+FU             .           247.9300          .             EPS    INFES
+INV            .            29.1309          .             EPS    INFES
 
 ---- EQU balance_coal  input output balance
 
@@ -803,21 +777,21 @@ GUD          .              .              .             EPS
 GXI          .              .              .             EPS         
 HAI          .              .              .             EPS         
 CHQ          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 16
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU balance_othe  
-
-           LOWER          LEVEL          UPPER         MARGINAL
-
 SIC          .              .              .             EPS         
 GZH          .              .              .             EPS         
 YUN          .              .              .             EPS         
 SHA          .              .              .             EPS         
 GAN          .              .              .             EPS         
 NXA          .       -1.000000E-5          .             EPS    INFES
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 16
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU balance_othe  
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
 QIH          .              .              .             EPS         
 XIN          .              .              .             EPS         
 
@@ -881,21 +855,21 @@ SHX.CON           .              .            +INF            EPS
 SHX.TR            .              .            +INF            EPS         
 SHX.WRHR          .              .            +INF            EPS         
 SHX.OTH           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 17
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 SHX.FU            .              .            +INF            EPS         
 SHX.INV           .              .            +INF            EPS         
 NMG.PROD          .            93.7314        +INF            EPS         
 NMG.DX            .              .            +INF            EPS         
 NMG.X             .              .            +INF            EPS         
 NMG.DRC           .             5.2645        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 17
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 NMG.RC            .              .            +INF            EPS         
 NMG.AGR           .              .            +INF            EPS         
 NMG.IND           .            53.7577        +INF            EPS         
@@ -959,21 +933,21 @@ SHH.FU            .              .            +INF            EPS
 SHH.INV           .              .            +INF            EPS         
 JSU.PROD          .            39.3800        +INF            EPS         
 JSU.DX            .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 18
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 JSU.X             .              .            +INF            EPS         
 JSU.DRC           .              .            +INF            EPS         
 JSU.RC            .              .            +INF            EPS         
 JSU.AGR           .              .            +INF            EPS         
 JSU.IND           .             0.3500        +INF            EPS         
 JSU.CON           .              .            +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 18
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 JSU.TR            .              .            +INF            EPS         
 JSU.WRHR          .              .            +INF            EPS         
 JSU.OTH           .              .            +INF            EPS         
@@ -1037,21 +1011,21 @@ SHD.X             .              .            +INF            EPS
 SHD.DRC           .           198.5957        +INF            EPS         
 SHD.RC            .              .            +INF            EPS         
 SHD.AGR           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 19
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 SHD.IND           .            54.7736        +INF            EPS         
 SHD.CON           .              .            +INF            EPS         
 SHD.TR            .              .            +INF            EPS         
 SHD.WRHR          .              .            +INF            EPS         
 SHD.OTH           .              .            +INF            EPS         
 SHD.FU            .              .            +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 19
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 SHD.INV           .             0.9250        +INF            EPS         
 HEN.PROD          .            25.1600        +INF            EPS         
 HEN.DX            .              .            +INF            EPS         
@@ -1115,21 +1089,21 @@ GXI.IND           .           202.4700        +INF            EPS
 GXI.CON           .              .            +INF            EPS         
 GXI.TR            .              .            +INF            EPS         
 GXI.WRHR          .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 20
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 GXI.OTH           .              .            +INF            EPS         
 GXI.FU            .             4.5000        +INF            EPS         
 GXI.INV           .              .            +INF            EPS         
 HAI.PROD          .              .            +INF            EPS         
 HAI.DX            .              .            +INF            EPS         
 HAI.X             .              .            +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 20
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 HAI.DRC           .              .            +INF            EPS         
 HAI.RC            .              .            +INF            EPS         
 HAI.AGR           .              .            +INF            EPS         
@@ -1193,21 +1167,21 @@ YUN.OTH           .              .            +INF            EPS
 YUN.FU            .            43.4700        +INF            EPS         
 YUN.INV           .             2.7400        +INF            EPS         
 SHA.PROD          .           180.0000        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 21
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 SHA.DX            .              .            +INF            EPS         
 SHA.X             .              .            +INF            EPS         
 SHA.DRC           .             2.2900        +INF            EPS         
 SHA.RC            .              .            +INF            EPS         
 SHA.AGR           .              .            +INF            EPS         
 SHA.IND           .            97.5100        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 21
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 SHA.CON           .              .            +INF            EPS         
 SHA.TR            .              .            +INF            EPS         
 SHA.WRHR          .              .            +INF            EPS         
@@ -1266,10 +1240,6 @@ XIN.WRHR          .              .            +INF            EPS
 XIN.OTH           .              .            +INF            EPS         
 XIN.FU            .              .            +INF            EPS         
 XIN.INV           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 22
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
 
 ---- VAR x  adjusted value
 
@@ -1281,6 +1251,15 @@ BEJ.X              .              .              .             EPS
 BEJ.DRC          -INF            8.6100        +INF            EPS         
 BEJ.RC             .              .              .             EPS         
 BEJ.COALT          .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 22
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 BEJ.FGT            .              .              .             EPS         
 BEJ.OILT           .              .              .             EPS         
 BEJ.ROILT          .              .              .             EPS         
@@ -1344,21 +1323,21 @@ SHX.COALT          .              .              .             EPS
 SHX.FGT            .              .              .             EPS         
 SHX.OILT           .              .              .             EPS         
 SHX.ROILT          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 23
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 SHX.NGT            .              .              .             EPS         
 SHX.ELEHT        -INF          373.5000        +INF            EPS         
 SHX.OTHET          .              .              .             EPS         
 SHX.AGR            .              .              .             EPS         
 SHX.IND          -INF           28.5900        +INF            EPS         
 SHX.CON            .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 23
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 SHX.TR             .              .              .             EPS         
 SHX.WRHR           .              .              .             EPS         
 SHX.OTH            .              .              .             EPS         
@@ -1422,21 +1401,21 @@ JIL.CON            .              .              .             EPS
 JIL.TR             .              .              .             EPS         
 JIL.WRHR           .              .              .             EPS         
 JIL.OTH            .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 24
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 JIL.FU           -INF           62.7000        +INF            EPS         
 JIL.INV            .              .              .             EPS         
 HLJ.PROD         -INF            0.0800        +INF            EPS         
 HLJ.DX             .              .              .             EPS         
 HLJ.X              .              .              .             EPS         
 HLJ.DRC          -INF          120.5100        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 24
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 HLJ.RC             .              .              .             EPS         
 HLJ.COALT        -INF          -15.1800        +INF            EPS         
 HLJ.FGT            .              .              .             EPS         
@@ -1500,21 +1479,21 @@ ZHJ.DRC            .              .              .             EPS
 ZHJ.RC             .              .              .             EPS         
 ZHJ.COALT          .              .              .             EPS         
 ZHJ.FGT            .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 25
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 ZHJ.OILT           .              .              .             EPS         
 ZHJ.ROILT          .              .              .             EPS         
 ZHJ.NGT            .              .              .             EPS         
 ZHJ.ELEHT        -INF           48.7285        +INF            EPS         
 ZHJ.OTHET          .              .              .             EPS         
 ZHJ.AGR            .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 25
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 ZHJ.IND          -INF           60.5182        +INF            EPS         
 ZHJ.CON            .              .              .             EPS         
 ZHJ.TR             .              .              .             EPS         
@@ -1578,21 +1557,21 @@ JXI.AGR            .              .              .             EPS
 JXI.IND          -INF           47.0000        +INF            EPS         
 JXI.CON            .              .              .             EPS         
 JXI.TR             .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 26
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 JXI.WRHR           .              .              .             EPS         
 JXI.OTH            .              .              .             EPS         
 JXI.FU             .              .              .             EPS         
 JXI.INV            .              .              .             EPS         
 SHD.PROD         -INF           82.8577        +INF            EPS         
 SHD.DX             .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 26
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 SHD.X              .              .              .             EPS         
 SHD.DRC          -INF          198.5957        +INF            EPS         
 SHD.RC             .              .              .             EPS         
@@ -1656,21 +1635,21 @@ HUN.DX             .              .              .             EPS
 HUN.X              .              .              .             EPS         
 HUN.DRC          -INF           41.7200        +INF            EPS         
 HUN.RC             .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 27
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 HUN.COALT        -INF           -1.4700        +INF            EPS         
 HUN.FGT            .              .              .             EPS         
 HUN.OILT           .              .              .             EPS         
 HUN.ROILT          .              .              .             EPS         
 HUN.NGT            .              .              .             EPS         
 HUN.ELEHT        -INF           29.4600        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 27
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 HUN.OTHET          .              .              .             EPS         
 HUN.AGR          -INF            5.2000        +INF            EPS         
 HUN.IND          -INF           79.2100        +INF            EPS         
@@ -1734,21 +1713,21 @@ HAI.ELEHT          .              .              .             EPS
 HAI.OTHET          .              .              .             EPS         
 HAI.AGR            .              .              .             EPS         
 HAI.IND            .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 28
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 HAI.CON            .              .              .             EPS         
 HAI.TR             .              .              .             EPS         
 HAI.WRHR           .              .              .             EPS         
 HAI.OTH            .              .              .             EPS         
 HAI.FU             .              .              .             EPS         
 HAI.INV            .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 28
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 CHQ.PROD         -INF          428.6500        +INF            EPS         
 CHQ.DX             .              .              .             EPS         
 CHQ.X              .              .              .             EPS         
@@ -1812,21 +1791,21 @@ GZH.INV            .              .              .             EPS
 YUN.PROD         -INF          200.8572        +INF            EPS         
 YUN.DX             .              .              .             EPS         
 YUN.X              .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 29
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 YUN.DRC          -INF            0.0037        +INF            EPS         
 YUN.RC             .              .              .             EPS         
 YUN.COALT          .              .              .             EPS         
 YUN.FGT            .              .              .             EPS         
 YUN.OILT           .              .              .             EPS         
 YUN.ROILT          .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 29
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 YUN.NGT            .              .              .             EPS         
 YUN.ELEHT        -INF           50.3021        +INF            EPS         
 YUN.OTHET          .              .              .             EPS         
@@ -1890,21 +1869,21 @@ NXA.ROILT          .              .              .             EPS
 NXA.NGT            .              .              .             EPS         
 NXA.ELEHT          .              .              .             EPS         
 NXA.OTHET          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 30
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 NXA.AGR            .              .              .             EPS         
 NXA.IND          -INF            1.5995        +INF            EPS         
 NXA.CON            .              .              .             EPS         
 NXA.TR             .              .              .             EPS         
 NXA.WRHR           .              .              .             EPS         
 NXA.OTH            .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 30
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 NXA.FU             .              .              .             EPS         
 NXA.INV            .              .              .             EPS         
 QIH.PROD           .              .              .             EPS         
@@ -1956,52 +1935,15 @@ XIN.INV            .              .              .             EPS
 
 
 **** REPORT SUMMARY :        0     NONOPT
-                            20 INFEASIBLE (INFES)
-                    SUM       6159.1793
+                            12 INFEASIBLE (INFES)
+                    SUM       6174.1789
                     MAX       2044.6563
-                    MEAN       307.9590
+                    MEAN       514.5149
                              0  UNBOUNDED
                              0     ERRORS
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 31
-Read a single state file
-E x e c u t i o n
 
 
-----    181 VARIABLE x.L  adjusted value
-
-           PROD          DX         DRC       COALT       ELEHT         AGR         IND         CON          FU         INV
-
-BEJ       4.810       0.060       8.610                  11.940                   1.420
-TAJ      29.300                   8.630                                          36.170                               1.760
-HEB     218.840                              -0.180      96.060                 122.850                               0.110
-SHX     402.090                                         373.500                  28.590
-NMG      93.731                   5.264                  30.752                  53.758                              14.486
-LIA     124.330                                          15.330                 108.940                               0.060
-JIL     153.920                   7.640                   7.570                  91.290                  62.700
-HLJ       0.080                 120.510     -15.180      58.060                  77.670                               0.040
-SHH      10.120                                          10.120
-JSU      39.380                                          39.030                   0.350
-ZHJ     109.250       0.003                              48.728                  60.518
-ANH       7.970       0.340                               7.520                                                       0.110
-FUJ      94.770                                          13.640                  81.130
-JXI      72.600                                          25.600                  47.000
-SHD      82.858                 198.596                 225.755                  54.774                               0.925
-HEN      25.160                  88.910                  72.400                  41.670
-HUB                             197.900                  35.950                 161.950
-HUN     208.010                  41.720      -1.470      29.460       5.200      79.210                 137.260       0.070
-GUD       2.730                 160.630                 119.500                  41.230                               2.630
-GXI     301.150                                          94.180                 202.470                   4.500
-CHQ     428.650                                          23.210                 402.130                               3.310
-GZH      44.100                                          44.100
-YUN     200.857                   0.004                  50.302      21.660      82.689                  43.470       2.740
-SHA     180.000                   2.290     -12.470      94.360                  97.510                               2.890
-GAN     128.370                                          10.670       3.100     110.600       4.000
-NXA             5.100000E-4       1.600                                           1.599
-QIH                             158.070                                         158.070
-
-
-
-EXECUTION TIME       =        0.000 SECONDS      3 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        0.015 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -2011,5 +1953,10 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\OTHE_balance.lst
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 31
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\OTHE_balance.lst

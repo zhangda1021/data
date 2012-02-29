@@ -1,25 +1,53 @@
 
---- Job egydatabalance.gms Start 02/29/12 13:36:14 WIN-VS8 23.4.3 x86/MS Windows        
-GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
-Licensee: Matt Mowers                                    G100419:1834CP-WIN
-          National Renewable Energy Laboratory (NREL)                DC8246
+--- Job egydatabalance.gms Start 02/29/12 14:58:17 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
 --- Starting compilation
---- egydatabalance.gms(119) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
---- egydatabalance.gms(122) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\coal_bench.gdx
---- egydatabalance.gms(178) 3 Mb 3 Errors
-*** Error 140 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    Unknown symbol
-*** Error  37 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    '=l=' or '=e=' or '=g=' operator expected
-*** Error 409 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- egydatabalance.gms(183) 3 Mb 4 Errors
-*** Error 257 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    Solve statement not checked because of previous errors
---- egydatabalance.gms(187) 3 Mb 4 Errors
-*** Status: Compilation error(s)
---- Job egydatabalance.gms Stop 02/29/12 13:36:14 elapsed 0:00:00.100
-Exit code = 2
+--- egydatabalance.gms(121) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
+--- egydatabalance.gms(124) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal_bench.gdx
+--- egydatabalance.gms(204) 3 Mb
+--- Starting execution: elapsed 0:00:00.010
+--- egydatabalance.gms(195) 4 Mb
+--- Generating NLP model gua
+--- egydatabalance.gms(196) 7 Mb
+---   440 rows  601 columns  2,191 non-zeroes
+---   5,853 nl-code  600 nl-non-zeroes
+--- egydatabalance.gms(196) 4 Mb
+--- Executing CONOPT: elapsed 0:00:00.036
+--- egydatabalance.gms(196) 4 Mb
+C O N O P T 3    Aug 14, 2009 23.2.1 WEX 12168.12582 WEI x86_64/MS Windows 
+ 
+ 
+    C O N O P T 3   version 3.14T
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ Using default options.
+ 
+ Reading Data
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        1.3273564677E+05 (Input point)
+                                Pre-triangular equations:       52
+                                Post-triangular equations:       1
+      1   0        1.3273564677E+05 (After pre-processing)
+      2   0        2.6589157801E+01 (After scaling)
+     10   0     1  1.9745491835E+01               7.7E-02      T  T
+     20   0     1  1.1894607578E+01               4.5E-02      T  T
+     30   0     1  6.3239978532E+00               1.2E-01      T  T
+     40   0     1  2.3114239022E+00               2.0E-01      T  T
+     50   1     1  8.0348250236E-02 0.0E+00     0
+ 
+ ** Infeasible solution. Reduced gradient less than tolerance.
+ 
+--- Restarting execution
+--- egydatabalance.gms(196) 2 Mb
+--- Reading solution for model gua
+--- egydatabalance.gms(196) 2 Mb
+*** Status: Normal completion
+--- Job egydatabalance.gms Stop 02/29/12 14:58:17 elapsed 0:00:00.225

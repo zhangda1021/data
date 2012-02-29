@@ -520,26 +520,64 @@ PlaneRownr=-1
 [RP:TZABAL]
 1=
 
+[GDXDISP: balance_coal Equ 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: benchvalue Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: columnsum Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: fg Par 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: sign Equ 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
 [RP:EGYDATABALANCE]
 1=
 
 [MRUFILES]
-1=C:\Users\DaZHANG\USREP\EPPA\eppacore.gms
-2=C:\Users\DaZHANG\data\test.gms
-3=C:\Users\DaZHANG\data\ChinaBalancedSAM\test.lst
-4=C:\Users\DaZHANG\data\ChinaBalancedSAM\immun.gms
-5=C:\Users\DaZHANG\data\ChinaBalancedSAM\readegybench.gms
-6=C:\Users\DaZHANG\data\ChinaBalancedSAM\immun.lst
-7=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL_balanced.gdx
-8=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
+1=C:\Users\dzhang\data\ChinaBalancedSAM\listings\COAL_balance.lst
+2=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal_bench.gdx
+3=C:\Users\DaZHANG\USREP\EPPA\eppacore.gms
+4=C:\Users\DaZHANG\data\test.gms
+5=C:\Users\DaZHANG\data\ChinaBalancedSAM\test.lst
+6=C:\Users\DaZHANG\data\ChinaBalancedSAM\immun.gms
+7=C:\Users\DaZHANG\data\ChinaBalancedSAM\readegybench.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_balance.gdx
-FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL.gdx
-FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.lst
-FILE4=C:\Users\DaZHANG\USREP\cge\tza\tzabal.gms
-FILE5=C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_balance.gdx
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\COAL.gdx
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.lst
+FILE4=C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
 MAXIM=1
 TOP=108
 LEFT=9

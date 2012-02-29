@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -34,7 +34,7 @@ C o m p i l a t i o n
        
       After the rebalancing work, we can estimate detailed industry energy consumption of each province.
        
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 2
 Read a single state file
 C o m p i l a t i o n
 
@@ -112,7 +112,7 @@ C o m p i l a t i o n
  107  parameter roil_bench(i,*)
  108  parameter ng_bench(i,*)
  109  parameter eleh_bench(i,*)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 3
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 3
 Read a single state file
 C o m p i l a t i o n
 
@@ -120,188 +120,199 @@ C o m p i l a t i o n
  110  parameter othe_bench(i,*)
  111  parameter ind(*,indi,e)           egy cons of egy by intensive ind
  112  parameter indprov(*,r,e)       egy cons of egy product by province
- 113   
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+ 113  parameter columnsum(i)
+ 114  parameter benchvalue(i)
+ 115   
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
 --- LOAD  eleh = 1:eleh
- 117  display ELEH
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH_bench.gdx
+ 119  display ELEH
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH_bench.gdx
 --- LOAD  eleh_bench = 1:eleh_bench
- 120  display ELEH_bench
- 121   
- 122  variables       x(r,i)  adjusted value
- 123  variable        j       obj function
- 124   
- 125  Equations  criterion criterion definition
- 126             bench   benchmark egy
- 127             balance_coal  input output balance
- 128             balance_fg
- 129             balance_oil
- 130             balance_roil
- 131             balance_ng
- 132             balance_eleh
- 133             balance_othe
- 134             trade   domestic trade balance
- 135             sign    negative only for t and inv;
- 136   
- 137   
- 138  criterion..
- 139  j=e=sum((r,i),sqr(x(r,i)-ELEH(r,i)));
- 140  *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
- 141   
- 142  *No bench for dx and drc
- 143  bench(i)$((ord(i)<>2) and (ord(i)<>4))..
- 144  sum(r,x(r,i)) =e= ELEH_bench(i,"value");
- 145  *coal
- 146  balance_coal(r)$(sameas('ELEH','COAL'))..
- 147  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
+ 122  display ELEH_bench
+ 123   
+ 124  loop(i,
+ 125  columnsum(i)=sum(r, ELEH(r,i)););
+ 126  display columnsum
+ 127   
+ 128  loop(i$ ((ord(i)<>2) and (ord(i)<>4)),
+ 129  benchvalue(i)= ELEH_bench(i,"value");
+ 130  );
+ 131  display benchvalue
+ 132   
+ 133  variables       x(r,i)  adjusted value
+ 134  variable        j       obj function
+ 135   
+ 136  Equations  criterion criterion definition
+ 137             bench   benchmark egy
+ 138             balance_coal  input output balance
+ 139             balance_fg
+ 140             balance_oil
+ 141             balance_roil
+ 142             balance_ng
+ 143             balance_eleh
+ 144             balance_othe
+ 145             trade   domestic trade balance
+ 146             sign    negative only for t and inv;
+ 147   
  148   
- 149  *fg
- 150  balance_fg(r)$(sameas('ELEH','FG'))..
- 151  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
- 152  *oil
- 153  balance_oil(r)$(sameas('ELEH','OIL'))..
- 154  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
- 155  *roil
- 156  balance_roil(r)$(sameas('ELEH','ROIL'))..
- 157  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
- 158  *ng
- 159  balance_ng(r)$(sameas('ELEH','NG'))..
- 160  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
- 161  *eleh
- 162  balance_eleh(r)$(sameas('ELEH','ELEH'))..
- 163  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
- 164  *othe
- 165  balance_othe(r)$(sameas('ELEH','OTHE'))..
- 166  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
- 167   
- 168  trade..
- 169  sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
- 170   
- 171   
- 172  sign(r,i)$((ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<
-      >12))..
- 173  x(r,i)=g=0;
- 174   
- 175  Model gua /all/;
- 176  x.l(r,i)= ELEH(r,i);
- 177  x.fx(r,i)$(not ELEH(r,i)) = 0;
- 178  gua.iterlim=1000;
- 179  Solve gua minimizing j using nlp;
- 180   
- 181  Display x.l;
+ 149  criterion..
+ 150  j=e=sum((r,i)$(ELEH(r,i)<>0),sqr(x(r,i)/ELEH(r,i)-1));
+ 151  *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
+ 152  *j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i))/100000);
+ 153   
+ 154  *No bench for dx and drc
+ 155  bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+ 156  sum(r,x(r,i)) =e= benchvalue(i);
+ 157  *coal
+ 158  balance_coal(r)$(sameas('ELEH','COAL'))..
+ 159  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
+ 160   
+ 161  *fg
+ 162  balance_fg(r)$(sameas('ELEH','FG'))..
+ 163  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"FGT"))=e=sum(i,x(r,i));
+ 164  *oil
+ 165  balance_oil(r)$(sameas('ELEH','OIL'))..
+ 166  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OILT"))=e=sum(i,x(r,i));
+ 167  *roil
+ 168  balance_roil(r)$(sameas('ELEH','ROIL'))..
+ 169  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ROILT"))=e=sum(i,x(r,i));
+ 170  *ng
+ 171  balance_ng(r)$(sameas('ELEH','NG'))..
+ 172  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"NGT"))=e=sum(i,x(r,i));
+ 173  *eleh
+ 174  balance_eleh(r)$(sameas('ELEH','ELEH'))..
+ 175  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"ELEHT"))=e=sum(i,x(r,i));
+ 176  *othe
+ 177  balance_othe(r)$(sameas('ELEH','OTHE'))..
+ 178  2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"OTHET"))=e=sum(i,x(r,i));
+ 179   
+ 180  trade..
+ 181  sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
  182   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 4
+ 183   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 4
 Read a single state file
 C o m p i l a t i o n
 
 
- 183   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 5
+ 184  sign(r,i)$((ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<
+      >12))..
+ 185  x(r,i)=g=0;
+ 186   
+ 187  Model gua /all/;
+ 188  x.l(r,i)= ELEH(r,i);
+ 189  *x.l(r,i)$((ord(i)<>2) and (ord(i)<>4) and (abs(columnsum(i))>0.01))= %egyprod%(r,i)/columnsum(i)*benchvalue(i);
+ 190  Display x.l;
+ 191  x.fx(r,i)$(abs(x.l(r,i))<0.0001) = 0;
+ 192  *x.up(r,i)=max(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+ 193  *x.lo(r,i)=min(%egyprod%(r,i)*5,%egyprod%(r,i)/5);
+ 194   
+ 195  gua.iterlim=1000;
+ 196  Solve gua minimizing j using nlp;
+ 197   
+ 198   
+ 199   
+ 200   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 5
 Read a single state file
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-     2      114 IF EXIST       1     114  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
-     3      115 GDXIN          1     119  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
-     4      118 GDXIN          1     122  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH_bench.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+     2      116 IF EXIST       1     116  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+     3      117 GDXIN          1     121  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH.gdx
+     4      120 GDXIN          1     124  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ELEH_bench.gdx
 
 
-COMPILATION TIME     =        0.016 SECONDS      3 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 6
+COMPILATION TIME     =        0.016 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 6
 Read a single state file
 E x e c u t i o n
 
 
-----    117 PARAMETER eleh  eleh ebt
+----    119 PARAMETER eleh  eleh ebt
 
-           PROD          DX           X         DRC          RC       ELEHT         AGR         IND         CON          TR
+           PROD          DX           X         DRC          RC       COALT         FGT        OILT       ROILT         NGT
 
-BEJ       8.844       0.307                 555.472                 709.708      16.419     470.902      23.344      60.132
-TAJ                   1.168                 133.362                 897.235      13.851     628.544       8.205      14.910
-HEB      13.584      94.046                 460.826                2622.068     176.349    2099.624      15.824      55.134
-SHX      31.647     568.486                  62.507                2441.272      34.879    1520.344      10.004      50.401
-NMG      67.746     843.019                                        2714.257      43.749    1422.790       9.818      41.450
-LIA      58.427      26.522                 329.225       0.516    2547.133      30.713    1769.154      16.214      37.759
-JIL      90.072      47.181             3.410000E-4                1059.352      10.717     781.727       5.740      26.571
-HLJ      17.218     169.221       0.049       0.553      82.220    1341.379      19.885     702.472       4.474      10.815
-SHH      19.142      19.947                 426.184                1123.021       6.477    1013.005      23.124      24.856
-JSU     131.122     238.254                 393.956                4192.626      30.074    3521.257      28.931      23.966
-ZHJ     477.867      76.016                 209.873                3312.258      19.223    2950.376      29.011      20.574
-ANH      18.017     130.961                   8.837                1217.371      14.759     835.877       9.553      10.995
-FUJ     404.119      49.811                   1.942                1011.158      13.101     916.020      17.120      15.842
-JXI      95.739       5.641                  26.337                 586.530      26.227     461.860       4.891       9.390
-SHD      23.466      12.696                                        5155.311      86.731    4159.391      38.572      40.926
-HEN     105.067     109.421                  51.729                2711.987      91.551    2046.635      10.148      45.213
-HUB    1118.525     820.161                 141.630                1074.547      46.591    1169.254      10.741      14.662
-HUN     422.535     108.398                 161.233                 815.522      89.397     792.533       8.726      29.766
-GUD     539.851       5.150     145.464     964.187      49.590    2963.699      90.835    2823.655      53.044      45.768
-GXI     398.763      82.589                  78.183                 536.506      21.580     668.566       5.671       8.787
-HAI      16.088       0.019                   2.311                 129.978       7.300      79.865       1.118       1.880
-CHQ      75.166      63.785                 179.594                 429.104       2.507     399.214      14.232       9.832
-SIC     952.954     104.293                  44.305                 666.435      21.753    1051.753      20.549      27.911
-GZH     371.370     465.079                   0.124                1094.556       6.551     783.178       8.443      24.531
-YUN     529.650     172.429      31.413       8.444                 611.837      18.669     675.341      15.276      16.100
-SHA     106.542     246.686                                        1053.660      44.269     543.264      13.130      40.090
-GAN     238.905       4.941                                         770.037      64.707     726.531       5.481      30.246
-NXA     232.157      42.659                  61.232                 108.289       0.890     322.981       2.814       1.245
-QIH      24.482      24.396                  10.399                 587.727      12.732     489.889       3.559       8.770
-XIN      79.553                                                     919.671      46.518     625.455       4.131      14.817
+BEJ       8.844       0.307 1.000000E-6     555.472 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ                   1.168                 133.362
+HEB      13.584      94.046                 460.826
+SHX      31.647     568.486                  62.507
+NMG      67.746     843.019
+LIA      58.427      26.522                 329.225       0.516
+JIL      90.072      47.181             3.410000E-4
+HLJ      17.218     169.221       0.049       0.553      82.220
+SHH      19.142      19.947                 426.184
+JSU     131.122     238.254                 393.956
+ZHJ     477.867      76.016                 209.873
+ANH      18.017     130.961                   8.837
+FUJ     404.119      49.811                   1.942
+JXI      95.739       5.641                  26.337
+SHD      23.466      12.696
+HEN     105.067     109.421                  51.729
+HUB    1118.525     820.161                 141.630
+HUN     422.535     108.398                 161.233
+GUD     539.851       5.150     145.464     964.187      49.590
+GXI     398.763      82.589                  78.183
+HAI      16.088       0.019                   2.311
+CHQ      75.166      63.785                 179.594
+SIC     952.954     104.293                  44.305
+GZH     371.370     465.079                   0.124
+YUN     529.650     172.429      31.413       8.444
+SHA     106.542     246.686
+GAN     238.905       4.941
+NXA     232.157      42.659                  61.232
+QIH      24.482      24.396                  10.399
+XIN      79.553
 
-  +        WRHR         OTH          FU
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
 
-BEJ     110.812     330.877     261.231
-TAJ      51.426      45.357     267.136
-HEB      43.257      87.554     524.690
-SHX      18.681      42.818     289.812
-NMG      49.957      50.734     320.488
-LIA      49.455     146.110     859.374
-JIL      20.849      48.736     207.902
-HLJ      18.484      46.026     469.944
-SHH      78.755     162.261     239.921
-JSU      90.295     172.183     612.746
-ZHJ     248.812     179.333     476.654
-ANH      23.679      42.417     175.983
-FUJ      39.279      73.261     292.785
-JXI      16.579      29.459     154.559
-SHD     129.500     166.524     544.437
-HEN      46.688      81.083     438.044
-HUB      45.719      54.482     173.092
-HUN      23.769      51.962     294.739
-GUD     231.027     337.274     785.110
-GXI      19.585      35.693     170.981
-HAI       9.820      20.991      27.382
-CHQ      24.936      36.145     133.211
-SIC      37.214      64.461     335.760
-GZH      10.029      19.492     148.748
-YUN      13.445      22.036     185.223
-SHA      21.643      49.346     201.776
-GAN       9.365      19.971     147.700
-NXA       3.047       6.731      21.311
-QIH      10.269      13.373      59.619
-XIN      24.783      28.252     255.268
+BEJ     709.708 1.000000E-6      16.419     470.902      23.344      60.132     110.812     330.877     261.231 1.000000E-6
+TAJ     897.235                  13.851     628.544       8.205      14.910      51.426      45.357     267.136
+HEB    2622.068                 176.349    2099.624      15.824      55.134      43.257      87.554     524.690
+SHX    2441.272                  34.879    1520.344      10.004      50.401      18.681      42.818     289.812
+NMG    2714.257                  43.749    1422.790       9.818      41.450      49.957      50.734     320.488
+LIA    2547.133                  30.713    1769.154      16.214      37.759      49.455     146.110     859.374
+JIL    1059.352                  10.717     781.727       5.740      26.571      20.849      48.736     207.902
+HLJ    1341.379                  19.885     702.472       4.474      10.815      18.484      46.026     469.944
+SHH    1123.021                   6.477    1013.005      23.124      24.856      78.755     162.261     239.921
+JSU    4192.626                  30.074    3521.257      28.931      23.966      90.295     172.183     612.746
+ZHJ    3312.258                  19.223    2950.376      29.011      20.574     248.812     179.333     476.654
+ANH    1217.371                  14.759     835.877       9.553      10.995      23.679      42.417     175.983
+FUJ    1011.158                  13.101     916.020      17.120      15.842      39.279      73.261     292.785
+JXI     586.530                  26.227     461.860       4.891       9.390      16.579      29.459     154.559
+SHD    5155.311                  86.731    4159.391      38.572      40.926     129.500     166.524     544.437
+HEN    2711.987                  91.551    2046.635      10.148      45.213      46.688      81.083     438.044
+HUB    1074.547                  46.591    1169.254      10.741      14.662      45.719      54.482     173.092
+HUN     815.522                  89.397     792.533       8.726      29.766      23.769      51.962     294.739
+GUD    2963.699                  90.835    2823.655      53.044      45.768     231.027     337.274     785.110
+GXI     536.506                  21.580     668.566       5.671       8.787      19.585      35.693     170.981
+HAI     129.978                   7.300      79.865       1.118       1.880       9.820      20.991      27.382
+CHQ     429.104                   2.507     399.214      14.232       9.832      24.936      36.145     133.211
+SIC     666.435                  21.753    1051.753      20.549      27.911      37.214      64.461     335.760
+GZH    1094.556                   6.551     783.178       8.443      24.531      10.029      19.492     148.748
+YUN     611.837                  18.669     675.341      15.276      16.100      13.445      22.036     185.223
+SHA    1053.660                  44.269     543.264      13.130      40.090      21.643      49.346     201.776
+GAN     770.037                  64.707     726.531       5.481      30.246       9.365      19.971     147.700
+NXA     108.289                   0.890     322.981       2.814       1.245       3.047       6.731      21.311
+QIH     587.727                  12.732     489.889       3.559       8.770      10.269      13.373      59.619
+XIN     919.671                  46.518     625.455       4.131      14.817      24.783      28.252     255.268
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 7
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 7
 Read a single state file
 E x e c u t i o n
 
 
-----    120 PARAMETER eleh_bench  
+----    122 PARAMETER eleh_bench  
 
             value
 
 PROD     6865.440
 X         179.020
 RC         52.245
-COALT 1.000000E-4
-FGT   1.000000E-4
-OILT  1.000000E-4
-ROILT 1.000000E-4
-NGT   1.000000E-4
 ELEHT   42283.198
-OTHET 1.000000E-4
 AGR      1207.113
 IND     34080.986
 CON       399.980
@@ -309,208 +320,221 @@ TR        709.517
 WRHR     1248.386
 OTH      2313.705
 FU       9061.397
-INV   1.000000E-4
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 8
+
+----    126 PARAMETER columnsum  
+
+PROD     6668.618,    DX       4533.280,    X         176.927,    DRC      4312.443,    RC        132.326
+COALT 1.000000E-6,    FGT   1.000000E-6,    OILT  1.000000E-6,    ROILT 1.000000E-6,    NGT   1.000000E-6
+ELEHT   45404.235,    OTHET 1.000000E-6,    AGR      1109.003,    IND     36451.457,    CON       421.891
+TR        763.337,    WRHR     1521.157,    OTH      2464.945,    FU       9075.626,    INV   1.000000E-6
+
+
+----    131 PARAMETER benchvalue  
+
+PROD   6865.440,    X       179.020,    RC       52.245,    ELEHT 42283.198,    AGR    1207.113,    IND   34080.986
+CON     399.980,    TR      709.517,    WRHR   1248.386,    OTH    2313.705,    FU     9061.397
+
+
+----    190 VARIABLE x.L  adjusted value
+
+           PROD          DX           X         DRC          RC       COALT         FGT        OILT       ROILT         NGT
+
+BEJ       8.844       0.307 1.000000E-6     555.472 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6 1.000000E-6
+TAJ                   1.168                 133.362
+HEB      13.584      94.046                 460.826
+SHX      31.647     568.486                  62.507
+NMG      67.746     843.019
+LIA      58.427      26.522                 329.225       0.516
+JIL      90.072      47.181             3.410000E-4
+HLJ      17.218     169.221       0.049       0.553      82.220
+SHH      19.142      19.947                 426.184
+JSU     131.122     238.254                 393.956
+ZHJ     477.867      76.016                 209.873
+ANH      18.017     130.961                   8.837
+FUJ     404.119      49.811                   1.942
+JXI      95.739       5.641                  26.337
+SHD      23.466      12.696
+HEN     105.067     109.421                  51.729
+HUB    1118.525     820.161                 141.630
+HUN     422.535     108.398                 161.233
+GUD     539.851       5.150     145.464     964.187      49.590
+GXI     398.763      82.589                  78.183
+HAI      16.088       0.019                   2.311
+CHQ      75.166      63.785                 179.594
+SIC     952.954     104.293                  44.305
+GZH     371.370     465.079                   0.124
+YUN     529.650     172.429      31.413       8.444
+SHA     106.542     246.686
+GAN     238.905       4.941
+NXA     232.157      42.659                  61.232
+QIH      24.482      24.396                  10.399
+XIN      79.553
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+BEJ     709.708 1.000000E-6      16.419     470.902      23.344      60.132     110.812     330.877     261.231 1.000000E-6
+TAJ     897.235                  13.851     628.544       8.205      14.910      51.426      45.357     267.136
+HEB    2622.068                 176.349    2099.624      15.824      55.134      43.257      87.554     524.690
+SHX    2441.272                  34.879    1520.344      10.004      50.401      18.681      42.818     289.812
+NMG    2714.257                  43.749    1422.790       9.818      41.450      49.957      50.734     320.488
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 8
 Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
+E x e c u t i o n
+
+
+        190 VARIABLE x.L  adjusted value
+
+  +       ELEHT       OTHET         AGR         IND         CON          TR        WRHR         OTH          FU         INV
+
+LIA    2547.133                  30.713    1769.154      16.214      37.759      49.455     146.110     859.374
+JIL    1059.352                  10.717     781.727       5.740      26.571      20.849      48.736     207.902
+HLJ    1341.379                  19.885     702.472       4.474      10.815      18.484      46.026     469.944
+SHH    1123.021                   6.477    1013.005      23.124      24.856      78.755     162.261     239.921
+JSU    4192.626                  30.074    3521.257      28.931      23.966      90.295     172.183     612.746
+ZHJ    3312.258                  19.223    2950.376      29.011      20.574     248.812     179.333     476.654
+ANH    1217.371                  14.759     835.877       9.553      10.995      23.679      42.417     175.983
+FUJ    1011.158                  13.101     916.020      17.120      15.842      39.279      73.261     292.785
+JXI     586.530                  26.227     461.860       4.891       9.390      16.579      29.459     154.559
+SHD    5155.311                  86.731    4159.391      38.572      40.926     129.500     166.524     544.437
+HEN    2711.987                  91.551    2046.635      10.148      45.213      46.688      81.083     438.044
+HUB    1074.547                  46.591    1169.254      10.741      14.662      45.719      54.482     173.092
+HUN     815.522                  89.397     792.533       8.726      29.766      23.769      51.962     294.739
+GUD    2963.699                  90.835    2823.655      53.044      45.768     231.027     337.274     785.110
+GXI     536.506                  21.580     668.566       5.671       8.787      19.585      35.693     170.981
+HAI     129.978                   7.300      79.865       1.118       1.880       9.820      20.991      27.382
+CHQ     429.104                   2.507     399.214      14.232       9.832      24.936      36.145     133.211
+SIC     666.435                  21.753    1051.753      20.549      27.911      37.214      64.461     335.760
+GZH    1094.556                   6.551     783.178       8.443      24.531      10.029      19.492     148.748
+YUN     611.837                  18.669     675.341      15.276      16.100      13.445      22.036     185.223
+SHA    1053.660                  44.269     543.264      13.130      40.090      21.643      49.346     201.776
+GAN     770.037                  64.707     726.531       5.481      30.246       9.365      19.971     147.700
+NXA     108.289                   0.890     322.981       2.814       1.245       3.047       6.731      21.311
+QIH     587.727                  12.732     489.889       3.559       8.770      10.269      13.373      59.619
+XIN     919.671                  46.518     625.455       4.131      14.817      24.783      28.252     255.268
+
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     02/29/12 15:08:03 Page 9
+Read a single state file
+Equation Listing    SOLVE gua Using NLP From line 196
 
 
 ---- criterion  =E=  criterion definition
 
-criterion..  (0)*x(BEJ,PROD) + (0)*x(BEJ,DX) + (0)*x(BEJ,X) + (0)*x(BEJ,DRC) + (0)*x(BEJ,RC) + (0)*x(BEJ,COALT)
+criterion..  (0)*x(BEJ,PROD) + (0)*x(BEJ,DX) + (2000000)*x(BEJ,X) + (0)*x(BEJ,DRC) + (2000000)*x(BEJ,RC)
      
-      + (0)*x(BEJ,FGT) + (0)*x(BEJ,OILT) + (0)*x(BEJ,ROILT) + (0)*x(BEJ,NGT) + (0)*x(BEJ,ELEHT) + (0)*x(BEJ,OTHET)
+      + (2000000)*x(BEJ,COALT) + (2000000)*x(BEJ,FGT) + (2000000)*x(BEJ,OILT) + (2000000)*x(BEJ,ROILT)
      
-      + (0)*x(BEJ,AGR) + (0)*x(BEJ,IND) + (0)*x(BEJ,CON) + (0)*x(BEJ,TR) + (0)*x(BEJ,WRHR) + (0)*x(BEJ,OTH) + (0)*x(BEJ,FU)
+      + (2000000)*x(BEJ,NGT) + (0)*x(BEJ,ELEHT) + (2000000)*x(BEJ,OTHET) + (0)*x(BEJ,AGR) + (0)*x(BEJ,IND) + (0)*x(BEJ,CON)
      
-      + (0)*x(BEJ,INV) + (0)*x(TAJ,PROD) + (0)*x(TAJ,DX) + (0)*x(TAJ,X) + (0)*x(TAJ,DRC) + (0)*x(TAJ,RC) + (0)*x(TAJ,COALT)
+      + (0)*x(BEJ,TR) + (0)*x(BEJ,WRHR) + (0)*x(BEJ,OTH) + (0)*x(BEJ,FU) + (2000000)*x(BEJ,INV) + (0)*x(TAJ,DX)
      
-      + (0)*x(TAJ,FGT) + (0)*x(TAJ,OILT) + (0)*x(TAJ,ROILT) + (0)*x(TAJ,NGT) + (0)*x(TAJ,ELEHT) + (0)*x(TAJ,OTHET)
+      + (0)*x(TAJ,DRC) + (0)*x(TAJ,ELEHT) + (0)*x(TAJ,AGR) + (0)*x(TAJ,IND) + (0)*x(TAJ,CON) + (0)*x(TAJ,TR)
      
-      + (0)*x(TAJ,AGR) + (0)*x(TAJ,IND) + (0)*x(TAJ,CON) + (0)*x(TAJ,TR) + (0)*x(TAJ,WRHR) + (0)*x(TAJ,OTH) + (0)*x(TAJ,FU)
+      + (0)*x(TAJ,WRHR) + (0)*x(TAJ,OTH) + (0)*x(TAJ,FU) + (0)*x(HEB,PROD) + (0)*x(HEB,DX) + (0)*x(HEB,DRC)
      
-      + (0)*x(TAJ,INV) + (0)*x(HEB,PROD) + (0)*x(HEB,DX) + (0)*x(HEB,X) + (0)*x(HEB,DRC) + (0)*x(HEB,RC) + (0)*x(HEB,COALT)
+      + (0)*x(HEB,ELEHT) + (0)*x(HEB,AGR) + (0)*x(HEB,IND) + (0)*x(HEB,CON) + (0)*x(HEB,TR) + (0)*x(HEB,WRHR)
      
-      + (0)*x(HEB,FGT) + (0)*x(HEB,OILT) + (0)*x(HEB,ROILT) + (0)*x(HEB,NGT) + (0)*x(HEB,ELEHT) + (0)*x(HEB,OTHET)
-     
-      + (0)*x(HEB,AGR) + (0)*x(HEB,IND) + (0)*x(HEB,CON) + (0)*x(HEB,TR) + (0)*x(HEB,WRHR) + (0)*x(HEB,OTH) + (0)*x(HEB,FU)
-     
-      + (0)*x(HEB,INV) + (0)*x(SHX,PROD) + (0)*x(SHX,DX) + (0)*x(SHX,X) + (0)*x(SHX,DRC) + (0)*x(SHX,RC) + (0)*x(SHX,COALT)
-     
-      + (0)*x(SHX,FGT) + (0)*x(SHX,OILT) + (0)*x(SHX,ROILT) + (0)*x(SHX,NGT) + (0)*x(SHX,ELEHT) + (0)*x(SHX,OTHET)
+      + (0)*x(HEB,OTH) + (0)*x(HEB,FU) + (0)*x(SHX,PROD) + (0)*x(SHX,DX) + (0)*x(SHX,DRC) + (0)*x(SHX,ELEHT)
      
       + (0)*x(SHX,AGR) + (0)*x(SHX,IND) + (0)*x(SHX,CON) + (0)*x(SHX,TR) + (0)*x(SHX,WRHR) + (0)*x(SHX,OTH) + (0)*x(SHX,FU)
      
-      + (0)*x(SHX,INV) + (0)*x(NMG,PROD) + (0)*x(NMG,DX) + (0)*x(NMG,X) + (0)*x(NMG,DRC) + (0)*x(NMG,RC) + (0)*x(NMG,COALT)
+      + (0)*x(NMG,PROD) + (0)*x(NMG,DX) + (0)*x(NMG,ELEHT) + (0)*x(NMG,AGR) + (0)*x(NMG,IND) + (0)*x(NMG,CON)
      
-      + (0)*x(NMG,FGT) + (0)*x(NMG,OILT) + (0)*x(NMG,ROILT) + (0)*x(NMG,NGT) + (0)*x(NMG,ELEHT) + (0)*x(NMG,OTHET)
+      + (0)*x(NMG,TR) + (0)*x(NMG,WRHR) + (0)*x(NMG,OTH) + (0)*x(NMG,FU) + (0)*x(LIA,PROD) + (0)*x(LIA,DX) + (0)*x(LIA,DRC)
      
-      + (0)*x(NMG,AGR) + (0)*x(NMG,IND) + (0)*x(NMG,CON) + (0)*x(NMG,TR) + (0)*x(NMG,WRHR) + (0)*x(NMG,OTH) + (0)*x(NMG,FU)
+      + (0)*x(LIA,RC) + (0)*x(LIA,ELEHT) + (0)*x(LIA,AGR) + (0)*x(LIA,IND) + (0)*x(LIA,CON) + (0)*x(LIA,TR)
      
-      + (0)*x(NMG,INV) + (0)*x(LIA,PROD) + (0)*x(LIA,DX) + (0)*x(LIA,X) + (0)*x(LIA,DRC) + (0)*x(LIA,RC) + (0)*x(LIA,COALT)
+      + (0)*x(LIA,WRHR) + (0)*x(LIA,OTH) + (0)*x(LIA,FU) + (0)*x(JIL,PROD) + (0)*x(JIL,DX) + (0)*x(JIL,DRC)
      
-      + (0)*x(LIA,FGT) + (0)*x(LIA,OILT) + (0)*x(LIA,ROILT) + (0)*x(LIA,NGT) + (0)*x(LIA,ELEHT) + (0)*x(LIA,OTHET)
+      + (0)*x(JIL,ELEHT) + (0)*x(JIL,AGR) + (0)*x(JIL,IND) + (0)*x(JIL,CON) + (0)*x(JIL,TR) + (0)*x(JIL,WRHR)
      
-      + (0)*x(LIA,AGR) + (0)*x(LIA,IND) + (0)*x(LIA,CON) + (0)*x(LIA,TR) + (0)*x(LIA,WRHR) + (0)*x(LIA,OTH) + (0)*x(LIA,FU)
+      + (0)*x(JIL,OTH) + (0)*x(JIL,FU) + (0)*x(HLJ,PROD) + (0)*x(HLJ,DX) + (0)*x(HLJ,X) + (0)*x(HLJ,DRC) + (0)*x(HLJ,RC)
      
-      + (0)*x(LIA,INV) + (0)*x(JIL,PROD) + (0)*x(JIL,DX) + (0)*x(JIL,X) + (0)*x(JIL,DRC) + (0)*x(JIL,RC) + (0)*x(JIL,COALT)
+      + (0)*x(HLJ,ELEHT) + (0)*x(HLJ,AGR) + (0)*x(HLJ,IND) + (0)*x(HLJ,CON) + (0)*x(HLJ,TR) + (0)*x(HLJ,WRHR)
      
-      + (0)*x(JIL,FGT) + (0)*x(JIL,OILT) + (0)*x(JIL,ROILT) + (0)*x(JIL,NGT) + (0)*x(JIL,ELEHT) + (0)*x(JIL,OTHET)
-     
-      + (0)*x(JIL,AGR) + (0)*x(JIL,IND) + (0)*x(JIL,CON) + (0)*x(JIL,TR) + (0)*x(JIL,WRHR) + (0)*x(JIL,OTH) + (0)*x(JIL,FU)
-     
-      + (0)*x(JIL,INV) + (0)*x(HLJ,PROD) + (0)*x(HLJ,DX) + (0)*x(HLJ,X) + (0)*x(HLJ,DRC) + (0)*x(HLJ,RC) + (0)*x(HLJ,COALT)
-     
-      + (0)*x(HLJ,FGT) + (0)*x(HLJ,OILT) + (0)*x(HLJ,ROILT) + (0)*x(HLJ,NGT) + (0)*x(HLJ,ELEHT) + (0)*x(HLJ,OTHET)
-     
-      + (0)*x(HLJ,AGR) + (0)*x(HLJ,IND) + (0)*x(HLJ,CON) + (0)*x(HLJ,TR) + (0)*x(HLJ,WRHR) + (0)*x(HLJ,OTH) + (0)*x(HLJ,FU)
-     
-      + (0)*x(HLJ,INV) + (0)*x(SHH,PROD) + (0)*x(SHH,DX) + (0)*x(SHH,X) + (0)*x(SHH,DRC) + (0)*x(SHH,RC) + (0)*x(SHH,COALT)
-     
-      + (0)*x(SHH,FGT) + (0)*x(SHH,OILT) + (0)*x(SHH,ROILT) + (0)*x(SHH,NGT) + (0)*x(SHH,ELEHT) + (0)*x(SHH,OTHET)
+      + (0)*x(HLJ,OTH) + (0)*x(HLJ,FU) + (0)*x(SHH,PROD) + (0)*x(SHH,DX) + (0)*x(SHH,DRC) + (0)*x(SHH,ELEHT)
      
       + (0)*x(SHH,AGR) + (0)*x(SHH,IND) + (0)*x(SHH,CON) + (0)*x(SHH,TR) + (0)*x(SHH,WRHR) + (0)*x(SHH,OTH) + (0)*x(SHH,FU)
      
-      + (0)*x(SHH,INV) + (0)*x(JSU,PROD) + (0)*x(JSU,DX) + (0)*x(JSU,X) + (0)*x(JSU,DRC) + (0)*x(JSU,RC) + (0)*x(JSU,COALT)
+      + (0)*x(JSU,PROD) + (0)*x(JSU,DX) + (0)*x(JSU,DRC) + (0)*x(JSU,ELEHT) + (0)*x(JSU,AGR) + (0)*x(JSU,IND)
      
-      + (0)*x(JSU,FGT) + (0)*x(JSU,OILT) + (0)*x(JSU,ROILT) + (0)*x(JSU,NGT) + (0)*x(JSU,ELEHT) + (0)*x(JSU,OTHET)
+      + (0)*x(JSU,CON) + (0)*x(JSU,TR) + (0)*x(JSU,WRHR) + (0)*x(JSU,OTH) + (0)*x(JSU,FU) + (0)*x(ZHJ,PROD) + (0)*x(ZHJ,DX)
      
-      + (0)*x(JSU,AGR) + (0)*x(JSU,IND) + (0)*x(JSU,CON) + (0)*x(JSU,TR) + (0)*x(JSU,WRHR) + (0)*x(JSU,OTH) + (0)*x(JSU,FU)
+      + (0)*x(ZHJ,DRC) + (0)*x(ZHJ,ELEHT) + (0)*x(ZHJ,AGR) + (0)*x(ZHJ,IND) + (0)*x(ZHJ,CON) + (0)*x(ZHJ,TR)
      
-      + (0)*x(JSU,INV) + (0)*x(ZHJ,PROD) + (0)*x(ZHJ,DX) + (0)*x(ZHJ,X) + (0)*x(ZHJ,DRC) + (0)*x(ZHJ,RC) + (0)*x(ZHJ,COALT)
+      + (0)*x(ZHJ,WRHR) + (0)*x(ZHJ,OTH) + (0)*x(ZHJ,FU) + (0)*x(ANH,PROD) + (0)*x(ANH,DX) + (0)*x(ANH,DRC)
      
-      + (0)*x(ZHJ,FGT) + (0)*x(ZHJ,OILT) + (0)*x(ZHJ,ROILT) + (0)*x(ZHJ,NGT) + (0)*x(ZHJ,ELEHT) + (0)*x(ZHJ,OTHET)
+      + (0)*x(ANH,ELEHT) + (0)*x(ANH,AGR) + (0)*x(ANH,IND) + (0)*x(ANH,CON) + (0)*x(ANH,TR) + (0)*x(ANH,WRHR)
      
-      + (0)*x(ZHJ,AGR) + (0)*x(ZHJ,IND) + (0)*x(ZHJ,CON) + (0)*x(ZHJ,TR) + (0)*x(ZHJ,WRHR) + (0)*x(ZHJ,OTH) + (0)*x(ZHJ,FU)
-     
-      + (0)*x(ZHJ,INV) + (0)*x(ANH,PROD) + (0)*x(ANH,DX) + (0)*x(ANH,X) + (0)*x(ANH,DRC) + (0)*x(ANH,RC) + (0)*x(ANH,COALT)
-     
-      + (0)*x(ANH,FGT) + (0)*x(ANH,OILT) + (0)*x(ANH,ROILT) + (0)*x(ANH,NGT) + (0)*x(ANH,ELEHT) + (0)*x(ANH,OTHET)
-     
-      + (0)*x(ANH,AGR) + (0)*x(ANH,IND) + (0)*x(ANH,CON) + (0)*x(ANH,TR) + (0)*x(ANH,WRHR) + (0)*x(ANH,OTH) + (0)*x(ANH,FU)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        02/29/12 22:55:51 Page 9
-Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
-
-
-     criterion  =E=  criterion definition     
-     
-      + (0)*x(ANH,INV) + (0)*x(FUJ,PROD) + (0)*x(FUJ,DX) + (0)*x(FUJ,X) + (0)*x(FUJ,DRC) + (0)*x(FUJ,RC) + (0)*x(FUJ,COALT)
-     
-      + (0)*x(FUJ,FGT) + (0)*x(FUJ,OILT) + (0)*x(FUJ,ROILT) + (0)*x(FUJ,NGT) + (0)*x(FUJ,ELEHT) + (0)*x(FUJ,OTHET)
+      + (0)*x(ANH,OTH) + (0)*x(ANH,FU) + (0)*x(FUJ,PROD) + (0)*x(FUJ,DX) + (0)*x(FUJ,DRC) + (0)*x(FUJ,ELEHT)
      
       + (0)*x(FUJ,AGR) + (0)*x(FUJ,IND) + (0)*x(FUJ,CON) + (0)*x(FUJ,TR) + (0)*x(FUJ,WRHR) + (0)*x(FUJ,OTH) + (0)*x(FUJ,FU)
      
-      + (0)*x(FUJ,INV) + (0)*x(JXI,PROD) + (0)*x(JXI,DX) + (0)*x(JXI,X) + (0)*x(JXI,DRC) + (0)*x(JXI,RC) + (0)*x(JXI,COALT)
+      + (0)*x(JXI,PROD) + (0)*x(JXI,DX) + (0)*x(JXI,DRC) + (0)*x(JXI,ELEHT) + (0)*x(JXI,AGR) + (0)*x(JXI,IND)
      
-      + (0)*x(JXI,FGT) + (0)*x(JXI,OILT) + (0)*x(JXI,ROILT) + (0)*x(JXI,NGT) + (0)*x(JXI,ELEHT) + (0)*x(JXI,OTHET)
+      + (0)*x(JXI,CON) + (0)*x(JXI,TR) + (0)*x(JXI,WRHR) + (0)*x(JXI,OTH) + (0)*x(JXI,FU) + (0)*x(SHD,PROD) + (0)*x(SHD,DX)
      
-      + (0)*x(JXI,AGR) + (0)*x(JXI,IND) + (0)*x(JXI,CON) + (0)*x(JXI,TR) + (0)*x(JXI,WRHR) + (0)*x(JXI,OTH) + (0)*x(JXI,FU)
+      + (0)*x(SHD,ELEHT) + (0)*x(SHD,AGR) + (0)*x(SHD,IND) + (0)*x(SHD,CON) + (0)*x(SHD,TR) + (0)*x(SHD,WRHR)
      
-      + (0)*x(JXI,INV) + (0)*x(SHD,PROD) + (0)*x(SHD,DX) + (0)*x(SHD,X) + (0)*x(SHD,DRC) + (0)*x(SHD,RC) + (0)*x(SHD,COALT)
-     
-      + (0)*x(SHD,FGT) + (0)*x(SHD,OILT) + (0)*x(SHD,ROILT) + (0)*x(SHD,NGT) + (0)*x(SHD,ELEHT) + (0)*x(SHD,OTHET)
-     
-      + (0)*x(SHD,AGR) + (0)*x(SHD,IND) + (0)*x(SHD,CON) + (0)*x(SHD,TR) + (0)*x(SHD,WRHR) + (0)*x(SHD,OTH) + (0)*x(SHD,FU)
-     
-      + (0)*x(SHD,INV) + (0)*x(HEN,PROD) + (0)*x(HEN,DX) + (0)*x(HEN,X) + (0)*x(HEN,DRC) + (0)*x(HEN,RC) + (0)*x(HEN,COALT)
-     
-      + (0)*x(HEN,FGT) + (0)*x(HEN,OILT) + (0)*x(HEN,ROILT) + (0)*x(HEN,NGT) + (0)*x(HEN,ELEHT) + (0)*x(HEN,OTHET)
+      + (0)*x(SHD,OTH) + (0)*x(SHD,FU) + (0)*x(HEN,PROD) + (0)*x(HEN,DX) + (0)*x(HEN,DRC) + (0)*x(HEN,ELEHT)
      
       + (0)*x(HEN,AGR) + (0)*x(HEN,IND) + (0)*x(HEN,CON) + (0)*x(HEN,TR) + (0)*x(HEN,WRHR) + (0)*x(HEN,OTH) + (0)*x(HEN,FU)
      
-      + (0)*x(HEN,INV) + (0)*x(HUB,PROD) + (0)*x(HUB,DX) + (0)*x(HUB,X) + (0)*x(HUB,DRC) + (0)*x(HUB,RC) + (0)*x(HUB,COALT)
+      + (0)*x(HUB,PROD) + (0)*x(HUB,DX) + (0)*x(HUB,DRC) + (0)*x(HUB,ELEHT) + (0)*x(HUB,AGR) + (0)*x(HUB,IND)
      
-      + (0)*x(HUB,FGT) + (0)*x(HUB,OILT) + (0)*x(HUB,ROILT) + (0)*x(HUB,NGT) + (0)*x(HUB,ELEHT) + (0)*x(HUB,OTHET)
+      + (0)*x(HUB,CON) + (0)*x(HUB,TR) + (0)*x(HUB,WRHR) + (0)*x(HUB,OTH) + (0)*x(HUB,FU) + (0)*x(HUN,PROD) + (0)*x(HUN,DX)
      
-      + (0)*x(HUB,AGR) + (0)*x(HUB,IND) + (0)*x(HUB,CON) + (0)*x(HUB,TR) + (0)*x(HUB,WRHR) + (0)*x(HUB,OTH) + (0)*x(HUB,FU)
+      + (0)*x(HUN,DRC) + (0)*x(HUN,ELEHT) + (0)*x(HUN,AGR) + (0)*x(HUN,IND) + (0)*x(HUN,CON) + (0)*x(HUN,TR)
      
-      + (0)*x(HUB,INV) + (0)*x(HUN,PROD) + (0)*x(HUN,DX) + (0)*x(HUN,X) + (0)*x(HUN,DRC) + (0)*x(HUN,RC) + (0)*x(HUN,COALT)
+      + (0)*x(HUN,WRHR) + (0)*x(HUN,OTH) + (0)*x(HUN,FU) + (0)*x(GUD,PROD) + (0)*x(GUD,DX) + (0)*x(GUD,X) + (0)*x(GUD,DRC)
      
-      + (0)*x(HUN,FGT) + (0)*x(HUN,OILT) + (0)*x(HUN,ROILT) + (0)*x(HUN,NGT) + (0)*x(HUN,ELEHT) + (0)*x(HUN,OTHET)
+      + (0)*x(GUD,RC) + (0)*x(GUD,ELEHT) + (0)*x(GUD,AGR) + (0)*x(GUD,IND) + (0)*x(GUD,CON) + (0)*x(GUD,TR)
      
-      + (0)*x(HUN,AGR) + (0)*x(HUN,IND) + (0)*x(HUN,CON) + (0)*x(HUN,TR) + (0)*x(HUN,WRHR) + (0)*x(HUN,OTH) + (0)*x(HUN,FU)
-     
-      + (0)*x(HUN,INV) + (0)*x(GUD,PROD) + (0)*x(GUD,DX) + (0)*x(GUD,X) + (0)*x(GUD,DRC) + (0)*x(GUD,RC) + (0)*x(GUD,COALT)
-     
-      + (0)*x(GUD,FGT) + (0)*x(GUD,OILT) + (0)*x(GUD,ROILT) + (0)*x(GUD,NGT) + (0)*x(GUD,ELEHT) + (0)*x(GUD,OTHET)
-     
-      + (0)*x(GUD,AGR) + (0)*x(GUD,IND) + (0)*x(GUD,CON) + (0)*x(GUD,TR) + (0)*x(GUD,WRHR) + (0)*x(GUD,OTH) + (0)*x(GUD,FU)
-     
-      + (0)*x(GUD,INV) + (0)*x(GXI,PROD) + (0)*x(GXI,DX) + (0)*x(GXI,X) + (0)*x(GXI,DRC) + (0)*x(GXI,RC) + (0)*x(GXI,COALT)
-     
-      + (0)*x(GXI,FGT) + (0)*x(GXI,OILT) + (0)*x(GXI,ROILT) + (0)*x(GXI,NGT) + (0)*x(GXI,ELEHT) + (0)*x(GXI,OTHET)
-     
-      + (0)*x(GXI,AGR) + (0)*x(GXI,IND) + (0)*x(GXI,CON) + (0)*x(GXI,TR) + (0)*x(GXI,WRHR) + (0)*x(GXI,OTH) + (0)*x(GXI,FU)
-     
-      + (0)*x(GXI,INV) + (0)*x(HAI,PROD) + (0)*x(HAI,DX) + (0)*x(HAI,X) + (0)*x(HAI,DRC) + (0)*x(HAI,RC) + (0)*x(HAI,COALT)
-     
-      + (0)*x(HAI,FGT) + (0)*x(HAI,OILT) + (0)*x(HAI,ROILT) + (0)*x(HAI,NGT) + (0)*x(HAI,ELEHT) + (0)*x(HAI,OTHET)
-     
-      + (0)*x(HAI,AGR) + (0)*x(HAI,IND) + (0)*x(HAI,CON) + (0)*x(HAI,TR) + (0)*x(HAI,WRHR) + (0)*x(HAI,OTH) + (0)*x(HAI,FU)
-     
-      + (0)*x(HAI,INV) + (0)*x(CHQ,PROD) + (0)*x(CHQ,DX) + (0)*x(CHQ,X) + (0)*x(CHQ,DRC) + (0)*x(CHQ,RC) + (0)*x(CHQ,COALT)
-     
-      + (0)*x(CHQ,FGT) + (0)*x(CHQ,OILT) + (0)*x(CHQ,ROILT) + (0)*x(CHQ,NGT) + (0)*x(CHQ,ELEHT) + (0)*x(CHQ,OTHET)
-     
-      + (0)*x(CHQ,AGR) + (0)*x(CHQ,IND) + (0)*x(CHQ,CON) + (0)*x(CHQ,TR) + (0)*x(CHQ,WRHR) + (0)*x(CHQ,OTH) + (0)*x(CHQ,FU)
-     
-      + (0)*x(CHQ,INV) + (0)*x(SIC,PROD) + (0)*x(SIC,DX) + (0)*x(SIC,X) + (0)*x(SIC,DRC) + (0)*x(SIC,RC) + (0)*x(SIC,COALT)
-     
-      + (0)*x(SIC,FGT) + (0)*x(SIC,OILT) + (0)*x(SIC,ROILT) + (0)*x(SIC,NGT) + (0)*x(SIC,ELEHT) + (0)*x(SIC,OTHET)
-     
-      + (0)*x(SIC,AGR) + (0)*x(SIC,IND) + (0)*x(SIC,CON) + (0)*x(SIC,TR) + (0)*x(SIC,WRHR) + (0)*x(SIC,OTH) + (0)*x(SIC,FU)
-     
-      + (0)*x(SIC,INV) + (0)*x(GZH,PROD) + (0)*x(GZH,DX) + (0)*x(GZH,X) + (0)*x(GZH,DRC) + (0)*x(GZH,RC) + (0)*x(GZH,COALT)
-     
-      + (0)*x(GZH,FGT) + (0)*x(GZH,OILT) + (0)*x(GZH,ROILT) + (0)*x(GZH,NGT) + (0)*x(GZH,ELEHT) + (0)*x(GZH,OTHET)
-     
-      + (0)*x(GZH,AGR) + (0)*x(GZH,IND) + (0)*x(GZH,CON) + (0)*x(GZH,TR) + (0)*x(GZH,WRHR) + (0)*x(GZH,OTH) + (0)*x(GZH,FU)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 10
+      + (0)*x(GUD,WRHR) + (0)*x(GUD,OTH) + (0)*x(GUD,FU) + (0)*x(GXI,PROD) + (0)*x(GXI,DX) + (0)*x(GXI,DRC)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 10
 Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
+Equation Listing    SOLVE gua Using NLP From line 196
 
 
      criterion  =E=  criterion definition     
      
-      + (0)*x(GZH,INV) + (0)*x(YUN,PROD) + (0)*x(YUN,DX) + (0)*x(YUN,X) + (0)*x(YUN,DRC) + (0)*x(YUN,RC) + (0)*x(YUN,COALT)
+      + (0)*x(GXI,ELEHT) + (0)*x(GXI,AGR) + (0)*x(GXI,IND) + (0)*x(GXI,CON) + (0)*x(GXI,TR) + (0)*x(GXI,WRHR)
      
-      + (0)*x(YUN,FGT) + (0)*x(YUN,OILT) + (0)*x(YUN,ROILT) + (0)*x(YUN,NGT) + (0)*x(YUN,ELEHT) + (0)*x(YUN,OTHET)
+      + (0)*x(GXI,OTH) + (0)*x(GXI,FU) + (0)*x(HAI,PROD) + (0)*x(HAI,DX) + (0)*x(HAI,DRC) + (0)*x(HAI,ELEHT)
+     
+      + (0)*x(HAI,AGR) + (0)*x(HAI,IND) + (0)*x(HAI,CON) + (0)*x(HAI,TR) + (0)*x(HAI,WRHR) + (0)*x(HAI,OTH) + (0)*x(HAI,FU)
+     
+      + (0)*x(CHQ,PROD) + (0)*x(CHQ,DX) + (0)*x(CHQ,DRC) + (0)*x(CHQ,ELEHT) + (0)*x(CHQ,AGR) + (0)*x(CHQ,IND)
+     
+      + (0)*x(CHQ,CON) + (0)*x(CHQ,TR) + (0)*x(CHQ,WRHR) + (0)*x(CHQ,OTH) + (0)*x(CHQ,FU) + (0)*x(SIC,PROD) + (0)*x(SIC,DX)
+     
+      + (0)*x(SIC,DRC) + (0)*x(SIC,ELEHT) + (0)*x(SIC,AGR) + (0)*x(SIC,IND) + (0)*x(SIC,CON) + (0)*x(SIC,TR)
+     
+      + (0)*x(SIC,WRHR) + (0)*x(SIC,OTH) + (0)*x(SIC,FU) + (0)*x(GZH,PROD) + (0)*x(GZH,DX) + (0)*x(GZH,DRC)
+     
+      + (0)*x(GZH,ELEHT) + (0)*x(GZH,AGR) + (0)*x(GZH,IND) + (0)*x(GZH,CON) + (0)*x(GZH,TR) + (0)*x(GZH,WRHR)
+     
+      + (0)*x(GZH,OTH) + (0)*x(GZH,FU) + (0)*x(YUN,PROD) + (0)*x(YUN,DX) + (0)*x(YUN,X) + (0)*x(YUN,DRC) + (0)*x(YUN,ELEHT)
      
       + (0)*x(YUN,AGR) + (0)*x(YUN,IND) + (0)*x(YUN,CON) + (0)*x(YUN,TR) + (0)*x(YUN,WRHR) + (0)*x(YUN,OTH) + (0)*x(YUN,FU)
      
-      + (0)*x(YUN,INV) + (0)*x(SHA,PROD) + (0)*x(SHA,DX) + (0)*x(SHA,X) + (0)*x(SHA,DRC) + (0)*x(SHA,RC) + (0)*x(SHA,COALT)
+      + (0)*x(SHA,PROD) + (0)*x(SHA,DX) + (0)*x(SHA,ELEHT) + (0)*x(SHA,AGR) + (0)*x(SHA,IND) + (0)*x(SHA,CON)
      
-      + (0)*x(SHA,FGT) + (0)*x(SHA,OILT) + (0)*x(SHA,ROILT) + (0)*x(SHA,NGT) + (0)*x(SHA,ELEHT) + (0)*x(SHA,OTHET)
+      + (0)*x(SHA,TR) + (0)*x(SHA,WRHR) + (0)*x(SHA,OTH) + (0)*x(SHA,FU) + (0)*x(GAN,PROD) + (0)*x(GAN,DX)
      
-      + (0)*x(SHA,AGR) + (0)*x(SHA,IND) + (0)*x(SHA,CON) + (0)*x(SHA,TR) + (0)*x(SHA,WRHR) + (0)*x(SHA,OTH) + (0)*x(SHA,FU)
+      + (0)*x(GAN,ELEHT) + (0)*x(GAN,AGR) + (0)*x(GAN,IND) + (0)*x(GAN,CON) + (0)*x(GAN,TR) + (0)*x(GAN,WRHR)
      
-      + (0)*x(SHA,INV) + (0)*x(GAN,PROD) + (0)*x(GAN,DX) + (0)*x(GAN,X) + (0)*x(GAN,DRC) + (0)*x(GAN,RC) + (0)*x(GAN,COALT)
-     
-      + (0)*x(GAN,FGT) + (0)*x(GAN,OILT) + (0)*x(GAN,ROILT) + (0)*x(GAN,NGT) + (0)*x(GAN,ELEHT) + (0)*x(GAN,OTHET)
-     
-      + (0)*x(GAN,AGR) + (0)*x(GAN,IND) + (0)*x(GAN,CON) + (0)*x(GAN,TR) + (0)*x(GAN,WRHR) + (0)*x(GAN,OTH) + (0)*x(GAN,FU)
-     
-      + (0)*x(GAN,INV) + (0)*x(NXA,PROD) + (0)*x(NXA,DX) + (0)*x(NXA,X) + (0)*x(NXA,DRC) + (0)*x(NXA,RC) + (0)*x(NXA,COALT)
-     
-      + (0)*x(NXA,FGT) + (0)*x(NXA,OILT) + (0)*x(NXA,ROILT) + (0)*x(NXA,NGT) + (0)*x(NXA,ELEHT) + (0)*x(NXA,OTHET)
+      + (0)*x(GAN,OTH) + (0)*x(GAN,FU) + (0)*x(NXA,PROD) + (0)*x(NXA,DX) + (0)*x(NXA,DRC) + (0)*x(NXA,ELEHT)
      
       + (0)*x(NXA,AGR) + (0)*x(NXA,IND) + (0)*x(NXA,CON) + (0)*x(NXA,TR) + (0)*x(NXA,WRHR) + (0)*x(NXA,OTH) + (0)*x(NXA,FU)
      
-      + (0)*x(NXA,INV) + (0)*x(QIH,PROD) + (0)*x(QIH,DX) + (0)*x(QIH,X) + (0)*x(QIH,DRC) + (0)*x(QIH,RC) + (0)*x(QIH,COALT)
+      + (0)*x(QIH,PROD) + (0)*x(QIH,DX) + (0)*x(QIH,DRC) + (0)*x(QIH,ELEHT) + (0)*x(QIH,AGR) + (0)*x(QIH,IND)
      
-      + (0)*x(QIH,FGT) + (0)*x(QIH,OILT) + (0)*x(QIH,ROILT) + (0)*x(QIH,NGT) + (0)*x(QIH,ELEHT) + (0)*x(QIH,OTHET)
+      + (0)*x(QIH,CON) + (0)*x(QIH,TR) + (0)*x(QIH,WRHR) + (0)*x(QIH,OTH) + (0)*x(QIH,FU) + (0)*x(XIN,PROD)
      
-      + (0)*x(QIH,AGR) + (0)*x(QIH,IND) + (0)*x(QIH,CON) + (0)*x(QIH,TR) + (0)*x(QIH,WRHR) + (0)*x(QIH,OTH) + (0)*x(QIH,FU)
+      + (0)*x(XIN,ELEHT) + (0)*x(XIN,AGR) + (0)*x(XIN,IND) + (0)*x(XIN,CON) + (0)*x(XIN,TR) + (0)*x(XIN,WRHR)
      
-      + (0)*x(QIH,INV) + (0)*x(XIN,PROD) + (0)*x(XIN,DX) + (0)*x(XIN,X) + (0)*x(XIN,DRC) + (0)*x(XIN,RC) + (0)*x(XIN,COALT)
-     
-      + (0)*x(XIN,FGT) + (0)*x(XIN,OILT) + (0)*x(XIN,ROILT) + (0)*x(XIN,NGT) + (0)*x(XIN,ELEHT) + (0)*x(XIN,OTHET)
-     
-      + (0)*x(XIN,AGR) + (0)*x(XIN,IND) + (0)*x(XIN,CON) + (0)*x(XIN,TR) + (0)*x(XIN,WRHR) + (0)*x(XIN,OTH) + (0)*x(XIN,FU)
-     
-      + (0)*x(XIN,INV) + j =E= 0 ; (LHS = 0)
+      + (0)*x(XIN,OTH) + (0)*x(XIN,FU) + j =E= 0 ; (LHS = -9, INFES = 9 ****)
      
 
 ---- bench  =E=  benchmark egy
@@ -542,9 +566,9 @@ bench(RC)..  x(BEJ,RC) + x(TAJ,RC) + x(HEB,RC) + x(SHX,RC) + x(NMG,RC) + x(LIA,R
      
 REMAINING 15 ENTRIES SKIPPED
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 11
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 11
 Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
+Equation Listing    SOLVE gua Using NLP From line 196
 
 
 ---- balance_coal  =E=  input output balance
@@ -618,9 +642,9 @@ trade..  x(BEJ,DX) - x(BEJ,DRC) + x(TAJ,DX) - x(TAJ,DRC) + x(HEB,DX) - x(HEB,DRC
      
       (LHS = 220.836820075165, INFES = 220.836820075165 ****)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 12
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 12
 Read a single state file
-Equation Listing    SOLVE gua Using NLP From line 179
+Equation Listing    SOLVE gua Using NLP From line 196
 
 
 ---- sign  =G=  negative only for t and inv
@@ -633,9 +657,9 @@ sign(BEJ,X)..  x(BEJ,X) =G= 0 ; (LHS = 0)
      
 REMAINING 387 ENTRIES SKIPPED
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 13
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 13
 Read a single state file
-Column Listing      SOLVE gua Using NLP From line 179
+Column Listing      SOLVE gua Using NLP From line 196
 
 
 ---- x  adjusted value
@@ -656,7 +680,7 @@ x(BEJ,DX)
 
 x(BEJ,X)
                 (.LO, .L, .UP, .M = 0, 0, 0, 0)
-       (0)      criterion
+ (2000000)      criterion
         1       bench(X)
        -1       balance_eleh(BEJ)
         1       sign(BEJ,X)
@@ -669,41 +693,41 @@ j
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       criterion
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 14
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 14
 Read a single state file
-Model Statistics    SOLVE gua Using NLP From line 179
+Model Statistics    SOLVE gua Using NLP From line 196
 
 
 MODEL STATISTICS
 
 BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          440
 BLOCKS OF VARIABLES           2     SINGLE VARIABLES          601
-NON ZERO ELEMENTS         2,191     NON LINEAR N-Z            600
-DERIVATIVE POOL             606     CONSTANT POOL             345
-CODE LENGTH               3,932
+NON ZERO ELEMENTS         1,929     NON LINEAR N-Z            338
+DERIVATIVE POOL             344     CONSTANT POOL             347
+CODE LENGTH               3,045
 
 
-GENERATION TIME      =        0.031 SECONDS      4 Mb  WIN234-234 May 21, 2010
+GENERATION TIME      =        0.031 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.031 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 15
+EXECUTION TIME       =        0.031 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 15
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
                S O L V E      S U M M A R Y
 
      MODEL   gua                 OBJECTIVE  j
      TYPE    NLP                 DIRECTION  MINIMIZE
-     SOLVER  CONOPT              FROM LINE  179
+     SOLVER  CONOPT              FROM LINE  196
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      4 Infeasible                
-**** OBJECTIVE VALUE                0.0000
+**** OBJECTIVE VALUE               14.7417
 
- RESOURCE USAGE, LIMIT          0.016      1000.000
- ITERATION COUNT, LIMIT         0          1000
+ RESOURCE USAGE, LIMIT          0.000      1000.000
+ ITERATION COUNT, LIMIT         7          1000
  EVALUATION ERRORS              0             0
  
  
@@ -716,38 +740,26 @@ Solution Report     SOLVE gua Using NLP From line 179
  
  
     The model has 601 variables and 440 constraints
-    with 2191 Jacobian elements, 600 of which are nonlinear.
-    The Hessian of the Lagrangian has 600 elements on the diagonal,
-    0 elements below the diagonal, and 600 nonlinear variables.
+    with 1929 Jacobian elements, 338 of which are nonlinear.
+    The Hessian of the Lagrangian has 338 elements on the diagonal,
+    0 elements below the diagonal, and 338 nonlinear variables.
  
- ** Warning **  The number of nonlinear derivatives equal to zero
-                in the initial point is large (= 27 percent).
-                A better initial point will probably help the
-                optimization.
+ ** Infeasible solution. Reduced gradient less than tolerance.
  
  
- ** An equation is inconsistent with other equations in the
-    pre-triangular part of the model.
+ ** Warning **  The variance of the derivatives in the final
+                point is large (= 4.5 ). A better scaling or
+                better bounds on the variables will probably
+                help the optimization.
  
-    Residual=           1.00000000E-04
-    Tolerance (Rtnwtr)= 2.00000000E-08
  
-    bench(INV): Inconsistency in pre-triangular part of model.
-
-    The solution order of the critical equations and
-    variables is:
-
-    All variables in equation bench(INV) are now fixed
-    and the equation is infeasible. Residual =-1.0000000000E-04
-
- 
- CONOPT time Total                            0.037 seconds
+ CONOPT time Total                            0.021 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
- Workspace           =     2.51 Mbytes
-    Estimate         =     2.51 Mbytes
-    Max used         =     0.90 Mbytes
+ Workspace           =     2.32 Mbytes
+    Estimate         =     2.32 Mbytes
+    Max used         =     0.84 Mbytes
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
@@ -759,102 +771,63 @@ Solution Report     SOLVE gua Using NLP From line 179
 
              LOWER          LEVEL          UPPER         MARGINAL
 
-PROD       6865.4398      6668.6184      6865.4398         EPS    INFES
-X           179.0200       176.9268       179.0200         EPS    INFES
-RC           52.2448       132.3264        52.2448         EPS    INFES
-COALT         0.0001          .             0.0001         EPS    INFES
-FGT           0.0001          .             0.0001         EPS    INFES
-OILT          0.0001          .             0.0001         EPS    INFES
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 16
+PROD       6865.4398      6865.4398      6865.4398   3.0517578E-5      
+X           179.0200       179.0200       179.0200   -3.051758E-5      
+RC           52.2448        52.2448        52.2448   3.0517578E-5      
+COALT          .              .              .              .          
+FGT            .              .              .              .          
+OILT           .              .              .              .          
+ROILT          .              .              .              .          
+NGT            .              .              .              .          
+ELEHT     42283.1975     42282.4192     42283.1975   3.0517578E-5 INFES
+OTHET          .              .              .              .          
+AGR        1207.1134      1207.1134      1207.1134   -3.051758E-5      
+IND       34080.9855     34080.9855     34080.9855   -3.051758E-5      
+CON         399.9796       399.9796       399.9796   -3.051758E-5      
+TR          709.5166       709.5166       709.5166   -3.051758E-5      
+WRHR       1248.3865      1248.3865      1248.3865   -3.051758E-5      
+OTH        2313.7055      2313.7055      2313.7055   -3.051758E-5      
+FU         9061.3967      9061.3967      9061.3967   -3.051758E-5      
+INV            .              .              .              .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 16
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU bench  benchmark egy
-
-             LOWER          LEVEL          UPPER         MARGINAL
-
-ROILT         0.0001          .             0.0001         EPS    INFES
-NGT           0.0001          .             0.0001         EPS    INFES
-ELEHT     42283.1975     45404.2351     42283.1975         EPS    INFES
-OTHET         0.0001          .             0.0001         EPS    INFES
-AGR        1207.1134      1109.0032      1207.1134         EPS    INFES
-IND       34080.9855     36451.4570     34080.9855         EPS    INFES
-CON         399.9796       421.8912       399.9796         EPS    INFES
-TR          709.5166       763.3368       709.5166         EPS    INFES
-WRHR       1248.3865      1521.1571      1248.3865         EPS    INFES
-OTH        2313.7055      2464.9449      2313.7055         EPS    INFES
-FU         9061.3967      9075.6261      9061.3967         EPS    INFES
-INV           0.0001          .             0.0001         1.0000 INFES
-
----- EQU balance_coal  input output balance
-
-                NONE
-
-
----- EQU balance_fg  
-
-                NONE
-
-
----- EQU balance_oil  
-
-                NONE
-
-
----- EQU balance_roil  
-
-                NONE
-
-
----- EQU balance_ng  
-
-                NONE
+Solution Report     SOLVE gua Using NLP From line 196
 
 
 ---- EQU balance_eleh  
 
            LOWER          LEVEL          UPPER         MARGINAL
 
-BEJ          .              .              .             EPS         
-TAJ          .              .              .             EPS         
-HEB          .              .              .             EPS         
-SHX          .              .              .             EPS         
-NMG          .              .              .             EPS         
-LIA          .              .              .             EPS         
-JIL          .              .              .             EPS         
-HLJ          .              .              .             EPS         
-SHH          .              .              .             EPS         
-JSU          .              .              .             EPS         
-ZHJ          .              .              .             EPS         
-ANH          .              .              .             EPS         
-FUJ          .              .              .             EPS         
-JXI          .              .              .             EPS         
-SHD          .              .              .             EPS         
-HEN          .              .              .             EPS         
-HUB          .              .              .             EPS         
-HUN          .              .              .             EPS         
-GUD          .              .              .             EPS         
-GXI          .              .              .             EPS         
-HAI          .              .              .             EPS         
-CHQ          .              .              .             EPS         
-SIC          .              .              .             EPS         
-GZH          .              .              .             EPS         
-YUN          .              .              .             EPS         
-SHA          .              .              .             EPS         
-GAN          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 17
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU balance_eleh  
-
-           LOWER          LEVEL          UPPER         MARGINAL
-
-NXA          .       -1.229000E-7          .             EPS    INFES
-QIH          .              .              .             EPS         
-XIN          .              .              .             EPS         
+BEJ          .              .              .       -3.051758E-5      
+TAJ          .              .              .       -3.051758E-5      
+HEB          .              .              .       -3.051758E-5      
+SHX          .              .              .       -3.051758E-5      
+NMG          .              .              .       -3.051758E-5      
+LIA          .              .              .       -3.051758E-5      
+JIL          .              .              .       -3.051758E-5      
+HLJ          .              .              .       -3.051758E-5      
+SHH          .              .              .       -3.051758E-5      
+JSU          .              .              .       -3.051758E-5      
+ZHJ          .              .              .       -3.051758E-5      
+ANH          .              .              .       -3.051758E-5      
+FUJ          .              .              .       -3.051758E-5      
+JXI          .              .              .       -3.051758E-5      
+SHD          .              .              .       -3.051758E-5      
+HEN          .              .              .       -3.051758E-5      
+HUB          .              .              .       -3.051758E-5      
+HUN          .              .              .       -3.051758E-5      
+GUD          .              .              .       -3.051758E-5      
+GXI          .              .              .       -3.051758E-5      
+HAI          .              .              .       -3.051758E-5      
+CHQ          .              .              .       -3.051758E-5      
+SIC          .              .              .       -3.051758E-5      
+GZH          .              .              .       -3.051758E-5      
+YUN          .              .              .       -3.051758E-5      
+SHA          .              .              .       -3.051758E-5      
+GAN          .              .              .       -3.051758E-5      
+NXA          .              .              .       -3.051758E-5      
+QIH          .              .              .       -3.051758E-5      
+XIN          .              .              .       -3.051758E-5      
 
 ---- EQU balance_othe  
 
@@ -863,7 +836,7 @@ XIN          .              .              .             EPS
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- EQU trade               .           220.8368          .             EPS    INFES
+---- EQU trade               .              .              .       -3.051758E-5      
 
   trade  domestic trade balance
 
@@ -873,70 +846,70 @@ XIN          .              .              .             EPS
 
 BEJ.PROD          .             8.8437        +INF            EPS         
 BEJ.DX            .             0.3073        +INF            EPS         
-BEJ.X             .              .            +INF            EPS         
+BEJ.X             .              .            +INF             .          
 BEJ.DRC           .           555.4722        +INF            EPS         
-BEJ.RC            .              .            +INF            EPS         
+BEJ.RC            .              .            +INF             .          
 BEJ.AGR           .            16.4194        +INF            EPS         
 BEJ.IND           .           470.9016        +INF            EPS         
 BEJ.CON           .            23.3444        +INF            EPS         
-BEJ.TR            .            60.1316        +INF            EPS         
+BEJ.TR            .            56.7127        +INF             .          
 BEJ.WRHR          .           110.8123        +INF            EPS         
 BEJ.OTH           .           330.8771        +INF            EPS         
 BEJ.FU            .           261.2307        +INF            EPS         
-BEJ.INV           .              .            +INF            EPS         
-TAJ.PROD          .              .            +INF            EPS         
+BEJ.INV           .              .            +INF             .          
+TAJ.PROD          .              .            +INF             .          
 TAJ.DX            .             1.1676        +INF            EPS         
-TAJ.X             .              .            +INF            EPS         
+TAJ.X             .              .            +INF             .          
 TAJ.DRC           .           133.3615        +INF            EPS         
-TAJ.RC            .              .            +INF            EPS         
+TAJ.RC            .              .            +INF             .          
 TAJ.AGR           .            13.8508        +INF            EPS         
 TAJ.IND           .           628.5441        +INF            EPS         
 TAJ.CON           .             8.2047        +INF            EPS         
 TAJ.TR            .            14.9104        +INF            EPS         
 TAJ.WRHR          .            51.4259        +INF            EPS         
-TAJ.OTH           .            45.3569        +INF            EPS         
-TAJ.FU            .           267.1359        +INF            EPS         
-TAJ.INV           .              .            +INF            EPS         
-HEB.PROD          .            13.5842        +INF            EPS         
-HEB.DX            .            94.0461        +INF            EPS         
-HEB.X             .              .            +INF            EPS         
-HEB.DRC           .           460.8259        +INF            EPS         
-HEB.RC            .              .            +INF            EPS         
-HEB.AGR           .           176.3492        +INF            EPS         
-HEB.IND           .          2099.6240        +INF            EPS         
-HEB.CON           .            15.8237        +INF            EPS         
-HEB.TR            .            55.1336        +INF            EPS         
-HEB.WRHR          .            43.2569        +INF            EPS         
-HEB.OTH           .            87.5540        +INF            EPS         
-HEB.FU            .           524.6904        +INF            EPS         
-HEB.INV           .              .            +INF            EPS         
-SHX.PROD          .            31.6468        +INF            EPS         
-SHX.DX            .           568.4862        +INF            EPS         
-SHX.X             .              .            +INF            EPS         
-SHX.DRC           .            62.5069        +INF            EPS         
-SHX.RC            .              .            +INF            EPS         
-SHX.AGR           .            34.8790        +INF            EPS         
-SHX.IND           .          1520.3445        +INF            EPS         
-SHX.CON           .            10.0041        +INF            EPS         
-SHX.TR            .            50.4013        +INF            EPS         
-SHX.WRHR          .            18.6808        +INF            EPS         
-SHX.OTH           .            42.8184        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 18
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 17
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      EQU sign  negative only for t and inv
 
                 LOWER          LEVEL          UPPER         MARGINAL
 
+TAJ.OTH           .            45.3569        +INF            EPS         
+TAJ.FU            .           267.1359        +INF            EPS         
+TAJ.INV           .              .            +INF             .          
+HEB.PROD          .            13.5842        +INF            EPS         
+HEB.DX            .            94.0461        +INF            EPS         
+HEB.X             .              .            +INF             .          
+HEB.DRC           .           460.8259        +INF            EPS         
+HEB.RC            .              .            +INF             .          
+HEB.AGR           .           274.4594        +INF             .          
+HEB.IND           .          2099.6240        +INF            EPS         
+HEB.CON           .            15.8237        +INF            EPS         
+HEB.TR            .            55.1336        +INF            EPS         
+HEB.WRHR          .            43.2569        +INF            EPS         
+HEB.OTH           .            87.5540        +INF            EPS         
+HEB.FU            .           524.6904        +INF            EPS         
+HEB.INV           .              .            +INF             .          
+SHX.PROD          .            31.6468        +INF            EPS         
+SHX.DX            .           568.4862        +INF            EPS         
+SHX.X             .              .            +INF             .          
+SHX.DRC           .            62.5069        +INF            EPS         
+SHX.RC            .              .            +INF             .          
+SHX.AGR           .            34.8790        +INF            EPS         
+SHX.IND           .          1520.3445        +INF            EPS         
+SHX.CON           .            10.0041        +INF            EPS         
+SHX.TR            .              .            +INF            EPS         
+SHX.WRHR          .            18.6808        +INF            EPS         
+SHX.OTH           .            42.8184        +INF            EPS         
 SHX.FU            .           289.8117        +INF            EPS         
-SHX.INV           .              .            +INF            EPS         
+SHX.INV           .              .            +INF             .          
 NMG.PROD          .            67.7463        +INF            EPS         
 NMG.DX            .           843.0191        +INF            EPS         
-NMG.X             .              .            +INF            EPS         
-NMG.DRC           .              .            +INF            EPS         
-NMG.RC            .              .            +INF            EPS         
+NMG.X             .              .            +INF             .          
+NMG.DRC           .              .            +INF             .          
+NMG.RC            .              .            +INF             .          
 NMG.AGR           .            43.7490        +INF            EPS         
 NMG.IND           .          1422.7899        +INF            EPS         
 NMG.CON           .             9.8178        +INF            EPS         
@@ -944,10 +917,10 @@ NMG.TR            .            41.4499        +INF            EPS
 NMG.WRHR          .            49.9566        +INF            EPS         
 NMG.OTH           .            50.7337        +INF            EPS         
 NMG.FU            .           320.4879        +INF            EPS         
-NMG.INV           .              .            +INF            EPS         
+NMG.INV           .              .            +INF             .          
 LIA.PROD          .            58.4267        +INF            EPS         
 LIA.DX            .            26.5218        +INF            EPS         
-LIA.X             .              .            +INF            EPS         
+LIA.X             .              .            +INF             .          
 LIA.DRC           .           329.2245        +INF            EPS         
 LIA.RC            .             0.5162        +INF            EPS         
 LIA.AGR           .            30.7127        +INF            EPS         
@@ -957,12 +930,12 @@ LIA.TR            .            37.7591        +INF            EPS
 LIA.WRHR          .            49.4546        +INF            EPS         
 LIA.OTH           .           146.1096        +INF            EPS         
 LIA.FU            .           859.3744        +INF            EPS         
-LIA.INV           .              .            +INF            EPS         
+LIA.INV           .              .            +INF             .          
 JIL.PROD          .            90.0719        +INF            EPS         
 JIL.DX            .            47.1813        +INF            EPS         
-JIL.X             .              .            +INF            EPS         
+JIL.X             .              .            +INF             .          
 JIL.DRC           .             0.0003        +INF            EPS         
-JIL.RC            .              .            +INF            EPS         
+JIL.RC            .              .            +INF             .          
 JIL.AGR           .            10.7169        +INF            EPS         
 JIL.IND           .           781.7273        +INF            EPS         
 JIL.CON           .             5.7405        +INF            EPS         
@@ -970,12 +943,21 @@ JIL.TR            .            26.5713        +INF            EPS
 JIL.WRHR          .            20.8488        +INF            EPS         
 JIL.OTH           .            48.7365        +INF            EPS         
 JIL.FU            .           207.9015        +INF            EPS         
-JIL.INV           .              .            +INF            EPS         
+JIL.INV           .              .            +INF             .          
 HLJ.PROD          .            17.2183        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 18
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 HLJ.DX            .           169.2210        +INF            EPS         
 HLJ.X             .             0.0492        +INF            EPS         
 HLJ.DRC           .             0.5531        +INF            EPS         
-HLJ.RC            .            82.2201        +INF            EPS         
+HLJ.RC            .            51.7286        +INF             .          
 HLJ.AGR           .            19.8852        +INF            EPS         
 HLJ.IND           .           702.4716        +INF            EPS         
 HLJ.CON           .             4.4736        +INF            EPS         
@@ -983,12 +965,12 @@ HLJ.TR            .            10.8152        +INF            EPS
 HLJ.WRHR          .            18.4842        +INF            EPS         
 HLJ.OTH           .            46.0261        +INF            EPS         
 HLJ.FU            .           469.9443        +INF            EPS         
-HLJ.INV           .              .            +INF            EPS         
+HLJ.INV           .              .            +INF             .          
 SHH.PROD          .            19.1420        +INF            EPS         
 SHH.DX            .            19.9467        +INF            EPS         
-SHH.X             .              .            +INF            EPS         
+SHH.X             .              .            +INF             .          
 SHH.DRC           .           426.1837        +INF            EPS         
-SHH.RC            .              .            +INF            EPS         
+SHH.RC            .              .            +INF             .          
 SHH.AGR           .             6.4768        +INF            EPS         
 SHH.IND           .          1013.0053        +INF            EPS         
 SHH.CON           .            23.1236        +INF            EPS         
@@ -996,21 +978,12 @@ SHH.TR            .            24.8560        +INF            EPS
 SHH.WRHR          .            78.7553        +INF            EPS         
 SHH.OTH           .           162.2615        +INF            EPS         
 SHH.FU            .           239.9213        +INF            EPS         
-SHH.INV           .              .            +INF            EPS         
+SHH.INV           .              .            +INF             .          
 JSU.PROD          .           131.1220        +INF            EPS         
 JSU.DX            .           238.2539        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 19
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
-JSU.X             .              .            +INF            EPS         
+JSU.X             .              .            +INF             .          
 JSU.DRC           .           393.9560        +INF            EPS         
-JSU.RC            .              .            +INF            EPS         
+JSU.RC            .              .            +INF             .          
 JSU.AGR           .            30.0736        +INF            EPS         
 JSU.IND           .          3521.2573        +INF            EPS         
 JSU.CON           .            28.9307        +INF            EPS         
@@ -1018,25 +991,25 @@ JSU.TR            .            23.9655        +INF            EPS
 JSU.WRHR          .            90.2946        +INF            EPS         
 JSU.OTH           .           172.1829        +INF            EPS         
 JSU.FU            .           612.7456        +INF            EPS         
-JSU.INV           .              .            +INF            EPS         
+JSU.INV           .              .            +INF             .          
 ZHJ.PROD          .           477.8673        +INF            EPS         
 ZHJ.DX            .            76.0161        +INF            EPS         
-ZHJ.X             .              .            +INF            EPS         
+ZHJ.X             .              .            +INF             .          
 ZHJ.DRC           .           209.8734        +INF            EPS         
-ZHJ.RC            .              .            +INF            EPS         
+ZHJ.RC            .              .            +INF             .          
 ZHJ.AGR           .            19.2230        +INF            EPS         
 ZHJ.IND           .          2950.3762        +INF            EPS         
 ZHJ.CON           .            29.0113        +INF            EPS         
 ZHJ.TR            .            20.5737        +INF            EPS         
-ZHJ.WRHR          .           248.8118        +INF            EPS         
+ZHJ.WRHR          .           207.0687        +INF             .          
 ZHJ.OTH           .           179.3332        +INF            EPS         
 ZHJ.FU            .           476.6537        +INF            EPS         
-ZHJ.INV           .              .            +INF            EPS         
+ZHJ.INV           .              .            +INF             .          
 ANH.PROD          .            18.0171        +INF            EPS         
 ANH.DX            .           130.9605        +INF            EPS         
-ANH.X             .              .            +INF            EPS         
+ANH.X             .              .            +INF             .          
 ANH.DRC           .             8.8365        +INF            EPS         
-ANH.RC            .              .            +INF            EPS         
+ANH.RC            .              .            +INF             .          
 ANH.AGR           .            14.7588        +INF            EPS         
 ANH.IND           .           835.8766        +INF            EPS         
 ANH.CON           .             9.5533        +INF            EPS         
@@ -1044,12 +1017,21 @@ ANH.TR            .            10.9951        +INF            EPS
 ANH.WRHR          .            23.6793        +INF            EPS         
 ANH.OTH           .            42.4175        +INF            EPS         
 ANH.FU            .           175.9833        +INF            EPS         
-ANH.INV           .              .            +INF            EPS         
+ANH.INV           .              .            +INF             .          
 FUJ.PROD          .           404.1187        +INF            EPS         
 FUJ.DX            .            49.8114        +INF            EPS         
-FUJ.X             .              .            +INF            EPS         
+FUJ.X             .              .            +INF             .          
 FUJ.DRC           .             1.9418        +INF            EPS         
-FUJ.RC            .              .            +INF            EPS         
+FUJ.RC            .              .            +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 19
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 FUJ.AGR           .            13.1011        +INF            EPS         
 FUJ.IND           .           916.0201        +INF            EPS         
 FUJ.CON           .            17.1200        +INF            EPS         
@@ -1057,12 +1039,12 @@ FUJ.TR            .            15.8418        +INF            EPS
 FUJ.WRHR          .            39.2788        +INF            EPS         
 FUJ.OTH           .            73.2607        +INF            EPS         
 FUJ.FU            .           292.7847        +INF            EPS         
-FUJ.INV           .              .            +INF            EPS         
+FUJ.INV           .              .            +INF             .          
 JXI.PROD          .            95.7391        +INF            EPS         
 JXI.DX            .             5.6411        +INF            EPS         
-JXI.X             .              .            +INF            EPS         
+JXI.X             .              .            +INF             .          
 JXI.DRC           .            26.3375        +INF            EPS         
-JXI.RC            .              .            +INF            EPS         
+JXI.RC            .              .            +INF             .          
 JXI.AGR           .            26.2269        +INF            EPS         
 JXI.IND           .           461.8597        +INF            EPS         
 JXI.CON           .             4.8914        +INF            EPS         
@@ -1070,34 +1052,25 @@ JXI.TR            .             9.3896        +INF            EPS
 JXI.WRHR          .            16.5792        +INF            EPS         
 JXI.OTH           .            29.4591        +INF            EPS         
 JXI.FU            .           154.5590        +INF            EPS         
-JXI.INV           .              .            +INF            EPS         
+JXI.INV           .              .            +INF             .          
 SHD.PROD          .            23.4660        +INF            EPS         
 SHD.DX            .            12.6959        +INF            EPS         
-SHD.X             .              .            +INF            EPS         
-SHD.DRC           .              .            +INF            EPS         
-SHD.RC            .              .            +INF            EPS         
+SHD.X             .              .            +INF             .          
+SHD.DRC           .              .            +INF             .          
+SHD.RC            .              .            +INF             .          
 SHD.AGR           .            86.7312        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 20
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
-SHD.IND           .          4159.3908        +INF            EPS         
+SHD.IND           .          4159.3908        +INF             .          
 SHD.CON           .            38.5718        +INF            EPS         
 SHD.TR            .            40.9258        +INF            EPS         
 SHD.WRHR          .           129.4997        +INF            EPS         
 SHD.OTH           .           166.5244        +INF            EPS         
 SHD.FU            .           544.4370        +INF            EPS         
-SHD.INV           .              .            +INF            EPS         
+SHD.INV           .              .            +INF             .          
 HEN.PROD          .           105.0674        +INF            EPS         
 HEN.DX            .           109.4211        +INF            EPS         
-HEN.X             .              .            +INF            EPS         
+HEN.X             .              .            +INF             .          
 HEN.DRC           .            51.7286        +INF            EPS         
-HEN.RC            .              .            +INF            EPS         
+HEN.RC            .              .            +INF             .          
 HEN.AGR           .            91.5507        +INF            EPS         
 HEN.IND           .          2046.6347        +INF            EPS         
 HEN.CON           .            10.1484        +INF            EPS         
@@ -1105,12 +1078,12 @@ HEN.TR            .            45.2132        +INF            EPS
 HEN.WRHR          .            46.6880        +INF            EPS         
 HEN.OTH           .            81.0828        +INF            EPS         
 HEN.FU            .           438.0443        +INF            EPS         
-HEN.INV           .              .            +INF            EPS         
-HUB.PROD          .          1118.5252        +INF            EPS         
+HEN.INV           .              .            +INF             .          
+HUB.PROD          .          1315.3466        +INF             .          
 HUB.DX            .           820.1609        +INF            EPS         
-HUB.X             .              .            +INF            EPS         
+HUB.X             .              .            +INF             .          
 HUB.DRC           .           141.6300        +INF            EPS         
-HUB.RC            .              .            +INF            EPS         
+HUB.RC            .              .            +INF             .          
 HUB.AGR           .            46.5914        +INF            EPS         
 HUB.IND           .          1169.2539        +INF            EPS         
 HUB.CON           .            10.7415        +INF            EPS         
@@ -1118,60 +1091,60 @@ HUB.TR            .            14.6620        +INF            EPS
 HUB.WRHR          .            45.7188        +INF            EPS         
 HUB.OTH           .            54.4816        +INF            EPS         
 HUB.FU            .           173.0924        +INF            EPS         
-HUB.INV           .              .            +INF            EPS         
+HUB.INV           .              .            +INF             .          
 HUN.PROD          .           422.5350        +INF            EPS         
 HUN.DX            .           108.3978        +INF            EPS         
-HUN.X             .              .            +INF            EPS         
+HUN.X             .              .            +INF             .          
 HUN.DRC           .           161.2325        +INF            EPS         
-HUN.RC            .              .            +INF            EPS         
+HUN.RC            .              .            +INF             .          
 HUN.AGR           .            89.3975        +INF            EPS         
 HUN.IND           .           792.5326        +INF            EPS         
 HUN.CON           .             8.7259        +INF            EPS         
 HUN.TR            .            29.7664        +INF            EPS         
-HUN.WRHR          .            23.7689        +INF            EPS         
-HUN.OTH           .            51.9621        +INF            EPS         
-HUN.FU            .           294.7388        +INF            EPS         
-HUN.INV           .              .            +INF            EPS         
-GUD.PROD          .           539.8505        +INF            EPS         
-GUD.DX            .             5.1496        +INF            EPS         
-GUD.X             .           145.4644        +INF            EPS         
-GUD.DRC           .           964.1874        +INF            EPS         
-GUD.RC            .            49.5902        +INF            EPS         
-GUD.AGR           .            90.8354        +INF            EPS         
-GUD.IND           .          2823.6548        +INF            EPS         
-GUD.CON           .            53.0436        +INF            EPS         
-GUD.TR            .            45.7680        +INF            EPS         
-GUD.WRHR          .           231.0274        +INF            EPS         
-GUD.OTH           .           337.2745        +INF            EPS         
-GUD.FU            .           785.1098        +INF            EPS         
-GUD.INV           .              .            +INF            EPS         
-GXI.PROD          .           398.7634        +INF            EPS         
-GXI.DX            .            82.5893        +INF            EPS         
-GXI.X             .              .            +INF            EPS         
-GXI.DRC           .            78.1832        +INF            EPS         
-GXI.RC            .              .            +INF            EPS         
-GXI.AGR           .            21.5795        +INF            EPS         
-GXI.IND           .           668.5657        +INF            EPS         
-GXI.CON           .             5.6715        +INF            EPS         
-GXI.TR            .             8.7872        +INF            EPS         
-GXI.WRHR          .            19.5852        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 21
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 20
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      EQU sign  negative only for t and inv
 
                 LOWER          LEVEL          UPPER         MARGINAL
 
+HUN.WRHR          .            23.7689        +INF            EPS         
+HUN.OTH           .            51.9621        +INF            EPS         
+HUN.FU            .           294.7388        +INF            EPS         
+HUN.INV           .              .            +INF             .          
+GUD.PROD          .           539.8505        +INF            EPS         
+GUD.DX            .             5.1496        +INF            EPS         
+GUD.X             .           147.5576        +INF             .          
+GUD.DRC           .           964.1874        +INF            EPS         
+GUD.RC            .              .            +INF            EPS         
+GUD.AGR           .            90.8354        +INF            EPS         
+GUD.IND           .           453.1833        +INF             .          
+GUD.CON           .            31.1320        +INF             .          
+GUD.TR            .            45.7680        +INF            EPS         
+GUD.WRHR          .              .            +INF            EPS         
+GUD.OTH           .           186.0350        +INF             .          
+GUD.FU            .           770.8804        +INF             .          
+GUD.INV           .              .            +INF             .          
+GXI.PROD          .           398.7634        +INF            EPS         
+GXI.DX            .            82.5893        +INF            EPS         
+GXI.X             .              .            +INF             .          
+GXI.DRC           .            78.1832        +INF            EPS         
+GXI.RC            .              .            +INF             .          
+GXI.AGR           .            21.5795        +INF            EPS         
+GXI.IND           .           668.5657        +INF            EPS         
+GXI.CON           .             5.6715        +INF            EPS         
+GXI.TR            .             8.7872        +INF            EPS         
+GXI.WRHR          .            19.5852        +INF            EPS         
 GXI.OTH           .            35.6932        +INF            EPS         
 GXI.FU            .           170.9806        +INF            EPS         
-GXI.INV           .              .            +INF            EPS         
+GXI.INV           .              .            +INF             .          
 HAI.PROD          .            16.0876        +INF            EPS         
 HAI.DX            .             0.0194        +INF            EPS         
-HAI.X             .              .            +INF            EPS         
+HAI.X             .              .            +INF             .          
 HAI.DRC           .             2.3105        +INF            EPS         
-HAI.RC            .              .            +INF            EPS         
+HAI.RC            .              .            +INF             .          
 HAI.AGR           .             7.3003        +INF            EPS         
 HAI.IND           .            79.8650        +INF            EPS         
 HAI.CON           .             1.1184        +INF            EPS         
@@ -1179,12 +1152,12 @@ HAI.TR            .             1.8804        +INF            EPS
 HAI.WRHR          .             9.8197        +INF            EPS         
 HAI.OTH           .            20.9913        +INF            EPS         
 HAI.FU            .            27.3821        +INF            EPS         
-HAI.INV           .              .            +INF            EPS         
+HAI.INV           .              .            +INF             .          
 CHQ.PROD          .            75.1656        +INF            EPS         
 CHQ.DX            .            63.7851        +INF            EPS         
-CHQ.X             .              .            +INF            EPS         
+CHQ.X             .              .            +INF             .          
 CHQ.DRC           .           179.5938        +INF            EPS         
-CHQ.RC            .              .            +INF            EPS         
+CHQ.RC            .              .            +INF             .          
 CHQ.AGR           .             2.5072        +INF            EPS         
 CHQ.IND           .           399.2143        +INF            EPS         
 CHQ.CON           .            14.2318        +INF            EPS         
@@ -1192,12 +1165,12 @@ CHQ.TR            .             9.8320        +INF            EPS
 CHQ.WRHR          .            24.9364        +INF            EPS         
 CHQ.OTH           .            36.1449        +INF            EPS         
 CHQ.FU            .           133.2113        +INF            EPS         
-CHQ.INV           .              .            +INF            EPS         
+CHQ.INV           .              .            +INF             .          
 SIC.PROD          .           952.9543        +INF            EPS         
 SIC.DX            .           104.2929        +INF            EPS         
-SIC.X             .              .            +INF            EPS         
+SIC.X             .              .            +INF             .          
 SIC.DRC           .            44.3055        +INF            EPS         
-SIC.RC            .              .            +INF            EPS         
+SIC.RC            .              .            +INF             .          
 SIC.AGR           .            21.7533        +INF            EPS         
 SIC.IND           .          1051.7534        +INF            EPS         
 SIC.CON           .            20.5489        +INF            EPS         
@@ -1205,12 +1178,21 @@ SIC.TR            .            27.9106        +INF            EPS
 SIC.WRHR          .            37.2141        +INF            EPS         
 SIC.OTH           .            64.4611        +INF            EPS         
 SIC.FU            .           335.7603        +INF            EPS         
-SIC.INV           .              .            +INF            EPS         
+SIC.INV           .              .            +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 21
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
 GZH.PROD          .           371.3704        +INF            EPS         
-GZH.DX            .           465.0789        +INF            EPS         
-GZH.X             .              .            +INF            EPS         
+GZH.DX            .           244.2421        +INF             .          
+GZH.X             .              .            +INF             .          
 GZH.DRC           .             0.1236        +INF            EPS         
-GZH.RC            .              .            +INF            EPS         
+GZH.RC            .              .            +INF             .          
 GZH.AGR           .             6.5506        +INF            EPS         
 GZH.IND           .           783.1783        +INF            EPS         
 GZH.CON           .             8.4432        +INF            EPS         
@@ -1218,12 +1200,12 @@ GZH.TR            .            24.5308        +INF            EPS
 GZH.WRHR          .            10.0286        +INF            EPS         
 GZH.OTH           .            19.4919        +INF            EPS         
 GZH.FU            .           148.7481        +INF            EPS         
-GZH.INV           .              .            +INF            EPS         
+GZH.INV           .              .            +INF             .          
 YUN.PROD          .           529.6498        +INF            EPS         
 YUN.DX            .           172.4287        +INF            EPS         
 YUN.X             .            31.4132        +INF            EPS         
 YUN.DRC           .             8.4445        +INF            EPS         
-YUN.RC            .              .            +INF            EPS         
+YUN.RC            .              .            +INF             .          
 YUN.AGR           .            18.6685        +INF            EPS         
 YUN.IND           .           675.3406        +INF            EPS         
 YUN.CON           .            15.2765        +INF            EPS         
@@ -1231,21 +1213,12 @@ YUN.TR            .            16.0999        +INF            EPS
 YUN.WRHR          .            13.4453        +INF            EPS         
 YUN.OTH           .            22.0363        +INF            EPS         
 YUN.FU            .           185.2226        +INF            EPS         
-YUN.INV           .              .            +INF            EPS         
+YUN.INV           .              .            +INF             .          
 SHA.PROD          .           106.5420        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 22
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     EQU sign  negative only for t and inv
-
-                LOWER          LEVEL          UPPER         MARGINAL
-
 SHA.DX            .           246.6856        +INF            EPS         
-SHA.X             .              .            +INF            EPS         
-SHA.DRC           .              .            +INF            EPS         
-SHA.RC            .              .            +INF            EPS         
+SHA.X             .              .            +INF             .          
+SHA.DRC           .              .            +INF             .          
+SHA.RC            .              .            +INF             .          
 SHA.AGR           .            44.2686        +INF            EPS         
 SHA.IND           .           543.2638        +INF            EPS         
 SHA.CON           .            13.1300        +INF            EPS         
@@ -1253,12 +1226,12 @@ SHA.TR            .            40.0900        +INF            EPS
 SHA.WRHR          .            21.6427        +INF            EPS         
 SHA.OTH           .            49.3455        +INF            EPS         
 SHA.FU            .           201.7759        +INF            EPS         
-SHA.INV           .              .            +INF            EPS         
+SHA.INV           .              .            +INF             .          
 GAN.PROD          .           238.9053        +INF            EPS         
 GAN.DX            .             4.9406        +INF            EPS         
-GAN.X             .              .            +INF            EPS         
-GAN.DRC           .              .            +INF            EPS         
-GAN.RC            .              .            +INF            EPS         
+GAN.X             .              .            +INF             .          
+GAN.DRC           .              .            +INF             .          
+GAN.RC            .              .            +INF             .          
 GAN.AGR           .            64.7069        +INF            EPS         
 GAN.IND           .           726.5314        +INF            EPS         
 GAN.CON           .             5.4813        +INF            EPS         
@@ -1266,12 +1239,12 @@ GAN.TR            .            30.2457        +INF            EPS
 GAN.WRHR          .             9.3650        +INF            EPS         
 GAN.OTH           .            19.9713        +INF            EPS         
 GAN.FU            .           147.7003        +INF            EPS         
-GAN.INV           .              .            +INF            EPS         
+GAN.INV           .              .            +INF             .          
 NXA.PROD          .           232.1567        +INF            EPS         
 NXA.DX            .            42.6586        +INF            EPS         
-NXA.X             .              .            +INF            EPS         
+NXA.X             .              .            +INF             .          
 NXA.DRC           .            61.2320        +INF            EPS         
-NXA.RC            .              .            +INF            EPS         
+NXA.RC            .              .            +INF             .          
 NXA.AGR           .             0.8896        +INF            EPS         
 NXA.IND           .           322.9812        +INF            EPS         
 NXA.CON           .             2.8144        +INF            EPS         
@@ -1279,12 +1252,21 @@ NXA.TR            .             1.2446        +INF            EPS
 NXA.WRHR          .             3.0471        +INF            EPS         
 NXA.OTH           .             6.7315        +INF            EPS         
 NXA.FU            .            21.3109        +INF            EPS         
-NXA.INV           .              .            +INF            EPS         
+NXA.INV           .              .            +INF             .          
 QIH.PROD          .            24.4817        +INF            EPS         
 QIH.DX            .            24.3957        +INF            EPS         
-QIH.X             .              .            +INF            EPS         
+QIH.X             .              .            +INF             .          
 QIH.DRC           .            10.3986        +INF            EPS         
-QIH.RC            .              .            +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 22
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     EQU sign  negative only for t and inv
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+QIH.RC            .              .            +INF             .          
 QIH.AGR           .            12.7324        +INF            EPS         
 QIH.IND           .           489.8893        +INF            EPS         
 QIH.CON           .             3.5594        +INF            EPS         
@@ -1292,12 +1274,12 @@ QIH.TR            .             8.7696        +INF            EPS
 QIH.WRHR          .            10.2686        +INF            EPS         
 QIH.OTH           .            13.3734        +INF            EPS         
 QIH.FU            .            59.6193        +INF            EPS         
-QIH.INV           .              .            +INF            EPS         
+QIH.INV           .              .            +INF             .          
 XIN.PROD          .            79.5532        +INF            EPS         
-XIN.DX            .              .            +INF            EPS         
-XIN.X             .              .            +INF            EPS         
-XIN.DRC           .              .            +INF            EPS         
-XIN.RC            .              .            +INF            EPS         
+XIN.DX            .              .            +INF             .          
+XIN.X             .              .            +INF             .          
+XIN.DRC           .              .            +INF             .          
+XIN.RC            .              .            +INF             .          
 XIN.AGR           .            46.5177        +INF            EPS         
 XIN.IND           .           625.4554        +INF            EPS         
 XIN.CON           .             4.1314        +INF            EPS         
@@ -1305,107 +1287,103 @@ XIN.TR            .            14.8167        +INF            EPS
 XIN.WRHR          .            24.7825        +INF            EPS         
 XIN.OTH           .            28.2521        +INF            EPS         
 XIN.FU            .           255.2682        +INF            EPS         
-XIN.INV           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 23
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
+XIN.INV           .              .            +INF             .          
 
 ---- VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-BEJ.PROD         -INF            8.8437        +INF            EPS         
-BEJ.DX           -INF            0.3073        +INF            EPS         
+BEJ.PROD         -INF            8.8437        +INF             .          
+BEJ.DX           -INF            0.3073        +INF             .          
 BEJ.X              .              .              .             EPS         
-BEJ.DRC          -INF          555.4722        +INF            EPS         
+BEJ.DRC          -INF          555.4722        +INF             .          
 BEJ.RC             .              .              .             EPS         
 BEJ.COALT          .              .              .             EPS         
 BEJ.FGT            .              .              .             EPS         
 BEJ.OILT           .              .              .             EPS         
 BEJ.ROILT          .              .              .             EPS         
 BEJ.NGT            .              .              .             EPS         
-BEJ.ELEHT        -INF          709.7084        +INF            EPS         
+BEJ.ELEHT        -INF          706.2895        +INF             .          
 BEJ.OTHET          .              .              .             EPS         
-BEJ.AGR          -INF           16.4194        +INF            EPS         
-BEJ.IND          -INF          470.9016        +INF            EPS         
-BEJ.CON          -INF           23.3444        +INF            EPS         
-BEJ.TR           -INF           60.1316        +INF            EPS         
-BEJ.WRHR         -INF          110.8123        +INF            EPS         
-BEJ.OTH          -INF          330.8771        +INF            EPS         
-BEJ.FU           -INF          261.2307        +INF            EPS         
+BEJ.AGR          -INF           16.4194        +INF             .          
+BEJ.IND          -INF          470.9016        +INF             .          
+BEJ.CON          -INF           23.3444        +INF             .          
+BEJ.TR           -INF           56.7127        +INF             .          
+BEJ.WRHR         -INF          110.8123        +INF             .          
+BEJ.OTH          -INF          330.8771        +INF             .          
+BEJ.FU           -INF          261.2307        +INF             .          
 BEJ.INV            .              .              .             EPS         
 TAJ.PROD           .              .              .             EPS         
-TAJ.DX           -INF            1.1676        +INF            EPS         
+TAJ.DX           -INF            1.1676        +INF             .          
 TAJ.X              .              .              .             EPS         
-TAJ.DRC          -INF          133.3615        +INF            EPS         
+TAJ.DRC          -INF          133.3615        +INF             .          
 TAJ.RC             .              .              .             EPS         
 TAJ.COALT          .              .              .             EPS         
 TAJ.FGT            .              .              .             EPS         
 TAJ.OILT           .              .              .             EPS         
 TAJ.ROILT          .              .              .             EPS         
 TAJ.NGT            .              .              .             EPS         
-TAJ.ELEHT        -INF          897.2348        +INF            EPS         
+TAJ.ELEHT        -INF          897.2348        +INF             .          
 TAJ.OTHET          .              .              .             EPS         
-TAJ.AGR          -INF           13.8508        +INF            EPS         
-TAJ.IND          -INF          628.5441        +INF            EPS         
-TAJ.CON          -INF            8.2047        +INF            EPS         
-TAJ.TR           -INF           14.9104        +INF            EPS         
-TAJ.WRHR         -INF           51.4259        +INF            EPS         
-TAJ.OTH          -INF           45.3569        +INF            EPS         
-TAJ.FU           -INF          267.1359        +INF            EPS         
+TAJ.AGR          -INF           13.8508        +INF             .          
+TAJ.IND          -INF          628.5441        +INF             .          
+TAJ.CON          -INF            8.2047        +INF             .          
+TAJ.TR           -INF           14.9104        +INF             .          
+TAJ.WRHR         -INF           51.4259        +INF             .          
+TAJ.OTH          -INF           45.3569        +INF             .          
+TAJ.FU           -INF          267.1359        +INF             .          
 TAJ.INV            .              .              .             EPS         
-HEB.PROD         -INF           13.5842        +INF            EPS         
-HEB.DX           -INF           94.0461        +INF            EPS         
-HEB.X              .              .              .             EPS         
-HEB.DRC          -INF          460.8259        +INF            EPS         
-HEB.RC             .              .              .             EPS         
-HEB.COALT          .              .              .             EPS         
-HEB.FGT            .              .              .             EPS         
-HEB.OILT           .              .              .             EPS         
-HEB.ROILT          .              .              .             EPS         
-HEB.NGT            .              .              .             EPS         
-HEB.ELEHT        -INF         2622.0679        +INF            EPS         
-HEB.OTHET          .              .              .             EPS         
-HEB.AGR          -INF          176.3492        +INF            EPS         
-HEB.IND          -INF         2099.6240        +INF            EPS         
-HEB.CON          -INF           15.8237        +INF            EPS         
-HEB.TR           -INF           55.1336        +INF            EPS         
-HEB.WRHR         -INF           43.2569        +INF            EPS         
-HEB.OTH          -INF           87.5540        +INF            EPS         
-HEB.FU           -INF          524.6904        +INF            EPS         
-HEB.INV            .              .              .             EPS         
-SHX.PROD         -INF           31.6468        +INF            EPS         
-SHX.DX           -INF          568.4862        +INF            EPS         
-SHX.X              .              .              .             EPS         
-SHX.DRC          -INF           62.5069        +INF            EPS         
-SHX.RC             .              .              .             EPS         
-SHX.COALT          .              .              .             EPS         
-SHX.FGT            .              .              .             EPS         
-SHX.OILT           .              .              .             EPS         
-SHX.ROILT          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 24
+HEB.PROD         -INF           13.5842        +INF             .          
+HEB.DX           -INF           94.0461        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 23
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
+HEB.X              .              .              .             EPS         
+HEB.DRC          -INF          460.8259        +INF             .          
+HEB.RC             .              .              .             EPS         
+HEB.COALT          .              .              .             EPS         
+HEB.FGT            .              .              .             EPS         
+HEB.OILT           .              .              .             EPS         
+HEB.ROILT          .              .              .             EPS         
+HEB.NGT            .              .              .             EPS         
+HEB.ELEHT        -INF         2720.1781        +INF             .          
+HEB.OTHET          .              .              .             EPS         
+HEB.AGR          -INF          274.4594        +INF             .          
+HEB.IND          -INF         2099.6240        +INF             .          
+HEB.CON          -INF           15.8237        +INF             .          
+HEB.TR           -INF           55.1336        +INF             .          
+HEB.WRHR         -INF           43.2569        +INF             .          
+HEB.OTH          -INF           87.5540        +INF             .          
+HEB.FU           -INF          524.6904        +INF             .          
+HEB.INV            .              .              .             EPS         
+SHX.PROD         -INF           31.6468        +INF             .          
+SHX.DX           -INF          568.4862        +INF             .          
+SHX.X              .              .              .             EPS         
+SHX.DRC          -INF           62.5069        +INF             .          
+SHX.RC             .              .              .             EPS         
+SHX.COALT          .              .              .             EPS         
+SHX.FGT            .              .              .             EPS         
+SHX.OILT           .              .              .             EPS         
+SHX.ROILT          .              .              .             EPS         
 SHX.NGT            .              .              .             EPS         
-SHX.ELEHT        -INF         2441.2723        +INF            EPS         
+SHX.ELEHT        -INF         2390.8710        +INF             .          
 SHX.OTHET          .              .              .             EPS         
-SHX.AGR          -INF           34.8790        +INF            EPS         
-SHX.IND          -INF         1520.3445        +INF            EPS         
-SHX.CON          -INF           10.0041        +INF            EPS         
-SHX.TR           -INF           50.4013        +INF            EPS         
-SHX.WRHR         -INF           18.6808        +INF            EPS         
-SHX.OTH          -INF           42.8184        +INF            EPS         
-SHX.FU           -INF          289.8117        +INF            EPS         
+SHX.AGR          -INF           34.8790        +INF             .          
+SHX.IND          -INF         1520.3445        +INF             .          
+SHX.CON          -INF           10.0041        +INF             .          
+SHX.TR           -INF             .            +INF             .          
+SHX.WRHR         -INF           18.6808        +INF             .          
+SHX.OTH          -INF           42.8184        +INF             .          
+SHX.FU           -INF          289.8117        +INF             .          
 SHX.INV            .              .              .             EPS         
-NMG.PROD         -INF           67.7463        +INF            EPS         
-NMG.DX           -INF          843.0191        +INF            EPS         
+NMG.PROD         -INF           67.7463        +INF             .          
+NMG.DX           -INF          843.0191        +INF             .          
 NMG.X              .              .              .             EPS         
 NMG.DRC            .              .              .             EPS         
 NMG.RC             .              .              .             EPS         
@@ -1414,225 +1392,225 @@ NMG.FGT            .              .              .             EPS
 NMG.OILT           .              .              .             EPS         
 NMG.ROILT          .              .              .             EPS         
 NMG.NGT            .              .              .             EPS         
-NMG.ELEHT        -INF         2714.2575        +INF            EPS         
+NMG.ELEHT        -INF         2714.2575        +INF             .          
 NMG.OTHET          .              .              .             EPS         
-NMG.AGR          -INF           43.7490        +INF            EPS         
-NMG.IND          -INF         1422.7899        +INF            EPS         
-NMG.CON          -INF            9.8178        +INF            EPS         
-NMG.TR           -INF           41.4499        +INF            EPS         
-NMG.WRHR         -INF           49.9566        +INF            EPS         
-NMG.OTH          -INF           50.7337        +INF            EPS         
-NMG.FU           -INF          320.4879        +INF            EPS         
+NMG.AGR          -INF           43.7490        +INF             .          
+NMG.IND          -INF         1422.7899        +INF             .          
+NMG.CON          -INF            9.8178        +INF             .          
+NMG.TR           -INF           41.4499        +INF             .          
+NMG.WRHR         -INF           49.9566        +INF             .          
+NMG.OTH          -INF           50.7337        +INF             .          
+NMG.FU           -INF          320.4879        +INF             .          
 NMG.INV            .              .              .             EPS         
-LIA.PROD         -INF           58.4267        +INF            EPS         
-LIA.DX           -INF           26.5218        +INF            EPS         
+LIA.PROD         -INF           58.4267        +INF             .          
+LIA.DX           -INF           26.5218        +INF             .          
 LIA.X              .              .              .             EPS         
-LIA.DRC          -INF          329.2245        +INF            EPS         
-LIA.RC           -INF            0.5162        +INF            EPS         
+LIA.DRC          -INF          329.2245        +INF             .          
+LIA.RC           -INF            0.5162        +INF             .          
 LIA.COALT          .              .              .             EPS         
 LIA.FGT            .              .              .             EPS         
 LIA.OILT           .              .              .             EPS         
 LIA.ROILT          .              .              .             EPS         
 LIA.NGT            .              .              .             EPS         
-LIA.ELEHT        -INF         2547.1327        +INF            EPS         
+LIA.ELEHT        -INF         2547.1327        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 24
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
 LIA.OTHET          .              .              .             EPS         
-LIA.AGR          -INF           30.7127        +INF            EPS         
-LIA.IND          -INF         1769.1535        +INF            EPS         
-LIA.CON          -INF           16.2143        +INF            EPS         
-LIA.TR           -INF           37.7591        +INF            EPS         
-LIA.WRHR         -INF           49.4546        +INF            EPS         
-LIA.OTH          -INF          146.1096        +INF            EPS         
-LIA.FU           -INF          859.3744        +INF            EPS         
+LIA.AGR          -INF           30.7127        +INF             .          
+LIA.IND          -INF         1769.1535        +INF             .          
+LIA.CON          -INF           16.2143        +INF             .          
+LIA.TR           -INF           37.7591        +INF             .          
+LIA.WRHR         -INF           49.4546        +INF             .          
+LIA.OTH          -INF          146.1096        +INF             .          
+LIA.FU           -INF          859.3744        +INF             .          
 LIA.INV            .              .              .             EPS         
-JIL.PROD         -INF           90.0719        +INF            EPS         
-JIL.DX           -INF           47.1813        +INF            EPS         
+JIL.PROD         -INF           90.0719        +INF             .          
+JIL.DX           -INF           47.1813        +INF             .          
 JIL.X              .              .              .             EPS         
-JIL.DRC          -INF            0.0003        +INF            EPS         
+JIL.DRC          -INF            0.0003        +INF             .          
 JIL.RC             .              .              .             EPS         
 JIL.COALT          .              .              .             EPS         
 JIL.FGT            .              .              .             EPS         
 JIL.OILT           .              .              .             EPS         
 JIL.ROILT          .              .              .             EPS         
 JIL.NGT            .              .              .             EPS         
-JIL.ELEHT        -INF         1059.3518        +INF            EPS         
+JIL.ELEHT        -INF         1059.3518        +INF             .          
 JIL.OTHET          .              .              .             EPS         
-JIL.AGR          -INF           10.7169        +INF            EPS         
-JIL.IND          -INF          781.7273        +INF            EPS         
-JIL.CON          -INF            5.7405        +INF            EPS         
-JIL.TR           -INF           26.5713        +INF            EPS         
-JIL.WRHR         -INF           20.8488        +INF            EPS         
-JIL.OTH          -INF           48.7365        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 25
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
-JIL.FU           -INF          207.9015        +INF            EPS         
+JIL.AGR          -INF           10.7169        +INF             .          
+JIL.IND          -INF          781.7273        +INF             .          
+JIL.CON          -INF            5.7405        +INF             .          
+JIL.TR           -INF           26.5713        +INF             .          
+JIL.WRHR         -INF           20.8488        +INF             .          
+JIL.OTH          -INF           48.7365        +INF             .          
+JIL.FU           -INF          207.9015        +INF             .          
 JIL.INV            .              .              .             EPS         
-HLJ.PROD         -INF           17.2183        +INF            EPS         
-HLJ.DX           -INF          169.2210        +INF            EPS         
-HLJ.X            -INF            0.0492        +INF            EPS         
-HLJ.DRC          -INF            0.5531        +INF            EPS         
-HLJ.RC           -INF           82.2201        +INF            EPS         
+HLJ.PROD         -INF           17.2183        +INF             .          
+HLJ.DX           -INF          169.2210        +INF             .          
+HLJ.X            -INF            0.0492        +INF             .          
+HLJ.DRC          -INF            0.5531        +INF             .          
+HLJ.RC           -INF           51.7286        +INF             .          
 HLJ.COALT          .              .              .             EPS         
 HLJ.FGT            .              .              .             EPS         
 HLJ.OILT           .              .              .             EPS         
 HLJ.ROILT          .              .              .             EPS         
 HLJ.NGT            .              .              .             EPS         
-HLJ.ELEHT        -INF         1341.3788        +INF            EPS         
+HLJ.ELEHT        -INF         1371.8703        +INF             .          
 HLJ.OTHET          .              .              .             EPS         
-HLJ.AGR          -INF           19.8852        +INF            EPS         
-HLJ.IND          -INF          702.4716        +INF            EPS         
-HLJ.CON          -INF            4.4736        +INF            EPS         
-HLJ.TR           -INF           10.8152        +INF            EPS         
-HLJ.WRHR         -INF           18.4842        +INF            EPS         
-HLJ.OTH          -INF           46.0261        +INF            EPS         
-HLJ.FU           -INF          469.9443        +INF            EPS         
+HLJ.AGR          -INF           19.8852        +INF             .          
+HLJ.IND          -INF          702.4716        +INF             .          
+HLJ.CON          -INF            4.4736        +INF             .          
+HLJ.TR           -INF           10.8152        +INF             .          
+HLJ.WRHR         -INF           18.4842        +INF             .          
+HLJ.OTH          -INF           46.0261        +INF             .          
+HLJ.FU           -INF          469.9443        +INF             .          
 HLJ.INV            .              .              .             EPS         
-SHH.PROD         -INF           19.1420        +INF            EPS         
-SHH.DX           -INF           19.9467        +INF            EPS         
+SHH.PROD         -INF           19.1420        +INF             .          
+SHH.DX           -INF           19.9467        +INF             .          
 SHH.X              .              .              .             EPS         
-SHH.DRC          -INF          426.1837        +INF            EPS         
+SHH.DRC          -INF          426.1837        +INF             .          
 SHH.RC             .              .              .             EPS         
 SHH.COALT          .              .              .             EPS         
 SHH.FGT            .              .              .             EPS         
 SHH.OILT           .              .              .             EPS         
 SHH.ROILT          .              .              .             EPS         
 SHH.NGT            .              .              .             EPS         
-SHH.ELEHT        -INF         1123.0207        +INF            EPS         
+SHH.ELEHT        -INF         1123.0207        +INF             .          
 SHH.OTHET          .              .              .             EPS         
-SHH.AGR          -INF            6.4768        +INF            EPS         
-SHH.IND          -INF         1013.0053        +INF            EPS         
-SHH.CON          -INF           23.1236        +INF            EPS         
-SHH.TR           -INF           24.8560        +INF            EPS         
-SHH.WRHR         -INF           78.7553        +INF            EPS         
-SHH.OTH          -INF          162.2615        +INF            EPS         
-SHH.FU           -INF          239.9213        +INF            EPS         
+SHH.AGR          -INF            6.4768        +INF             .          
+SHH.IND          -INF         1013.0053        +INF             .          
+SHH.CON          -INF           23.1236        +INF             .          
+SHH.TR           -INF           24.8560        +INF             .          
+SHH.WRHR         -INF           78.7553        +INF             .          
+SHH.OTH          -INF          162.2615        +INF             .          
+SHH.FU           -INF          239.9213        +INF             .          
 SHH.INV            .              .              .             EPS         
-JSU.PROD         -INF          131.1220        +INF            EPS         
-JSU.DX           -INF          238.2539        +INF            EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 25
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+JSU.PROD         -INF          131.1220        +INF             .          
+JSU.DX           -INF          238.2539        +INF             .          
 JSU.X              .              .              .             EPS         
-JSU.DRC          -INF          393.9560        +INF            EPS         
+JSU.DRC          -INF          393.9560        +INF             .          
 JSU.RC             .              .              .             EPS         
 JSU.COALT          .              .              .             EPS         
 JSU.FGT            .              .              .             EPS         
 JSU.OILT           .              .              .             EPS         
 JSU.ROILT          .              .              .             EPS         
 JSU.NGT            .              .              .             EPS         
-JSU.ELEHT        -INF         4192.6262        +INF            EPS         
+JSU.ELEHT        -INF         4192.6262        +INF             .          
 JSU.OTHET          .              .              .             EPS         
-JSU.AGR          -INF           30.0736        +INF            EPS         
-JSU.IND          -INF         3521.2573        +INF            EPS         
-JSU.CON          -INF           28.9307        +INF            EPS         
-JSU.TR           -INF           23.9655        +INF            EPS         
-JSU.WRHR         -INF           90.2946        +INF            EPS         
-JSU.OTH          -INF          172.1829        +INF            EPS         
-JSU.FU           -INF          612.7456        +INF            EPS         
+JSU.AGR          -INF           30.0736        +INF             .          
+JSU.IND          -INF         3521.2573        +INF             .          
+JSU.CON          -INF           28.9307        +INF             .          
+JSU.TR           -INF           23.9655        +INF             .          
+JSU.WRHR         -INF           90.2946        +INF             .          
+JSU.OTH          -INF          172.1829        +INF             .          
+JSU.FU           -INF          612.7456        +INF             .          
 JSU.INV            .              .              .             EPS         
-ZHJ.PROD         -INF          477.8673        +INF            EPS         
-ZHJ.DX           -INF           76.0161        +INF            EPS         
+ZHJ.PROD         -INF          477.8673        +INF             .          
+ZHJ.DX           -INF           76.0161        +INF             .          
 ZHJ.X              .              .              .             EPS         
-ZHJ.DRC          -INF          209.8734        +INF            EPS         
+ZHJ.DRC          -INF          209.8734        +INF             .          
 ZHJ.RC             .              .              .             EPS         
 ZHJ.COALT          .              .              .             EPS         
 ZHJ.FGT            .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 26
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
 ZHJ.OILT           .              .              .             EPS         
 ZHJ.ROILT          .              .              .             EPS         
 ZHJ.NGT            .              .              .             EPS         
-ZHJ.ELEHT        -INF         3312.2584        +INF            EPS         
+ZHJ.ELEHT        -INF         3270.5153        +INF             .          
 ZHJ.OTHET          .              .              .             EPS         
-ZHJ.AGR          -INF           19.2230        +INF            EPS         
-ZHJ.IND          -INF         2950.3762        +INF            EPS         
-ZHJ.CON          -INF           29.0113        +INF            EPS         
-ZHJ.TR           -INF           20.5737        +INF            EPS         
-ZHJ.WRHR         -INF          248.8118        +INF            EPS         
-ZHJ.OTH          -INF          179.3332        +INF            EPS         
-ZHJ.FU           -INF          476.6537        +INF            EPS         
+ZHJ.AGR          -INF           19.2230        +INF             .          
+ZHJ.IND          -INF         2950.3762        +INF             .          
+ZHJ.CON          -INF           29.0113        +INF             .          
+ZHJ.TR           -INF           20.5737        +INF             .          
+ZHJ.WRHR         -INF          207.0687        +INF             .          
+ZHJ.OTH          -INF          179.3332        +INF             .          
+ZHJ.FU           -INF          476.6537        +INF             .          
 ZHJ.INV            .              .              .             EPS         
-ANH.PROD         -INF           18.0171        +INF            EPS         
-ANH.DX           -INF          130.9605        +INF            EPS         
+ANH.PROD         -INF           18.0171        +INF             .          
+ANH.DX           -INF          130.9605        +INF             .          
 ANH.X              .              .              .             EPS         
-ANH.DRC          -INF            8.8365        +INF            EPS         
+ANH.DRC          -INF            8.8365        +INF             .          
 ANH.RC             .              .              .             EPS         
 ANH.COALT          .              .              .             EPS         
 ANH.FGT            .              .              .             EPS         
 ANH.OILT           .              .              .             EPS         
 ANH.ROILT          .              .              .             EPS         
 ANH.NGT            .              .              .             EPS         
-ANH.ELEHT        -INF         1217.3707        +INF            EPS         
+ANH.ELEHT        -INF         1217.3707        +INF             .          
 ANH.OTHET          .              .              .             EPS         
-ANH.AGR          -INF           14.7588        +INF            EPS         
-ANH.IND          -INF          835.8766        +INF            EPS         
-ANH.CON          -INF            9.5533        +INF            EPS         
-ANH.TR           -INF           10.9951        +INF            EPS         
-ANH.WRHR         -INF           23.6793        +INF            EPS         
-ANH.OTH          -INF           42.4175        +INF            EPS         
-ANH.FU           -INF          175.9833        +INF            EPS         
+ANH.AGR          -INF           14.7588        +INF             .          
+ANH.IND          -INF          835.8766        +INF             .          
+ANH.CON          -INF            9.5533        +INF             .          
+ANH.TR           -INF           10.9951        +INF             .          
+ANH.WRHR         -INF           23.6793        +INF             .          
+ANH.OTH          -INF           42.4175        +INF             .          
+ANH.FU           -INF          175.9833        +INF             .          
 ANH.INV            .              .              .             EPS         
-FUJ.PROD         -INF          404.1187        +INF            EPS         
-FUJ.DX           -INF           49.8114        +INF            EPS         
+FUJ.PROD         -INF          404.1187        +INF             .          
+FUJ.DX           -INF           49.8114        +INF             .          
 FUJ.X              .              .              .             EPS         
-FUJ.DRC          -INF            1.9418        +INF            EPS         
+FUJ.DRC          -INF            1.9418        +INF             .          
 FUJ.RC             .              .              .             EPS         
 FUJ.COALT          .              .              .             EPS         
 FUJ.FGT            .              .              .             EPS         
 FUJ.OILT           .              .              .             EPS         
 FUJ.ROILT          .              .              .             EPS         
-FUJ.NGT            .              .              .             EPS         
-FUJ.ELEHT        -INF         1011.1581        +INF            EPS         
-FUJ.OTHET          .              .              .             EPS         
-FUJ.AGR          -INF           13.1011        +INF            EPS         
-FUJ.IND          -INF          916.0201        +INF            EPS         
-FUJ.CON          -INF           17.1200        +INF            EPS         
-FUJ.TR           -INF           15.8418        +INF            EPS         
-FUJ.WRHR         -INF           39.2788        +INF            EPS         
-FUJ.OTH          -INF           73.2607        +INF            EPS         
-FUJ.FU           -INF          292.7847        +INF            EPS         
-FUJ.INV            .              .              .             EPS         
-JXI.PROD         -INF           95.7391        +INF            EPS         
-JXI.DX           -INF            5.6411        +INF            EPS         
-JXI.X              .              .              .             EPS         
-JXI.DRC          -INF           26.3375        +INF            EPS         
-JXI.RC             .              .              .             EPS         
-JXI.COALT          .              .              .             EPS         
-JXI.FGT            .              .              .             EPS         
-JXI.OILT           .              .              .             EPS         
-JXI.ROILT          .              .              .             EPS         
-JXI.NGT            .              .              .             EPS         
-JXI.ELEHT        -INF          586.5295        +INF            EPS         
-JXI.OTHET          .              .              .             EPS         
-JXI.AGR          -INF           26.2269        +INF            EPS         
-JXI.IND          -INF          461.8597        +INF            EPS         
-JXI.CON          -INF            4.8914        +INF            EPS         
-JXI.TR           -INF            9.3896        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 27
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 26
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-JXI.WRHR         -INF           16.5792        +INF            EPS         
-JXI.OTH          -INF           29.4591        +INF            EPS         
-JXI.FU           -INF          154.5590        +INF            EPS         
+FUJ.NGT            .              .              .             EPS         
+FUJ.ELEHT        -INF         1011.1581        +INF             .          
+FUJ.OTHET          .              .              .             EPS         
+FUJ.AGR          -INF           13.1011        +INF             .          
+FUJ.IND          -INF          916.0201        +INF             .          
+FUJ.CON          -INF           17.1200        +INF             .          
+FUJ.TR           -INF           15.8418        +INF             .          
+FUJ.WRHR         -INF           39.2788        +INF             .          
+FUJ.OTH          -INF           73.2607        +INF             .          
+FUJ.FU           -INF          292.7847        +INF             .          
+FUJ.INV            .              .              .             EPS         
+JXI.PROD         -INF           95.7391        +INF             .          
+JXI.DX           -INF            5.6411        +INF             .          
+JXI.X              .              .              .             EPS         
+JXI.DRC          -INF           26.3375        +INF             .          
+JXI.RC             .              .              .             EPS         
+JXI.COALT          .              .              .             EPS         
+JXI.FGT            .              .              .             EPS         
+JXI.OILT           .              .              .             EPS         
+JXI.ROILT          .              .              .             EPS         
+JXI.NGT            .              .              .             EPS         
+JXI.ELEHT        -INF          586.5295        +INF             .          
+JXI.OTHET          .              .              .             EPS         
+JXI.AGR          -INF           26.2269        +INF             .          
+JXI.IND          -INF          461.8597        +INF             .          
+JXI.CON          -INF            4.8914        +INF             .          
+JXI.TR           -INF            9.3896        +INF             .          
+JXI.WRHR         -INF           16.5792        +INF             .          
+JXI.OTH          -INF           29.4591        +INF             .          
+JXI.FU           -INF          154.5590        +INF             .          
 JXI.INV            .              .              .             EPS         
-SHD.PROD         -INF           23.4660        +INF            EPS         
-SHD.DX           -INF           12.6959        +INF            EPS         
+SHD.PROD         -INF           23.4660        +INF             .          
+SHD.DX           -INF           12.6959        +INF             .          
 SHD.X              .              .              .             EPS         
 SHD.DRC            .              .              .             EPS         
 SHD.RC             .              .              .             EPS         
@@ -1643,243 +1621,243 @@ SHD.ROILT          .              .              .             EPS
 SHD.NGT            .              .              .             EPS         
 SHD.ELEHT        -INF         5155.3106        +INF            EPS         
 SHD.OTHET          .              .              .             EPS         
-SHD.AGR          -INF           86.7312        +INF            EPS         
-SHD.IND          -INF         4159.3908        +INF            EPS         
-SHD.CON          -INF           38.5718        +INF            EPS         
-SHD.TR           -INF           40.9258        +INF            EPS         
-SHD.WRHR         -INF          129.4997        +INF            EPS         
-SHD.OTH          -INF          166.5244        +INF            EPS         
-SHD.FU           -INF          544.4370        +INF            EPS         
+SHD.AGR          -INF           86.7312        +INF             .          
+SHD.IND          -INF         4159.3908        +INF             .          
+SHD.CON          -INF           38.5718        +INF             .          
+SHD.TR           -INF           40.9258        +INF             .          
+SHD.WRHR         -INF          129.4997        +INF             .          
+SHD.OTH          -INF          166.5244        +INF             .          
+SHD.FU           -INF          544.4370        +INF             .          
 SHD.INV            .              .              .             EPS         
-HEN.PROD         -INF          105.0674        +INF            EPS         
-HEN.DX           -INF          109.4211        +INF            EPS         
+HEN.PROD         -INF          105.0674        +INF             .          
+HEN.DX           -INF          109.4211        +INF             .          
 HEN.X              .              .              .             EPS         
-HEN.DRC          -INF           51.7286        +INF            EPS         
+HEN.DRC          -INF           51.7286        +INF             .          
 HEN.RC             .              .              .             EPS         
 HEN.COALT          .              .              .             EPS         
 HEN.FGT            .              .              .             EPS         
 HEN.OILT           .              .              .             EPS         
 HEN.ROILT          .              .              .             EPS         
 HEN.NGT            .              .              .             EPS         
-HEN.ELEHT        -INF         2711.9874        +INF            EPS         
+HEN.ELEHT        -INF         2711.9874        +INF             .          
 HEN.OTHET          .              .              .             EPS         
-HEN.AGR          -INF           91.5507        +INF            EPS         
-HEN.IND          -INF         2046.6347        +INF            EPS         
-HEN.CON          -INF           10.1484        +INF            EPS         
-HEN.TR           -INF           45.2132        +INF            EPS         
-HEN.WRHR         -INF           46.6880        +INF            EPS         
-HEN.OTH          -INF           81.0828        +INF            EPS         
-HEN.FU           -INF          438.0443        +INF            EPS         
+HEN.AGR          -INF           91.5507        +INF             .          
+HEN.IND          -INF         2046.6347        +INF             .          
+HEN.CON          -INF           10.1484        +INF             .          
+HEN.TR           -INF           45.2132        +INF             .          
+HEN.WRHR         -INF           46.6880        +INF             .          
+HEN.OTH          -INF           81.0828        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 27
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+HEN.FU           -INF          438.0443        +INF             .          
 HEN.INV            .              .              .             EPS         
-HUB.PROD         -INF         1118.5252        +INF            EPS         
-HUB.DX           -INF          820.1609        +INF            EPS         
+HUB.PROD         -INF         1315.3466        +INF             .          
+HUB.DX           -INF          820.1609        +INF             .          
 HUB.X              .              .              .             EPS         
-HUB.DRC          -INF          141.6300        +INF            EPS         
+HUB.DRC          -INF          141.6300        +INF             .          
 HUB.RC             .              .              .             EPS         
 HUB.COALT          .              .              .             EPS         
 HUB.FGT            .              .              .             EPS         
 HUB.OILT           .              .              .             EPS         
 HUB.ROILT          .              .              .             EPS         
 HUB.NGT            .              .              .             EPS         
-HUB.ELEHT        -INF         1074.5471        +INF            EPS         
+HUB.ELEHT        -INF          877.7257        +INF             .          
 HUB.OTHET          .              .              .             EPS         
-HUB.AGR          -INF           46.5914        +INF            EPS         
-HUB.IND          -INF         1169.2539        +INF            EPS         
-HUB.CON          -INF           10.7415        +INF            EPS         
-HUB.TR           -INF           14.6620        +INF            EPS         
-HUB.WRHR         -INF           45.7188        +INF            EPS         
-HUB.OTH          -INF           54.4816        +INF            EPS         
-HUB.FU           -INF          173.0924        +INF            EPS         
+HUB.AGR          -INF           46.5914        +INF             .          
+HUB.IND          -INF         1169.2539        +INF             .          
+HUB.CON          -INF           10.7415        +INF             .          
+HUB.TR           -INF           14.6620        +INF             .          
+HUB.WRHR         -INF           45.7188        +INF             .          
+HUB.OTH          -INF           54.4816        +INF             .          
+HUB.FU           -INF          173.0924        +INF             .          
 HUB.INV            .              .              .             EPS         
-HUN.PROD         -INF          422.5350        +INF            EPS         
-HUN.DX           -INF          108.3978        +INF            EPS         
+HUN.PROD         -INF          422.5350        +INF             .          
+HUN.DX           -INF          108.3978        +INF             .          
 HUN.X              .              .              .             EPS         
-HUN.DRC          -INF          161.2325        +INF            EPS         
+HUN.DRC          -INF          161.2325        +INF             .          
 HUN.RC             .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 28
+HUN.COALT          .              .              .             EPS         
+HUN.FGT            .              .              .             EPS         
+HUN.OILT           .              .              .             EPS         
+HUN.ROILT          .              .              .             EPS         
+HUN.NGT            .              .              .             EPS         
+HUN.ELEHT        -INF          815.5223        +INF             .          
+HUN.OTHET          .              .              .             EPS         
+HUN.AGR          -INF           89.3975        +INF             .          
+HUN.IND          -INF          792.5326        +INF             .          
+HUN.CON          -INF            8.7259        +INF             .          
+HUN.TR           -INF           29.7664        +INF             .          
+HUN.WRHR         -INF           23.7689        +INF             .          
+HUN.OTH          -INF           51.9621        +INF             .          
+HUN.FU           -INF          294.7388        +INF             .          
+HUN.INV            .              .              .             EPS         
+GUD.PROD         -INF          539.8505        +INF             .          
+GUD.DX           -INF            5.1496        +INF             .          
+GUD.X            -INF          147.5576        +INF             .          
+GUD.DRC          -INF          964.1874        +INF             .          
+GUD.RC           -INF      2.855829E-15        +INF             .          
+GUD.COALT          .              .              .             EPS         
+GUD.FGT            .              .              .             EPS         
+GUD.OILT           .              .              .             EPS         
+GUD.ROILT          .              .              .             EPS         
+GUD.NGT            .              .              .             EPS         
+GUD.ELEHT        -INF          226.5034        +INF             .          
+GUD.OTHET          .              .              .             EPS         
+GUD.AGR          -INF           90.8354        +INF             .          
+GUD.IND          -INF          453.1833        +INF             .          
+GUD.CON          -INF           31.1320        +INF             .          
+GUD.TR           -INF           45.7680        +INF             .          
+GUD.WRHR         -INF             .            +INF             .          
+GUD.OTH          -INF          186.0350        +INF             .          
+GUD.FU           -INF          770.8804        +INF             .          
+GUD.INV            .              .              .             EPS         
+GXI.PROD         -INF          398.7634        +INF             .          
+GXI.DX           -INF           82.5893        +INF             .          
+GXI.X              .              .              .             EPS         
+GXI.DRC          -INF           78.1832        +INF             .          
+GXI.RC             .              .              .             EPS         
+GXI.COALT          .              .              .             EPS         
+GXI.FGT            .              .              .             EPS         
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 28
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-HUN.COALT          .              .              .             EPS         
-HUN.FGT            .              .              .             EPS         
-HUN.OILT           .              .              .             EPS         
-HUN.ROILT          .              .              .             EPS         
-HUN.NGT            .              .              .             EPS         
-HUN.ELEHT        -INF          815.5223        +INF            EPS         
-HUN.OTHET          .              .              .             EPS         
-HUN.AGR          -INF           89.3975        +INF            EPS         
-HUN.IND          -INF          792.5326        +INF            EPS         
-HUN.CON          -INF            8.7259        +INF            EPS         
-HUN.TR           -INF           29.7664        +INF            EPS         
-HUN.WRHR         -INF           23.7689        +INF            EPS         
-HUN.OTH          -INF           51.9621        +INF            EPS         
-HUN.FU           -INF          294.7388        +INF            EPS         
-HUN.INV            .              .              .             EPS         
-GUD.PROD         -INF          539.8505        +INF            EPS         
-GUD.DX           -INF            5.1496        +INF            EPS         
-GUD.X            -INF          145.4644        +INF            EPS         
-GUD.DRC          -INF          964.1874        +INF            EPS         
-GUD.RC           -INF           49.5902        +INF            EPS         
-GUD.COALT          .              .              .             EPS         
-GUD.FGT            .              .              .             EPS         
-GUD.OILT           .              .              .             EPS         
-GUD.ROILT          .              .              .             EPS         
-GUD.NGT            .              .              .             EPS         
-GUD.ELEHT        -INF         2963.6994        +INF            EPS         
-GUD.OTHET          .              .              .             EPS         
-GUD.AGR          -INF           90.8354        +INF            EPS         
-GUD.IND          -INF         2823.6548        +INF            EPS         
-GUD.CON          -INF           53.0436        +INF            EPS         
-GUD.TR           -INF           45.7680        +INF            EPS         
-GUD.WRHR         -INF          231.0274        +INF            EPS         
-GUD.OTH          -INF          337.2745        +INF            EPS         
-GUD.FU           -INF          785.1098        +INF            EPS         
-GUD.INV            .              .              .             EPS         
-GXI.PROD         -INF          398.7634        +INF            EPS         
-GXI.DX           -INF           82.5893        +INF            EPS         
-GXI.X              .              .              .             EPS         
-GXI.DRC          -INF           78.1832        +INF            EPS         
-GXI.RC             .              .              .             EPS         
-GXI.COALT          .              .              .             EPS         
-GXI.FGT            .              .              .             EPS         
 GXI.OILT           .              .              .             EPS         
 GXI.ROILT          .              .              .             EPS         
 GXI.NGT            .              .              .             EPS         
-GXI.ELEHT        -INF          536.5056        +INF            EPS         
+GXI.ELEHT        -INF          536.5056        +INF             .          
 GXI.OTHET          .              .              .             EPS         
-GXI.AGR          -INF           21.5795        +INF            EPS         
-GXI.IND          -INF          668.5657        +INF            EPS         
-GXI.CON          -INF            5.6715        +INF            EPS         
-GXI.TR           -INF            8.7872        +INF            EPS         
-GXI.WRHR         -INF           19.5852        +INF            EPS         
-GXI.OTH          -INF           35.6932        +INF            EPS         
-GXI.FU           -INF          170.9806        +INF            EPS         
+GXI.AGR          -INF           21.5795        +INF             .          
+GXI.IND          -INF          668.5657        +INF             .          
+GXI.CON          -INF            5.6715        +INF             .          
+GXI.TR           -INF            8.7872        +INF             .          
+GXI.WRHR         -INF           19.5852        +INF             .          
+GXI.OTH          -INF           35.6932        +INF             .          
+GXI.FU           -INF          170.9806        +INF             .          
 GXI.INV            .              .              .             EPS         
-HAI.PROD         -INF           16.0876        +INF            EPS         
-HAI.DX           -INF            0.0194        +INF            EPS         
+HAI.PROD         -INF           16.0876        +INF             .          
+HAI.DX           -INF            0.0194        +INF             .          
 HAI.X              .              .              .             EPS         
-HAI.DRC          -INF            2.3105        +INF            EPS         
+HAI.DRC          -INF            2.3105        +INF             .          
 HAI.RC             .              .              .             EPS         
 HAI.COALT          .              .              .             EPS         
 HAI.FGT            .              .              .             EPS         
 HAI.OILT           .              .              .             EPS         
 HAI.ROILT          .              .              .             EPS         
 HAI.NGT            .              .              .             EPS         
-HAI.ELEHT        -INF          129.9785        +INF            EPS         
+HAI.ELEHT        -INF          129.9785        +INF             .          
 HAI.OTHET          .              .              .             EPS         
-HAI.AGR          -INF            7.3003        +INF            EPS         
-HAI.IND          -INF           79.8650        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 29
-Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
-
-
-     VAR x  adjusted value
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
-HAI.CON          -INF            1.1184        +INF            EPS         
-HAI.TR           -INF            1.8804        +INF            EPS         
-HAI.WRHR         -INF            9.8197        +INF            EPS         
-HAI.OTH          -INF           20.9913        +INF            EPS         
-HAI.FU           -INF           27.3821        +INF            EPS         
+HAI.AGR          -INF            7.3003        +INF             .          
+HAI.IND          -INF           79.8650        +INF             .          
+HAI.CON          -INF            1.1184        +INF             .          
+HAI.TR           -INF            1.8804        +INF             .          
+HAI.WRHR         -INF            9.8197        +INF             .          
+HAI.OTH          -INF           20.9913        +INF             .          
+HAI.FU           -INF           27.3821        +INF             .          
 HAI.INV            .              .              .             EPS         
-CHQ.PROD         -INF           75.1656        +INF            EPS         
-CHQ.DX           -INF           63.7851        +INF            EPS         
+CHQ.PROD         -INF           75.1656        +INF             .          
+CHQ.DX           -INF           63.7851        +INF             .          
 CHQ.X              .              .              .             EPS         
-CHQ.DRC          -INF          179.5938        +INF            EPS         
+CHQ.DRC          -INF          179.5938        +INF             .          
 CHQ.RC             .              .              .             EPS         
 CHQ.COALT          .              .              .             EPS         
 CHQ.FGT            .              .              .             EPS         
 CHQ.OILT           .              .              .             EPS         
 CHQ.ROILT          .              .              .             EPS         
 CHQ.NGT            .              .              .             EPS         
-CHQ.ELEHT        -INF          429.1036        +INF            EPS         
+CHQ.ELEHT        -INF          429.1036        +INF             .          
 CHQ.OTHET          .              .              .             EPS         
-CHQ.AGR          -INF            2.5072        +INF            EPS         
-CHQ.IND          -INF          399.2143        +INF            EPS         
-CHQ.CON          -INF           14.2318        +INF            EPS         
-CHQ.TR           -INF            9.8320        +INF            EPS         
-CHQ.WRHR         -INF           24.9364        +INF            EPS         
-CHQ.OTH          -INF           36.1449        +INF            EPS         
-CHQ.FU           -INF          133.2113        +INF            EPS         
+CHQ.AGR          -INF            2.5072        +INF             .          
+CHQ.IND          -INF          399.2143        +INF             .          
+CHQ.CON          -INF           14.2318        +INF             .          
+CHQ.TR           -INF            9.8320        +INF             .          
+CHQ.WRHR         -INF           24.9364        +INF             .          
+CHQ.OTH          -INF           36.1449        +INF             .          
+CHQ.FU           -INF          133.2113        +INF             .          
 CHQ.INV            .              .              .             EPS         
-SIC.PROD         -INF          952.9543        +INF            EPS         
-SIC.DX           -INF          104.2929        +INF            EPS         
+SIC.PROD         -INF          952.9543        +INF             .          
+SIC.DX           -INF          104.2929        +INF             .          
 SIC.X              .              .              .             EPS         
-SIC.DRC          -INF           44.3055        +INF            EPS         
+SIC.DRC          -INF           44.3055        +INF             .          
 SIC.RC             .              .              .             EPS         
 SIC.COALT          .              .              .             EPS         
 SIC.FGT            .              .              .             EPS         
 SIC.OILT           .              .              .             EPS         
 SIC.ROILT          .              .              .             EPS         
 SIC.NGT            .              .              .             EPS         
-SIC.ELEHT        -INF          666.4348        +INF            EPS         
+SIC.ELEHT        -INF          666.4348        +INF             .          
 SIC.OTHET          .              .              .             EPS         
-SIC.AGR          -INF           21.7533        +INF            EPS         
-SIC.IND          -INF         1051.7534        +INF            EPS         
-SIC.CON          -INF           20.5489        +INF            EPS         
-SIC.TR           -INF           27.9106        +INF            EPS         
-SIC.WRHR         -INF           37.2141        +INF            EPS         
-SIC.OTH          -INF           64.4611        +INF            EPS         
-SIC.FU           -INF          335.7603        +INF            EPS         
-SIC.INV            .              .              .             EPS         
-GZH.PROD         -INF          371.3704        +INF            EPS         
-GZH.DX           -INF          465.0789        +INF            EPS         
-GZH.X              .              .              .             EPS         
-GZH.DRC          -INF            0.1236        +INF            EPS         
-GZH.RC             .              .              .             EPS         
-GZH.COALT          .              .              .             EPS         
-GZH.FGT            .              .              .             EPS         
-GZH.OILT           .              .              .             EPS         
-GZH.ROILT          .              .              .             EPS         
-GZH.NGT            .              .              .             EPS         
-GZH.ELEHT        -INF         1094.5565        +INF            EPS         
-GZH.OTHET          .              .              .             EPS         
-GZH.AGR          -INF            6.5506        +INF            EPS         
-GZH.IND          -INF          783.1783        +INF            EPS         
-GZH.CON          -INF            8.4432        +INF            EPS         
-GZH.TR           -INF           24.5308        +INF            EPS         
-GZH.WRHR         -INF           10.0286        +INF            EPS         
-GZH.OTH          -INF           19.4919        +INF            EPS         
-GZH.FU           -INF          148.7481        +INF            EPS         
-GZH.INV            .              .              .             EPS         
-YUN.PROD         -INF          529.6498        +INF            EPS         
-YUN.DX           -INF          172.4287        +INF            EPS         
-YUN.X            -INF           31.4132        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 30
+SIC.AGR          -INF           21.7533        +INF             .          
+SIC.IND          -INF         1051.7534        +INF             .          
+SIC.CON          -INF           20.5489        +INF             .          
+SIC.TR           -INF           27.9106        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 29
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-YUN.DRC          -INF            8.4445        +INF            EPS         
+SIC.WRHR         -INF           37.2141        +INF             .          
+SIC.OTH          -INF           64.4611        +INF             .          
+SIC.FU           -INF          335.7603        +INF             .          
+SIC.INV            .              .              .             EPS         
+GZH.PROD         -INF          371.3704        +INF             .          
+GZH.DX           -INF          244.2421        +INF             .          
+GZH.X              .              .              .             EPS         
+GZH.DRC          -INF            0.1236        +INF             .          
+GZH.RC             .              .              .             EPS         
+GZH.COALT          .              .              .             EPS         
+GZH.FGT            .              .              .             EPS         
+GZH.OILT           .              .              .             EPS         
+GZH.ROILT          .              .              .             EPS         
+GZH.NGT            .              .              .             EPS         
+GZH.ELEHT        -INF          873.7197        +INF             .          
+GZH.OTHET          .              .              .             EPS         
+GZH.AGR          -INF            6.5506        +INF             .          
+GZH.IND          -INF          783.1783        +INF             .          
+GZH.CON          -INF            8.4432        +INF             .          
+GZH.TR           -INF           24.5308        +INF             .          
+GZH.WRHR         -INF           10.0286        +INF             .          
+GZH.OTH          -INF           19.4919        +INF             .          
+GZH.FU           -INF          148.7481        +INF             .          
+GZH.INV            .              .              .             EPS         
+YUN.PROD         -INF          529.6498        +INF             .          
+YUN.DX           -INF          172.4287        +INF             .          
+YUN.X            -INF           31.4132        +INF             .          
+YUN.DRC          -INF            8.4445        +INF             .          
 YUN.RC             .              .              .             EPS         
 YUN.COALT          .              .              .             EPS         
 YUN.FGT            .              .              .             EPS         
 YUN.OILT           .              .              .             EPS         
 YUN.ROILT          .              .              .             EPS         
 YUN.NGT            .              .              .             EPS         
-YUN.ELEHT        -INF          611.8373        +INF            EPS         
+YUN.ELEHT        -INF          611.8373        +INF             .          
 YUN.OTHET          .              .              .             EPS         
-YUN.AGR          -INF           18.6685        +INF            EPS         
-YUN.IND          -INF          675.3406        +INF            EPS         
-YUN.CON          -INF           15.2765        +INF            EPS         
-YUN.TR           -INF           16.0999        +INF            EPS         
-YUN.WRHR         -INF           13.4453        +INF            EPS         
-YUN.OTH          -INF           22.0363        +INF            EPS         
-YUN.FU           -INF          185.2226        +INF            EPS         
+YUN.AGR          -INF           18.6685        +INF             .          
+YUN.IND          -INF          675.3406        +INF             .          
+YUN.CON          -INF           15.2765        +INF             .          
+YUN.TR           -INF           16.0999        +INF             .          
+YUN.WRHR         -INF           13.4453        +INF             .          
+YUN.OTH          -INF           22.0363        +INF             .          
+YUN.FU           -INF          185.2226        +INF             .          
 YUN.INV            .              .              .             EPS         
-SHA.PROD         -INF          106.5420        +INF            EPS         
-SHA.DX           -INF          246.6856        +INF            EPS         
+SHA.PROD         -INF          106.5420        +INF             .          
+SHA.DX           -INF          246.6856        +INF             .          
 SHA.X              .              .              .             EPS         
 SHA.DRC            .              .              .             EPS         
 SHA.RC             .              .              .             EPS         
@@ -1888,86 +1866,86 @@ SHA.FGT            .              .              .             EPS
 SHA.OILT           .              .              .             EPS         
 SHA.ROILT          .              .              .             EPS         
 SHA.NGT            .              .              .             EPS         
-SHA.ELEHT        -INF         1053.6600        +INF            EPS         
+SHA.ELEHT        -INF         1053.6600        +INF             .          
 SHA.OTHET          .              .              .             EPS         
-SHA.AGR          -INF           44.2686        +INF            EPS         
-SHA.IND          -INF          543.2638        +INF            EPS         
-SHA.CON          -INF           13.1300        +INF            EPS         
-SHA.TR           -INF           40.0900        +INF            EPS         
-SHA.WRHR         -INF           21.6427        +INF            EPS         
-SHA.OTH          -INF           49.3455        +INF            EPS         
-SHA.FU           -INF          201.7759        +INF            EPS         
+SHA.AGR          -INF           44.2686        +INF             .          
+SHA.IND          -INF          543.2638        +INF             .          
+SHA.CON          -INF           13.1300        +INF             .          
+SHA.TR           -INF           40.0900        +INF             .          
+SHA.WRHR         -INF           21.6427        +INF             .          
+SHA.OTH          -INF           49.3455        +INF             .          
+SHA.FU           -INF          201.7759        +INF             .          
 SHA.INV            .              .              .             EPS         
-GAN.PROD         -INF          238.9053        +INF            EPS         
-GAN.DX           -INF            4.9406        +INF            EPS         
+GAN.PROD         -INF          238.9053        +INF             .          
+GAN.DX           -INF            4.9406        +INF             .          
 GAN.X              .              .              .             EPS         
 GAN.DRC            .              .              .             EPS         
 GAN.RC             .              .              .             EPS         
-GAN.COALT          .              .              .             EPS         
-GAN.FGT            .              .              .             EPS         
-GAN.OILT           .              .              .             EPS         
-GAN.ROILT          .              .              .             EPS         
-GAN.NGT            .              .              .             EPS         
-GAN.ELEHT        -INF          770.0371        +INF            EPS         
-GAN.OTHET          .              .              .             EPS         
-GAN.AGR          -INF           64.7069        +INF            EPS         
-GAN.IND          -INF          726.5314        +INF            EPS         
-GAN.CON          -INF            5.4813        +INF            EPS         
-GAN.TR           -INF           30.2457        +INF            EPS         
-GAN.WRHR         -INF            9.3650        +INF            EPS         
-GAN.OTH          -INF           19.9713        +INF            EPS         
-GAN.FU           -INF          147.7003        +INF            EPS         
-GAN.INV            .              .              .             EPS         
-NXA.PROD         -INF          232.1567        +INF            EPS         
-NXA.DX           -INF           42.6586        +INF            EPS         
-NXA.X              .              .              .             EPS         
-NXA.DRC          -INF           61.2320        +INF            EPS         
-NXA.RC             .              .              .             EPS         
-NXA.COALT          .              .              .             EPS         
-NXA.FGT            .              .              .             EPS         
-NXA.OILT           .              .              .             EPS         
-NXA.ROILT          .              .              .             EPS         
-NXA.NGT            .              .              .             EPS         
-NXA.ELEHT        -INF          108.2890        +INF            EPS         
-NXA.OTHET          .              .              .             EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 31
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 30
 Read a single state file
-Solution Report     SOLVE gua Using NLP From line 179
+Solution Report     SOLVE gua Using NLP From line 196
 
 
      VAR x  adjusted value
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-NXA.AGR          -INF            0.8896        +INF            EPS         
-NXA.IND          -INF          322.9812        +INF            EPS         
-NXA.CON          -INF            2.8144        +INF            EPS         
-NXA.TR           -INF            1.2446        +INF            EPS         
-NXA.WRHR         -INF            3.0471        +INF            EPS         
-NXA.OTH          -INF            6.7315        +INF            EPS         
-NXA.FU           -INF           21.3109        +INF            EPS         
+GAN.COALT          .              .              .             EPS         
+GAN.FGT            .              .              .             EPS         
+GAN.OILT           .              .              .             EPS         
+GAN.ROILT          .              .              .             EPS         
+GAN.NGT            .              .              .             EPS         
+GAN.ELEHT        -INF          770.0371        +INF             .          
+GAN.OTHET          .              .              .             EPS         
+GAN.AGR          -INF           64.7069        +INF             .          
+GAN.IND          -INF          726.5314        +INF             .          
+GAN.CON          -INF            5.4813        +INF             .          
+GAN.TR           -INF           30.2457        +INF             .          
+GAN.WRHR         -INF            9.3650        +INF             .          
+GAN.OTH          -INF           19.9713        +INF             .          
+GAN.FU           -INF          147.7003        +INF             .          
+GAN.INV            .              .              .             EPS         
+NXA.PROD         -INF          232.1567        +INF             .          
+NXA.DX           -INF           42.6586        +INF             .          
+NXA.X              .              .              .             EPS         
+NXA.DRC          -INF           61.2320        +INF             .          
+NXA.RC             .              .              .             EPS         
+NXA.COALT          .              .              .             EPS         
+NXA.FGT            .              .              .             EPS         
+NXA.OILT           .              .              .             EPS         
+NXA.ROILT          .              .              .             EPS         
+NXA.NGT            .              .              .             EPS         
+NXA.ELEHT        -INF          108.2890        +INF             .          
+NXA.OTHET          .              .              .             EPS         
+NXA.AGR          -INF            0.8896        +INF             .          
+NXA.IND          -INF          322.9812        +INF             .          
+NXA.CON          -INF            2.8144        +INF             .          
+NXA.TR           -INF            1.2446        +INF             .          
+NXA.WRHR         -INF            3.0471        +INF             .          
+NXA.OTH          -INF            6.7315        +INF             .          
+NXA.FU           -INF           21.3109        +INF             .          
 NXA.INV            .              .              .             EPS         
-QIH.PROD         -INF           24.4817        +INF            EPS         
-QIH.DX           -INF           24.3957        +INF            EPS         
+QIH.PROD         -INF           24.4817        +INF             .          
+QIH.DX           -INF           24.3957        +INF             .          
 QIH.X              .              .              .             EPS         
-QIH.DRC          -INF           10.3986        +INF            EPS         
+QIH.DRC          -INF           10.3986        +INF             .          
 QIH.RC             .              .              .             EPS         
 QIH.COALT          .              .              .             EPS         
 QIH.FGT            .              .              .             EPS         
 QIH.OILT           .              .              .             EPS         
 QIH.ROILT          .              .              .             EPS         
 QIH.NGT            .              .              .             EPS         
-QIH.ELEHT        -INF          587.7273        +INF            EPS         
+QIH.ELEHT        -INF          587.7273        +INF             .          
 QIH.OTHET          .              .              .             EPS         
-QIH.AGR          -INF           12.7324        +INF            EPS         
-QIH.IND          -INF          489.8893        +INF            EPS         
-QIH.CON          -INF            3.5594        +INF            EPS         
-QIH.TR           -INF            8.7696        +INF            EPS         
-QIH.WRHR         -INF           10.2686        +INF            EPS         
-QIH.OTH          -INF           13.3734        +INF            EPS         
-QIH.FU           -INF           59.6193        +INF            EPS         
+QIH.AGR          -INF           12.7324        +INF             .          
+QIH.IND          -INF          489.8893        +INF             .          
+QIH.CON          -INF            3.5594        +INF             .          
+QIH.TR           -INF            8.7696        +INF             .          
+QIH.WRHR         -INF           10.2686        +INF             .          
+QIH.OTH          -INF           13.3734        +INF             .          
+QIH.FU           -INF           59.6193        +INF             .          
 QIH.INV            .              .              .             EPS         
-XIN.PROD         -INF           79.5532        +INF            EPS         
+XIN.PROD         -INF           79.5532        +INF             .          
 XIN.DX             .              .              .             EPS         
 XIN.X              .              .              .             EPS         
 XIN.DRC            .              .              .             EPS         
@@ -1977,110 +1955,43 @@ XIN.FGT            .              .              .             EPS
 XIN.OILT           .              .              .             EPS         
 XIN.ROILT          .              .              .             EPS         
 XIN.NGT            .              .              .             EPS         
-XIN.ELEHT        -INF          919.6708        +INF            EPS         
+XIN.ELEHT        -INF          919.6708        +INF             .          
 XIN.OTHET          .              .              .             EPS         
-XIN.AGR          -INF           46.5177        +INF            EPS         
-XIN.IND          -INF          625.4554        +INF            EPS         
-XIN.CON          -INF            4.1314        +INF            EPS         
-XIN.TR           -INF           14.8167        +INF            EPS         
-XIN.WRHR         -INF           24.7825        +INF            EPS         
-XIN.OTH          -INF           28.2521        +INF            EPS         
-XIN.FU           -INF          255.2682        +INF            EPS         
+XIN.AGR          -INF           46.5177        +INF             .          
+XIN.IND          -INF          625.4554        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    02/29/12 15:08:03 Page 31
+Read a single state file
+Solution Report     SOLVE gua Using NLP From line 196
+
+
+     VAR x  adjusted value
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+XIN.CON          -INF            4.1314        +INF             .          
+XIN.TR           -INF           14.8167        +INF             .          
+XIN.WRHR         -INF           24.7825        +INF             .          
+XIN.OTH          -INF           28.2521        +INF             .          
+XIN.FU           -INF          255.2682        +INF             .          
 XIN.INV            .              .              .             EPS         
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- VAR j                 -INF             .            +INF            EPS         
+---- VAR j                 -INF           14.7417        +INF             .          
 
   j  obj function
 
 
 **** REPORT SUMMARY :        0     NONOPT
-                            20 INFEASIBLE (INFES)
-                    SUM       6603.4243
-                    MAX       3121.0376
-                    MEAN       330.1712
+                             1 INFEASIBLE (INFES)
+                    SUM          0.7784
+                    MAX          0.7784
+                    MEAN         0.7784
                              0  UNBOUNDED
                              0     ERRORS
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 32
-Read a single state file
-E x e c u t i o n
 
 
-----    181 VARIABLE x.L  adjusted value
-
-           PROD          DX           X         DRC          RC       ELEHT         AGR         IND         CON          TR
-
-BEJ       8.844       0.307                 555.472                 709.708      16.419     470.902      23.344      60.132
-TAJ                   1.168                 133.362                 897.235      13.851     628.544       8.205      14.910
-HEB      13.584      94.046                 460.826                2622.068     176.349    2099.624      15.824      55.134
-SHX      31.647     568.486                  62.507                2441.272      34.879    1520.344      10.004      50.401
-NMG      67.746     843.019                                        2714.257      43.749    1422.790       9.818      41.450
-LIA      58.427      26.522                 329.225       0.516    2547.133      30.713    1769.154      16.214      37.759
-JIL      90.072      47.181             3.410000E-4                1059.352      10.717     781.727       5.740      26.571
-HLJ      17.218     169.221       0.049       0.553      82.220    1341.379      19.885     702.472       4.474      10.815
-SHH      19.142      19.947                 426.184                1123.021       6.477    1013.005      23.124      24.856
-JSU     131.122     238.254                 393.956                4192.626      30.074    3521.257      28.931      23.966
-ZHJ     477.867      76.016                 209.873                3312.258      19.223    2950.376      29.011      20.574
-ANH      18.017     130.961                   8.837                1217.371      14.759     835.877       9.553      10.995
-FUJ     404.119      49.811                   1.942                1011.158      13.101     916.020      17.120      15.842
-JXI      95.739       5.641                  26.337                 586.530      26.227     461.860       4.891       9.390
-SHD      23.466      12.696                                        5155.311      86.731    4159.391      38.572      40.926
-HEN     105.067     109.421                  51.729                2711.987      91.551    2046.635      10.148      45.213
-HUB    1118.525     820.161                 141.630                1074.547      46.591    1169.254      10.741      14.662
-HUN     422.535     108.398                 161.233                 815.522      89.397     792.533       8.726      29.766
-GUD     539.851       5.150     145.464     964.187      49.590    2963.699      90.835    2823.655      53.044      45.768
-GXI     398.763      82.589                  78.183                 536.506      21.580     668.566       5.671       8.787
-HAI      16.088       0.019                   2.311                 129.978       7.300      79.865       1.118       1.880
-CHQ      75.166      63.785                 179.594                 429.104       2.507     399.214      14.232       9.832
-SIC     952.954     104.293                  44.305                 666.435      21.753    1051.753      20.549      27.911
-GZH     371.370     465.079                   0.124                1094.556       6.551     783.178       8.443      24.531
-YUN     529.650     172.429      31.413       8.444                 611.837      18.669     675.341      15.276      16.100
-SHA     106.542     246.686                                        1053.660      44.269     543.264      13.130      40.090
-GAN     238.905       4.941                                         770.037      64.707     726.531       5.481      30.246
-NXA     232.157      42.659                  61.232                 108.289       0.890     322.981       2.814       1.245
-QIH      24.482      24.396                  10.399                 587.727      12.732     489.889       3.559       8.770
-XIN      79.553                                                     919.671      46.518     625.455       4.131      14.817
-
-  +        WRHR         OTH          FU
-
-BEJ     110.812     330.877     261.231
-TAJ      51.426      45.357     267.136
-HEB      43.257      87.554     524.690
-SHX      18.681      42.818     289.812
-NMG      49.957      50.734     320.488
-LIA      49.455     146.110     859.374
-JIL      20.849      48.736     207.902
-HLJ      18.484      46.026     469.944
-SHH      78.755     162.261     239.921
-JSU      90.295     172.183     612.746
-ZHJ     248.812     179.333     476.654
-ANH      23.679      42.417     175.983
-FUJ      39.279      73.261     292.785
-JXI      16.579      29.459     154.559
-SHD     129.500     166.524     544.437
-HEN      46.688      81.083     438.044
-HUB      45.719      54.482     173.092
-HUN      23.769      51.962     294.739
-GUD     231.027     337.274     785.110
-GXI      19.585      35.693     170.981
-HAI       9.820      20.991      27.382
-CHQ      24.936      36.145     133.211
-SIC      37.214      64.461     335.760
-GZH      10.029      19.492     148.748
-YUN      13.445      22.036     185.223
-SHA      21.643      49.346     201.776
-GAN       9.365      19.971     147.700
-NXA       3.047       6.731      21.311
-QIH      10.269      13.373      59.619
-XIN      24.783      28.252     255.268
-
-
-
-EXECUTION TIME       =        0.031 SECONDS      3 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       02/29/12 22:55:51 Page 33
-Read a single state file
-E x e c u t i o n
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -2090,5 +2001,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\ELEH_balance.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\ELEH_balance.lst
