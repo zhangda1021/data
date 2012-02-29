@@ -143,7 +143,6 @@ criterion..
 j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i)));
 *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
 
-
 *No bench for dx and drc
 bench(i)$((ord(i)<>2) and (ord(i)<>4))..
 sum(r,x(r,i)) =e= %egyprod%_bench(i,"value");
@@ -174,11 +173,13 @@ trade..
 sum(r,x(r,"DX"))=e=sum(r,x(r,"DRC"));
 
 
-sign(r,i)$((ord(i)<>2) and (ord(i)<>4) and (ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<>12))..
+sign(r,i)$((ord(i)<>6) and (ord(i)<>7) and (ord(i)<>8) and (ord(i)<>9) and (ord(i)<>10) and (ord(i)<>11) and (ord(i)<>12))..
 x(r,i)=g=0;
 
 Model gua /all/;
 x.l(r,i)= %egyprod%(r,i);
+x.fx(r,i)$(not %egyprod%(r,i)) = 0;
+
 gua.iterlim=1000;
 Solve gua minimizing j using nlp;
 
