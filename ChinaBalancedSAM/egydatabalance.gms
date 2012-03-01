@@ -31,9 +31,8 @@ b) SUM(DX)=SUM(DRC)
 After the rebalancing work, we can estimate detailed industry energy consumption of each province.
 
 $offtext
-$title  Read a single state file
 
-$if not set egyprod   $set egyprod coal
+$if not set egyprod   $set egyprod COAL
 $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder '%projectfolder%\data\gdx\egygdx'
 
@@ -137,8 +136,14 @@ display benchvalue
 variables       x(r,i)  adjusted value
 variable        j       obj function
 
-Equations  criterion criterion definition
-           bench   benchmark egy
+Equations criterion_coal criterion definition
+         criterion_fg
+         criterion_oil
+          criterion_roil
+          criterion_ng
+          criterion_eleh
+          criterion_othe
+*           bench   benchmark egy
            balance_coal  input output balance
            balance_fg
            balance_oil
@@ -150,14 +155,32 @@ Equations  criterion criterion definition
            sign    negative only for t and inv;
 
 
-criterion..
-j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1));
+criterion_coal$(sameas('%egyprod%','COAL'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+10000*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
 *j=e=sum((r,i)$%egyprod%(r,i),x(r,i)*(log(x(r,i)/%egyprod%(r,i))-1));
 *j=e=sum((r,i),sqr(x(r,i)-%egyprod%(r,i))/100000);
 
+criterion_fg$(sameas('%egyprod%','FG'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+6*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
+criterion_oil$(sameas('%egyprod%','OIL'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+100*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
+criterion_roil$(sameas('%egyprod%','ROIL'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+1000*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
+criterion_ng$(sameas('%egyprod%','NG'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+100*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
+criterion_eleh$(sameas('%egyprod%','ELEH'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+1000*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
+criterion_othe$(sameas('%egyprod%','OTHE'))..
+j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+6*sum(i$((ord(i)<>2) and (ord(i)<>4)and (abs(benchvalue(i))>0.01)),sqr(sum(r,x(r,i))/benchvalue(i) - 1));
+
 *No bench for dx and drc
-bench(i)$((ord(i)<>2) and (ord(i)<>4))..
-sum(r,x(r,i)) =e= benchvalue(i);
+*bench(i)$((ord(i)<>2) and (ord(i)<>4))..
+*sum(r,x(r,i)) =e= benchvalue(i);
 *coal
 balance_coal(r)$(sameas('%egyprod%','COAL'))..
 2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));

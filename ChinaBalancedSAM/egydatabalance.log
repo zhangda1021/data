@@ -1,53 +1,24 @@
 
---- Job egydatabalance.gms Start 02/29/12 14:58:17 WEX-WEI 23.2.1 x86_64/MS Windows     
-GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+--- Job egydatabalance.gms Start 03/01/12 10:49:08 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
           License for teaching and research at degree granting institutions
 --- Starting compilation
---- egydatabalance.gms(121) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal.gdx
---- egydatabalance.gms(124) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\coal_bench.gdx
---- egydatabalance.gms(204) 3 Mb
---- Starting execution: elapsed 0:00:00.010
---- egydatabalance.gms(195) 4 Mb
---- Generating NLP model gua
---- egydatabalance.gms(196) 7 Mb
----   440 rows  601 columns  2,191 non-zeroes
----   5,853 nl-code  600 nl-non-zeroes
---- egydatabalance.gms(196) 4 Mb
---- Executing CONOPT: elapsed 0:00:00.036
---- egydatabalance.gms(196) 4 Mb
-C O N O P T 3    Aug 14, 2009 23.2.1 WEX 12168.12582 WEI x86_64/MS Windows 
- 
- 
-    C O N O P T 3   version 3.14T
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- Using default options.
- 
- Reading Data
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        1.3273564677E+05 (Input point)
-                                Pre-triangular equations:       52
-                                Post-triangular equations:       1
-      1   0        1.3273564677E+05 (After pre-processing)
-      2   0        2.6589157801E+01 (After scaling)
-     10   0     1  1.9745491835E+01               7.7E-02      T  T
-     20   0     1  1.1894607578E+01               4.5E-02      T  T
-     30   0     1  6.3239978532E+00               1.2E-01      T  T
-     40   0     1  2.3114239022E+00               2.0E-01      T  T
-     50   1     1  8.0348250236E-02 0.0E+00     0
- 
- ** Infeasible solution. Reduced gradient less than tolerance.
- 
---- Restarting execution
---- egydatabalance.gms(196) 2 Mb
---- Reading solution for model gua
---- egydatabalance.gms(196) 2 Mb
-*** Status: Normal completion
---- Job egydatabalance.gms Stop 02/29/12 14:58:17 elapsed 0:00:00.225
+--- egydatabalance.gms(120) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL.gdx
+--- egydatabalance.gms(123) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL_bench.gdx
+--- egydatabalance.gms(223) 3 Mb 2 Errors
+*** Error  71 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    The symbol shown has been declared as an equation, but no
+       Symbolic equation (..) was found. hint - look for commas in the
+       Documentation text for the equations. use quotes around the
+       Text or eliminate the commas.
+*** Error 256 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
+    Error(s) in analyzing solve statement. More detail appears
+    Below the solve statement above
+--- egydatabalance.gms(227) 3 Mb 2 Errors
+*** Status: Compilation error(s)
+--- Job egydatabalance.gms Stop 03/01/12 10:49:09 elapsed 0:00:00.102
+Exit code = 2
