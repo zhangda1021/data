@@ -1,5 +1,5 @@
 
---- Job egydatabalance.gms Start 03/01/12 10:49:08 WIN-VS8 23.4.3 x86/MS Windows        
+--- Job egydatabalance.gms Start 03/04/12 14:37:25 WIN-VS8 23.4.3 x86/MS Windows        
 GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
@@ -9,16 +9,28 @@ Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 --- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL.gdx
 --- egydatabalance.gms(123) 3 Mb
 --- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\COAL_bench.gdx
---- egydatabalance.gms(223) 3 Mb 2 Errors
-*** Error  71 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    The symbol shown has been declared as an equation, but no
-       Symbolic equation (..) was found. hint - look for commas in the
-       Documentation text for the equations. use quotes around the
-       Text or eliminate the commas.
-*** Error 256 in C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-    Error(s) in analyzing solve statement. More detail appears
-    Below the solve statement above
---- egydatabalance.gms(227) 3 Mb 2 Errors
-*** Status: Compilation error(s)
---- Job egydatabalance.gms Stop 03/01/12 10:49:09 elapsed 0:00:00.102
-Exit code = 2
+--- egydatabalance.gms(239) 3 Mb
+--- Starting execution: elapsed 0:00:00.020
+--- egydatabalance.gms(222) 4 Mb
+--- Generating NLP model gua
+--- egydatabalance.gms(223) 7 Mb
+---   423 rows  601 columns  1,593 non-zeroes
+---   7,250 nl-code  512 nl-non-zeroes
+--- egydatabalance.gms(223) 4 Mb
+--- Executing MSNLP: elapsed 0:00:00.054
+--- egydatabalance.gms(223) 4 Mb
+*** No license found
+*** To update your license, please contact your distributor.
+*** Too many equations for global demo mode
+***   Number of equations          : 423
+***   Maximum allowed              : 10
+*** Too many variables for global demo mode
+***   Number of variables          : 601
+***   Maximum allowed              : 10
+--- Restarting execution
+--- egydatabalance.gms(223) 0 Mb
+--- Reading solution for model gua
+--- Executing after solve: elapsed 0:00:00.235
+--- egydatabalance.gms(226) 3 Mb
+*** Status: Normal completion
+--- Job egydatabalance.gms Stop 03/04/12 14:37:26 elapsed 0:00:00.242

@@ -1,0 +1,37 @@
+
+--- Job egyintestimation.gms Start 03/05/12 01:23:14 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- egyintestimation.gms(150) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_balance.gdx
+--- egyintestimation.gms(153) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
+--- egyintestimation.gms(156) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+--- egyintestimation.gms(288) 4 Mb
+--- Starting execution: elapsed 0:00:00.908
+--- egyintestimation.gms(280) 5 Mb
+--- Generating NLP model gua
+--- egyintestimation.gms(281) 7 Mb
+---   55 rows  721 columns  2,161 non-zeroes
+---   7,148 nl-code  720 nl-non-zeroes
+--- egyintestimation.gms(281) 5 Mb
+--- Executing MSNLP: elapsed 0:00:01.349
+--- egyintestimation.gms(281) 5 Mb
+*** No license found
+*** To update your license, please contact your distributor.
+*** Too many equations for global demo mode
+***   Number of equations          : 55
+***   Maximum allowed              : 10
+*** Too many variables for global demo mode
+***   Number of variables          : 721
+***   Maximum allowed              : 10
+--- Restarting execution
+--- egyintestimation.gms(281) 0 Mb
+--- Reading solution for model gua
+--- egyintestimation.gms(281) 3 Mb
+*** Status: Normal completion
+--- Job egyintestimation.gms Stop 03/05/12 01:23:17 elapsed 0:00:03.014

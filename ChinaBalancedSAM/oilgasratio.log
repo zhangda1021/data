@@ -1,0 +1,16 @@
+
+--- Job oilgasratio.gms Start 03/05/12 06:14:04 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- oilgasratio.gms(35) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\oil_balance.gdx
+--- oilgasratio.gms(49) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\ng_balance.gdx
+--- oilgasratio.gms(64) 3 Mb
+--- Starting execution: elapsed 0:00:00.017
+--- oilgasratio.gms(62) 4 Mb
+*** Status: Normal completion
+--- Job oilgasratio.gms Stop 03/05/12 06:14:04 elapsed 0:00:00.032

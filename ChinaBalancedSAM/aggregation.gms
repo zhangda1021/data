@@ -7,9 +7,9 @@ $ontext
         Central Government      G1(1)
         Provincial Government   G2(1)
         Types of taxes          T (4)
-        Rest of country         EX(1)
+        Rest of country         DX(1)
         Rest of world           X (1)
-        Investment-savings      I (1)
+        Investment-savings      I (2)
 
 Here is a "MAP" of the SAM with the names of the submatrices which
 contain data.  All cells with no labels are empty:

@@ -16,13 +16,13 @@ XIN     |       |       |       |       |       |       |       |       |       
         ------------------------------------------------------------------------------------------------
 
            AGR     IND     CON     TR     WRHR    OTH      FU       INV
-        ------------------------------------------------------------------------------------------------
-BEJ     |       |       |       |       |       |       |       |       |       |       |       |       |
-        ------------------------------------------------------------------------------------------------
+        -----------------------------------------------------------------
+BEJ     |       |       |       |       |       |       |       |       |
+        -----------------------------------------------------------------
 ...
-        ------------------------------------------------------------------------------------------------
-XIN     |       |       |       |       |       |       |       |       |       |       |       |       |
-        ------------------------------------------------------------------------------------------------
+        -----------------------------------------------------------------
+XIN     |       |       |       |       |       |       |       |       |
+        -----------------------------------------------------------------
 
 We need rebalance EBT in order to:
 a) All the data is consitent with the national EBT (0401.xls)
@@ -144,6 +144,7 @@ Equations criterion_coal criterion definition
           criterion_eleh
           criterion_othe
 *           bench   benchmark egy
+          benchind
            balance_coal  input output balance
            balance_fg
            balance_oil
@@ -181,6 +182,9 @@ j=e=sum((r,i)$(%egyprod%(r,i)<>0),sqr(x(r,i)/%egyprod%(r,i)-1))+6*sum(i$((ord(i)
 *No bench for dx and drc
 *bench(i)$((ord(i)<>2) and (ord(i)<>4))..
 *sum(r,x(r,i)) =e= benchvalue(i);
+
+benchind..
+sum(r,x(r,"IND"))=e=benchvalue("IND");
 *coal
 balance_coal(r)$(sameas('%egyprod%','COAL'))..
 2*(x(r,"PROD")+x(r,"RC")+x(r,"DRC")+x(r,"COALT"))=e=sum(i,x(r,i));
@@ -221,6 +225,14 @@ x.fx(r,i)$(abs(x.l(r,i))<0.0001) = 0;
 
 gua.iterlim=1000;
 Solve gua minimizing j using nlp;
+
+parameter egyadjusted(r,i)
+loop(r,
+loop(i,
+egyadjusted(r,i)=x.l(r,i);
+););
+
+
 
 
 

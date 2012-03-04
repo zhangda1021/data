@@ -1,0 +1,129 @@
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 06:14:04 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+      This program is used to estimate energy consumption of energy intensive in
+      dustries according data in provincial energy
+      balance tables and data in national data for energy intensive industries.
+      After this estimation, we can have the whole energy balance tables for eac
+      h province.
+       
+   7   
+  10   
+  11  set     i       accounts /
+  12           PROD    Production,
+  13           DX      Domestic outflow,
+  14           X       Export,
+  15           DRC     Domestic inflow,
+  16           RC      Import,
+  17           COALT   Coal converted from other energy product,
+  18           FGT     Fuel gas converted from other energy product,
+  19           OILT    Crude oil converted from other energy product,
+  20           ROILT   Refined oil converted from other energy product,
+  21           NGT     Natural gas converted from other energy productconverted 
+      from other energy product,
+  22           ELEHT   Electricity & heat converted from other energy product,
+  23           OTHET   Other energy converted from other energy product,
+  24           AGR     Agriculture,
+  25           IND     Industry,
+  26           CON     Construction,
+  27           TR      Transportation,
+  28           WRHR    Wholesale & retail & hotel & restraurant,
+  29           OTH     Other service industry,
+  30           FU      Final use,
+  31           INV     Inventory change/;
+  32  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+      ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
+      H,XIN/;
+  33  parameter egyadjusted(r,i)                egy cons of egy product by provi
+      nce
+  34   
+GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\oil_balan
+        ce.gdx
+--- LOAD  egyadjusted = 43:egyadjusted
+  37  parameter oil(r)
+  38  loop(r,
+  39  oil(r)=0;
+  40  );
+  41  loop(r,
+  42  loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+  43  oil(r)=oil(r)+egyadjusted(r,i);
+  44  ););
+  45  display oil
+  46   
+  47   
+  48  variables x(r,i)
+GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\ng_balanc
+        e.gdx
+--- LOAD  x = 23:x
+  51  parameter ng(r)
+  52  loop(r,
+  53  ng(r)=0;
+  54  );
+  55  loop(r,
+  56  loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+  57  ng(r)=ng(r)+x.l(r,i);
+  58  ););
+  59  display ng
+  60   
+  61  parameter oilngratio(r)
+  62  loop(r,
+  63  oilngratio(r)=oil(r)/(oil(r)+ng(r));
+  64  );
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 06:14:04 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \oilgasratio.gms
+     2       35 GDXIN          1      35  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \data\gdx\egygdx\balance\oil_balance.g
+                                          dx
+     3       49 GDXIN          1      49  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \data\gdx\egygdx\balance\ng_balance.gd
+                                          x
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  WIN234-234 May 21, 2010
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 06:14:04 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     45 PARAMETER oil  
+
+BEJ 1381.411,    TAJ 3742.863,    HEB 1835.429,    NMG  341.570,    LIA 6123.373
+JIL 1343.985,    HLJ 6890.395,    SHH 3071.784,    JSU 4075.278,    ZHJ 4008.963
+ANH  645.172,    FUJ  507.020,    JXI  569.496,    SHD 8429.579,    HEN 1220.080
+HUB 1220.526,    HUN  948.996,    GUD 4592.926,    GXI  224.094,    HAI 1269.035
+CHQ    0.271,    SIC  342.592,    YUN    0.229,    SHA 2633.131,    GAN 1858.317
+NXA  330.989,    QIH  226.609,    XIN 3939.500
+
+
+----     59 PARAMETER ng  
+
+BEJ  530.630,    TAJ  307.470,    HEB  217.867,    SHX   91.583,    NMG  840.281
+LIA  189.548,    JIL   86.470,    HLJ  401.703,    SHH  376.962,    JSU  569.496
+ZHJ  231.988,    ANH   54.195,    FUJ    6.390,    JXI   13.780,    SHD  315.753
+HEN  473.926,    HUB  116.588,    HUN   77.139,    GUD 1414.394,    GXI   17.973
+HAI  567.366,    CHQ  934.112,    SIC 2094.728,    GZH   69.052,    YUN   73.764
+SHA 1214.651,    GAN  175.189,    NXA  431.508,    QIH  121.479,    XIN 1819.957
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 Mb  WIN234-234 May 21, 2010
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgasratio.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgasratio.lst

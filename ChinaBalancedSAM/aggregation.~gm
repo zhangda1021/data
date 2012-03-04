@@ -9,7 +9,7 @@ $ontext
         Types of taxes          T (4)
         Rest of country         EX(1)
         Rest of world           X (1)
-        Investment-savings      I (1)
+        Investment-savings      I (2)
 
 Here is a "MAP" of the SAM with the names of the submatrices which
 contain data.  All cells with no labels are empty:
@@ -173,7 +173,7 @@ sam2(r,i,j)=sam15(r,ni,nj);
 
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"28")=sam15(r,ni,"30");
+sam2(r,i,"28")=sam15(r,ni,"30")+sam15(r,ni,"31");
 );
 );
 
@@ -200,12 +200,12 @@ sam2(r,i,j)=sam15(r,ni,nj);
 
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
-sam2(r,i,"58")=sam15(r,ni,"72");
+sam2(r,i,"58")=sam15(r,ni,"72")+sam15(r,ni,"73");
 );
 );
 
 *AGGREGATION OF OTH COMMODITIES(other service industry)
-loop(nj$(((ord(nj) ge 73) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
+loop(nj$(((ord(nj) ge 74) and (ord(nj) le 84)) or (ord(nj) = 70) or (ord(nj) = 71)),
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
 sam2(r,i,"59")=sam2(r,i,"59")+sam15(r,ni,nj);

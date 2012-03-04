@@ -1,0 +1,28 @@
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/03/12 00:33:44 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\readegyindustrydata.gms
+     2        4 CALL           1       4  gdxxrw i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\energydata\\EGYCONS_IND.xls o=C:
+                                          \Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\egygdx\EGYCONS_IND.gdx par=ind  rn
+                                          g="sheet1!a1:g25" rdim=1 cdim=1
+
+
+COMPILATION TIME     =       15.772 SECONDS      2 Mb  WIN234-234 May 21, 2010
+
+
+EXECUTION TIME       =        0.031 SECONDS      2 Mb  WIN234-234 May 21, 2010
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\readegyindustrydata.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\readegyindustrydata.lst
