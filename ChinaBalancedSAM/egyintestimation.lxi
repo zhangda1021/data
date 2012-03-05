@@ -1,17 +1,19 @@
 B 2 C o m p i l a t i o n
-B 313 Include File Summary
-B 335 E x e c u t i o n
-I 336 egyadjusted
-I 439 ind
-I 469 sam2
-I 8271 samind
-I 11131 egyindi
-B 11268 Equation Listing    SOLVE gua Using NLP From line 281
-D 11269 criterion_row
-D 11329 criterion_column
-D 11376 obj
-B 11862 Column Listing      SOLVE gua Using NLP From line 281
-E 11863 egyindi
-E 11886 j
-B 11895 Model Statistics    SOLVE gua Using NLP From line 281
-B 11913 Solution Report     SOLVE gua Using NLP From line 281
+B 440 Include File Summary
+B 464 E x e c u t i o n
+I 465 egyadjusted
+I 568 ind
+I 598 sam2
+I 8400 oilngratio
+I 8411 samind
+I 11271 egyindi
+B 11408 Equation Listing    SOLVE gua Using NLP From line 324
+D 11409 criterion_row
+D 11469 criterion_column
+D 11516 obj
+B 12002 Column Listing      SOLVE gua Using NLP From line 324
+E 12003 egyindi
+E 12026 j
+B 12035 Model Statistics    SOLVE gua Using NLP From line 324
+B 12053 Solution Report     SOLVE gua Using NLP From line 324
+B 12081 E x e c u t i o n

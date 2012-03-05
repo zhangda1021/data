@@ -1,7 +1,5 @@
 $ontext
-This program is used to estimate energy consumption of energy intensive industries according data in provincial energy
-balance tables and data in national data for energy intensive industries.
-After this estimation, we can have the whole energy balance tables for each province.
+This program is used to get the ratio of crude oil ang gas consumption for each province.
 
 $offtext
 
@@ -39,9 +37,13 @@ loop(r,
 oil(r)=0;
 );
 loop(r,
-loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+loop(i$((sameas(i,'PROD')) OR (sameas(i,'DRC')) OR (sameas(i,'RC'))),
 oil(r)=oil(r)+egyadjusted(r,i);
-););
+);
+loop(i$((sameas(i,'DX')) OR (sameas(i,'X'))),
+oil(r)=oil(r)-egyadjusted(r,i);
+);
+);
 display oil
 
 
@@ -53,9 +55,13 @@ loop(r,
 ng(r)=0;
 );
 loop(r,
-loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+loop(i$((sameas(i,'PROD')) OR (sameas(i,'DRC')) OR (sameas(i,'RC'))),
 ng(r)=ng(r)+x.l(r,i);
-););
+);
+loop(i$((sameas(i,'DX')) OR (sameas(i,'X'))),
+ng(r)=ng(r)-x.l(r,i);
+);
+);
 display ng
 
 parameter oilngratio(r)

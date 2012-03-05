@@ -121,11 +121,11 @@ set     sami   SAM rows and colums indices /
         73      Inventory/;
 *Final energy balance table
 set ebti /
-         1       PROD,
-         2       DX,
-         3       X,
-         4       DRC,
-         5       RC,
+         1       DX,
+         2       X,
+         3       DRC,
+         4       RC,
+         5       AGR,
          6       COAL,
          7       OIL,
          8       MM,
@@ -156,7 +156,8 @@ set ebti /
          33      OTH,
          34      NG,
          35      FU,
-         36      INV
+         36      INV,
+         37      PROD
 /;
 
 alias (sami,samj);
@@ -180,6 +181,7 @@ parameter samindtot(r,indi)
 
 parameters egyind(r,indi) egy benchmark cons of egy intensive industries
 parameters ebt(r,ebti)   final energy balance table
+parameters oilngratio(r)
 
 $if exist %inputfolder%\balance\%egyprod%_balance.gdx       $goto readdata
 $log "Error -- cannot find %egyprod%'
@@ -195,6 +197,9 @@ display ind
 $gdxin '%inputfolder2%\aggregation.gdx'
 $load sam2
 display sam2
+$gdxin '%inputfolder%\oilgasratio.gdx'
+$load oilngratio
+display oilngratio
 *sam data from sam2 is transferred to samind
 loop(r,
 loop(sami$((ord(sami) ge 32) and (ord(sami) le 55)),
@@ -265,7 +270,7 @@ Equations criterion_row
           obj
 ;
 
-criterion_row(indi)..
+criterion_row(indi)$(not sameas('%egyprod%','COAL'))..
 sum(r,egyindi(r,indi))=e=ind(indi,'%egyprod%');
 criterion_column(r)..
 sum(indi,egyindi(r,indi))=e=egyadjusted(r,"IND");
@@ -322,56 +327,610 @@ egyindi.fx(r,indi)$(sameas('%egyprod%','OTHE') and abs(samind(r,"22",indi))<0.00
 
 gua.iterlim=1000;
 Solve gua minimizing j using nlp;
-
+loop(r,
+loop(ebti,
+ebt(r,ebti)=0;
+););
+*ebt_coal
 if((sameas('%egyprod%','COAL')),
 loop(r,
-loop(ebi,
-
-if ((ord(ebi)=1),
+loop(ebti,
+if ((ord(ebti)=37),
 loop(i$((sameas(i,'PROD')) or (sameas(i,'COALT'))),
-ebt(r,"1")=ebt(r,"1")+egyadjusted(r,i);
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
 ););
-if ((ord(ebi)=2),
+if ((ord(ebti)=1),
 loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
 ebt(r,"2")=egyadjusted(r,i);
 ););
-if ((ord(ebi)=3),
-loop(i$((sameas(i,'X'))),
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
 ebt(r,"3")=egyadjusted(r,i);
 ););
-if ((ord(ebi)=4),
-loop(i$((sameas(i,'DRC'))),
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
 ebt(r,"4")=egyadjusted(r,i);
 ););
-if ((ord(ebi)=5),
-loop(i$((sameas(i,'RC')) ),
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
 ebt(r,"5")=egyadjusted(r,i);
 ););
-if (((ord(ebi)=6)  or (ord(ebi)=8) or (ord(ebi)=9) or (ord(ebi)=10) or (ord(ebi)=11) or (ord(ebi)=12) or (ord(ebi)=13) or (ord(ebi)=14) or (ord(ebi)=16) or (ord(ebi)=17) or or (ord(ebi)=18) or (ord(ebi)=19) or (ord(ebi)=20) or (ord(ebi)=21) or (ord(ebi)=22) or (ord(ebi)=23) or (ord(ebi)=24) or (ord(ebi)=25) or (ord(ebi)=26) or (ord(ebi)=29)),
-loop(indi$(ord(indi)=ord(ebi)-5),
-ebt(r,ebi)=egyindi(r,indi).l;
+if (((ord(ebti)=6)  or (ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
 ););
-if ((ord(ebi)=7),
-loop(i$((sameas(i,'OILT'))),
-loop(indi$(ord(indi)=ord(ebi)-5),
-ebt(r,"7")=egyadjusted(r,i)+egyindi(r,indi).l;
-);););
-if ((ord(ebi)=10),
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
 loop(i$((sameas(i,'ROILT'))),
-loop(indi$(ord(indi)=ord(ebi)-5),
-ebt(r,"15")=egyadjusted(r,i)+egyindi(r,indi).l;
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
 );););
-if ((ord(ebi)=27),
+if ((ord(ebti)=27),
 loop(i$((sameas(i,'ELEHT'))),
-loop(indi$(ord(indi)=ord(ebi)-5),
-ebt(r,"27")=egyadjusted(r,i)+egyindi(r,indi).l;
-);););
-if ((ord(ebi)=28),
-loop(i$((sameas(i,'FGT'))),
-loop(indi$(ord(indi)=ord(ebi)-5),
-ebt(r,"28")=egyadjusted(r,i)+egyindi(r,indi).l;
-);););
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
 
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
 ););
 );
 
+*ebt_fg
+if((sameas('%egyprod%','FG')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'FGT'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+loop(i$((sameas(i,'ROILT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=27),
+loop(i$((sameas(i,'ELEHT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+
+);
+if ((ord(ebti)=28),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyindi.l(r,indi);
+););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);
+
+*ebt_oil
+if((sameas('%egyprod%','OIL')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'OILT'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+loop(i$((sameas(i,'ROILT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=27),
+loop(i$((sameas(i,'ELEHT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);
+
+*ebt_roil
+if((sameas('%egyprod%','ROIL')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'ROILT'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyindi.l(r,indi);
+););
+if ((ord(ebti)=27),
+loop(i$((sameas(i,'ELEHT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);
+
+*ebt_ng
+if((sameas('%egyprod%','NG')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'NGT'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+loop(i$((sameas(i,'ROILT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=27),
+loop(i$((sameas(i,'ELEHT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);
+
+*ebt_eleh
+if((sameas('%egyprod%','ELEH')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'ELEHT'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+loop(i$((sameas(i,'ROILT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=27),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyindi.l(r,indi););
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);
+
+*ebt_othe
+if((sameas('%egyprod%','OTHE')),
+loop(r,
+loop(ebti,
+if ((ord(ebti)=37),
+loop(i$((sameas(i,'PROD')) or (sameas(i,'OTHET'))),
+ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+););
+if ((ord(ebti)=1),
+loop(i$((sameas(i,'DX'))),
+ebt(r,"1")=egyadjusted(r,i);
+););
+if ((ord(ebti)=2),
+loop(i$((sameas(i,'X'))),
+ebt(r,"2")=egyadjusted(r,i);
+););
+if ((ord(ebti)=3),
+loop(i$((sameas(i,'DRC'))),
+ebt(r,"3")=egyadjusted(r,i);
+););
+if ((ord(ebti)=4),
+loop(i$((sameas(i,'RC')) ),
+ebt(r,"4")=egyadjusted(r,i);
+););
+if ((ord(ebti)=5),
+loop(i$((sameas(i,'AGR')) ),
+ebt(r,"5")=egyadjusted(r,i);
+););
+if ((ord(ebti)=6),
+loop(i$((sameas(i,'COALT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,ebti)=egyindi.l(r,indi);
+););
+if ((ord(ebti)=7),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+););
+if ((ord(ebti)=15),
+loop(i$((sameas(i,'ROILT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=27),
+loop(i$((sameas(i,'ELEHT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+);
+if ((ord(ebti)=28),
+loop(i$((sameas(i,'FGT'))),
+loop(indi$(ord(indi)=ord(ebti)-5),
+ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+);););
+if ((ord(ebti)=30),
+loop(i$((sameas(i,'CON')) ),
+ebt(r,"30")=egyadjusted(r,i);
+););
+if ((ord(ebti)=31),
+loop(i$((sameas(i,'TR')) ),
+ebt(r,"31")=egyadjusted(r,i);
+););
+if ((ord(ebti)=32),
+loop(i$((sameas(i,'WRHR')) ),
+ebt(r,"32")=egyadjusted(r,i);
+););
+if ((ord(ebti)=33),
+loop(i$((sameas(i,'OTH')) ),
+ebt(r,"33")=egyadjusted(r,i);
+););
+if ((ord(ebti)=34),
+loop(indi$(ord(indi)=ord(ebti)-32),
+ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+););
+if ((ord(ebti)=35),
+loop(i$((sameas(i,'FU')) ),
+ebt(r,"35")=egyadjusted(r,i);
+););
+if ((ord(ebti)=36),
+loop(i$((sameas(i,'INV')) ),
+ebt(r,"36")=egyadjusted(r,i);
+););
+););
+);

@@ -6,8 +6,8 @@ if not exist listings\nul mkdir listings
 :call gams readegybench o=listings\readegybench.lst 
 :del data\gdx\egygdx\balance\*.gdx
 :call egybalance COAL FG OIL ROIL NG ELEH OTHE 
-call gams oilgasratio o=listings\oilgasratio.lst gdx=data\gdx\egygdx\oilgasratio
-:del data\gdx\egygdx\estimation\*.gdx
-:call egyestimation COAL FG OIL ROIL NG ELEH OTHE
+:call gams oilgasratio o=listings\oilgasratio.lst gdx=data\gdx\egygdx\oilgasratio
+del data\gdx\egygdx\estimation\*.gdx
+call egyestimation COAL FG OIL ROIL NG ELEH OTHE
 
 pause

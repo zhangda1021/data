@@ -39,12 +39,16 @@ loop(r,
 oil(r)=0;
 );
 loop(r,
-loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+loop(i$((sameas(i,'PROD')) OR (sameas(i,'DRC')) OR (sameas(i,'RC'))),
 oil(r)=oil(r)+egyadjusted(r,i);
-););
+);
+loop(i$((sameas(i,'DX')) OR (sameas(i,'X'))),
+oil(r)=oil(r)-egyadjusted(r,i);
+);
+);
 display oil
 
-$kill egyadjusted
+
 variables x(r,i)
 $gdxin '%inputfolder%\ng_balance.gdx'
 $load x
@@ -53,9 +57,13 @@ loop(r,
 ng(r)=0;
 );
 loop(r,
-loop(i$(sameas(i,'PROD') or sameas(i,'DRC') or sameas(i,'RC')),
+loop(i$((sameas(i,'PROD')) OR (sameas(i,'DRC')) OR (sameas(i,'RC'))),
 ng(r)=ng(r)+x.l(r,i);
-););
+);
+loop(i$((sameas(i,'DX')) OR (sameas(i,'X'))),
+ng(r)=ng(r)-x.l(r,i);
+);
+);
 display ng
 
 parameter oilngratio(r)

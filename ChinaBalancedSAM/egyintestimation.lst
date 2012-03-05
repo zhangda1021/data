@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 1
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -13,233 +13,276 @@ C o m p i l a t i o n
        
    9   
   14   
-  15  *SAM table
-  16  set     e       energy product  /
-  17           coal    Coal,
-  18           fg      Fuel gas,
-  19           oil     Crude oil,
-  20           roil    Refined oil,
-  21           ng      Natural gas,
-  22           eleh    Electricity & heat,
-  23           othe    Other energy/;
-  24  set     alli    all accounts/
-  25           AGR,
-  26           COAL,
-  27           OIL,
-  28           MM,
-  29           NM,
-  30           FBT,
-  31           TXT,
-  32           CLO,
-  33           LOG,
-  34           PAP,
-  35           ROIL,
-  36           CHE,
-  37           NMP,
-  38           MSP,
-  39           MP,
-  40           GSM,
-  41           TME,
-  42           EME,
-  43           CCE,
-  44           IM,
-  45           AC,
-  46           WAS,
-  47           ELEH,
-  48           FG,
-  49           WT,
-  50           CON,
-  51           TR,
-  52           WRHR,
-  53           OTH,
-  54           FU,
-  55           DX,
-  56           X,
-  57           DRC,
-  58           RC,
-  59           INV        /;
-  60  set     indi    egy-intensive sectors    /
-  61           1       COAL,
-  62           2       OIL,
-  63           3       MM,
-  64           4       NM,
-  65           5       FBT,
-  66           6       TXT,
-  67           7       CLO,
-  68           8       LOG,
-  69           9       PAP,
-  70           10      ROIL,
-  71           11      CHE,
-  72           12      NMP,
-  73           13      MSP,
-  74           14      MP,
-  75           15      GSM,
-  76           16      TME,
-  77           17      EME,
-  78           18      CCE,
-  79           19      IM,
-  80           20      AC,
-  81           21      WAS,
-  82           22      ELEH,
-  83           23      FG,
-  84           24      WT/;
-  85  set     i       accounts /
-  86           PROD    Production,
-  87           DX      Domestic outflow,
-  88           X       Export,
-  89           DRC     Domestic inflow,
-  90           RC      Import,
-  91           COALT   Coal converted from other energy product,
-  92           FGT     Fuel gas converted from other energy product,
-  93           OILT   Crude oil converted from other energy product,
-  94           ROILT   Refined oil converted from other energy product,
-  95           NGT     Natural gas converted from other energy productconverted 
+  15  set     e       energy product  /
+  16           coal    Coal,
+  17           fg      Fuel gas,
+  18           oil     Crude oil,
+  19           roil    Refined oil,
+  20           ng      Natural gas,
+  21           eleh    Electricity & heat,
+  22           othe    Other energy/;
+  23  set     alli    all accounts/
+  24           AGR,
+  25           COAL,
+  26           OIL,
+  27           MM,
+  28           NM,
+  29           FBT,
+  30           TXT,
+  31           CLO,
+  32           LOG,
+  33           PAP,
+  34           ROIL,
+  35           CHE,
+  36           NMP,
+  37           MSP,
+  38           MP,
+  39           GSM,
+  40           TME,
+  41           EME,
+  42           CCE,
+  43           IM,
+  44           AC,
+  45           WAS,
+  46           ELEH,
+  47           FG,
+  48           WT,
+  49           CON,
+  50           TR,
+  51           WRHR,
+  52           OTH,
+  53           FU,
+  54           DX,
+  55           X,
+  56           DRC,
+  57           RC,
+  58           INV        /;
+  59  set     indi    egy-intensive sectors    /
+  60           1       COAL,
+  61           2       OIL,
+  62           3       MM,
+  63           4       NM,
+  64           5       FBT,
+  65           6       TXT,
+  66           7       CLO,
+  67           8       LOG,
+  68           9       PAP,
+  69           10      ROIL,
+  70           11      CHE,
+  71           12      NMP,
+  72           13      MSP,
+  73           14      MP,
+  74           15      GSM,
+  75           16      TME,
+  76           17      EME,
+  77           18      CCE,
+  78           19      IM,
+  79           20      AC,
+  80           21      WAS,
+  81           22      ELEH,
+  82           23      FG,
+  83           24      WT    /;
+  84  set     i       accounts /
+  85           PROD    Production,
+  86           DX      Domestic outflow,
+  87           X       Export,
+  88           DRC     Domestic inflow,
+  89           RC      Import,
+  90           COALT   Coal converted from other energy product,
+  91           FGT     Fuel gas converted from other energy product,
+  92           OILT    Crude oil converted from other energy product,
+  93           ROILT   Refined oil converted from other energy product,
+  94           NGT     Natural gas converted from other energy productconverted 
       from other energy product,
-  96           ELEHT   Electricity & heat converted from other energy product,
-  97           OTHET   Other energy converted from other energy product,
-  98           AGR     Agriculture,
-  99           IND     Industry,
- 100           CON     Construction,
- 101           TR      Transportation,
- 102           WRHR    Wholesale & retail & hotel & restraurant,
- 103           OTH     Other service industry,
- 104           FU      Final use,
- 105           INV     Inventory change/;
- 106  *SAM table
- 107  set     sami   SAM rows and colums indices /
- 108          1*30    Industries,
- 109          31*60   Commodities,
- 110          61      Labor,
- 111          62      Capital,
- 112          63      Household,
- 113          64      Central Government,
- 114          65      Local Government,
- 115          66      Production tax,
- 116          67      Commodity tax,
- 117          68      Factor tax,
- 118          69      Income tax,
- 119          70      Domestic trade,
- 120          71      Foreign trade,
- 121          72      Investment,
- 122          73      Inventory/;
- 123  alias (sami,samj);
- 124  alias (indi,indj);
- 125  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+  95           ELEHT   Electricity & heat converted from other energy product,
+  96           OTHET   Other energy converted from other energy product,
+  97           AGR     Agriculture,
+  98           IND     Industry,
+  99           CON     Construction,
+ 100           TR      Transportation,
+ 101           WRHR    Wholesale & retail & hotel & restraurant,
+ 102           OTH     Other service industry,
+ 103           FU      Final use,
+ 104           INV     Inventory change/;
+ 105  *SAM table
+ 106  set     sami   SAM rows and colums indices /
+ 107          1*30    Industries,
+ 108          31*60   Commodities,
+ 109          61      Labor,
+ 110          62      Capital,
+ 111          63      Household,
+ 112          64      Central Government,
+ 113          65      Local Government,
+ 114          66      Production tax,
+ 115          67      Commodity tax,
+ 116          68      Factor tax,
+ 117          69      Income tax,
+ 118          70      Domestic trade,
+ 119          71      Foreign trade,
+ 120          72      Investment,
+ 121          73      Inventory/;
+ 122  *Final energy balance table
+ 123  set ebti /
+ 124           1       PROD,
+ 125           2       DX,
+ 126           3       X,
+ 127           4       DRC,
+ 128           5       RC,
+ 129           6       COAL,
+ 130           7       OIL,
+ 131           8       MM,
+ 132           9       NM,
+ 133           10      FBT,
+ 134           11      TXT,
+ 135           12      CLO,
+ 136           13      LOG,
+ 137           14      PAP,
+ 138           15      ROIL,
+ 139           16      CHE,
+ 140           17      NMP,
+ 141           18      MSP,
+ 142           19      MP,
+ 143           20      GSM,
+ 144           21      TME,
+ 145           22      EME,
+ 146           23      CCE,
+ 147           24      IM,
+ 148           25      AC,
+ 149           26      WAS,
+ 150           27      ELEH,
+ 151           28      FG,
+ 152           29      WT,
+ 153           30      CON,
+ 154           31      TR,
+ 155           32      WRHR,
+ 156           33      OTH,
+ 157           34      NG,
+ 158           35      FU,
+ 159           36      INV
+ 160  /;
+ 161   
+ 162  alias (sami,samj);
+ 163  alias (indi,indj);
+ 164  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
       ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
       H,XIN/;
- 126  parameter coal(r,indi)           coal cons by intensive ind
- 127  parameter fg(r,indi)           fg cons by intensive ind
- 128  parameter oil(r,indi)           oil cons by intensive ind
- 129  parameter roil(r,indi)           roil cons by intensive ind
- 130  parameter ng(r,indi)           ng cons by intensive ind
- 131  parameter eleh(r,indi)           eleh cons by intensive ind
- 132  parameter othe(r,indi)           othe cons by intensive ind
- 133   
- 134   
- 135   
- 136  parameter ind(indi,e)           egy cons of egy by intensive ind
- 137  parameter egyadjusted(r,i)                egy cons of egy product by provi
+ 165  parameter coal(r,indi)           coal cons by intensive ind
+ 166  parameter fg(r,indi)           fg cons by intensive ind
+ 167  parameter oil(r,indi)           oil cons by intensive ind
+ 168  parameter roil(r,indi)           roil cons by intensive ind
+ 169  parameter ng(r,indi)           ng cons by intensive ind
+ 170  parameter eleh(r,indi)           eleh cons by intensive ind
+ 171  parameter othe(r,indi)           othe cons by intensive ind
+ 172   
+ 173   
+ 174  parameter ind(indi,e)           egy cons of egy by intensive ind
+ 175  parameter egyadjusted(r,i)                egy cons of egy product by provi
       nce
- 138   
- 139  parameter sam2(r,sami,samj)
- 140  parameter samind(r,indi,indj)
- 141  parameter samindtot(r,indi)
- 142   
- 143  parameters egyind(r,indi) egy benchmark cons of egy intensive industries
- 144   
+ 176   
+ 177  parameter sam2(r,sami,samj)
+ 178  parameter samind(r,indi,indj)
+ 179  parameter samindtot(r,indi)
+ 180   
+ 181  parameters egyind(r,indi) egy benchmark cons of egy intensive industries
+ 182  parameters ebt(r,ebti)   final energy balance table
+ 183  parameters oilngratio(r)
+ 184   
 GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_bala
         nce.gdx
 --- LOAD  egyadjusted = 43:egyadjusted
- 148  display egyadjusted
+ 188  display egyadjusted
 GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
 --- LOAD  ind = 1:ind
- 151  display ind
+ 191  display ind
 GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
 --- LOAD  sam2 = 5:sam2
- 154  display sam2
- 155  *sam data from sam2 is transferred to samind
- 156  loop(r,
- 157  loop(sami$((ord(sami) ge 32) and (ord(sami) le 55)),
- 158  loop(samj$((ord(samj) ge 2) and (ord(samj) le 25)),
- 159  loop(indi$(ord(indi)=ord(sami)-31),
- 160  loop(indj$(ord(indj)=ord(samj)-1),
- 161  samind(r,indi,indj)=sam2(r,sami,samj);
- 162  );
- 163  );
- 164  );
- 165  );
- 166  );
- 167  display samind
- 168   
- 169   
- 170  loop(r,
- 171  loop(indi,
- 172  samindtot(r,indi)=sum(indj,samind(r,indi,indj));
- 173  );
- 174  );
- 175   
- 176  loop(r,
- 177  loop(indi,
- 178  egyind(r,indi)$(sameas('COAL','COAL'))= egyadjusted(r,"IND")*samind(r,"1",
-      indi)/samindtot(r,"1");
- 179  ););
- 180  loop(r,
- 181  loop(indi,
- 182  egyind(r,indi)$(sameas('COAL','OIL'))= egyadjusted(r,"IND")*samind(r,"2",i
-      ndi)/samindtot(r,"2");
- 183  ););
- 184  loop(r,
- 185  loop(indi,
- 186  egyind(r,indi)$(sameas('COAL','NG'))= egyadjusted(r,"IND")*samind(r,"2",in
-      di)/samindtot(r,"2");
- 187  ););
- 188  loop(r,
- 189  loop(indi,
- 190  egyind(r,indi)$(sameas('COAL','ROIL'))= egyadjusted(r,"IND")*samind(r,"10"
-      ,indi)/samindtot(r,"10");
- 191  ););
- 192  loop(r,
- 193  loop(indi,
- 194  egyind(r,indi)$(sameas('COAL','FG'))= egyadjusted(r,"IND")*samind(r,"23",i
-      ndi)/samindtot(r,"23");
- 195  ););
- 196  loop(r,
- 197  loop(indi,
- 198  egyind(r,indi)$(sameas('COAL','ELEH'))= egyadjusted(r,"IND")*samind(r,"22"
-      ,indi)/samindtot(r,"22");
- 199  ););
- 200  loop(r,
- 201  loop(indi,
- 202  egyind(r,indi)$(sameas('COAL','OTHE'))= egyadjusted(r,"IND")*samind(r,"22"
-      ,indi)/samindtot(r,"22");
- 203  ););
- 204   
- 205   
- 206  positive variables egyindi(r,indi) estimated egy cons of egy intensive ind
-      ustries
- 207  positive variables p(r,indi) price of estimated egy
- 208  variables j      obj function
- 209  variables pavg(r)
- 210   
+ 194  display sam2
+GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+--- LOAD  oilngratio = 8:oilngratio
+ 197  display oilngratio
+ 198  *sam data from sam2 is transferred to samind
+ 199  loop(r,
+ 200  loop(sami$((ord(sami) ge 32) and (ord(sami) le 55)),
+ 201  loop(samj$((ord(samj) ge 2) and (ord(samj) le 25)),
+ 202  loop(indi$(ord(indi)=ord(sami)-31),
+ 203  loop(indj$(ord(indj)=ord(samj)-1),
+ 204  samind(r,indi,indj)=sam2(r,sami,samj);
+ 205  );
+ 206  );
+ 207  );
+ 208  );
+ 209  );
+ 210  display samind
  211   
- 212  Equations criterion_row
- 213            criterion_column
- 214  *          criterion_pcoal
- 215  *          criterion_poil
- 216  *          criterion_png
- 217  *          criterion_proil
- 218  *          criterion_pfg
- 219  *          criterion_peleh
- 220  *          criterion_pothe
- 221  *          paverage
- 222            obj
- 223  ;
- 224   
- 225  criterion_row(indi)..
- 226  sum(r,egyindi(r,indi))=e=ind(indi,'COAL');
- 227  criterion_column(r)..
- 228  sum(indi,egyindi(r,indi))=e=egyadjusted(r,"IND");
- 229   
+ 212   
+ 213  loop(r,
+ 214  loop(indi,
+ 215  samindtot(r,indi)=sum(indj,samind(r,indi,indj));
+ 216  );
+ 217  );
+ 218   
+ 219  loop(r,
+ 220  loop(indi,
+ 221  egyind(r,indi)$(sameas('COAL','COAL'))= egyadjusted(r,"IND")*samind(r,"1",
+      indi)/samindtot(r,"1");
+ 222  ););
+ 223  loop(r,
+ 224  loop(indi,
+ 225  egyind(r,indi)$(sameas('COAL','OIL'))= egyadjusted(r,"IND")*samind(r,"2",i
+      ndi)/samindtot(r,"2");
+ 226  ););
+ 227  loop(r,
+ 228  loop(indi,
+ 229  egyind(r,indi)$(sameas('COAL','NG'))= egyadjusted(r,"IND")*samind(r,"2",in
+      di)/samindtot(r,"2");
+ 230  ););
+ 231  loop(r,
+ 232  loop(indi,
+ 233  egyind(r,indi)$(sameas('COAL','ROIL'))= egyadjusted(r,"IND")*samind(r,"10"
+      ,indi)/samindtot(r,"10");
+ 234  ););
+ 235  loop(r,
+ 236  loop(indi,
+ 237  egyind(r,indi)$(sameas('COAL','FG'))= egyadjusted(r,"IND")*samind(r,"23",i
+      ndi)/samindtot(r,"23");
+ 238  ););
+ 239  loop(r,
+ 240  loop(indi,
+ 241  egyind(r,indi)$(sameas('COAL','ELEH'))= egyadjusted(r,"IND")*samind(r,"22"
+      ,indi)/samindtot(r,"22");
+ 242  ););
+ 243  loop(r,
+ 244  loop(indi,
+ 245  egyind(r,indi)$(sameas('COAL','OTHE'))= egyadjusted(r,"IND")*samind(r,"22"
+      ,indi)/samindtot(r,"22");
+ 246  ););
+ 247   
+ 248   
+ 249  positive variables egyindi(r,indi) estimated egy cons of egy intensive ind
+      ustries
+ 250  positive variables p(r,indi) price of estimated egy
+ 251  variables j      obj function
+ 252  variables pavg(r)
+ 253   
+ 254   
+ 255  Equations criterion_row
+ 256            criterion_column
+ 257  *          criterion_pcoal
+ 258  *          criterion_poil
+ 259  *          criterion_png
+ 260  *          criterion_proil
+ 261  *          criterion_pfg
+ 262  *          criterion_peleh
+ 263  *          criterion_pothe
+ 264  *          paverage
+ 265            obj
+ 266  ;
+ 267   
+ 268  criterion_row(indi)..
+ 269  sum(r,egyindi(r,indi))=e=ind(indi,'COAL');
+ 270  criterion_column(r)..
+ 271  sum(indi,egyindi(r,indi))=e=egyadjusted(r,"IND");
+ 272   
       criterion_pcoal(r,indi)$(sameas('%egyprod%','COAL'))..
       p(r,indi)*egyindi(r,indi)=e=samind(r,"2",indi);
       *Here we assume that the ratios of oil and gas consumption are identical f
@@ -258,58 +301,142 @@ GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
       p(r,indi)*egyindi(r,indi)=e=samind(r,"22",indi);
       criterion_pothe(r,indi)$(sameas('%egyprod%','OTHE'))..
       p(r,indi)*egyindi(r,indi)=e=samind(r,"22",indi);
-       
       paverage(r)..
       pavg(r)=e=sum(indi$(egyindi(r,indi)<>0),p(r,indi))/card(indi);
- 251  obj..
- 252  j=e=sum(r,sum(indi,sqr(egyindi(r,indi)-egyind(r,indi))/100));
- 253   
- 254   
- 255  Model gua /all/;
- 256  loop(r,
- 257  loop(indi,
- 258  samindtot(r,indi)=sum(indj,samind(r,indi,indj));
- 259  );
- 260  );
- 261   
- 262  egyindi.l(r,indi)$(sameas('COAL','COAL'))= egyadjusted(r,"IND")*samind(r,"
+ 293   
+ 294  obj..
+ 295  j=e=sum(r,sum(indi,sqr(egyindi(r,indi)-egyind(r,indi))/100));
+ 296   
+ 297   
+ 298  Model gua /all/;
+ 299  loop(r,
+ 300  loop(indi,
+ 301  samindtot(r,indi)=sum(indj,samind(r,indi,indj));
+ 302  );
+ 303  );
+ 304   
+ 305  egyindi.l(r,indi)$(sameas('COAL','COAL'))= egyadjusted(r,"IND")*samind(r,"
       1",indi)/samindtot(r,"1");
- 263  egyindi.l(r,indi)$(sameas('COAL','OIL'))= egyadjusted(r,"IND")*samind(r,"2
+ 306  egyindi.l(r,indi)$(sameas('COAL','OIL'))= egyadjusted(r,"IND")*samind(r,"2
       ",indi)/samindtot(r,"2");
- 264  egyindi.l(r,indi)$(sameas('COAL','NG'))= egyadjusted(r,"IND")*samind(r,"2"
+ 307  egyindi.l(r,indi)$(sameas('COAL','NG'))= egyadjusted(r,"IND")*samind(r,"2"
       ,indi)/samindtot(r,"2");
- 265  egyindi.l(r,indi)$(sameas('COAL','ROIL'))= egyadjusted(r,"IND")*samind(r,"
+ 308  egyindi.l(r,indi)$(sameas('COAL','ROIL'))= egyadjusted(r,"IND")*samind(r,"
       10",indi)/samindtot(r,"10");
- 266  egyindi.l(r,indi)$(sameas('COAL','FG'))= egyadjusted(r,"IND")*samind(r,"23
+ 309  egyindi.l(r,indi)$(sameas('COAL','FG'))= egyadjusted(r,"IND")*samind(r,"23
       ",indi)/samindtot(r,"23");
- 267  egyindi.l(r,indi)$(sameas('COAL','ELEH'))= egyadjusted(r,"IND")*samind(r,"
+ 310  egyindi.l(r,indi)$(sameas('COAL','ELEH'))= egyadjusted(r,"IND")*samind(r,"
       22",indi)/samindtot(r,"22");
- 268  egyindi.l(r,indi)$(sameas('COAL','OTHE'))= egyadjusted(r,"IND")*samind(r,"
+ 311  egyindi.l(r,indi)$(sameas('COAL','OTHE'))= egyadjusted(r,"IND")*samind(r,"
       22",indi)/samindtot(r,"22");
- 269   
- 270   
- 271  Display egyindi.l;
- 272  egyindi.fx(r,indi)$(sameas('COAL','COAL') and abs(samind(r,"1",indi))<0.00
+ 312   
+ 313   
+ 314  Display egyindi.l;
+ 315  egyindi.fx(r,indi)$(sameas('COAL','COAL') and abs(samind(r,"1",indi))<0.00
       01) = 0;
- 273  egyindi.fx(r,indi)$(sameas('COAL','OIL') and abs(samind(r,"2",indi))<0.000
+ 316  egyindi.fx(r,indi)$(sameas('COAL','OIL') and abs(samind(r,"2",indi))<0.000
       1) = 0;
- 274  egyindi.fx(r,indi)$(sameas('COAL','NG') and abs(samind(r,"2",indi))<0.0001
+ 317  egyindi.fx(r,indi)$(sameas('COAL','NG') and abs(samind(r,"2",indi))<0.0001
       ) = 0;
- 275  egyindi.fx(r,indi)$(sameas('COAL','ROIL') and abs(samind(r,"10",indi))<0.0
+ 318  egyindi.fx(r,indi)$(sameas('COAL','ROIL') and abs(samind(r,"10",indi))<0.0
       001) = 0;
- 276  egyindi.fx(r,indi)$(sameas('COAL','FG') and abs(samind(r,"23",indi))<0.000
+ 319  egyindi.fx(r,indi)$(sameas('COAL','FG') and abs(samind(r,"23",indi))<0.000
       1) = 0;
- 277  egyindi.fx(r,indi)$(sameas('COAL','ELEH') and abs(samind(r,"22",indi))<0.0
+ 320  egyindi.fx(r,indi)$(sameas('COAL','ELEH') and abs(samind(r,"22",indi))<0.0
       001) = 0;
- 278  egyindi.fx(r,indi)$(sameas('COAL','OTHE') and abs(samind(r,"22",indi))<0.0
+ 321  egyindi.fx(r,indi)$(sameas('COAL','OTHE') and abs(samind(r,"22",indi))<0.0
       001) = 0;
- 279   
- 280  gua.iterlim=1000;
- 281  Solve gua minimizing j using nlp;
- 282   
- 283   
- 284   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 2
+ 322   
+ 323  gua.iterlim=1000;
+ 324  Solve gua minimizing j using nlp;
+ 325  loop(r,
+ 326  loop(ebti,
+ 327  ebt(r,ebti)=0;
+ 328  ););
+ 329   
+ 330  if((sameas('COAL','COAL')),
+ 331  loop(r,
+ 332  loop(ebti,
+ 333   
+ 334  if ((ord(ebti)=1),
+ 335  loop(i$((sameas(i,'PROD')) or (sameas(i,'COALT'))),
+ 336  ebt(r,"1")=ebt(r,"1")+egyadjusted(r,i);
+ 337  ););
+ 338  if ((ord(ebti)=2),
+ 339  loop(i$((sameas(i,'DX'))),
+ 340  ebt(r,"2")=egyadjusted(r,i);
+ 341  ););
+ 342  if ((ord(ebti)=3),
+ 343  loop(i$((sameas(i,'X'))),
+ 344  ebt(r,"3")=egyadjusted(r,i);
+ 345  ););
+ 346  if ((ord(ebti)=4),
+ 347  loop(i$((sameas(i,'DRC'))),
+ 348  ebt(r,"4")=egyadjusted(r,i);
+ 349  ););
+ 350  if ((ord(ebti)=5),
+ 351  loop(i$((sameas(i,'RC')) ),
+ 352  ebt(r,"5")=egyadjusted(r,i);
+ 353  ););
+ 354  if (((ord(ebti)=6)  or (ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or
+       (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(ebti)=14) or (
+      ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (o
+      rd(ebti)=20) or (ord(ebti)=21) or (ord(ebti)=22) or (ord(ebti)=23) or (ord
+      (ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+ 355  loop(indi$(ord(indi)=ord(ebti)-5),
+ 356  ebt(r,ebti)=egyindi.l(r,indi);
+ 357  ););
+ 358  if ((ord(ebti)=7),
+ 359  loop(indi$(ord(indi)=ord(ebti)-5),
+ 360  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 361  ););
+ 362  if ((ord(ebti)=10),
+ 363  loop(i$((sameas(i,'ROILT'))),
+ 364  loop(indi$(ord(indi)=ord(ebti)-5),
+ 365  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 366  );););
+ 367  if ((ord(ebti)=27),
+ 368  loop(i$((sameas(i,'ELEHT'))),
+ 369  loop(indi$(ord(indi)=ord(ebti)-5),
+ 370  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 371  );););
+ 372  if ((ord(ebti)=28),
+ 373  loop(i$((sameas(i,'FGT'))),
+ 374  loop(indi$(ord(indi)=ord(ebti)-5),
+ 375  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 376  );););
+ 377  if ((ord(ebti)=30),
+ 378  loop(i$((sameas(i,'CON')) ),
+ 379  ebt(r,"30")=egyadjusted(r,i);
+ 380  ););
+ 381  if ((ord(ebti)=31),
+ 382  loop(i$((sameas(i,'TR')) ),
+ 383  ebt(r,"31")=egyadjusted(r,i);
+ 384  ););
+ 385  if ((ord(ebti)=32),
+ 386  loop(i$((sameas(i,'WRHR')) ),
+ 387  ebt(r,"32")=egyadjusted(r,i);
+ 388  ););
+ 389  if ((ord(ebti)=33),
+ 390  loop(i$((sameas(i,'OTH')) ),
+ 391  ebt(r,"33")=egyadjusted(r,i);
+ 392  ););
+ 393  if ((ord(ebti)=34),
+ 394  loop(indi$(ord(indi)=ord(ebti)-32),
+ 395  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 396  ););
+ 397  if ((ord(ebti)=35),
+ 398  loop(i$((sameas(i,'FU')) ),
+ 399  ebt(r,"35")=egyadjusted(r,i);
+ 400  ););
+ 401  if ((ord(ebti)=36),
+ 402  loop(i$((sameas(i,'INV')) ),
+ 403  ebt(r,"36")=egyadjusted(r,i);
+ 404  ););
+ 405  ););
+ 406  );
+ 407   
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -318,25 +445,27 @@ Include File Summary
 
      1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM
                                           \egyintestimation.gms
-     2      145 IF EXIST       1     145  C:\Users\DaZHANG\data\ChinaBalancedSAM
+     2      185 IF EXIST       1     185  C:\Users\DaZHANG\data\ChinaBalancedSAM
                                           \data\gdx\egygdx\balance\COAL_balance.
                                           gdx
-     3      146 GDXIN          1     150  C:\Users\DaZHANG\data\ChinaBalancedSAM
+     3      186 GDXIN          1     190  C:\Users\DaZHANG\data\ChinaBalancedSAM
                                           \data\gdx\egygdx\balance\COAL_balance.
                                           gdx
-     4      149 GDXIN          1     153  C:\Users\DaZHANG\data\ChinaBalancedSAM
+     4      189 GDXIN          1     193  C:\Users\DaZHANG\data\ChinaBalancedSAM
                                           \data\gdx\egygdx\ind.gdx
-     5      152 GDXIN          1     156  C:\Users\DaZHANG\data\ChinaBalancedSAM
+     5      192 GDXIN          1     196  C:\Users\DaZHANG\data\ChinaBalancedSAM
                                           \data\gdx\aggregation.gdx
+     6      195 GDXIN          1     199  C:\Users\DaZHANG\data\ChinaBalancedSAM
+                                          \data\gdx\egygdx\oilgasratio.gdx
 
 
-COMPILATION TIME     =        0.890 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 3
+COMPILATION TIME     =        0.015 SECONDS      4 Mb  WIN234-234 May 21, 2010
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----    148 PARAMETER egyadjusted  egy cons of egy product by province
+----    188 PARAMETER egyadjusted  egy cons of egy product by province
 
             AGR         CON          TR        WRHR         OTH          FU
 
@@ -438,7 +567,7 @@ QIH     -65.322                 311.120    1711.662     596.238
 XIN      13.811                 495.057    1794.041     865.815
 
 
-----    151 PARAMETER ind  egy cons of egy by intensive ind
+----    191 PARAMETER ind  egy cons of egy by intensive ind
 
           coal          fg         oil        roil          ng        eleh
 
@@ -468,7 +597,7 @@ XIN      13.811                 495.057    1794.041     865.815
 24      21.435       0.007 8.689116E-4       8.779       1.080     276.321
 
 
-----    154 PARAMETER sam2  SAM v2.0
+----    194 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6
 
@@ -8270,7 +8399,18 @@ XIN.59  989600.000    1003.139
 XIN.64 4176758.093
 
 
-----    167 PARAMETER samind  
+----    197 PARAMETER oilngratio  
+
+BEJ       0.722,    TAJ       0.877,    HEB       0.910,    NMG       0.379
+LIA       0.970,    JIL       0.940,    HLJ       0.849,    SHH       0.890
+JSU       0.877,    ZHJ       0.950,    ANH       0.923,    FUJ       0.988
+JXI       0.976,    SHD       0.945,    HEN       0.696,    HUB       0.913
+HUN       0.925,    GUD       0.902,    GXI       0.926,    HAI       0.799
+CHQ 4.752368E-4,    SIC       0.183,    YUN       0.003,    SHA       0.811
+GAN       0.914,    NXA       0.399,    QIH       0.651,    XIN       0.726
+
+
+----    210 PARAMETER samind  
 
                  1           2           3           4           5           6
 
@@ -11130,7 +11270,7 @@ XIN.23                   1.279                           25600.609
 XIN.24       2.289      12.138      14.841     934.626      16.414     570.288
 
 
-----    271 VARIABLE egyindi.L  estimated egy cons of egy intensive industries
+----    314 VARIABLE egyindi.L  estimated egy cons of egy intensive industries
 
               1           2           3           4           5           6
 
@@ -11264,9 +11404,9 @@ NXA       0.029       0.397                  75.526 2.506301E-4       0.120
 QIH                   4.010       0.014       0.065 1.968268E-4       0.058
 XIN 8.195920E-4       0.004                 604.714 7.804893E-4       0.070
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 4
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE gua Using NLP From line 281
+Equation Listing    SOLVE gua Using NLP From line 324
 
 
 ---- criterion_row  =E=  
@@ -11858,9 +11998,9 @@ obj..  (0)*egyindi(BEJ,1) + (0)*egyindi(BEJ,2) + (0)*egyindi(BEJ,3)
       + (0)*egyindi(XIN,22) + (0)*egyindi(XIN,23) + (0)*egyindi(XIN,24) + j =E= 
      0 ; (LHS = 0)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 5
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE gua Using NLP From line 281
+Column Listing      SOLVE gua Using NLP From line 324
 
 
 ---- egyindi  estimated egy cons of egy intensive industries
@@ -11891,9 +12031,9 @@ j
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       obj
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 6
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE gua Using NLP From line 281
+Model Statistics    SOLVE gua Using NLP From line 324
 
 
 MODEL STATISTICS
@@ -11905,26 +12045,26 @@ DERIVATIVE POOL             726     CONSTANT POOL             682
 CODE LENGTH               7,148
 
 
-GENERATION TIME      =        0.031 SECONDS      5 Mb  WIN234-234 May 21, 2010
+GENERATION TIME      =        0.047 SECONDS      5 Mb  WIN234-234 May 21, 2010
 
 
-EXECUTION TIME       =        0.436 SECONDS      5 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 01:23:14 Page 7
+EXECUTION TIME       =        0.406 SECONDS      5 Mb  WIN234-234 May 21, 2010
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE gua Using NLP From line 281
+Solution Report     SOLVE gua Using NLP From line 324
 
 
                S O L V E      S U M M A R Y
 
      MODEL   gua                 OBJECTIVE  j
      TYPE    NLP                 DIRECTION  MINIMIZE
-     SOLVER  MSNLP               FROM LINE  281
+     SOLVER  MSNLP               FROM LINE  324
 
 **** SOLVER STATUS     7 Licensing Problems        
 **** MODEL STATUS      11 Licensing Problem        
 **** OBJECTIVE VALUE                0.0000
 
- RESOURCE USAGE, LIMIT          0.004      1000.000
+ RESOURCE USAGE, LIMIT          0.002      1000.000
  ITERATION COUNT, LIMIT         0          1000
  EVALUATION ERRORS              0             0
 *** No license found
@@ -11937,9 +12077,12 @@ Solution Report     SOLVE gua Using NLP From line 281
 ***   Maximum allowed              : 10
 
 No solution returned
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows             03/05/12 08:44:45 Page 8
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        0.031 SECONDS      4 Mb  WIN234-234 May 21, 2010
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
