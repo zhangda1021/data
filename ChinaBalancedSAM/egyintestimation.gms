@@ -252,9 +252,9 @@ egyind(r,indi)$(sameas('%egyprod%','OTHE'))= egyadjusted(r,"IND")*samind(r,"22",
 
 
 positive variables egyindi(r,indi) estimated egy cons of egy intensive industries
-positive variables p(r,indi) price of estimated egy
+*positive variables p(r,indi) price of estimated egy
 variables j      obj function
-variables pavg(r)
+*variables pavg(r)
 
 
 Equations criterion_row
@@ -418,10 +418,15 @@ ebt(r,"36")=egyadjusted(r,i);
 if((sameas('%egyprod%','FG')),
 loop(r,
 loop(ebti,
+*Production of fuel gas (if consumption in refined oil transformation sector is negative, we add the absolute value to production)
 if ((ord(ebti)=37),
 loop(i$((sameas(i,'PROD')) or (sameas(i,'FGT'))),
 ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
-););
+);
+loop(i$(sameas(i,'ROILT')),
+ebt(r,"37")=ebt(r,"37")-egyadjusted(r,i)$(egyadjusted(r,i)<0);
+);
+);
 if ((ord(ebti)=1),
 loop(i$((sameas(i,'DX'))),
 ebt(r,"1")=egyadjusted(r,i);
@@ -455,16 +460,18 @@ if ((ord(ebti)=7),
 loop(indi$(ord(indi)=ord(ebti)-5),
 ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
 ););
+*set the negative value to zero
 if ((ord(ebti)=15),
 loop(i$((sameas(i,'ROILT'))),
 loop(indi$(ord(indi)=ord(ebti)-5),
-ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
-);););
+ebt(r,"15")=egyadjusted(r,i)$(egyadjusted(r,i)>=0)+egyindi.l(r,indi);
+);
+););
+
 if ((ord(ebti)=27),
 loop(i$((sameas(i,'ELEHT'))),
 loop(indi$(ord(indi)=ord(ebti)-5),
 ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
-
 );
 if ((ord(ebti)=28),
 loop(indi$(ord(indi)=ord(ebti)-5),
@@ -592,10 +599,15 @@ ebt(r,"36")=egyadjusted(r,i);
 if((sameas('%egyprod%','ROIL')),
 loop(r,
 loop(ebti,
+*If the consumption of roil in fgt sector is negative, we add the abs value to roil production
 if ((ord(ebti)=37),
 loop(i$((sameas(i,'PROD')) or (sameas(i,'ROILT'))),
 ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
-););
+);
+loop(i$((sameas(i,'FGT'))),
+ebt(r,"37")=ebt(r,"37")-egyadjusted(r,i)$(egyadjusted(r,i)<0);
+);
+);
 if ((ord(ebti)=1),
 loop(i$((sameas(i,'DX'))),
 ebt(r,"1")=egyadjusted(r,i);
@@ -639,10 +651,11 @@ loop(i$((sameas(i,'ELEHT'))),
 loop(indi$(ord(indi)=ord(ebti)-5),
 ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
 );
+*We exclude the production in FGT from the calculation of roil consumption in FG sector
 if ((ord(ebti)=28),
 loop(i$((sameas(i,'FGT'))),
 loop(indi$(ord(indi)=ord(ebti)-5),
-ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ebt(r,"28")=egyadjusted(r,i)$(egyadjusted(r,i)>=0)+egyindi.l(r,indi);
 );););
 if ((ord(ebti)=30),
 loop(i$((sameas(i,'CON')) ),

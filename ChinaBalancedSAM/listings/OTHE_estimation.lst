@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -76,7 +76,7 @@ C o m p i l a t i o n
   76           17      EME,
   77           18      CCE,
   78           19      IM,
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -154,7 +154,7 @@ C o m p i l a t i o n
  149           26      WAS,
  150           27      ELEH,
  151           28      FG,
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 3
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -194,16 +194,16 @@ C o m p i l a t i o n
  183  parameters ebt(r,ebti)   final energy balance table
  184  parameters oilngratio(r)
  185   
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
 --- LOAD  egyadjusted = 43:egyadjusted
  189  display egyadjusted
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
 --- LOAD  ind = 1:ind
  192  display ind
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
 --- LOAD  sam2 = 5:sam2
  195  display sam2
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
 --- LOAD  oilngratio = 8:oilngratio
  198  display oilngratio
  199  *sam data from sam2 is transferred to samind
@@ -232,7 +232,7 @@ GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
  222  egyind(r,indi)$(sameas('OTHE','COAL'))= egyadjusted(r,"IND")*samind(r,"1",indi)/samindtot(r,"1");
  223  ););
  224  loop(r,
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 4
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -263,9 +263,9 @@ C o m p i l a t i o n
  248   
  249   
  250  positive variables egyindi(r,indi) estimated egy cons of egy intensive industries
- 251  positive variables p(r,indi) price of estimated egy
+ 251  *positive variables p(r,indi) price of estimated egy
  252  variables j      obj function
- 253  variables pavg(r)
+ 253  *variables pavg(r)
  254   
  255   
  256  Equations criterion_row
@@ -310,7 +310,7 @@ C o m p i l a t i o n
  296  j=e=sum(r,sum(indi,sqr(egyindi(r,indi)-egyind(r,indi))/100));
  297   
  298   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 5
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -388,7 +388,7 @@ C o m p i l a t i o n
  366  if ((ord(ebti)=15),
  367  loop(i$((sameas(i,'ROILT'))),
  368  loop(indi$(ord(indi)=ord(ebti)-5),
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 6
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -441,586 +441,604 @@ C o m p i l a t i o n
  414  if((sameas('OTHE','FG')),
  415  loop(r,
  416  loop(ebti,
- 417  if ((ord(ebti)=37),
- 418  loop(i$((sameas(i,'PROD')) or (sameas(i,'FGT'))),
- 419  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 420  ););
- 421  if ((ord(ebti)=1),
- 422  loop(i$((sameas(i,'DX'))),
- 423  ebt(r,"1")=egyadjusted(r,i);
- 424  ););
- 425  if ((ord(ebti)=2),
- 426  loop(i$((sameas(i,'X'))),
- 427  ebt(r,"2")=egyadjusted(r,i);
- 428  ););
- 429  if ((ord(ebti)=3),
- 430  loop(i$((sameas(i,'DRC'))),
- 431  ebt(r,"3")=egyadjusted(r,i);
- 432  ););
- 433  if ((ord(ebti)=4),
- 434  loop(i$((sameas(i,'RC')) ),
- 435  ebt(r,"4")=egyadjusted(r,i);
- 436  ););
- 437  if ((ord(ebti)=5),
- 438  loop(i$((sameas(i,'AGR')) ),
- 439  ebt(r,"5")=egyadjusted(r,i);
- 440  ););
- 441  if ((ord(ebti)=6),
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 7
+ 417  *Production of fuel gas (if consumption in refined oil transformation sector is negative, we add the absolute value t
+      o production)
+ 418  if ((ord(ebti)=37),
+ 419  loop(i$((sameas(i,'PROD')) or (sameas(i,'FGT'))),
+ 420  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+ 421  );
+ 422  loop(i$(sameas(i,'ROILT')),
+ 423  ebt(r,"37")=ebt(r,"37")-egyadjusted(r,i)$(egyadjusted(r,i)<0);
+ 424  );
+ 425  );
+ 426  if ((ord(ebti)=1),
+ 427  loop(i$((sameas(i,'DX'))),
+ 428  ebt(r,"1")=egyadjusted(r,i);
+ 429  ););
+ 430  if ((ord(ebti)=2),
+ 431  loop(i$((sameas(i,'X'))),
+ 432  ebt(r,"2")=egyadjusted(r,i);
+ 433  ););
+ 434  if ((ord(ebti)=3),
+ 435  loop(i$((sameas(i,'DRC'))),
+ 436  ebt(r,"3")=egyadjusted(r,i);
+ 437  ););
+ 438  if ((ord(ebti)=4),
+ 439  loop(i$((sameas(i,'RC')) ),
+ 440  ebt(r,"4")=egyadjusted(r,i);
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 442  loop(i$((sameas(i,'COALT'))),
- 443  loop(indi$(ord(indi)=ord(ebti)-5),
- 444  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 445  );););
- 446  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+ 441  ););
+ 442  if ((ord(ebti)=5),
+ 443  loop(i$((sameas(i,'AGR')) ),
+ 444  ebt(r,"5")=egyadjusted(r,i);
+ 445  ););
+ 446  if ((ord(ebti)=6),
+ 447  loop(i$((sameas(i,'COALT'))),
+ 448  loop(indi$(ord(indi)=ord(ebti)-5),
+ 449  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 450  );););
+ 451  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
       bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
        or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 447  loop(indi$(ord(indi)=ord(ebti)-5),
- 448  ebt(r,ebti)=egyindi.l(r,indi);
- 449  ););
- 450  if ((ord(ebti)=7),
- 451  loop(indi$(ord(indi)=ord(ebti)-5),
- 452  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 453  ););
- 454  if ((ord(ebti)=15),
- 455  loop(i$((sameas(i,'ROILT'))),
+ 452  loop(indi$(ord(indi)=ord(ebti)-5),
+ 453  ebt(r,ebti)=egyindi.l(r,indi);
+ 454  ););
+ 455  if ((ord(ebti)=7),
  456  loop(indi$(ord(indi)=ord(ebti)-5),
- 457  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
- 458  );););
- 459  if ((ord(ebti)=27),
- 460  loop(i$((sameas(i,'ELEHT'))),
- 461  loop(indi$(ord(indi)=ord(ebti)-5),
- 462  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
- 463   
+ 457  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 458  ););
+ 459  *set the negative value to zero
+ 460  if ((ord(ebti)=15),
+ 461  loop(i$((sameas(i,'ROILT'))),
+ 462  loop(indi$(ord(indi)=ord(ebti)-5),
+ 463  ebt(r,"15")=egyadjusted(r,i)$(egyadjusted(r,i)>=0)+egyindi.l(r,indi);
  464  );
- 465  if ((ord(ebti)=28),
- 466  loop(indi$(ord(indi)=ord(ebti)-5),
- 467  ebt(r,"28")=egyindi.l(r,indi);
- 468  ););
- 469  if ((ord(ebti)=30),
- 470  loop(i$((sameas(i,'CON')) ),
- 471  ebt(r,"30")=egyadjusted(r,i);
- 472  ););
- 473  if ((ord(ebti)=31),
- 474  loop(i$((sameas(i,'TR')) ),
- 475  ebt(r,"31")=egyadjusted(r,i);
- 476  ););
- 477  if ((ord(ebti)=32),
- 478  loop(i$((sameas(i,'WRHR')) ),
- 479  ebt(r,"32")=egyadjusted(r,i);
- 480  ););
- 481  if ((ord(ebti)=33),
- 482  loop(i$((sameas(i,'OTH')) ),
- 483  ebt(r,"33")=egyadjusted(r,i);
- 484  ););
- 485  if ((ord(ebti)=34),
- 486  loop(indi$(ord(indi)=ord(ebti)-32),
- 487  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
- 488  ););
- 489  if ((ord(ebti)=35),
- 490  loop(i$((sameas(i,'FU')) ),
- 491  ebt(r,"35")=egyadjusted(r,i);
- 492  ););
- 493  if ((ord(ebti)=36),
- 494  loop(i$((sameas(i,'INV')) ),
- 495  ebt(r,"36")=egyadjusted(r,i);
- 496  ););
- 497  ););
- 498  );
- 499   
- 500  *ebt_oil
- 501  if((sameas('OTHE','OIL')),
- 502  loop(r,
- 503  loop(ebti,
- 504  if ((ord(ebti)=37),
- 505  loop(i$((sameas(i,'PROD')) or (sameas(i,'OILT'))),
- 506  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 507  ););
- 508  if ((ord(ebti)=1),
- 509  loop(i$((sameas(i,'DX'))),
- 510  ebt(r,"1")=egyadjusted(r,i);
- 511  ););
- 512  if ((ord(ebti)=2),
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 8
+ 465  ););
+ 466   
+ 467  if ((ord(ebti)=27),
+ 468  loop(i$((sameas(i,'ELEHT'))),
+ 469  loop(indi$(ord(indi)=ord(ebti)-5),
+ 470  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+ 471  );
+ 472  if ((ord(ebti)=28),
+ 473  loop(indi$(ord(indi)=ord(ebti)-5),
+ 474  ebt(r,"28")=egyindi.l(r,indi);
+ 475  ););
+ 476  if ((ord(ebti)=30),
+ 477  loop(i$((sameas(i,'CON')) ),
+ 478  ebt(r,"30")=egyadjusted(r,i);
+ 479  ););
+ 480  if ((ord(ebti)=31),
+ 481  loop(i$((sameas(i,'TR')) ),
+ 482  ebt(r,"31")=egyadjusted(r,i);
+ 483  ););
+ 484  if ((ord(ebti)=32),
+ 485  loop(i$((sameas(i,'WRHR')) ),
+ 486  ebt(r,"32")=egyadjusted(r,i);
+ 487  ););
+ 488  if ((ord(ebti)=33),
+ 489  loop(i$((sameas(i,'OTH')) ),
+ 490  ebt(r,"33")=egyadjusted(r,i);
+ 491  ););
+ 492  if ((ord(ebti)=34),
+ 493  loop(indi$(ord(indi)=ord(ebti)-32),
+ 494  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 495  ););
+ 496  if ((ord(ebti)=35),
+ 497  loop(i$((sameas(i,'FU')) ),
+ 498  ebt(r,"35")=egyadjusted(r,i);
+ 499  ););
+ 500  if ((ord(ebti)=36),
+ 501  loop(i$((sameas(i,'INV')) ),
+ 502  ebt(r,"36")=egyadjusted(r,i);
+ 503  ););
+ 504  ););
+ 505  );
+ 506   
+ 507  *ebt_oil
+ 508  if((sameas('OTHE','OIL')),
+ 509  loop(r,
+ 510  loop(ebti,
+ 511  if ((ord(ebti)=37),
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 8
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 513  loop(i$((sameas(i,'X'))),
- 514  ebt(r,"2")=egyadjusted(r,i);
- 515  ););
- 516  if ((ord(ebti)=3),
- 517  loop(i$((sameas(i,'DRC'))),
- 518  ebt(r,"3")=egyadjusted(r,i);
- 519  ););
- 520  if ((ord(ebti)=4),
- 521  loop(i$((sameas(i,'RC')) ),
- 522  ebt(r,"4")=egyadjusted(r,i);
- 523  ););
- 524  if ((ord(ebti)=5),
- 525  loop(i$((sameas(i,'AGR')) ),
- 526  ebt(r,"5")=egyadjusted(r,i);
- 527  ););
- 528  if ((ord(ebti)=6),
- 529  loop(i$((sameas(i,'COALT'))),
- 530  loop(indi$(ord(indi)=ord(ebti)-5),
- 531  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 532  );););
- 533  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+ 512  loop(i$((sameas(i,'PROD')) or (sameas(i,'OILT'))),
+ 513  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+ 514  ););
+ 515  if ((ord(ebti)=1),
+ 516  loop(i$((sameas(i,'DX'))),
+ 517  ebt(r,"1")=egyadjusted(r,i);
+ 518  ););
+ 519  if ((ord(ebti)=2),
+ 520  loop(i$((sameas(i,'X'))),
+ 521  ebt(r,"2")=egyadjusted(r,i);
+ 522  ););
+ 523  if ((ord(ebti)=3),
+ 524  loop(i$((sameas(i,'DRC'))),
+ 525  ebt(r,"3")=egyadjusted(r,i);
+ 526  ););
+ 527  if ((ord(ebti)=4),
+ 528  loop(i$((sameas(i,'RC')) ),
+ 529  ebt(r,"4")=egyadjusted(r,i);
+ 530  ););
+ 531  if ((ord(ebti)=5),
+ 532  loop(i$((sameas(i,'AGR')) ),
+ 533  ebt(r,"5")=egyadjusted(r,i);
+ 534  ););
+ 535  if ((ord(ebti)=6),
+ 536  loop(i$((sameas(i,'COALT'))),
+ 537  loop(indi$(ord(indi)=ord(ebti)-5),
+ 538  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 539  );););
+ 540  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
       bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
        or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 534  loop(indi$(ord(indi)=ord(ebti)-5),
- 535  ebt(r,ebti)=egyindi.l(r,indi);
- 536  ););
- 537  if ((ord(ebti)=7),
- 538  loop(indi$(ord(indi)=ord(ebti)-5),
- 539  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 540  ););
- 541  if ((ord(ebti)=15),
- 542  loop(i$((sameas(i,'ROILT'))),
- 543  loop(indi$(ord(indi)=ord(ebti)-5),
- 544  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
- 545  );););
- 546  if ((ord(ebti)=27),
- 547  loop(i$((sameas(i,'ELEHT'))),
- 548  loop(indi$(ord(indi)=ord(ebti)-5),
- 549  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
- 550  );
- 551  if ((ord(ebti)=28),
- 552  loop(i$((sameas(i,'FGT'))),
- 553  loop(indi$(ord(indi)=ord(ebti)-5),
- 554  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
- 555  );););
- 556  if ((ord(ebti)=30),
- 557  loop(i$((sameas(i,'CON')) ),
- 558  ebt(r,"30")=egyadjusted(r,i);
- 559  ););
- 560  if ((ord(ebti)=31),
- 561  loop(i$((sameas(i,'TR')) ),
- 562  ebt(r,"31")=egyadjusted(r,i);
- 563  ););
- 564  if ((ord(ebti)=32),
- 565  loop(i$((sameas(i,'WRHR')) ),
- 566  ebt(r,"32")=egyadjusted(r,i);
- 567  ););
- 568  if ((ord(ebti)=33),
- 569  loop(i$((sameas(i,'OTH')) ),
- 570  ebt(r,"33")=egyadjusted(r,i);
- 571  ););
- 572  if ((ord(ebti)=34),
- 573  loop(indi$(ord(indi)=ord(ebti)-32),
- 574  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
- 575  ););
- 576  if ((ord(ebti)=35),
- 577  loop(i$((sameas(i,'FU')) ),
- 578  ebt(r,"35")=egyadjusted(r,i);
- 579  ););
- 580  if ((ord(ebti)=36),
- 581  loop(i$((sameas(i,'INV')) ),
- 582  ebt(r,"36")=egyadjusted(r,i);
- 583  ););
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/05/12 10:43:08 Page 9
+ 541  loop(indi$(ord(indi)=ord(ebti)-5),
+ 542  ebt(r,ebti)=egyindi.l(r,indi);
+ 543  ););
+ 544  if ((ord(ebti)=7),
+ 545  loop(indi$(ord(indi)=ord(ebti)-5),
+ 546  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 547  ););
+ 548  if ((ord(ebti)=15),
+ 549  loop(i$((sameas(i,'ROILT'))),
+ 550  loop(indi$(ord(indi)=ord(ebti)-5),
+ 551  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 552  );););
+ 553  if ((ord(ebti)=27),
+ 554  loop(i$((sameas(i,'ELEHT'))),
+ 555  loop(indi$(ord(indi)=ord(ebti)-5),
+ 556  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+ 557  );
+ 558  if ((ord(ebti)=28),
+ 559  loop(i$((sameas(i,'FGT'))),
+ 560  loop(indi$(ord(indi)=ord(ebti)-5),
+ 561  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 562  );););
+ 563  if ((ord(ebti)=30),
+ 564  loop(i$((sameas(i,'CON')) ),
+ 565  ebt(r,"30")=egyadjusted(r,i);
+ 566  ););
+ 567  if ((ord(ebti)=31),
+ 568  loop(i$((sameas(i,'TR')) ),
+ 569  ebt(r,"31")=egyadjusted(r,i);
+ 570  ););
+ 571  if ((ord(ebti)=32),
+ 572  loop(i$((sameas(i,'WRHR')) ),
+ 573  ebt(r,"32")=egyadjusted(r,i);
+ 574  ););
+ 575  if ((ord(ebti)=33),
+ 576  loop(i$((sameas(i,'OTH')) ),
+ 577  ebt(r,"33")=egyadjusted(r,i);
+ 578  ););
+ 579  if ((ord(ebti)=34),
+ 580  loop(indi$(ord(indi)=ord(ebti)-32),
+ 581  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 582  ););
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/05/12 16:37:51 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 584  ););
- 585  );
- 586   
- 587  *ebt_roil
- 588  if((sameas('OTHE','ROIL')),
- 589  loop(r,
- 590  loop(ebti,
- 591  if ((ord(ebti)=37),
- 592  loop(i$((sameas(i,'PROD')) or (sameas(i,'ROILT'))),
- 593  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 594  ););
- 595  if ((ord(ebti)=1),
- 596  loop(i$((sameas(i,'DX'))),
- 597  ebt(r,"1")=egyadjusted(r,i);
- 598  ););
- 599  if ((ord(ebti)=2),
- 600  loop(i$((sameas(i,'X'))),
- 601  ebt(r,"2")=egyadjusted(r,i);
- 602  ););
- 603  if ((ord(ebti)=3),
- 604  loop(i$((sameas(i,'DRC'))),
- 605  ebt(r,"3")=egyadjusted(r,i);
- 606  ););
- 607  if ((ord(ebti)=4),
- 608  loop(i$((sameas(i,'RC')) ),
- 609  ebt(r,"4")=egyadjusted(r,i);
+ 583  if ((ord(ebti)=35),
+ 584  loop(i$((sameas(i,'FU')) ),
+ 585  ebt(r,"35")=egyadjusted(r,i);
+ 586  ););
+ 587  if ((ord(ebti)=36),
+ 588  loop(i$((sameas(i,'INV')) ),
+ 589  ebt(r,"36")=egyadjusted(r,i);
+ 590  ););
+ 591  ););
+ 592  );
+ 593   
+ 594  *ebt_roil
+ 595  if((sameas('OTHE','ROIL')),
+ 596  loop(r,
+ 597  loop(ebti,
+ 598  *If the consumption of roil in fgt sector is negative, we add the abs value to roil production
+ 599  if ((ord(ebti)=37),
+ 600  loop(i$((sameas(i,'PROD')) or (sameas(i,'ROILT'))),
+ 601  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
+ 602  );
+ 603  loop(i$((sameas(i,'FGT'))),
+ 604  ebt(r,"37")=ebt(r,"37")-egyadjusted(r,i)$(egyadjusted(r,i)<0);
+ 605  );
+ 606  );
+ 607  if ((ord(ebti)=1),
+ 608  loop(i$((sameas(i,'DX'))),
+ 609  ebt(r,"1")=egyadjusted(r,i);
  610  ););
- 611  if ((ord(ebti)=5),
- 612  loop(i$((sameas(i,'AGR')) ),
- 613  ebt(r,"5")=egyadjusted(r,i);
+ 611  if ((ord(ebti)=2),
+ 612  loop(i$((sameas(i,'X'))),
+ 613  ebt(r,"2")=egyadjusted(r,i);
  614  ););
- 615  if ((ord(ebti)=6),
- 616  loop(i$((sameas(i,'COALT'))),
- 617  loop(indi$(ord(indi)=ord(ebti)-5),
- 618  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 619  );););
- 620  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+ 615  if ((ord(ebti)=3),
+ 616  loop(i$((sameas(i,'DRC'))),
+ 617  ebt(r,"3")=egyadjusted(r,i);
+ 618  ););
+ 619  if ((ord(ebti)=4),
+ 620  loop(i$((sameas(i,'RC')) ),
+ 621  ebt(r,"4")=egyadjusted(r,i);
+ 622  ););
+ 623  if ((ord(ebti)=5),
+ 624  loop(i$((sameas(i,'AGR')) ),
+ 625  ebt(r,"5")=egyadjusted(r,i);
+ 626  ););
+ 627  if ((ord(ebti)=6),
+ 628  loop(i$((sameas(i,'COALT'))),
+ 629  loop(indi$(ord(indi)=ord(ebti)-5),
+ 630  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 631  );););
+ 632  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
       bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
        or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 621  loop(indi$(ord(indi)=ord(ebti)-5),
- 622  ebt(r,ebti)=egyindi.l(r,indi);
- 623  ););
- 624  if ((ord(ebti)=7),
- 625  loop(indi$(ord(indi)=ord(ebti)-5),
- 626  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 627  ););
- 628  if ((ord(ebti)=15),
- 629   
- 630  loop(indi$(ord(indi)=ord(ebti)-5),
- 631  ebt(r,"15")=egyindi.l(r,indi);
- 632  ););
- 633  if ((ord(ebti)=27),
- 634  loop(i$((sameas(i,'ELEHT'))),
- 635  loop(indi$(ord(indi)=ord(ebti)-5),
- 636  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
- 637  );
- 638  if ((ord(ebti)=28),
- 639  loop(i$((sameas(i,'FGT'))),
- 640  loop(indi$(ord(indi)=ord(ebti)-5),
- 641  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
- 642  );););
- 643  if ((ord(ebti)=30),
- 644  loop(i$((sameas(i,'CON')) ),
- 645  ebt(r,"30")=egyadjusted(r,i);
- 646  ););
- 647  if ((ord(ebti)=31),
- 648  loop(i$((sameas(i,'TR')) ),
- 649  ebt(r,"31")=egyadjusted(r,i);
- 650  ););
- 651  if ((ord(ebti)=32),
- 652  loop(i$((sameas(i,'WRHR')) ),
- 653  ebt(r,"32")=egyadjusted(r,i);
- 654  ););
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 10
+ 633  loop(indi$(ord(indi)=ord(ebti)-5),
+ 634  ebt(r,ebti)=egyindi.l(r,indi);
+ 635  ););
+ 636  if ((ord(ebti)=7),
+ 637  loop(indi$(ord(indi)=ord(ebti)-5),
+ 638  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 639  ););
+ 640  if ((ord(ebti)=15),
+ 641   
+ 642  loop(indi$(ord(indi)=ord(ebti)-5),
+ 643  ebt(r,"15")=egyindi.l(r,indi);
+ 644  ););
+ 645  if ((ord(ebti)=27),
+ 646  loop(i$((sameas(i,'ELEHT'))),
+ 647  loop(indi$(ord(indi)=ord(ebti)-5),
+ 648  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+ 649  );
+ 650  if ((ord(ebti)=28),
+ 651  loop(i$((sameas(i,'FGT'))),
+ 652  loop(indi$(ord(indi)=ord(ebti)-5),
+ 653  ebt(r,"28")=egyadjusted(r,i)$(egyadjusted(r,i)>=0)+egyindi.l(r,indi);
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 10
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 655  if ((ord(ebti)=33),
- 656  loop(i$((sameas(i,'OTH')) ),
- 657  ebt(r,"33")=egyadjusted(r,i);
+ 654  );););
+ 655  if ((ord(ebti)=30),
+ 656  loop(i$((sameas(i,'CON')) ),
+ 657  ebt(r,"30")=egyadjusted(r,i);
  658  ););
- 659  if ((ord(ebti)=34),
- 660  loop(indi$(ord(indi)=ord(ebti)-32),
- 661  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 659  if ((ord(ebti)=31),
+ 660  loop(i$((sameas(i,'TR')) ),
+ 661  ebt(r,"31")=egyadjusted(r,i);
  662  ););
- 663  if ((ord(ebti)=35),
- 664  loop(i$((sameas(i,'FU')) ),
- 665  ebt(r,"35")=egyadjusted(r,i);
+ 663  if ((ord(ebti)=32),
+ 664  loop(i$((sameas(i,'WRHR')) ),
+ 665  ebt(r,"32")=egyadjusted(r,i);
  666  ););
- 667  if ((ord(ebti)=36),
- 668  loop(i$((sameas(i,'INV')) ),
- 669  ebt(r,"36")=egyadjusted(r,i);
+ 667  if ((ord(ebti)=33),
+ 668  loop(i$((sameas(i,'OTH')) ),
+ 669  ebt(r,"33")=egyadjusted(r,i);
  670  ););
- 671  ););
- 672  );
- 673   
- 674  *ebt_ng
- 675  if((sameas('OTHE','NG')),
- 676  loop(r,
- 677  loop(ebti,
- 678  if ((ord(ebti)=37),
- 679  loop(i$((sameas(i,'PROD')) or (sameas(i,'NGT'))),
- 680  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 681  ););
- 682  if ((ord(ebti)=1),
- 683  loop(i$((sameas(i,'DX'))),
- 684  ebt(r,"1")=egyadjusted(r,i);
- 685  ););
- 686  if ((ord(ebti)=2),
- 687  loop(i$((sameas(i,'X'))),
- 688  ebt(r,"2")=egyadjusted(r,i);
- 689  ););
- 690  if ((ord(ebti)=3),
- 691  loop(i$((sameas(i,'DRC'))),
- 692  ebt(r,"3")=egyadjusted(r,i);
+ 671  if ((ord(ebti)=34),
+ 672  loop(indi$(ord(indi)=ord(ebti)-32),
+ 673  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 674  ););
+ 675  if ((ord(ebti)=35),
+ 676  loop(i$((sameas(i,'FU')) ),
+ 677  ebt(r,"35")=egyadjusted(r,i);
+ 678  ););
+ 679  if ((ord(ebti)=36),
+ 680  loop(i$((sameas(i,'INV')) ),
+ 681  ebt(r,"36")=egyadjusted(r,i);
+ 682  ););
+ 683  ););
+ 684  );
+ 685   
+ 686  *ebt_ng
+ 687  if((sameas('OTHE','NG')),
+ 688  loop(r,
+ 689  loop(ebti,
+ 690  if ((ord(ebti)=37),
+ 691  loop(i$((sameas(i,'PROD')) or (sameas(i,'NGT'))),
+ 692  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
  693  ););
- 694  if ((ord(ebti)=4),
- 695  loop(i$((sameas(i,'RC')) ),
- 696  ebt(r,"4")=egyadjusted(r,i);
+ 694  if ((ord(ebti)=1),
+ 695  loop(i$((sameas(i,'DX'))),
+ 696  ebt(r,"1")=egyadjusted(r,i);
  697  ););
- 698  if ((ord(ebti)=5),
- 699  loop(i$((sameas(i,'AGR')) ),
- 700  ebt(r,"5")=egyadjusted(r,i);
+ 698  if ((ord(ebti)=2),
+ 699  loop(i$((sameas(i,'X'))),
+ 700  ebt(r,"2")=egyadjusted(r,i);
  701  ););
- 702  if ((ord(ebti)=6),
- 703  loop(i$((sameas(i,'COALT'))),
- 704  loop(indi$(ord(indi)=ord(ebti)-5),
- 705  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 706  );););
- 707  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+ 702  if ((ord(ebti)=3),
+ 703  loop(i$((sameas(i,'DRC'))),
+ 704  ebt(r,"3")=egyadjusted(r,i);
+ 705  ););
+ 706  if ((ord(ebti)=4),
+ 707  loop(i$((sameas(i,'RC')) ),
+ 708  ebt(r,"4")=egyadjusted(r,i);
+ 709  ););
+ 710  if ((ord(ebti)=5),
+ 711  loop(i$((sameas(i,'AGR')) ),
+ 712  ebt(r,"5")=egyadjusted(r,i);
+ 713  ););
+ 714  if ((ord(ebti)=6),
+ 715  loop(i$((sameas(i,'COALT'))),
+ 716  loop(indi$(ord(indi)=ord(ebti)-5),
+ 717  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 718  );););
+ 719  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
       bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
        or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 708  loop(indi$(ord(indi)=ord(ebti)-5),
- 709  ebt(r,ebti)=egyindi.l(r,indi);
- 710  ););
- 711  if ((ord(ebti)=7),
- 712  loop(indi$(ord(indi)=ord(ebti)-5),
- 713  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 714  ););
- 715  if ((ord(ebti)=15),
- 716  loop(i$((sameas(i,'ROILT'))),
- 717  loop(indi$(ord(indi)=ord(ebti)-5),
- 718  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
- 719  );););
- 720  if ((ord(ebti)=27),
- 721  loop(i$((sameas(i,'ELEHT'))),
- 722  loop(indi$(ord(indi)=ord(ebti)-5),
- 723  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
- 724  );
- 725  if ((ord(ebti)=28),
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 11
+ 720  loop(indi$(ord(indi)=ord(ebti)-5),
+ 721  ebt(r,ebti)=egyindi.l(r,indi);
+ 722  ););
+ 723  if ((ord(ebti)=7),
+ 724  loop(indi$(ord(indi)=ord(ebti)-5),
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 726  loop(i$((sameas(i,'FGT'))),
- 727  loop(indi$(ord(indi)=ord(ebti)-5),
- 728  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
- 729  );););
- 730  if ((ord(ebti)=30),
- 731  loop(i$((sameas(i,'CON')) ),
- 732  ebt(r,"30")=egyadjusted(r,i);
- 733  ););
- 734  if ((ord(ebti)=31),
- 735  loop(i$((sameas(i,'TR')) ),
- 736  ebt(r,"31")=egyadjusted(r,i);
- 737  ););
- 738  if ((ord(ebti)=32),
- 739  loop(i$((sameas(i,'WRHR')) ),
- 740  ebt(r,"32")=egyadjusted(r,i);
- 741  ););
- 742  if ((ord(ebti)=33),
- 743  loop(i$((sameas(i,'OTH')) ),
- 744  ebt(r,"33")=egyadjusted(r,i);
+ 725  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 726  ););
+ 727  if ((ord(ebti)=15),
+ 728  loop(i$((sameas(i,'ROILT'))),
+ 729  loop(indi$(ord(indi)=ord(ebti)-5),
+ 730  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 731  );););
+ 732  if ((ord(ebti)=27),
+ 733  loop(i$((sameas(i,'ELEHT'))),
+ 734  loop(indi$(ord(indi)=ord(ebti)-5),
+ 735  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+ 736  );
+ 737  if ((ord(ebti)=28),
+ 738  loop(i$((sameas(i,'FGT'))),
+ 739  loop(indi$(ord(indi)=ord(ebti)-5),
+ 740  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 741  );););
+ 742  if ((ord(ebti)=30),
+ 743  loop(i$((sameas(i,'CON')) ),
+ 744  ebt(r,"30")=egyadjusted(r,i);
  745  ););
- 746  if ((ord(ebti)=34),
- 747  loop(indi$(ord(indi)=ord(ebti)-32),
- 748  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 746  if ((ord(ebti)=31),
+ 747  loop(i$((sameas(i,'TR')) ),
+ 748  ebt(r,"31")=egyadjusted(r,i);
  749  ););
- 750  if ((ord(ebti)=35),
- 751  loop(i$((sameas(i,'FU')) ),
- 752  ebt(r,"35")=egyadjusted(r,i);
+ 750  if ((ord(ebti)=32),
+ 751  loop(i$((sameas(i,'WRHR')) ),
+ 752  ebt(r,"32")=egyadjusted(r,i);
  753  ););
- 754  if ((ord(ebti)=36),
- 755  loop(i$((sameas(i,'INV')) ),
- 756  ebt(r,"36")=egyadjusted(r,i);
+ 754  if ((ord(ebti)=33),
+ 755  loop(i$((sameas(i,'OTH')) ),
+ 756  ebt(r,"33")=egyadjusted(r,i);
  757  ););
- 758  ););
- 759  );
- 760   
- 761  *ebt_eleh
- 762  if((sameas('OTHE','ELEH')),
- 763  loop(r,
- 764  loop(ebti,
- 765  if ((ord(ebti)=37),
- 766  loop(i$((sameas(i,'PROD')) or (sameas(i,'ELEHT'))),
- 767  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 768  ););
- 769  if ((ord(ebti)=1),
- 770  loop(i$((sameas(i,'DX'))),
- 771  ebt(r,"1")=egyadjusted(r,i);
- 772  ););
- 773  if ((ord(ebti)=2),
- 774  loop(i$((sameas(i,'X'))),
- 775  ebt(r,"2")=egyadjusted(r,i);
- 776  ););
- 777  if ((ord(ebti)=3),
- 778  loop(i$((sameas(i,'DRC'))),
- 779  ebt(r,"3")=egyadjusted(r,i);
+ 758  if ((ord(ebti)=34),
+ 759  loop(indi$(ord(indi)=ord(ebti)-32),
+ 760  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 761  ););
+ 762  if ((ord(ebti)=35),
+ 763  loop(i$((sameas(i,'FU')) ),
+ 764  ebt(r,"35")=egyadjusted(r,i);
+ 765  ););
+ 766  if ((ord(ebti)=36),
+ 767  loop(i$((sameas(i,'INV')) ),
+ 768  ebt(r,"36")=egyadjusted(r,i);
+ 769  ););
+ 770  ););
+ 771  );
+ 772   
+ 773  *ebt_eleh
+ 774  if((sameas('OTHE','ELEH')),
+ 775  loop(r,
+ 776  loop(ebti,
+ 777  if ((ord(ebti)=37),
+ 778  loop(i$((sameas(i,'PROD')) or (sameas(i,'ELEHT'))),
+ 779  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
  780  ););
- 781  if ((ord(ebti)=4),
- 782  loop(i$((sameas(i,'RC')) ),
- 783  ebt(r,"4")=egyadjusted(r,i);
+ 781  if ((ord(ebti)=1),
+ 782  loop(i$((sameas(i,'DX'))),
+ 783  ebt(r,"1")=egyadjusted(r,i);
  784  ););
- 785  if ((ord(ebti)=5),
- 786  loop(i$((sameas(i,'AGR')) ),
- 787  ebt(r,"5")=egyadjusted(r,i);
+ 785  if ((ord(ebti)=2),
+ 786  loop(i$((sameas(i,'X'))),
+ 787  ebt(r,"2")=egyadjusted(r,i);
  788  ););
- 789  if ((ord(ebti)=6),
- 790  loop(i$((sameas(i,'COALT'))),
- 791  loop(indi$(ord(indi)=ord(ebti)-5),
- 792  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 793  );););
- 794  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
-      bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
-       or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 795  loop(indi$(ord(indi)=ord(ebti)-5),
- 796  ebt(r,ebti)=egyindi.l(r,indi);
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 12
+ 789  if ((ord(ebti)=3),
+ 790  loop(i$((sameas(i,'DRC'))),
+ 791  ebt(r,"3")=egyadjusted(r,i);
+ 792  ););
+ 793  if ((ord(ebti)=4),
+ 794  loop(i$((sameas(i,'RC')) ),
+ 795  ebt(r,"4")=egyadjusted(r,i);
+ 796  ););
+ 797  if ((ord(ebti)=5),
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 12
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 797  ););
- 798  if ((ord(ebti)=7),
- 799  loop(indi$(ord(indi)=ord(ebti)-5),
- 800  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 801  ););
- 802  if ((ord(ebti)=15),
- 803  loop(i$((sameas(i,'ROILT'))),
- 804  loop(indi$(ord(indi)=ord(ebti)-5),
- 805  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
- 806  );););
- 807  if ((ord(ebti)=27),
- 808  loop(indi$(ord(indi)=ord(ebti)-5),
- 809  ebt(r,"27")=egyindi.l(r,indi););
- 810  );
- 811  if ((ord(ebti)=28),
- 812  loop(i$((sameas(i,'FGT'))),
- 813  loop(indi$(ord(indi)=ord(ebti)-5),
- 814  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
- 815  );););
- 816  if ((ord(ebti)=30),
- 817  loop(i$((sameas(i,'CON')) ),
- 818  ebt(r,"30")=egyadjusted(r,i);
- 819  ););
- 820  if ((ord(ebti)=31),
- 821  loop(i$((sameas(i,'TR')) ),
- 822  ebt(r,"31")=egyadjusted(r,i);
- 823  ););
- 824  if ((ord(ebti)=32),
- 825  loop(i$((sameas(i,'WRHR')) ),
- 826  ebt(r,"32")=egyadjusted(r,i);
- 827  ););
- 828  if ((ord(ebti)=33),
- 829  loop(i$((sameas(i,'OTH')) ),
- 830  ebt(r,"33")=egyadjusted(r,i);
+ 798  loop(i$((sameas(i,'AGR')) ),
+ 799  ebt(r,"5")=egyadjusted(r,i);
+ 800  ););
+ 801  if ((ord(ebti)=6),
+ 802  loop(i$((sameas(i,'COALT'))),
+ 803  loop(indi$(ord(indi)=ord(ebti)-5),
+ 804  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 805  );););
+ 806  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+      bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
+       or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
+ 807  loop(indi$(ord(indi)=ord(ebti)-5),
+ 808  ebt(r,ebti)=egyindi.l(r,indi);
+ 809  ););
+ 810  if ((ord(ebti)=7),
+ 811  loop(indi$(ord(indi)=ord(ebti)-5),
+ 812  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 813  ););
+ 814  if ((ord(ebti)=15),
+ 815  loop(i$((sameas(i,'ROILT'))),
+ 816  loop(indi$(ord(indi)=ord(ebti)-5),
+ 817  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 818  );););
+ 819  if ((ord(ebti)=27),
+ 820  loop(indi$(ord(indi)=ord(ebti)-5),
+ 821  ebt(r,"27")=egyindi.l(r,indi););
+ 822  );
+ 823  if ((ord(ebti)=28),
+ 824  loop(i$((sameas(i,'FGT'))),
+ 825  loop(indi$(ord(indi)=ord(ebti)-5),
+ 826  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 827  );););
+ 828  if ((ord(ebti)=30),
+ 829  loop(i$((sameas(i,'CON')) ),
+ 830  ebt(r,"30")=egyadjusted(r,i);
  831  ););
- 832  if ((ord(ebti)=34),
- 833  loop(indi$(ord(indi)=ord(ebti)-32),
- 834  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 832  if ((ord(ebti)=31),
+ 833  loop(i$((sameas(i,'TR')) ),
+ 834  ebt(r,"31")=egyadjusted(r,i);
  835  ););
- 836  if ((ord(ebti)=35),
- 837  loop(i$((sameas(i,'FU')) ),
- 838  ebt(r,"35")=egyadjusted(r,i);
+ 836  if ((ord(ebti)=32),
+ 837  loop(i$((sameas(i,'WRHR')) ),
+ 838  ebt(r,"32")=egyadjusted(r,i);
  839  ););
- 840  if ((ord(ebti)=36),
- 841  loop(i$((sameas(i,'INV')) ),
- 842  ebt(r,"36")=egyadjusted(r,i);
+ 840  if ((ord(ebti)=33),
+ 841  loop(i$((sameas(i,'OTH')) ),
+ 842  ebt(r,"33")=egyadjusted(r,i);
  843  ););
- 844  ););
- 845  );
- 846   
- 847  *ebt_othe
- 848  if((sameas('OTHE','OTHE')),
- 849  loop(r,
- 850  loop(ebti,
- 851  if ((ord(ebti)=37),
- 852  loop(i$((sameas(i,'PROD')) or (sameas(i,'OTHET'))),
- 853  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
- 854  ););
- 855  if ((ord(ebti)=1),
- 856  loop(i$((sameas(i,'DX'))),
- 857  ebt(r,"1")=egyadjusted(r,i);
- 858  ););
- 859  if ((ord(ebti)=2),
- 860  loop(i$((sameas(i,'X'))),
- 861  ebt(r,"2")=egyadjusted(r,i);
- 862  ););
- 863  if ((ord(ebti)=3),
- 864  loop(i$((sameas(i,'DRC'))),
- 865  ebt(r,"3")=egyadjusted(r,i);
+ 844  if ((ord(ebti)=34),
+ 845  loop(indi$(ord(indi)=ord(ebti)-32),
+ 846  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 847  ););
+ 848  if ((ord(ebti)=35),
+ 849  loop(i$((sameas(i,'FU')) ),
+ 850  ebt(r,"35")=egyadjusted(r,i);
+ 851  ););
+ 852  if ((ord(ebti)=36),
+ 853  loop(i$((sameas(i,'INV')) ),
+ 854  ebt(r,"36")=egyadjusted(r,i);
+ 855  ););
+ 856  ););
+ 857  );
+ 858   
+ 859  *ebt_othe
+ 860  if((sameas('OTHE','OTHE')),
+ 861  loop(r,
+ 862  loop(ebti,
+ 863  if ((ord(ebti)=37),
+ 864  loop(i$((sameas(i,'PROD')) or (sameas(i,'OTHET'))),
+ 865  ebt(r,"37")=ebt(r,"37")+egyadjusted(r,i);
  866  ););
- 867  if ((ord(ebti)=4),
- 868  loop(i$((sameas(i,'RC')) ),
- 869  ebt(r,"4")=egyadjusted(r,i);
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 13
+ 867  if ((ord(ebti)=1),
+ 868  loop(i$((sameas(i,'DX'))),
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
+ 869  ebt(r,"1")=egyadjusted(r,i);
  870  ););
- 871  if ((ord(ebti)=5),
- 872  loop(i$((sameas(i,'AGR')) ),
- 873  ebt(r,"5")=egyadjusted(r,i);
+ 871  if ((ord(ebti)=2),
+ 872  loop(i$((sameas(i,'X'))),
+ 873  ebt(r,"2")=egyadjusted(r,i);
  874  ););
- 875  if ((ord(ebti)=6),
- 876  loop(i$((sameas(i,'COALT'))),
- 877  loop(indi$(ord(indi)=ord(ebti)-5),
- 878  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
- 879  );););
- 880  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
+ 875  if ((ord(ebti)=3),
+ 876  loop(i$((sameas(i,'DRC'))),
+ 877  ebt(r,"3")=egyadjusted(r,i);
+ 878  ););
+ 879  if ((ord(ebti)=4),
+ 880  loop(i$((sameas(i,'RC')) ),
+ 881  ebt(r,"4")=egyadjusted(r,i);
+ 882  ););
+ 883  if ((ord(ebti)=5),
+ 884  loop(i$((sameas(i,'AGR')) ),
+ 885  ebt(r,"5")=egyadjusted(r,i);
+ 886  ););
+ 887  if ((ord(ebti)=6),
+ 888  loop(i$((sameas(i,'COALT'))),
+ 889  loop(indi$(ord(indi)=ord(ebti)-5),
+ 890  ebt(r,"6")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 891  );););
+ 892  if (((ord(ebti)=8) or (ord(ebti)=9) or (ord(ebti)=10) or (ord(ebti)=11) or (ord(ebti)=12) or (ord(ebti)=13) or (ord(e
       bti)=14) or (ord(ebti)=16) or (ord(ebti)=17) or  (ord(ebti)=18) or (ord(ebti)=19) or (ord(ebti)=20) or (ord(ebti)=21)
        or (ord(ebti)=22) or (ord(ebti)=23) or (ord(ebti)=24) or (ord(ebti)=25) or (ord(ebti)=26) or (ord(ebti)=29)),
- 881  loop(indi$(ord(indi)=ord(ebti)-5),
- 882  ebt(r,ebti)=egyindi.l(r,indi);
- 883  ););
- 884  if ((ord(ebti)=7),
- 885  loop(indi$(ord(indi)=ord(ebti)-5),
- 886  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
- 887  ););
- 888  if ((ord(ebti)=15),
- 889  loop(i$((sameas(i,'ROILT'))),
- 890  loop(indi$(ord(indi)=ord(ebti)-5),
- 891  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
- 892  );););
- 893  if ((ord(ebti)=27),
- 894  loop(i$((sameas(i,'ELEHT'))),
- 895  loop(indi$(ord(indi)=ord(ebti)-5),
- 896  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
- 897  );
- 898  if ((ord(ebti)=28),
- 899  loop(i$((sameas(i,'FGT'))),
- 900  loop(indi$(ord(indi)=ord(ebti)-5),
- 901  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
- 902  );););
- 903  if ((ord(ebti)=30),
- 904  loop(i$((sameas(i,'CON')) ),
- 905  ebt(r,"30")=egyadjusted(r,i);
- 906  ););
- 907  if ((ord(ebti)=31),
- 908  loop(i$((sameas(i,'TR')) ),
- 909  ebt(r,"31")=egyadjusted(r,i);
- 910  ););
- 911  if ((ord(ebti)=32),
- 912  loop(i$((sameas(i,'WRHR')) ),
- 913  ebt(r,"32")=egyadjusted(r,i);
- 914  ););
- 915  if ((ord(ebti)=33),
- 916  loop(i$((sameas(i,'OTH')) ),
- 917  ebt(r,"33")=egyadjusted(r,i);
+ 893  loop(indi$(ord(indi)=ord(ebti)-5),
+ 894  ebt(r,ebti)=egyindi.l(r,indi);
+ 895  ););
+ 896  if ((ord(ebti)=7),
+ 897  loop(indi$(ord(indi)=ord(ebti)-5),
+ 898  ebt(r,"7")=egyindi.l(r,indi)*oilngratio(r);
+ 899  ););
+ 900  if ((ord(ebti)=15),
+ 901  loop(i$((sameas(i,'ROILT'))),
+ 902  loop(indi$(ord(indi)=ord(ebti)-5),
+ 903  ebt(r,"15")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 904  );););
+ 905  if ((ord(ebti)=27),
+ 906  loop(i$((sameas(i,'ELEHT'))),
+ 907  loop(indi$(ord(indi)=ord(ebti)-5),
+ 908  ebt(r,"27")=egyadjusted(r,i)+egyindi.l(r,indi);););
+ 909  );
+ 910  if ((ord(ebti)=28),
+ 911  loop(i$((sameas(i,'FGT'))),
+ 912  loop(indi$(ord(indi)=ord(ebti)-5),
+ 913  ebt(r,"28")=egyadjusted(r,i)+egyindi.l(r,indi);
+ 914  );););
+ 915  if ((ord(ebti)=30),
+ 916  loop(i$((sameas(i,'CON')) ),
+ 917  ebt(r,"30")=egyadjusted(r,i);
  918  ););
- 919  if ((ord(ebti)=34),
- 920  loop(indi$(ord(indi)=ord(ebti)-32),
- 921  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 919  if ((ord(ebti)=31),
+ 920  loop(i$((sameas(i,'TR')) ),
+ 921  ebt(r,"31")=egyadjusted(r,i);
  922  ););
- 923  if ((ord(ebti)=35),
- 924  loop(i$((sameas(i,'FU')) ),
- 925  ebt(r,"35")=egyadjusted(r,i);
+ 923  if ((ord(ebti)=32),
+ 924  loop(i$((sameas(i,'WRHR')) ),
+ 925  ebt(r,"32")=egyadjusted(r,i);
  926  ););
- 927  if ((ord(ebti)=36),
- 928  loop(i$((sameas(i,'INV')) ),
- 929  ebt(r,"36")=egyadjusted(r,i);
+ 927  if ((ord(ebti)=33),
+ 928  loop(i$((sameas(i,'OTH')) ),
+ 929  ebt(r,"33")=egyadjusted(r,i);
  930  ););
- 931  ););
- 932  );
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 14
+ 931  if ((ord(ebti)=34),
+ 932  loop(indi$(ord(indi)=ord(ebti)-32),
+ 933  ebt(r,"34")=egyindi.l(r,indi)*(1-oilngratio(r));
+ 934  ););
+ 935  if ((ord(ebti)=35),
+ 936  loop(i$((sameas(i,'FU')) ),
+ 937  ebt(r,"35")=egyadjusted(r,i);
+ 938  ););
+ 939  if ((ord(ebti)=36),
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 14
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+ 940  loop(i$((sameas(i,'INV')) ),
+ 941  ebt(r,"36")=egyadjusted(r,i);
+ 942  ););
+ 943  ););
+ 944  );
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egyintestimation.gms
-     2      186 IF EXIST       1     186  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
-     3      187 GDXIN          1     191  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
-     4      190 GDXIN          1     194  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
-     5      193 GDXIN          1     197  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
-     6      196 GDXIN          1     200  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+     2      186 IF EXIST       1     186  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
+     3      187 GDXIN          1     191  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\balance\OTHE_balance.gdx
+     4      190 GDXIN          1     194  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
+     5      193 GDXIN          1     197  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+     6      196 GDXIN          1     200  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
 
 
-COMPILATION TIME     =        0.015 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 15
+COMPILATION TIME     =        0.015 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 16
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1098,7 +1116,7 @@ BEJ.33                           40038.350                             509.030
 BEJ.34                                       17712.160
 BEJ.35     966.320     934.750       0.010       3.670    3177.110    2685.990       8.180       8.390      17.680
 BEJ.36   39919.350      31.660      10.480       3.650     952.440  951071.510     345.340      28.450      16.250
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 16
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 17
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1176,7 +1194,7 @@ HEB.38                3646.114   10977.161    6505.715    1511.106   11087.891  
 HEB.39   21312.837   51727.909   19163.688    2068.760     670.992   14733.542  253413.832   25986.825 3626996.867
 HEB.40  112584.849    4232.233    9536.153    6350.187    2651.412  582699.902  109609.365   74519.081   46459.645
 HEB.41  502817.094   34732.438  174889.969  459484.804    7357.664   50446.592   26030.712   22362.323   20371.555
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 17
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 18
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1254,7 +1272,7 @@ NMG.43   46842.470   30319.076     596.803   14486.911    1131.627   40103.421  
 NMG.44   35337.920   51139.975   12682.982   64999.133    7917.262    4424.645    2181.583       4.952    1163.596
 NMG.45   19352.650   77006.877    3469.421   13054.046   81502.388   26571.999    2419.657     953.466    2604.042
 NMG.46  187228.830  144080.828   14866.995   77685.144    5838.335   15629.989    6516.639     962.451    5096.834
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 18
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 19
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1332,7 +1350,7 @@ JIL.48    1841.300   16877.070   16654.530    4326.240    1966.170    9152.180  
 JIL.49    1003.420    1148.550    4596.680     627.220     357.840    2702.680     466.070     187.380    1221.690
 JIL.50     439.530    2784.870   10803.940    3397.520     776.520    4775.250     340.020     212.990     996.880
 JIL.51     430.120    1535.840    1422.400    9339.120     210.660    5826.610     523.100     150.620    2976.040
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 19
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1410,7 +1428,7 @@ SHH.55    1611.038                                                   25673.279  
 SHH.56     253.407                  19.528                            6830.089    8771.122   64149.485    7536.506
 SHH.57   79806.199                7276.112                          262324.948   99832.754  489867.022  258946.525
 SHH.58  167360.633                1598.674                          416067.807  225156.423  125626.254  147845.158
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 20
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1488,7 +1506,7 @@ ZHJ.61 9451894.000    3527.000               41901.000  176141.000 1200290.000 3
 ZHJ.62  646579.000    5062.000              150167.000  224626.000 2280217.000 6694008.000 1656251.000 1152406.000
 ZHJ.66                 600.000               12784.000    9350.000 1347810.000  860129.000  721617.000  319552.000
 ANH.31 3074855.550   30725.220                              57.980 4149763.400  778655.900  220158.230  413114.270
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 21
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1566,7 +1584,7 @@ JXI.33                                        2534.868    2270.965    3451.005  
 JXI.34                                      178004.374
 JXI.35    7847.999     302.999                 423.965  108318.613    1060.002      36.000      93.000      94.000
 JXI.36  844173.048                            2000.744              812122.303               13129.004    2093.008
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 22
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1644,7 +1662,7 @@ HEN.38  190726.708   35193.460    6222.199    2745.413    3057.179    8839.132  
 HEN.39  152588.152  447534.133   13253.501   17970.402   23291.849   13706.400    1139.771     843.558 3519405.225
 HEN.40    7767.379   49374.025    7935.103   28127.954   15413.583  295225.391   35033.665   32942.574   70344.857
 HEN.41  349584.632  172867.042   60688.793  156251.476  105168.960   27233.340    8471.696    6450.605   12106.561
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 23
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1722,7 +1740,7 @@ HUN.43  100755.430    7553.100                8005.820   39082.790  122583.060  
 HUN.44   12325.550  149379.260               64228.440    7312.110    4033.700    1772.320    2364.310    6425.000
 HUN.45   77543.980    5971.560               23424.840    5721.640   83798.670   14157.930    4469.820   57510.910
 HUN.46  174582.490   81934.310               78332.650   50473.950   33971.590   66085.860    6097.900   11567.660
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 24
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 25
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1800,7 +1818,7 @@ GXI.49    1611.400     112.180                1509.691     159.599    4188.830  
 GXI.50    2030.170     120.900                1518.225     481.460    7761.980     196.560     190.340    1568.810
 GXI.51                 218.700                1113.798     376.210    4628.840     253.710    1652.840     645.170
 GXI.52                                                               69563.460                  18.400       0.130
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 25
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1878,7 +1896,7 @@ CHQ.55                 315.090       4.950      24.030     129.600    1398.380  
 CHQ.56                1619.590      92.930     176.650     132.280     755.020     319.580      74.920     603.770
 CHQ.57   30615.810   72500.290     823.370    3858.000   17729.240  120655.430   22123.070   10532.090   11476.610
 CHQ.58  542767.170   23063.830     483.480     612.200    1837.620  419887.390   30759.550   10013.350   20760.570
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 26
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 27
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -1956,7 +1974,7 @@ GZH.61 3296522.000  767962.540               33131.260   47658.940  264215.350  
 GZH.62 1167285.000  612674.450               51208.100   79691.680  621749.920    6994.490    2947.500   15316.570
 GZH.66              250596.010               40675.640   25514.380  871508.730    2548.570    1676.130    5668.130
 YUN.31 2276536.000   47547.000               66751.000    3203.000 1823453.000   44865.000     567.000   32065.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 27
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 28
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2034,7 +2052,7 @@ GAN.33                               6.000    2064.460     456.470     625.470  
 GAN.34                 893.200              221689.710                                                       4.070
 GAN.35       5.430    1389.050     912.350     599.620   15886.640    2671.150       7.370       0.830       8.250
 GAN.36  428977.210                 275.520                          238725.820                             140.050
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 28
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 29
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2112,7 +2130,7 @@ QIH.38      58.830     192.670    1076.830    1786.540      19.760      70.500  
 QIH.39      18.500    3117.620     502.530     710.660      37.590       5.950       4.670       7.730     995.410
 QIH.40     739.030     169.650    1092.640    5720.970      30.270    7575.510      68.690     747.140     527.720
 QIH.41   37761.490    1776.800  502810.840    6033.830    1459.010     823.530      67.100      52.370    1137.900
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 29
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 30
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2190,7 +2208,7 @@ BEJ.41   35584.500  499291.200  458222.490  191686.130  264658.520    7493.020  
 BEJ.42  347700.120   64214.880 2834636.920  198004.630   49785.610   70138.110  217725.790  418628.500  184994.560
 BEJ.43    5536.450    8453.260   46515.790  539804.040   12385.580   19199.330   28997.960   69795.430   34087.390
 BEJ.44   25601.090    2899.310  190639.680  128466.550 2016643.410 1073137.850 1347780.560  526419.490  448784.660
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 30
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2268,7 +2286,7 @@ HEB.46   25232.903   34929.497  168493.279 1269537.270  713610.408  123957.520 1
 HEB.47    7873.005    5974.743   63804.075  692085.751   94476.303   48566.881  113453.819 2243264.053   14328.516
 HEB.48   12441.450   19789.444   72238.019  334079.765  182976.219   34029.698  299884.423   61689.438  928929.724
 HEB.49    2890.564    4347.410   18432.743   11141.038   18781.569    3643.146  101067.327    6298.757  213472.510
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 31
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2346,7 +2364,7 @@ NMG.51     233.593     217.068   99029.929    1072.486   14523.571      19.751  
 NMG.52   11140.073               11637.486   11161.652   74051.489       9.454    5074.679       2.982
 NMG.53   17663.188   79263.951  503509.485  245405.706 1482060.390     762.664   62234.849   24932.515    9000.528
 NMG.54     773.366      42.861     987.514    2072.504   67199.524      17.708    2368.481    1669.332
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 32
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 33
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2424,7 +2442,7 @@ JIL.56     140.250     546.850   11597.580    1045.720     204.880      73.190  
 JIL.57    5937.250    8495.550  164261.030   55074.580   41058.350    7674.920   34166.240  178487.340    5729.390
 JIL.58     838.170    1177.150   58164.530    6696.460   12045.940    1624.620   11359.590   34809.940    3611.580
 JIL.59   23874.690    5792.550  449178.860   64022.100   59276.270   11309.430   43986.710  376291.430    9797.370
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 33
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 34
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2502,7 +2520,7 @@ SHH.62  504610.312  264544.601 4207339.165  634380.300 3228065.662 1147944.721 2
 SHH.66  260098.661  182231.396 1419098.029  317949.538 1153924.657  458510.586 1325751.763 1582754.072  776246.024
 JSU.31  513501.030     246.300 1851136.470    6074.580    3486.570    4064.430    5063.660    1368.280     501.830
 JSU.32   71102.960  242676.190 1299602.460  756215.620 1336848.130   65005.240  180735.640   21189.960   22859.970
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 34
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 35
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2580,7 +2598,7 @@ ANH.34                           11727.890   12987.110 3415099.950              
 ANH.35      52.960      93.730  129822.770  138169.370   59460.850      87.090     885.640     363.580     180.300
 ANH.36    1328.160      94.250   24233.370      15.520    5929.370                 537.990
 ANH.37   51137.400      18.130   74980.990     423.420    1471.830      71.500    2093.550    4709.330    1334.510
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 35
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 36
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2658,7 +2676,7 @@ JXI.39  232868.101     803.001   31483.740    5012.840    3689.048   26197.034  
 JXI.40 1170611.424    1067.002  456122.872   70202.361   13779.123    5594.794   19395.011    6322.974   18244.181
 JXI.41   17572.029    9750.006   74534.173   42207.886 1385731.113    1362.950    5038.296    3400.975    1791.005
 JXI.42  338903.854    9810.016 3589365.142  295289.253  159372.428    3038.888  102125.556   41519.843  202771.740
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 36
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 37
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2736,7 +2754,7 @@ HEN.44   18875.094    3380.304  257050.456  219734.338 1.092871E+7 1308991.408 5
 HEN.45    9268.139     976.931   45012.606   35389.414   76880.571  384324.020  708973.021   86391.128   46276.716
 HEN.46   25681.957    5935.857   68632.910  314816.880   42755.175   68511.613  809021.116  161485.699   48944.207
 HEN.47   30236.273   14907.294   16736.158  332839.608   34435.316   67393.044  342343.795 1276036.481   14530.754
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 37
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 38
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2814,7 +2832,7 @@ HUN.49    2031.620    2391.750    8424.750    2836.860   11486.910    2123.840  
 HUN.50    1499.590   14745.720   28111.570   10912.040   41732.770    1684.220   26292.140    6922.290   32338.810
 HUN.51   58604.730     938.660   35674.030   25185.820   10161.780    4132.340   68285.050   40459.470    6561.490
 HUN.52   10962.790  106633.090  159203.910   38875.460 1160650.990    3690.440   49242.180   55333.350
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 38
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 39
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2892,7 +2910,7 @@ GXI.54    1202.010                4746.300    3208.200   14305.580     206.600  
 GXI.55    2471.920      37.369    5142.650    4793.850    5250.440     405.640    1873.180    2985.840     728.470
 GXI.56     333.950     156.812    2370.450     464.014   16162.510      64.870     685.130     904.170     303.660
 GXI.57   35691.780    3235.956  176634.760  181834.261  289036.370   11582.150   76063.320  150812.950   31696.960
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 39
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 40
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2970,7 +2988,7 @@ CHQ.59   20327.590    6413.770  174098.320   31500.290  102021.700   21290.540  
 CHQ.61   77707.050   23355.910  546311.290  243326.450  304356.450  121373.180  373832.960 1530068.610  248951.120
 CHQ.62  128302.590   45865.620  934392.540  501433.370 1151404.980   96424.850  467620.570 1897785.810  362793.240
 CHQ.66   29815.210   13483.180  329239.340  160396.050  578612.390   53171.550  147147.520 1293268.460  139981.920
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 40
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 41
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3048,7 +3066,7 @@ YUN.32   26795.000  531431.000  114962.000  367188.000  114570.000    1381.000  
 YUN.33     182.000               51523.000     881.000     297.000                             528.000      11.000
 YUN.34                          141722.000    2017.000 5753522.000                                        1591.000
 YUN.35      13.000    6212.000  159717.000   61966.000   30113.000     242.000      51.000      12.000      39.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 41
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 42
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3126,7 +3144,7 @@ GAN.37      38.340     984.270    3595.400    8634.560    3212.240       2.290  
 GAN.38     361.430    3296.740    4595.020    1788.830    7416.790     729.760    2300.690     853.680    8244.980
 GAN.39    1528.450    5770.100    6480.860    5570.530    8888.630      82.430    2186.000     189.990    5505.140
 GAN.40  100477.800    6287.820   18985.050    8198.580    3807.720     919.650    2419.450     439.360    6387.980
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 42
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 43
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3204,7 +3222,7 @@ QIH.42      11.100       0.780  232763.660   27253.090  128721.590    2211.480  
 QIH.43      29.830       3.060   10950.180   93916.960   33130.030     104.530     168.680     648.100
 QIH.44       6.640       0.760     399.950     533.610  149000.620    5479.720   18199.720     248.760
 QIH.45      10.860       0.760   52445.300    3166.200   44886.900   12458.490    4004.840    4573.350    8104.570
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 43
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 44
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3282,7 +3300,7 @@ BEJ.44  283903.570   28101.860  220627.870      38.830    1719.990     171.760  
 BEJ.45  290652.830  134852.930    3500.950     128.350   29623.710    1716.880   23682.010  478718.730   12502.780
 BEJ.46  222093.990   97538.470    1556.590     291.420   79370.020    3995.290   32391.230  244248.520   44532.160
 BEJ.47   10766.880    2800.690     355.460     148.870   11391.600     171.650    1363.940   57127.990  824281.760
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 44
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 45
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3360,7 +3378,7 @@ HEB.49  119554.144   46514.733     851.555      22.725   14618.492     192.170  
 HEB.50    1732.877   38659.625     590.808       5.134   21165.119    1939.342    1196.516   51662.416   14766.746
 HEB.51   18180.945    1886.979   22951.244      10.552   16665.301     178.356     302.343   61506.567    1779.592
 HEB.52                                       74771.731    7512.582
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 45
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 46
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3438,7 +3456,7 @@ NMG.55      89.464      17.584      42.501      19.400    9696.053      44.567  
 NMG.56       0.649                  24.641      15.194    3749.355      17.714      26.196               58491.473
 NMG.57   29047.472    2455.744   10252.498    1908.557  642043.276   43708.710   13480.860  648573.300  958308.873
 NMG.58  186106.485    6320.595    2349.076     940.519  130157.670   86167.851    8612.087  420200.370  769575.660
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 46
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 47
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3516,7 +3534,7 @@ JIL.61   27282.080    1931.040    7998.560    4135.510  185700.410   41758.470  
 JIL.62   74336.840    1980.370    7901.390   11975.150  515249.870   50809.580   21810.310 1253001.000 1661557.000
 JIL.66   21844.930     965.520    5191.710    1440.930  100992.820    7030.300    7177.140  362327.000  368469.000
 HLJ.31    2503.800               42226.200                                                    5851.700    3327.100
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 47
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 48
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3594,7 +3612,7 @@ JSU.34     606.860    7724.190     495.280    4080.580     655.030
 JSU.35     380.080     706.070    7034.410     241.550    5925.580      30.150      66.250  616387.610    1657.030
 JSU.36  258968.640   26511.600   36047.700    2597.750   75045.450    3203.070    1885.530  180841.950  122195.380
 JSU.37   16962.770   11020.380  254889.780     304.270    1210.820      96.060     207.510   32728.840   16062.610
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 48
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 49
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3672,7 +3690,7 @@ ANH.39     833.940     178.800     522.350       0.190    6097.050      19.400  
 ANH.40   24333.140    8883.010    2575.500     394.400    4138.330      95.170     323.130   22343.850   62692.710
 ANH.41    3259.830     383.360    2681.650   20408.550  354469.270    2654.240     398.690   67751.920 2129365.190
 ANH.42   85614.350   25889.600   32077.590   18895.220   49561.020   24699.500    3651.820  407769.200  146766.100
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 49
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 50
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3750,7 +3768,7 @@ JXI.45   37751.343   10626.657    3419.978     411.000    9958.016      66.997  
 JXI.46   19118.860    4087.451     802.995     433.000   82561.133     449.982    4634.975  158045.681   54038.705
 JXI.47    8710.466     793.895     395.998      87.000    2334.004      21.999     807.996   78582.812  192526.999
 JXI.48   33240.321   13449.251    1581.990     510.000   38004.061     119.995    1055.994  435773.495   64328.340
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 50
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 51
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3828,7 +3846,7 @@ HEN.50    4208.392   90926.250    2385.071     532.376   28655.898    1085.582  
 HEN.51   22282.532   18065.632 1481484.807    5133.669   75956.945    4209.667    3152.019  625988.041   15996.402
 HEN.52                           24826.469   48130.016      18.774
 HEN.53   16928.833   15686.986   37722.423   10718.844 4707069.738   36357.828   48160.341  594841.216  298974.861
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 51
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 52
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3906,7 +3924,7 @@ HUN.57   35953.690   24564.930   26362.480   10004.100   69279.420    6185.960  
 HUN.58   15884.950   16674.890   21936.320    8573.090   62135.900    3868.180   11806.530  637206.390  189072.570
 HUN.59   41607.310   23709.770   13496.780    9273.820  582498.530   10328.240   38868.490  532050.920  434180.740
 HUN.61  131611.290   60571.950   64487.550   30952.430  993073.190   35947.270  102188.330 2375800.000  893200.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 52
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 53
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -3984,7 +4002,7 @@ HAI.31                                                   40100.330              
 HAI.32       7.168                   0.084                                                   55474.573       0.885
 HAI.33       3.094                                                   18540.759
 HAI.35                            3334.125                   8.141                           23077.497     132.428
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 53
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 54
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4062,7 +4080,7 @@ SIC.38   18547.381    1054.611    9733.136     191.623   18302.301    1271.721  
 SIC.39   33132.704   16709.854    8400.552      13.107    1887.089      67.490     219.189 1146350.470   11170.066
 SIC.40  101474.852   11035.584    5224.150      89.276   15002.115    1500.308    1610.078   64535.068   31137.132
 SIC.41    8818.806    1155.320    4966.027    5365.430   14701.515   70924.514    1648.133  336231.557 1576913.832
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 54
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 55
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4140,7 +4158,7 @@ YUN.44    6167.000    2222.000   17058.000                3172.000     755.000  
 YUN.45    1761.000    1610.000     734.000               13999.000     429.000     856.000  348050.000   19411.000
 YUN.46     543.000    2442.000      97.000               53246.000    1365.000    1427.000  188501.000    1944.000
 YUN.47     139.000      49.000       8.000                5597.000     210.000     230.000   59483.000  215760.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 55
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 56
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4218,7 +4236,7 @@ GAN.50   16873.560    1140.770      73.270       0.650    3143.560      90.410  
 GAN.51     113.350      59.720     172.980       5.610    1409.430     134.930      81.080   43139.500    1589.870
 GAN.52                 294.580                  34.210
 GAN.53    5115.140    1190.270    4778.270     437.750  527914.530    4619.860    9003.030  185871.470  130165.150
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 56
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 57
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4296,7 +4314,7 @@ QIH.58                            1771.160      10.780    4137.140      18.690  
 QIH.59                             145.680     231.620  109370.500      66.010    4921.240  104122.340   84558.879
 QIH.61                            1173.450     171.230  100877.189     215.210    1411.294  460400.000  145600.000
 QIH.62                           10949.180      14.690                 561.200              164600.000  201500.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 57
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 58
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4374,7 +4392,7 @@ BEJ.56  188583.100 1719069.890
 BEJ.57  807803.890 2878598.960
 BEJ.58  836650.650 6868745.700
 BEJ.59 5421913.660 2.556144E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 58
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 59
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4452,7 +4470,7 @@ HEB.46   15962.708 1942097.318
 HEB.47  257152.005  191198.104
 HEB.48   15450.786  378440.638
 HEB.49   13271.212  961771.029
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 59
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 60
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4530,7 +4548,7 @@ NMG.35                3534.149
 NMG.36  606996.556  598054.205
 NMG.37    8244.836    2790.933
 NMG.38   12933.378   20916.717
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 60
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 61
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4608,7 +4626,7 @@ JIL.3                                                  3664261.470
 JIL.4                                                               860199.530
 JIL.5                                                                           428489.970
 JIL.6                                                                                      6782906.850
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 61
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 62
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4686,7 +4704,7 @@ HLJ.58  291936.900 1409663.200
 HLJ.59 1305195.800 2941240.900
 HLJ.61 1096981.600 7495010.000
 HLJ.62 4664073.000 6964925.200
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 62
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 63
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4764,7 +4782,7 @@ JSU.50    8388.400  923294.910
 JSU.51   24494.420  247543.730
 JSU.53  528637.620 1392445.420
 JSU.54   33240.680   67671.880
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 63
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 64
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4842,7 +4860,7 @@ ANH.44     656.350    7193.730
 ANH.45    7408.520  703340.450
 ANH.46    6152.480 1500260.300
 ANH.47   44411.420   74812.730
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 64
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 65
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4920,7 +4938,7 @@ JXI.36  307884.198  336589.514
 JXI.37   24155.113   18126.115
 JXI.38  127653.101   62104.066
 JXI.39   37747.042  155381.712
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 65
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 66
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4998,7 +5016,7 @@ HEN.4                                                              7346986.220
 HEN.5                                                                          6063326.821
 HEN.6                                                                                      4.287686E+7
 HEN.7                                                                                                  9673710.091
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 66
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 67
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5076,7 +5094,7 @@ HUB.58  460944.284 1661626.411
 HUB.59 2200092.331 7639819.265
 HUB.61 3619166.540 1.383565E+7
 HUB.62 4499995.502 9234141.142
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 67
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 68
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5154,7 +5172,7 @@ GUD.50   38933.597  505667.510
 GUD.51    9856.593   84122.814
 GUD.53 1154612.171 2411813.976
 GUD.54   35685.832   35774.625
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 68
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 69
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5232,7 +5250,7 @@ HAI.43     584.998    1449.665
 HAI.44      43.349   97139.743
 HAI.45      64.885     370.986
 HAI.46     238.545   19267.912
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 69
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 70
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5310,7 +5328,7 @@ SIC.32   29319.999   62359.231
 SIC.33   16725.784   28960.905
 SIC.34                1099.541
 SIC.35                3918.102
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 70
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 71
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5388,7 +5406,7 @@ YUN.1                          1.331700E+7
 YUN.2                                      1183318.000
 YUN.4                                                              1514552.000
 YUN.5                                                                           298645.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 71
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 72
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5466,7 +5484,7 @@ SHA.56   35823.643  138305.986
 SHA.57  467068.731  469865.480
 SHA.58  163265.917 1208810.255
 SHA.59  901969.478 2541441.155
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 72
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 73
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5544,7 +5562,7 @@ NXA.46    1484.040   42628.847
 NXA.47   10984.858   17243.700
 NXA.48    1890.816   58714.599
 NXA.49   10777.280   50019.772
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 73
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 74
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5622,7 +5640,7 @@ XIN.36  189219.581  191362.937
 XIN.37   21198.265   53691.131
 XIN.38    8963.895   28338.196
 XIN.39    3551.983   29231.814
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 74
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 75
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5700,7 +5718,7 @@ SHX.11                                     1.037103E+7
 SHX.12                                                 5887056.000
 SHX.13                                                             4997491.000
 SHX.14                                                                         2.798239E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 75
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 76
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5778,7 +5796,7 @@ JSU.70  448174.090 2793221.750 1366957.050 1.002096E+7 7568626.150 5426253.870 2
 JSU.71  428722.000   66822.410 2562332.970 1131709.000 3593290.630  183467.290 6552645.840  663842.000 3491461.350
 JSU.73                                      229067.580
 ZHJ.8  2.883094E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 76
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 77
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5856,7 +5874,7 @@ HUB.10                         3712268.252
 HUB.11                                     2705179.033
 HUB.12                                                 1.248482E+7
 HUB.13                                                             6851174.539
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 77
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 78
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -5934,7 +5952,7 @@ SIC.11                                     1753418.165
 SIC.12                                                 1.532055E+7
 SIC.13                                                             5824722.318
 SIC.14                                                                         1.596719E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 78
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 79
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6012,7 +6030,7 @@ QIH.14                                                                         3
 QIH.15                                                                                      140169.090
 QIH.16                                                                                                  133190.970
 QIH.70      16.450       1.160      15.550    3942.290    1785.730     268.640   46084.460      41.730    2840.340
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 79
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 80
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6090,7 +6108,7 @@ NMG.20                                       37896.292
 NMG.21                                                  100253.573
 NMG.22                                                               24423.230
 NMG.23                                                                         7780757.990
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 80
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 81
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6168,7 +6186,7 @@ ZHJ.23                                                                         2
 ZHJ.24                                                                                      647221.000
 ZHJ.25                                                                                                  743674.000
 ZHJ.70  579981.000 2138131.000 2930134.000  104126.000  315553.000  367978.000 3645460.000  449069.000    4979.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 81
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 82
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6246,7 +6264,7 @@ HUB.25                                                                          
 HUB.70  499276.751  245771.416  658354.015  181240.223   12221.568     294.725   78937.102    6602.949
 HUB.73                                         105.936                 211.873
 HUN.17 4432380.180
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 82
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 83
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6324,7 +6342,7 @@ SIC.24                                                                          
 SIC.25                                                                                                  438745.000
 SIC.70  814986.435 2321865.860 2126999.888  259196.330   26176.680   50350.043  126068.153                 270.000
 SIC.73              225337.990               14057.430
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 83
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 84
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6402,7 +6420,7 @@ QIH.73              161067.105   44232.763  114368.984  205635.459             1
 XIN.17  125900.746
 XIN.18              715902.059
 XIN.19                           77411.925
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 84
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 85
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6480,7 +6498,7 @@ TAJ.48                                                                          
 TAJ.49                                                                          350684.854
 TAJ.50                                                                           35350.788
 TAJ.51                                                                          160075.669
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 85
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 86
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6558,7 +6576,7 @@ SHX.47                                                                          
 SHX.48                                                                          240283.000
 SHX.49                                                                          496514.000
 SHX.50                                                                           18382.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 86
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 87
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6636,7 +6654,7 @@ LIA.49                                                                         1
 LIA.50                                                                           84151.150
 LIA.51                                                                          256718.360
 LIA.53                                                                          940221.340
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 87
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 88
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6714,7 +6732,7 @@ HLJ.49                                                                          
 HLJ.50                                                                           43860.400
 HLJ.51                                                                          153564.700
 HLJ.53                                                                         1134190.600
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 88
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 89
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6792,7 +6810,7 @@ JSU.53                                                                         1
 JSU.54                                                                          268964.830
 JSU.55                                                                          248545.020
 JSU.56                                                                          707746.250
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 89
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 90
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6870,7 +6888,7 @@ ANH.50                                                                          
 ANH.51                                                                          329592.010
 ANH.53                                                                          805028.230
 ANH.54                                                                          299381.260
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 90
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 91
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6948,7 +6966,7 @@ JXI.46                                                                          
 JXI.47                                                                          254757.000
 JXI.48                                                                          280820.000
 JXI.49                                                                          795158.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 91
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 92
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7026,7 +7044,7 @@ HEN.45                                                                          
 HEN.46                                                                           64808.824
 HEN.47                                                                         1141278.313
 HEN.48                                                                          235201.505
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 92
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 93
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7104,7 +7122,7 @@ HUN.43                                                                          
 HUN.44                                                                          117963.790
 HUN.45                                                                          116534.300
 HUN.46                                                                           24331.240
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 93
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 94
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7182,7 +7200,7 @@ GXI.43                                                                          
 GXI.45                                                                          114579.390
 GXI.46                                                                           19324.030
 GXI.47                                                                          492182.220
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 94
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 95
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7260,7 +7278,7 @@ CHQ.42                                                                          
 CHQ.43                                                                          200935.520
 CHQ.45                                                                           54735.060
 CHQ.46                                                                          558736.760
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 95
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 96
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7338,7 +7356,7 @@ GZH.41                                                                          
 GZH.42                                                                         1581918.680
 GZH.43                                                                           96691.410
 GZH.45                                                                           84136.460
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 96
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 97
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7416,7 +7434,7 @@ SHA.43                                                                          
 SHA.44                                                                          222761.716
 SHA.46                                                                           35407.393
 SHA.47                                                                          238202.411
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 97
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 98
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7494,7 +7512,7 @@ NXA.43                                                                          
 NXA.45                                                                           15431.900
 NXA.46                                                                            2882.940
 NXA.47                                                                           50006.450
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 98
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/05/12 16:37:51 Page 99
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7572,7 +7590,7 @@ XIN.40                                                                          
 XIN.41                                                                           96509.441
 XIN.42                                                                          414588.076
 XIN.43                                                                          150565.565
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/05/12 10:43:08 Page 99
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 100
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7650,7 +7668,7 @@ TAJ.42             3794565.664 1462234.713              291616.966
 TAJ.43              706855.112  141129.081               87498.291
 TAJ.44             5728613.354 2565974.251              347198.693
 TAJ.45              663149.098  771468.378   68185.900  217957.731
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 100
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 101
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7728,7 +7746,7 @@ SHX.50                6628.000              420984.000
 SHX.51                                                   53346.000
 SHX.53             1935651.000
 SHX.54                1032.000                           65156.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 101
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 102
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7806,7 +7824,7 @@ LIA.65 1.888211E+7
 JIL.1   111404.000
 JIL.31             6672684.660              421294.920
 JIL.32              247809.850                           15512.300
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 102
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 103
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7884,7 +7902,7 @@ SHH.32                           60712.400               70086.909
 SHH.33                                                  109296.908
 SHH.34                                                  103272.278
 SHH.36             5597288.345 1900391.628              138304.538
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 103
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 104
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -7962,7 +7980,7 @@ ZHJ.41             1.151422E+7  210115.000               60851.000
 ZHJ.42             1.298541E+7 9374942.000              375350.000
 ZHJ.43             1409017.000  635309.000                9991.000
 ZHJ.44             3778490.000 3693692.000              337119.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 104
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 105
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8040,7 +8058,7 @@ FUJ.47              117821.210 1659390.420 2078309.800  168328.720
 FUJ.48             1825364.040 3005768.380 2472777.870  175615.830
 FUJ.49             4567817.740 3785786.110 2273741.160   82432.530
 FUJ.50             1269489.140 1127464.210  662432.730   58235.740
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 105
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 106
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8118,7 +8136,7 @@ SHD.58             1526751.102 1.038833E+7 1264706.614   20413.998
 SHD.59              246311.374 1038339.380 6319578.552
 SHD.63             1.376544E+7
 SHD.65 4.236306E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 106
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 107
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8196,7 +8214,7 @@ HUN.36             5124694.820                          113496.190
 HUN.37             1140137.890                           38634.840
 HUN.38              632648.100                           12687.620
 HUN.39              485923.680              233588.280   12686.900
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 107
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 108
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8274,7 +8292,7 @@ GXI.43              875883.420  168824.580
 GXI.44             5878797.150  873930.030              476293.300
 GXI.45               19426.670    1718.160  254071.400
 GXI.46              816189.870   45027.610 6028438.820
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 108
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 109
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8352,7 +8370,7 @@ CHQ.50              413596.170   45226.300   47104.010
 CHQ.51              382244.840   16635.680  238458.730    1204.730
 CHQ.52               12255.630    1484.940
 CHQ.53               58950.920             1508528.880    1143.660
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 109
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 110
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8430,7 +8448,7 @@ GZH.57              601416.940              148930.840   25898.210
 GZH.58              650322.000              191303.730   66890.670
 GZH.59             1321847.580              189376.760
 GZH.63             7836762.070
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 110
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 111
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8508,7 +8526,7 @@ GAN.33                  67.930  871655.510  147574.230    1314.870
 GAN.34                1240.320  661818.180  174986.150   20222.810
 GAN.35                   8.770   89133.350   50237.930     924.550
 GAN.36              115724.580  400763.690  424525.610  111860.760
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 111
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 112
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8586,7 +8604,7 @@ QIH.38                   8.270    4381.600    5460.500    1160.981
 QIH.39                   0.010      93.640    7962.220
 QIH.40                   5.980    2651.360    9285.730
 QIH.41                6982.210   83425.750   27767.350
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 112
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 113
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8657,7 +8675,7 @@ JXI       0.976,    SHD       0.945,    HEN       0.696,    HUB       0.913,    
 GXI       0.926,    HAI       0.799,    CHQ 4.752368E-4,    SIC       0.183,    YUN       0.003,    SHA       0.811
 GAN       0.914,    NXA       0.399,    QIH       0.651,    XIN       0.726
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 113
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 114
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8735,7 +8753,7 @@ HEB.18    4792.403    3139.424    6884.696    1363.249    6940.209    9034.021  
 HEB.19   11326.130   21191.878   16808.874    2434.747    6150.034    5352.945    7051.479    4554.324    4277.380
 HEB.20    2755.705    1770.601    4790.449    1287.403   15456.745    4606.703   14270.876    6502.442    7501.241
 HEB.21     844.743                 780.204     499.556   23379.004  119934.649    1564.457              217833.530
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 114
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 115
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8813,7 +8831,7 @@ LIA.15  145528.870  263560.160  249062.550   39741.390   18929.720   14379.090  
 LIA.16   18319.090   37697.940   42217.710    9893.420   15575.440    1878.380    4842.880    5860.170    2624.270
 LIA.17   37138.860   39504.640   29408.780    3402.640    6954.850    3850.570    4663.680   13012.920    4893.700
 LIA.18    6335.300    9201.890    2610.450     969.810    5289.840    1606.100    2559.220    2341.960    5008.760
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 115
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 116
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8891,7 +8909,7 @@ SHH.13                1140.270                           14847.043    1529.159  
 SHH.14                1102.414                           18283.047    7505.523   55560.091  129766.208   81046.770
 SHH.15                5578.787                           21789.539   29675.407   41729.755   40630.399   38333.481
 SHH.16                1263.305                            3003.616    2100.017    3496.222    1650.760   13961.413
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 116
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 117
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8969,7 +8987,7 @@ ANH.10   48167.240               72557.730   11593.540   24152.280   23672.350  
 ANH.11   71426.500               24427.920   33164.400  223539.600  227360.160   94201.800  107630.240  172675.500
 ANH.12   43469.450                3085.270   25690.250  100040.620    2183.960    1736.320    3071.480    1138.910
 ANH.13  150827.510                3864.920    3343.880    2538.260    4714.260     289.990   30292.390   38226.980
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 117
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 118
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9047,7 +9065,7 @@ SHD.7   455454.766  506561.587  115318.730   11708.264  234177.789  289708.827 2
 SHD.8    86502.913   24145.773  181477.685     862.744   84285.111   11966.602   25922.899 3070702.081  423379.420
 SHD.9    66192.082  123542.856   31018.280   16431.876 1343242.960  298242.233  397507.374   80064.058 1.018943E+7
 SHD.10  250779.865  627291.585  492938.382   79109.430  387407.060   88212.463   77334.870   25991.432   82600.495
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 118
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 119
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9125,7 +9143,7 @@ HUN.4     7803.590                 255.560   85264.950    6243.340      41.470  
 HUN.5      609.910                 200.760     176.720 1698248.210    1428.110   30130.970    7819.150     232.850
 HUN.6     1199.990                2228.500     746.340   27369.460  680574.610  642577.680    1135.160  129062.070
 HUN.7    34998.590               11030.510    8481.450    7283.830   35213.740  150795.960    3246.860   18486.640
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 119
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 120
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9203,7 +9221,7 @@ HAI.2                                1.183    5204.796      39.049              
 HAI.3                           128132.620
 HAI.4                                0.025    6875.512      13.669       1.781       0.055       0.072       0.013
 HAI.5                                                   245212.715                                         285.212
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 120
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 121
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9281,7 +9299,7 @@ SIC.24    4619.263    1486.135    1521.438    2542.876   17931.616    1532.047  
 GZH.1   670342.390                 651.450    3903.590   23618.210     423.000      65.350     746.860    2486.260
 GZH.2                               30.990      19.930      93.700       5.500       1.570                   2.370
 GZH.3      555.470               21143.940
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 121
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 122
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9359,7 +9377,7 @@ SHA.21                              36.589                 289.481     102.376  
 SHA.22  104251.194  278040.775  143361.116    3457.665   74079.659   64231.325    4951.008    4517.658   73737.210
 SHA.23                  13.512     732.712      13.515     164.117     254.026     165.283                  34.003
 SHA.24   12223.512    2394.510    4749.700     144.619   18633.077    2299.336     648.536      74.631    1765.566
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 122
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 123
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9437,7 +9455,7 @@ QIH.18      56.290      87.860     924.920      66.230      23.850       6.010  
 QIH.19     173.440     779.320    3007.770      54.970    4931.370      22.400      11.830     172.910      11.470
 QIH.20     228.430     560.670    4767.580      70.850      42.400      28.930      85.630     235.990       4.770
 QIH.21                                                                  21.150                              33.820
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 123
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 124
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9515,7 +9533,7 @@ TAJ.13    3543.774  112480.320   33837.863 7503182.406 1552037.807 1290939.678 1
 TAJ.14    5418.335  105743.936   18868.980  675297.647  314197.472  421902.723  416461.178  293396.045  775467.258
 TAJ.15   14373.878   84493.910   30876.026  150484.979   48367.065 1049387.219  180990.609  186285.076   74239.163
 TAJ.16    4241.668    7035.895    5582.398   28105.381    5546.556   14773.915 3276810.474    4109.740    7358.373
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 124
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 125
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9593,7 +9611,7 @@ NMG.10   68105.057  143342.093   98200.147  282750.996      11.558   14576.953  
 NMG.11    3588.622  812756.813  355283.810  125067.362     296.842   17843.998   73413.925   17387.818     654.928
 NMG.12     562.384   51391.842  317937.799  286758.112      32.789    6843.351    4792.744     138.538     494.290
 NMG.13     377.516    8415.832   41443.924 3259022.898    3330.755  499113.161  279813.205  159933.034    1498.704
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 125
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 126
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9671,7 +9689,7 @@ HLJ.7     3948.000    2940.100     587.300    1234.900     879.000    4757.800  
 HLJ.8     2705.800    2668.600   12293.100    2173.000     853.900   16620.400    4231.200    5081.400     158.200
 HLJ.9     1893.200   87559.200    5062.400    1182.200    4070.700   12221.500    6112.600    5388.000     313.800
 HLJ.10  288330.700  470677.000   26274.300  255751.500   11027.000   43947.400    9439.200    8688.000     477.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 126
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 127
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9749,7 +9767,7 @@ ZHJ.4      138.000  324296.000  799911.000    6368.000      48.000    6546.000  
 ZHJ.5       20.000  337107.000     766.000     214.000     484.000    5130.000     419.000    1316.000   10919.000
 ZHJ.6      144.000 1351484.000   20989.000    1076.000    6245.000   52158.000   62889.000 1140032.000   17755.000
 ZHJ.7     3221.000  253737.000   32141.000   14295.000   56563.000   93905.000  162075.000  217570.000   23061.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 127
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 128
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9827,7 +9845,7 @@ JXI.1    90050.234   92033.318  123235.190  679572.847     356.987    2254.690  
 JXI.2  1204458.000  494284.257   23953.522     845.991     391.986     219.647    1392.000     233.000
 JXI.3       24.000   12283.000   58828.926 1710620.527   80009.051    3020.984                8820.891
 JXI.4     1179.003  139506.235  113435.221   20095.962      33.999     512.853     105.000     333.984       3.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 128
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 129
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9905,7 +9923,7 @@ HEN.22   42420.133 1003702.304 1025300.138 1583906.657  106602.636  745265.951  
 HEN.23    3025.166   15354.307   12449.735  101673.943     656.987   33969.622    1005.832    2016.679       8.230
 HEN.24    1791.998    2421.824    3283.558    1643.867     549.785    2686.446     586.815     276.244     128.515
 HUB.1    99422.377  314460.073  459298.741  508352.470   11571.352   17669.152    2504.842    4228.688    3013.984
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 129
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 130
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -9983,7 +10001,7 @@ GUD.19   72657.580 1420960.915  148423.014   91830.424  172807.169  986076.233  
 GUD.20    1509.167  110217.857    8067.559    7273.037   41815.550  222215.057   69073.146  420433.778  820989.373
 GUD.21               94684.911   10644.964 1591460.623  368900.785   51462.782              553854.701
 GUD.22  184054.059 2826443.221 1976431.758  804359.112 1362285.611  661730.861  405539.540  934861.815 1687886.578
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 130
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 131
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10061,7 +10079,7 @@ CHQ.16     353.430   15329.700   10295.070   12457.960    2776.310   15911.840 9
 CHQ.17    1446.840   21339.570    8610.860    7197.990    1809.880  105947.120  276500.520  363522.430   16120.470
 CHQ.18     160.210    3100.100    2685.420    1373.570     614.000  188643.300   41299.760   11691.260  470554.810
 CHQ.19     630.240   16944.030    2565.520    4517.230    1931.320   27064.920   36368.610   15698.210     989.350
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 131
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 132
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10139,7 +10157,7 @@ YUN.13     990.000   63922.000   23039.000 1644994.000   93318.000  225290.000  
 YUN.14    1408.000   33450.000    7095.000   36973.000   18255.000   35094.000    2583.000    6212.000    1761.000
 YUN.15   17469.000   35225.000   23925.000  118577.000     863.000  342876.000  140123.000   15679.000     543.000
 YUN.16    1436.000    5624.000    3282.000   20425.000     108.000    2742.000  289386.000     610.000     139.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 132
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 133
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10217,7 +10235,7 @@ NXA.10  191852.544   56430.328   11896.303   50814.983     343.882   14461.824  
 NXA.11    3467.661  619145.148   19815.271   52864.075    1707.212   12036.759     799.518   19225.317     175.775
 NXA.12    1662.027   35607.732   26165.223   36579.678     196.542   50752.672     308.083     918.805
 NXA.13     112.985    4717.401   14409.184  299091.854   39858.367  155970.460    1138.834   34337.536
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 133
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 134
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10295,7 +10313,7 @@ BEJ.4       22.650    4976.630      58.860     134.860      45.260     245.880
 BEJ.5       65.250      10.080      62.150      63.850      10.020      38.710
 BEJ.6      580.710   25852.620       9.490     967.570      49.430     325.410
 BEJ.7      845.310    1687.850      28.780    3350.750    1738.140    3424.500
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 134
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 135
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10373,7 +10391,7 @@ SHX.1      661.000                         1410397.000   50103.000     139.000
 SHX.2                  346.000               21158.000    1323.000     173.000
 SHX.3                                           90.000     618.000
 SHX.4                                          175.000      55.000      54.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 135
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 136
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10451,7 +10469,7 @@ LIA.23     399.670     107.710      76.260    4231.850   17636.530      35.400
 LIA.24     716.020     465.990     675.810   20068.220     265.270    5122.140
 JIL.1      267.990   14916.140     603.640  598499.220   18280.800    1073.140
 JIL.2       15.020      89.740      29.690    1660.340   78580.870      66.340
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 136
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 137
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10529,7 +10547,7 @@ SHH.23     460.636     527.374               19267.930  160928.442      67.201
 SHH.24    1364.088     232.272      74.114    1593.851     761.510   18632.342
 JSU.1    14418.130   16105.930    2793.360 2634913.380   61857.650     706.880
 JSU.2      803.940    1856.240     140.620  286789.370  490637.620    1279.620
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 137
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 138
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10607,7 +10625,7 @@ ANH.20     437.960   49256.520      61.420   11249.990     132.180     172.020
 ANH.21                5019.000   11806.280
 ANH.22    4923.850    4918.730    8747.820  303604.760    9771.290   30623.810
 ANH.23                  32.360                3591.850    2564.140
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 138
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 139
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10685,7 +10703,7 @@ SHD.20   12040.936  239463.366     329.561   23863.132    1097.590    2517.140
 SHD.21                           80815.601
 SHD.22   49008.586   63371.933    4448.423 2077396.569   10031.296  158644.716
 SHD.23                2698.345                8193.189   14675.383    1343.491
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 139
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 140
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10763,7 +10781,7 @@ HUN.20   17979.200   13736.170     281.730    9729.460     651.980     854.220
 HUN.21               64040.600  252270.530
 HUN.22   16286.410    9198.470    8887.640  331647.000   84040.170   45815.160
 HUN.23     130.290    1410.090      71.100     669.300   41766.380     272.450
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 140
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 141
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10841,7 +10859,7 @@ HAI.22     386.349     251.710     611.079    4169.397    1295.406    5944.793
 HAI.23                                       42266.461    3214.044
 HAI.24       8.636       7.996                 233.724      11.149       2.156
 CHQ.1       33.670      52.070     217.630  729133.210    1096.370     159.100
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 141
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 142
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10919,7 +10937,7 @@ GZH.19   10364.160      86.330       0.990   10233.520     497.760     117.690
 GZH.20     606.580   59682.680       2.680    1818.450     152.160     219.350
 GZH.21       6.810                3730.760
 GZH.22     966.840    2307.990       9.500 2601684.010    8384.950   21415.370
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 142
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 143
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10997,7 +11015,7 @@ GAN.18    1134.180     132.800       1.450    2524.390      35.350      58.710
 GAN.19    1140.770      73.270       0.650    3143.560      90.410     217.130
 GAN.20      59.720     172.980       5.610    1409.430     134.930      81.080
 GAN.21     294.580                  34.210
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 143
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 144
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -11075,7 +11093,7 @@ XIN.22     182.992     341.723     496.196  241415.856    1726.920   11664.940
 XIN.23                   1.279                           25600.609
 XIN.24       2.289      12.138      14.841     934.626      16.414     570.288
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 144
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 145
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -11153,7 +11171,7 @@ HEN       0.011       4.827       0.037       0.049
 HUB -5.4488E-16 -6.6270E-14 -7.1668E-15 -3.5315E-14
 HUN       0.062       2.322       0.589       0.321
 GUD       0.016       7.315       0.005       0.136
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 145
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 146
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -11169,7 +11187,7 @@ GAN       0.008       9.770       0.086       0.167
 NXA                   0.271 1.759768E-4       0.001
 QIH 1.93837E-17 1.01445E-12 5.76305E-17 4.27314E-16
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 146
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 147
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11247,7 +11265,7 @@ obj..  (0)*egyindi(BEJ,1) + (0)*egyindi(BEJ,2) + (0)*egyindi(BEJ,3) + (0)*egyind
       - (6.58304024170488E-17)*egyindi(HEB,10) - (7.72128021082073E-16)*egyindi(HEB,11)
      
       - (4.74971597470479E-16)*egyindi(HEB,12) - (1.60579769853458E-15)*egyindi(HEB,13)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 147
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 148
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11325,7 +11343,7 @@ Equation Listing    SOLVE gua Using NLP From line 325
       + (0)*egyindi(SHH,24) + (0)*egyindi(JSU,1) + (0)*egyindi(JSU,2) + (0)*egyindi(JSU,3) + (0)*egyindi(JSU,4)
      
       + (0)*egyindi(JSU,5) + (0)*egyindi(JSU,6) + (0)*egyindi(JSU,7) + (0)*egyindi(JSU,8) + (0)*egyindi(JSU,9)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 148
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 149
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11403,7 +11421,7 @@ Equation Listing    SOLVE gua Using NLP From line 325
       - (2.98952783797378E-15)*egyindi(HUB,5) - (2.61187900344149E-15)*egyindi(HUB,6)
      
       - (9.70151281029824E-16)*egyindi(HUB,7) - (2.6625583527869E-15)*egyindi(HUB,8)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 149
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 150
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11481,7 +11499,7 @@ Equation Listing    SOLVE gua Using NLP From line 325
       + (0)*egyindi(CHQ,3) + (0)*egyindi(CHQ,4) + (0)*egyindi(CHQ,5) + (0)*egyindi(CHQ,6) + (0)*egyindi(CHQ,7)
      
       + (0)*egyindi(CHQ,8) + (0)*egyindi(CHQ,9) + (0)*egyindi(CHQ,10) + (0)*egyindi(CHQ,11) + (0)*egyindi(CHQ,12)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 150
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 151
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11559,7 +11577,7 @@ Equation Listing    SOLVE gua Using NLP From line 325
       + (0)*egyindi(QIH,15) + (0)*egyindi(QIH,16) + (0)*egyindi(QIH,17) + (0)*egyindi(QIH,18) + (0)*egyindi(QIH,19)
      
       + (0)*egyindi(QIH,20) + (0)*egyindi(QIH,21) + (0)*egyindi(QIH,22) + (0)*egyindi(QIH,23) + (0)*egyindi(QIH,24)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 151
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 152
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 325
 
@@ -11576,7 +11594,7 @@ Equation Listing    SOLVE gua Using NLP From line 325
      
       + (0)*egyindi(XIN,21) + (0)*egyindi(XIN,22) + (0)*egyindi(XIN,23) + (0)*egyindi(XIN,24) + j =E= 0 ; (LHS = 0)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 152
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 153
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE gua Using NLP From line 325
 
@@ -11606,7 +11624,7 @@ j
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       obj
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 153
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 154
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE gua Using NLP From line 325
 
@@ -11620,11 +11638,11 @@ DERIVATIVE POOL             726     CONSTANT POOL             554
 CODE LENGTH               7,020
 
 
-GENERATION TIME      =        0.032 SECONDS      5 Mb  WIN234-234 May 21, 2010
+GENERATION TIME      =        0.063 SECONDS      6 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.422 SECONDS      5 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 154
+EXECUTION TIME       =        0.219 SECONDS      6 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 155
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -11639,7 +11657,7 @@ Solution Report     SOLVE gua Using NLP From line 325
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE                0.0000
 
- RESOURCE USAGE, LIMIT          0.016      1000.000
+ RESOURCE USAGE, LIMIT          0.031      1000.000
  ITERATION COUNT, LIMIT         4          1000
  EVALUATION ERRORS              0             0
  
@@ -11666,9 +11684,9 @@ Solution Report     SOLVE gua Using NLP From line 325
  ** Optimal solution. Reduced gradient less than tolerance.
  
  
- CONOPT time Total                            0.040 seconds
+ CONOPT time Total                            0.020 seconds
    of which: Function evaluations             0.000 =  0.0%
-             1st Derivative evaluations       0.005 = 12.5%
+             1st Derivative evaluations       0.000 =  0.0%
  
  Workspace           =     2.04 Mbytes
     Estimate         =     2.04 Mbytes
@@ -11702,7 +11720,7 @@ HEN        12.1776        12.1776        12.1776         EPS
 HUB   -1.76925E-12   -1.76925E-12   -1.76925E-12         EPS         
 HUN        31.1618        31.1618        31.1618         EPS         
 GUD        14.7627        14.7627        14.7627         EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 155
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 156
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -11780,7 +11798,7 @@ TAJ.22          .             7.5970        +INF             .
 TAJ.23          .             0.0493        +INF            EPS         
 TAJ.24          .             0.1222        +INF            EPS         
 HEB.1           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 156
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 157
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -11858,7 +11876,7 @@ NMG.19          .             0.0021        +INF            EPS
 NMG.20          .             0.0035        +INF            EPS         
 NMG.21          .             0.0026        +INF            EPS         
 NMG.22          .            11.2130        +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 157
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 158
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -11936,7 +11954,7 @@ HLJ.16          .              .            +INF            EPS
 HLJ.17          .              .            +INF            EPS         
 HLJ.18          .              .            +INF            EPS         
 HLJ.19          .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 158
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 159
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12014,7 +12032,7 @@ ZHJ.13          .             1.6681        +INF            EPS
 ZHJ.14          .             1.1954        +INF            EPS         
 ZHJ.15          .             2.1948        +INF            EPS         
 ZHJ.16          .             0.6573        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 159
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 160
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12092,7 +12110,7 @@ JXI.10          .             0.3276        +INF            EPS
 JXI.11          .             3.0249        +INF            EPS         
 JXI.12          .             1.5704        +INF            EPS         
 JXI.13          .             7.7946        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 160
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 161
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12170,7 +12188,7 @@ HUB.7           .              .            +INF            EPS
 HUB.8           .              .            +INF            EPS         
 HUB.9           .              .            +INF            EPS         
 HUB.10          .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 161
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 162
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12248,7 +12266,7 @@ GXI.4           .              .            +INF            EPS
 GXI.5           .              .            +INF            EPS         
 GXI.6           .              .            +INF            EPS         
 GXI.7           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 162
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 163
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12326,7 +12344,7 @@ SIC.1           .              .            +INF            EPS
 SIC.2           .              .            +INF            EPS         
 SIC.3           .              .            +INF            EPS         
 SIC.4           .              .            +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 163
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 164
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12404,7 +12422,7 @@ YUN.22          .            16.8412        +INF             .
 YUN.23          .             0.0512        +INF            EPS         
 YUN.24          .             0.0290        +INF            EPS         
 SHA.1           .             0.5458        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 164
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 165
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12482,7 +12500,7 @@ NXA.19          .             0.0006        +INF            EPS
 NXA.20          .             0.0001        +INF            EPS         
 NXA.21          .              .              .             EPS         
 NXA.22          .             0.2708        +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 165
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 166
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 325
 
@@ -12553,12 +12571,12 @@ XIN.24          .              .            +INF             .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/05/12 10:43:08 Page 166
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/05/12 16:37:51 Page 167
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-EXECUTION TIME       =        0.031 SECONDS      4 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        0.016 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -12568,5 +12586,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egyintestimation.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\OTHE_estimation.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\OTHE_estimation.lst

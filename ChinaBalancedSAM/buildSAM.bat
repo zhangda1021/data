@@ -7,7 +7,9 @@ if not exist listings\nul mkdir listings
 :del data\gdx\egygdx\balance\*.gdx
 :call egybalance COAL FG OIL ROIL NG ELEH OTHE 
 :call gams oilgasratio o=listings\oilgasratio.lst gdx=data\gdx\egygdx\oilgasratio
-del data\gdx\egygdx\estimation\*.gdx
-call egyestimation COAL FG OIL ROIL NG ELEH OTHE
+:del data\gdx\egygdx\estimation\*.gdx
+:call egyestimation COAL FG OIL ROIL NG ELEH OTHE
+:call gams ebtmerge  o=listings\ebtmerge.lst
+call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
 
 pause

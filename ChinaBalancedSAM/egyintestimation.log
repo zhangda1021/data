@@ -1,40 +1,134 @@
 
---- Job egyintestimation.gms Start 03/05/12 08:44:45 WIN-VS8 23.4.3 x86/MS Windows        
-GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+--- Job egyintestimation.gms Start 03/05/12 16:22:56 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
           License for teaching and research at degree granting institutions
 --- Starting compilation
---- egyintestimation.gms(190) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_balance.gdx
---- egyintestimation.gms(193) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
---- egyintestimation.gms(196) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
---- egyintestimation.gms(199) 4 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
---- egyintestimation.gms(411) 4 Mb
---- Starting execution: elapsed 0:00:00.032
---- egyintestimation.gms(323) 5 Mb
---- Generating NLP model gua
---- egyintestimation.gms(324) 7 Mb
----   55 rows  721 columns  2,161 non-zeroes
----   7,148 nl-code  720 nl-non-zeroes
---- egyintestimation.gms(324) 5 Mb
---- Executing MSNLP: elapsed 0:00:00.431
---- egyintestimation.gms(324) 5 Mb
-*** No license found
-*** To update your license, please contact your distributor.
-*** Too many equations for global demo mode
-***   Number of equations          : 55
-***   Maximum allowed              : 10
-*** Too many variables for global demo mode
-***   Number of variables          : 721
-***   Maximum allowed              : 10
---- Restarting execution
---- egyintestimation.gms(324) 0 Mb
---- Reading solution for model gua
---- Executing after solve: elapsed 0:00:00.681
---- egyintestimation.gms(330) 4 Mb
-*** Status: Normal completion
---- Job egyintestimation.gms Stop 03/05/12 08:44:46 elapsed 0:00:00.714
+--- egyintestimation.gms(191) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\balance\COAL_balance.gdx
+--- egyintestimation.gms(194) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\ind.gdx
+--- egyintestimation.gms(197) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+--- egyintestimation.gms(200) 4 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+--- egyintestimation.gms(426) 4 Mb 3 Errors
+*** Error  10 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    ',' expected
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    ')' expected
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- egyintestimation.gms(428) 4 Mb 4 Errors
+*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Too many ),] or }
+--- egyintestimation.gms(429) 4 Mb 5 Errors
+*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Too many ),] or }
+--- egyintestimation.gms(430) 4 Mb 6 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(434) 4 Mb 7 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(438) 4 Mb 8 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(442) 4 Mb 9 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(446) 4 Mb 10 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(450) 4 Mb 11 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(452) 4 Mb 12 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(455) 4 Mb 32 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+*** Error 300 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Remaining errors not printed for this line
+--- egyintestimation.gms(456) 4 Mb 33 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(459) 4 Mb 34 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(460) 4 Mb 35 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(464) 4 Mb 36 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(466) 4 Mb 37 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(471) 4 Mb 38 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(473) 4 Mb 39 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(476) 4 Mb 40 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(477) 4 Mb 41 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(480) 4 Mb 42 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(484) 4 Mb 43 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(488) 4 Mb 44 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(492) 4 Mb 45 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(496) 4 Mb 46 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(497) 4 Mb 47 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(500) 4 Mb 48 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(504) 4 Mb 49 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Set for 'ord' is not controlled
+--- egyintestimation.gms(508) 4 Mb 51 Errors
+*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Too many ),] or }
+*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Too many ),] or }
+--- egyintestimation.gms(509) 4 Mb 52 Errors
+*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+    Too many ),] or }
+--- egyintestimation.gms(943) 4 Mb 52 Errors
+*** Status: Compilation error(s)
+--- Job egyintestimation.gms Stop 03/05/12 16:22:56 elapsed 0:00:00.161
+Exit code = 2
