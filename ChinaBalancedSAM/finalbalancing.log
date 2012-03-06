@@ -1,0 +1,145 @@
+
+--- Job finalbalancing.gms Start 03/06/12 17:36:56 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- finalbalancing.gms(128) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+--- finalbalancing.gms(131) 4 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.gdx
+--- finalbalancing.gms(134) 4 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+--- finalbalancing.gms(137) 4 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\pricerange.gdx
+--- finalbalancing.gms(297) 4 Mb 7 Errors
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- finalbalancing.gms(300) 4 Mb 12 Errors
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+--- finalbalancing.gms(301) 4 Mb 14 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+--- finalbalancing.gms(303) 4 Mb 16 Errors
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- finalbalancing.gms(306) 4 Mb 19 Errors
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- finalbalancing.gms(308) 4 Mb 22 Errors
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- finalbalancing.gms(310) 4 Mb 25 Errors
+*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ')' expected
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- finalbalancing.gms(324) 4 Mb 38 Errors
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 300 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Remaining errors not printed for this line
+--- finalbalancing.gms(325) 4 Mb 51 Errors
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 135 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Incompatible operands for relational operator
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 300 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Remaining errors not printed for this line
+--- finalbalancing.gms(333) 4 Mb 52 Errors
+*** Error 257 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Solve statement not checked because of previous errors
+--- finalbalancing.gms(333) 4 Mb 52 Errors
+*** Status: Compilation error(s)
+--- Job finalbalancing.gms Stop 03/06/12 17:36:56 elapsed 0:00:00.157
+Exit code = 2

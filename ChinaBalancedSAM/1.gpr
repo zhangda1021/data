@@ -598,9 +598,6 @@ Order=1,2
 Decim=7
 PlaneRownr=-1
 
-[RP:READEGYDATA]
-1=
-
 [GDXDISP: alli Set 1]
 PlaneDim=0
 RowDim=1
@@ -680,9 +677,6 @@ PlaneRownr=-1
 [RP:EGYDATABALANCE]
 1=
 
-[RP:OILGASRATIO]
-1=
-
 [GDXDISP: ng Par 1]
 PlaneDim=0
 RowDim=1
@@ -717,12 +711,6 @@ Squeeze=1
 Order=1,2
 Decim=7
 PlaneRownr=-1
-
-[RP:FINALBALANCING]
-1=
-
-[RP:EGYINTESTIMATION]
-1=
 
 [RP:READRAWDATA]
 1=
@@ -760,22 +748,44 @@ PlaneRownr=-1
 [RP:ALLSAM]
 1=
 
+[RP:OILGASRATIO]
+1=
+
+[RP:READEGYDATA]
+1=
+
+[GDXDISP: pricerange Par 2]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+PlaneFilter1=ELEH
+
+[RP:READPRICERANGE]
+1=
+
+[RP:FINALBALANCING]
+1=
+
+[RP:EGYINTESTIMATION]
+1=
+
 [MRUFILES]
-1=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-2=C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
-3=C:\Users\dzhang\data\ChinaBalancedSAM\ebtmerge.gms
-4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.gdx
-5=C:\Users\dzhang\data\ChinaBalancedSAM\readrawdata.gms
-6=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\COAL_estimation.gdx
-7=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\FG_estimation.gdx
-8=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\NG_estimation.gdx
-9=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\OIL_estimation.gdx
+1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+2=C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
+3=C:\Users\dzhang\data\ChinaBalancedSAM\oilgasratio.gms
+4=C:\Users\dzhang\data\ChinaBalancedSAM\ebtmerge.gms
+5=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.gdx
 
 [OPENWINDOW_1]
-FILE0=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.gms
-FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\allsam.gms
-FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
-FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.gms
+FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\pricerange.gdx
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
+FILE4=C:\Users\dzhang\data\ChinaBalancedSAM\readpricerange.gms
+FILE5=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
 MAXIM=1
 TOP=65
 LEFT=153

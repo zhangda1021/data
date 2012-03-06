@@ -1,0 +1,35 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/06/12 13:14:30 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1   
+   5   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/06/12 13:14:30 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\readpricerange.gms
+     2        6 CALL           1       6  gdxxrw i=C:\Users\dzhang\data\ChinaBalancedSAM\\energydata\\pricerange.xls o=C:\U
+                                          sers\dzhang\data\ChinaBalancedSAM\\data\gdx\egygdx\pricerange.gdx par=pricerange 
+                                          rng="sheet1!A1:C7" rdim=1 cdim=1
+
+
+COMPILATION TIME     =        0.624 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+
+
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\readpricerange.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\readpricerange.lst

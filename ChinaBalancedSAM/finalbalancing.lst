@@ -1,0 +1,455 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/06/12 17:36:56 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+       
+              Production activities   A (30)
+              Commodities             C (30)
+              Primary Factors         F (2)
+              Households              H (1)
+              Central Government      G1(1)
+              Provincial Government   G2(1)
+              Types of taxes          T (4)
+              Rest of country         DX(1)
+              Rest of world           X (1)
+              Investment-savings      I (2)
+       
+      Here is a "MAP" of the SAM with the names of the submatrices which
+      contain data.  All cells with no labels are empty:
+       
+       
+       
+                 A       C        F       H      G1      G2       T       DX    
+        X      I1      I2
+              ------------------------------------------------------------------
+      ----------------------
+      A       |       |   ac  |       |       |       |       |   sa  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      C       |   ca  |       |       |   ch  |       |  g2d  |       |   der | 
+        er  |  cs1  |  cs2  |
+              ------------------------------------------------------------------
+      ----------------------
+      F       |   fa  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      H       |       |       |   hf  |       |       |  hg2  |       |   dhr | 
+        hr  |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G1      |       |       |       |       |       |  g1g2 |       |       | 
+            |  cg1s |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G2      |       |       |       |       | g2g1  |       |   tr  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      T       |   ta  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      DX      |       |  drc  |       |  drh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      X       |       |   rc  |       |   rh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I1      |       |       |   dp  |  psv1 | g1sv  |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I2      |       |   ic  |       |  psv2 |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+       
+  45   
+  50   
+  51  *SAM table
+  52  set     i   SAM rows and colums indices   /
+  53          1*30    Industries,
+  54          31*60   Commodities,
+  55          61      Labor,
+  56          62      Capital,
+  57          63      Household,
+  58          64      Central Government,
+  59          65      Local Government,
+  60          66      Production tax,
+  61          67      Commodity tax,
+  62          68      Factor tax,
+  63          69      Income tax,
+  64          70      Domestic trade,
+  65          71      Foreign trade,
+  66          72      Investment,
+  67          73      Inventory/;
+  68  alias (i,j);
+  69  *Energy balance table
+  70  set ebti /
+  71           1       DX,
+  72           2       X,
+  73           3       DRC,
+  74           4       RC,
+  75           5       AGR,
+  76           6       COAL,
+  77           7       OIL,
+  78           8       MM,
+  79           9       NM,
+  80           10      FBT,
+  81           11      TXT,
+  82           12      CLO,
+  83           13      LOG,
+  84           14      PAP,
+  85           15      ROIL,
+  86           16      CHE,
+  87           17      NMP,
+  88           18      MSP,
+  89           19      MP,
+  90           20      GSM,
+  91           21      TME,
+  92           22      EME,
+  93           23      CCE,
+  94           24      IM,
+  95           25      AC,
+  96           26      WAS,
+  97           27      ELEH,
+  98           28      FG,
+  99           29      WT,
+ 100           30      CON,
+ 101           31      TR,
+ 102           32      WRHR,
+ 103           33      OTH,
+ 104           34      NG,
+ 105           35      FU,
+ 106           36      INV,
+ 107           37      PROD
+ 108  /;
+ 109  set      e       energy product  /
+ 110           coal    Coal,
+ 111           fg      Fuel gas,
+ 112           oil     Crude oil,
+ 113           roil    Refined oil,
+ 114           ng      Natural gas,
+ 115           eleh    Electricity & heat,
+ 116           othe    Other energy/;
+ 117  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+      ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
+      H,XIN/;
+ 118  set      prange/
+ 119           LB,
+ 120           UB/;
+ 121  parameter sam2(r,i,j)           SAM v2.0
+ 122  parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
+ 123  parameter ebt(e,r,ebti)         EBT
+ 124  parameter ebt2(i,r,ebti)        EBT for OPT
+ 125  parameter pricerange(i,prange)  Price range of energy products
+ 126  parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
+ 127  parameter poilng
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+--- LOAD  sam2 = 5:sam2
+ 130  display sam2
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.
+        gdx
+--- LOAD  ebt = 23:ebt
+ 133  display ebt
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\oilgasratio.gdx
+--- LOAD  oilngratio = 8:oilngratio
+ 136  display oilngratio
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\pricerange.gdx
+--- LOAD  pricerange = 1:pricerange
+ 139  display pricerange
+ 140  *ebt2
+ 141  loop(r,
+ 142  loop(ebti,
+ 143  loop(e,
+ 144  if(sameas(e,"coal"),
+ 145  ebt2("2",r,ebti)=ebt(e,r,ebti);
+ 146  );
+ 147  if(sameas(e,"fg"),
+ 148  ebt2("3",r,ebti)=ebt(e,r,ebti);
+ 149  );
+ 150  if(sameas(e,"oil"),
+ 151  ebt2("11",r,ebti)=ebt(e,r,ebti);
+ 152  );
+ 153  if(sameas(e,"roil"),
+ 154  ebt2("23",r,ebti)=ebt(e,r,ebti);
+ 155  );
+ 156  if(sameas(e,"ng"),
+ 157  ebt2("24",r,ebti)=ebt(e,r,ebti);
+ 158  );
+ 159  if(sameas(e,"eleh"),
+ 160  ebt2("30",r,ebti)=ebt(e,r,ebti);
+ 161  );
+ 162  );
+ 163  );
+ 164  );
+ 165   
+ 166   
+ 167  poilng=3;
+ 168   
+ 169  *"Rough" split of crude oil and gas in sam3
+ 170  loop(r,
+ 171  loop(i,
+ 172  loop(j,
+ 173  sam3(r,i,j)=sam2(r,i,j);
+ 174  );
+ 175  );
+ 176  );
+ 177  * Production calibration
+ 178  loop(r,
+ 179  sam3(r,"3","33")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,"3",
+      "33")*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"))
+      ;
+ 180  sam3(r,"30","60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,"3"
+      ,"33")*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"));
+ 181  );
+ 182  * DRC calibration
+ 183  loop(r,
+ 184  sam3(r,"70","33")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=sam3(r,"70",
+      "33")*poilng*ebt("OIL",r,"3")/(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3"));
+ 185  sam3(r,"70","60")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=sam3(r,"70",
+      "33")*ebt("NG",r,"3")/(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3"));
+ 186  );
+ 187  * RC calibration
+ 188  loop(r,
+ 189  sam3(r,"71","33")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=sam3(r,"71",
+      "33")*poilng*ebt("OIL",r,"4")/(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4"));
+ 190  sam3(r,"71","60")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=sam3(r,"71",
+      "33")*ebt("NG",r,"4")/(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4"));
+ 191  );
+ 192  * DX calibration
+ 193  loop(r,
+ 194  sam3(r,"33","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=sam3(r,"33",
+      "70")*poilng*ebt("OIL",r,"1")/(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1"));
+ 195  sam3(r,"60","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=sam3(r,"33",
+      "70")*ebt("NG",r,"1")/(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1"));
+ 196  );
+ 197  * X calibration
+ 198  loop(r,
+ 199  sam3(r,"33","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=sam3(r,"33",
+      "71")*poilng*ebt("OIL",r,"2")/(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2"));
+ 200  sam3(r,"60","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=sam3(r,"33",
+      "71")*ebt("NG",r,"2")/(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2"));
+ 201  );
+ 202  * INV calibration
+ 203   
+ 204  loop(r,
+ 205  if(sam3(r,"73","33")>0,
+ 206  sam3(r,"73","33")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=sam3(r,"73
+      ","33")*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36"
+      ));
+ 207  sam3(r,"73","60")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=sam3(r,"73
+      ","33")*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36"));
+ 208  else
+ 209  sam3(r,"33","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=sam3(r,"33
+      ","73")*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36"
+      ));
+ 210  sam3(r,"60","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=sam3(r,"33
+      ","73")*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36"));
+ 211  );
+ 212  );
+ 213  * Capital formation calibration
+ 214  loop(r,
+ 215  sam3(r,"33","72")=sam3(r,"33","72")*poilng*oilngratio(r);
+ 216  sam3(r,"60","72")=sam3(r,"33","72")*(1-poilng*oilngratio(r));
+ 217  );
+ 218  * HH and GOV calibration
+ 219  loop(r,
+ 220  sam3(r,"33","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=sam3(r,"33
+      ","63")*poilng*ebt("OIL",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35"
+      ));
+ 221  sam3(r,"60","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=sam3(r,"33
+      ","63")*ebt("NG",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35"));
+ 222  );
+ 223  loop(r,
+ 224  sam3(r,"33","65")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=sam3(r,"33
+      ","65")*poilng*ebt("OIL",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35"
+      ));
+ 225  sam3(r,"60","65")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=sam3(r,"33
+      ","65")*ebt("NG",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35"));
+ 226  );
+ 227  * Other sectors calibration
+ 228  loop(r,
+ 229  loop(j$((ord(j)>=1) and (ord(j)<=30)),
+ 230  loop(ebti$(ord(ebti)=ord(j)+4),
+ 231  sam3(r,"33",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=sam3(r,"33",j
+      )*poilng*ebt("OIL",r,ebti)/(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti));
+ 232  sam3(r,"60",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=sam3(r,"33",j
+      )*ebt("NG",r,ebti)/(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti));
+ 233  );
+ 234  );
+ 235  );
+ 236  *COLUMN calibration
+ 237  loop(r,
+ 238  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 239  sam3(r,i,"33")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,i,"33"
+      )*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"));
+ 240  sam3(r,i,"60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,i,"60"
+      )*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"));
+ 241  );
+ 242  );
+ 243   
+ 244  positive variables finalsam (r,i,j)
+ 245  positive variables rowsum(r,i)
+ 246  positive variables columnsum(r,i)
+ 247  positive variables domesticinsum(r,i)
+ 248  positive variables domesticoutsum(r,i)
+ 249  positive variables p(r,i,j)
+ 250  variable jj
+ 251   
+ 252  Equations
+ 253          rsum
+ 254          csum
+ 255          sumbalance
+ 256          drcsum
+ 257          dxsum
+ 258          tradebalance
+ 259          price_prod
+ 260  *       price_dx
+ 261  *       price_x
+ 262  *       price_drc
+ 263  *       price_rc
+ 264  *       price_inv
+ 265  *       price_fu
+ 266  *       price_sectors
+ 267          pricelb_prod
+ 268  *       pricelb_dx
+ 269  *       pricelb_x
+ 270  *       pricelb_drc
+ 271  *       pricelb_rc
+ 272  *       pricelb_inv
+ 273  *       pricelb_fu
+ 274  *       pricelb_sectors
+ 275          priceub_prod
+ 276  *       priceub_dx
+ 277  *       priceub_x
+ 278  *       priceub_drc
+ 279  *       priceub_rc
+ 280  *       priceub_inv
+ 281  *       priceub_fu
+ 282  *       priceub_sectors
+ 283          obj
+ 284  ;
+ 285   
+ 286   
+ 287   
+ 288  rsum(r,i)..
+ 289  sum(j,finalsam(r,i,j))=e=rowsum(r,i);
+ 290   
+ 291  csum(r,i)..
+ 292  sum(j,finalsam(r,j,i))=e=columnsum(r,i);
+ 293   
+ 294  sumbalance(r,i)..
+ 295  rowsum(r,i)=e=columnsum(r,i);
+ 296   
+ 297  drcsum(i$((i>=31) and (i<=60)))..
+****          $8   $148,135    $148,135,36,409
+ 298  domesticinsum(r,i)=e=sum(r,finalsam(r,"70",i);
+ 299   
+ 300  dxsum(i$((i>=31) and (i<=60))..
+****         $8   $148,135    $148,135
+ 301  domesticoutsum(r,i)=e=sum(r,finalsam(r,i,"70");
+****                  $149                          $8
+ 302   
+ 303  tradebalance(r,i)(i$((i>=31) and (i<=60))..
+****                   $36                      $409
+ 304  domesticinsum(r,i)=e=domesticoutsum(r,i);
+ 305   
+ 306  price_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or 
+****                $8                                                          
+      (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
+                                 $36       $409
+ 307  p(r,i,j)*ebt2(i,r,"37")=e=finalsam(r,i,j);
+ 308  pricelb_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) o
+****                  $8                                                        
+      r (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
+                                   $36       $409
+ 309  p(r,i,j)=ge=pricerange(i,"lb");
+ 310  priceub_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) o
+****                  $8                                                        
+      r (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
+                                   $36       $409
+ 311  p(r,i,j)=le=pricerange(i,"ub");
+ 312   
+ 313  obj..
+ 314  jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))));
+ 315   
+ 316   
+ 317  Model gua /all/;
+ 318  loop(r,
+ 319  loop(i,
+ 320  loop(j,
+ 321  finalsam.l(r,i,j)=sam3(r,i,j);
+ 322  );););
+ 323  loop(r,
+ 324  loop(i$((i<>32) and (i<>33) and (i<>41) and (i<>53) and (i<>54) and (i<>60
+****             $148,135    $148,135    $148,135    $148,135    $148,300
+      )),
+ 325  loop(j$((j<>32) and (j<>33) and (j<>41) and (j<>53) and (j<>54) and (j<>60
+****             $148,135    $148,135    $148,135    $148,135    $148,300
+      )),
+ 326  if (sam3(r,i,j)=0,
+ 327  finalsam.fx(r,i,j)=0;
+ 328  );
+ 329  );
+ 330  );
+ 331  );
+ 332  gua.iterlim=1000;
+ 333  Solve gua minimizing jj using nlp;
+****                                   $257
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/06/12 17:36:56 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+  8  ')' expected
+ 36  '=' or '..' or ':=' or '$=' operator expected
+     rest of statement ignored
+135  Incompatible operands for relational operator
+148  Dimension different - The symbol is referenced with more/less
+        indices as declared
+149  Uncontrolled set entered as constant
+257  Solve statement not checked because of previous errors
+300  Remaining errors not printed for this line
+409  Unrecognizable item - skip to find a new statement
+       looking for a ';' or a key word to get started again
+
+**** 52 ERROR(S)   0 WARNING(S)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/06/12 17:36:56 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          finalbalancing.gms
+     2      128 GDXIN          1     128  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          data\gdx\aggregation.gdx
+     3      131 GDXIN          1     131  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          data\gdx\egygdx\estimation\merged.gdx
+     4      134 GDXIN          1     134  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          data\gdx\egygdx\oilgasratio.gdx
+     5      137 GDXIN          1     137  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          data\gdx\egygdx\pricerange.gdx
+
+
+COMPILATION TIME     =        0.125 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
+
+**** USER ERROR(S) ENCOUNTERED

@@ -294,16 +294,16 @@ sum(j,finalsam(r,j,i))=e=columnsum(r,i);
 sumbalance(r,i)..
 rowsum(r,i)=e=columnsum(r,i);
 
-drcsum(i)$((i>=31) and (i<=60))..
+drcsum(i$((i>=31) and (i<=60)))..
 domesticinsum(r,i)=e=sum(r,finalsam(r,"70",i);
 
-dxsum(i)$((i>=31) and (i<=60))..
+dxsum(i$((i>=31) and (i<=60))..
 domesticoutsum(r,i)=e=sum(r,finalsam(r,i,"70");
 
 tradebalance(r,i)(i$((i>=31) and (i<=60))..
 domesticinsum(r,i)=e=domesticoutsum(r,i);
 
-price_prod(r,i)$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30),j$(ord(j)=ord(i)+30))..
+price_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
 p(r,i,j)*ebt2(i,r,"37")=e=finalsam(r,i,j);
 pricelb_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
 p(r,i,j)=ge=pricerange(i,"lb");
