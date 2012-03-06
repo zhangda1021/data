@@ -671,12 +671,6 @@ Order=1,2
 Decim=7
 PlaneRownr=-1
 
-[RP:AGGREGATION]
-1=
-
-[RP:ALLSAM]
-1=
-
 [RP:READDATA]
 1=
 
@@ -724,13 +718,6 @@ Order=1,2
 Decim=7
 PlaneRownr=-1
 
-[OPENWINDOW_1]
-MAXIM=1
-TOP=65
-LEFT=153
-HEIGHT=461
-WIDTH=1080
-
 [RP:FINALBALANCING]
 1=
 
@@ -759,6 +746,20 @@ Order=1,2,3
 Decim=7
 PlaneRownr=-1
 
+[GDXDISP: ebti Set 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[RP:AGGREGATION]
+1=
+
+[RP:ALLSAM]
+1=
+
 [MRUFILES]
 1=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
 2=C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
@@ -769,3 +770,14 @@ PlaneRownr=-1
 7=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\FG_estimation.gdx
 8=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\NG_estimation.gdx
 9=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\OIL_estimation.gdx
+
+[OPENWINDOW_1]
+FILE0=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.gms
+FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\allsam.gms
+FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
+FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\aggregation.gms
+MAXIM=1
+TOP=65
+LEFT=153
+HEIGHT=461
+WIDTH=1080

@@ -119,6 +119,7 @@ set	 prange/
 	 LB,
 	 UB/;
 parameter sam2(r,i,j)           SAM v2.0
+parameter sam3(r,i,j)		SAM v3.0 ready for rebalancing
 parameter ebt(e,r,ebti)		EBT
 parameter pricerange(e,prange)  Price range of energy products
 $gdxin '%inputfolder1%\aggregation.gdx'
@@ -130,6 +131,31 @@ display ebt
 $gdxin '%inputfolder3%\pricerange.gdx'
 $load pricerange
 display pricerange
+
+
+*"Rough" split of crude oil and gas in sam3
+loop(r,
+loop(i,
+loop(j,
+sam3(r,i,j)=sam2(r,i,j);
+);
+);
+);
+* Production calibration
+loop(r,
+sam3(r,"3","33")$(3*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,"3","33")*3*ebt("OIL",r,"37")/(3*ebt("OIL",r,"37")+ebt("NG",r,"37"));
+sam3(r,"30","60")$(3*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,"3","33")*ebt("NG",r,"37")/(3*ebt("OIL",r,"37")+ebt("NG",r,"37"));
+);
+* DRC calibration
+* RC calibration
+* DX calibration
+* X calibration
+* INV calibration
+* Capital formation calibration
+* HH and GOV calibration
+* Other sectors calibration
+
+
 
 
 $ontext
