@@ -44,9 +44,9 @@ I2      |       |   ic  |       |  psv2 |       |       |       |       |       
 $offtext
 
 $setglobal projectfolder '%gams.curdir%'
-$setlocal inputfolder1 '%projectfolder%\data\gdx'
-$setlocal inputfolder2 '%projectfolder%\data\gdx\egygdx\estimation'
-$setlocal inputfolder3 '%projectfolder%\data\gdx\egygdx'
+$setlocal inputfolder1 '%projectfolder%/data/gdx'
+$setlocal inputfolder2 '%projectfolder%/data/gdx/egygdx/estimation'
+$setlocal inputfolder3 '%projectfolder%/data/gdx/egygdx'
 
 *SAM table
 set     i   SAM rows and colums indices   /
@@ -244,8 +244,8 @@ sam3(r,i,"60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,i,"60")*ebt(
 positive variables finalsam (r,i,j)
 positive variables rowsum(r,i)
 positive variables columnsum(r,i)
-positive variables domesticinsum(r,i)
-positive variables domesticoutsum(r,i)
+positive variables domesticinsum(i)
+positive variables domesticoutsum(i)
 positive variables p(r,i,j)
 variable jj
 
@@ -255,8 +255,8 @@ Equations
         sumbalance
         drcsum
         dxsum
-        tradebalance
-        price_prod
+*        tradebalance
+*       price_prod
 *       price_dx
 *       price_x
 *       price_drc
@@ -264,7 +264,8 @@ Equations
 *       price_inv
 *       price_fu
 *       price_sectors
-        pricelb_prod
+
+*        pricelb_prod
 *       pricelb_dx
 *       pricelb_x
 *       pricelb_drc
@@ -272,7 +273,8 @@ Equations
 *       pricelb_inv
 *       pricelb_fu
 *       pricelb_sectors
-        priceub_prod
+
+*        priceub_prod
 *       priceub_dx
 *       priceub_x
 *       priceub_drc
@@ -294,24 +296,28 @@ sum(j,finalsam(r,j,i))=e=columnsum(r,i);
 sumbalance(r,i)..
 rowsum(r,i)=e=columnsum(r,i);
 
-drcsum(i)$((i>=31) and (i<=60))..
-domesticinsum(r,i)=e=sum(r,finalsam(r,"70",i);
+drcsum(i)$((ord(i)>=31) and (ord(i)<=60))..
+domesticinsum(i)=e=sum(r,finalsam(r,"70",i));
 
-dxsum(i)$((i>=31) and (i<=60))..
-domesticoutsum(r,i)=e=sum(r,finalsam(r,i,"70");
+dxsum(i)$((ord(i)>=31) and (ord(i)<=60))..
+domesticoutsum(i)=e=sum(r,finalsam(r,i,"70"));
 
-tradebalance(r,i)(i$((i>=31) and (i<=60))..
-domesticinsum(r,i)=e=domesticoutsum(r,i);
+*tradebalance(i)$((ord(i)>=31) and (ord(i)<=60))..
+*domesticinsum(i)=e=domesticoutsum(i);
 
-price_prod(r,i)$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30),j$(ord(j)=ord(i)+30))..
+
+$ontext
+price_prod(r,i,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
 p(r,i,j)*ebt2(i,r,"37")=e=finalsam(r,i,j);
-pricelb_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
-p(r,i,j)=ge=pricerange(i,"lb");
-priceub_prod(r,i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),j$(ord(j)=ord(i)+30))..
-p(r,i,j)=le=pricerange(i,"ub");
+pricelb_prod(r,i,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
+p(r,i,j)=g=pricerange(i,"lb");
+priceub_prod(r,i,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
+p(r,i,j)=l=pricerange(i,"ub");
+$offtext
+
 
 obj..
-jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))));
+jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))))/100000000;
 
 
 Model gua /all/;
@@ -321,13 +327,13 @@ loop(j,
 finalsam.l(r,i,j)=sam3(r,i,j);
 );););
 loop(r,
-loop(i$((i<>32) and (i<>33) and (i<>41) and (i<>53) and (i<>54) and (i<>60)),
-loop(j$((j<>32) and (j<>33) and (j<>41) and (j<>53) and (j<>54) and (j<>60)),
+loop(i$((ord(i)<>32) and (ord(i)<>33) and (ord(i)<>41) and (ord(i)<>53) and (ord(i)<>54) and (ord(i)<>60)),
+loop(j$((ord(j)<>32) and (ord(j)<>33) and (ord(j)<>41) and (ord(j)<>53) and (ord(j)<>54) and (ord(j)<>60)),
 if (sam3(r,i,j)=0,
 finalsam.fx(r,i,j)=0;
 );
 );
 );
 );
-gua.iterlim=1000;
+gua.iterlim=100000;
 Solve gua minimizing jj using nlp;

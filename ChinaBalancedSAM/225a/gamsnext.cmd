@@ -1,2 +1,2 @@
 @echo off
-gmsxitNT.cmd "C:\Users\DaZHANG\data\ChinaBalancedSAM\225a\" "C:\Users\DaZHANG\data\ChinaBalancedSAM\" 8 8
+gmsco3nt.cmd "C:\Users\dzhang\data\ChinaBalancedSAM\225a\" "C:\Users\dzhang\data\ChinaBalancedSAM\" %1 "C:\Users\dzhang\data\ChinaBalancedSAM\225a\gamscntr.dat" "C:\Program Files\GAMS23.2\"

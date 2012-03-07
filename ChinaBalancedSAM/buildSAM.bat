@@ -10,7 +10,7 @@ if not exist listings\nul mkdir listings
 :del data\gdx\egygdx\estimation\*.gdx
 :call egyestimation COAL FG OIL ROIL NG ELEH OTHE
 :call gams ebtmerge  o=listings\ebtmerge.lst
-call gams readpricerange o=listings\readpricerange.lst
-:call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
+:call gams readpricerange o=listings\readpricerange.lst
+call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
 
 pause
