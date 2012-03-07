@@ -1,0 +1,60 @@
+=0 C O N O P T 3    Aug 14, 2009 23.2.1 WEX 12168.12582 WEI x86_64/MS Windows
+C O N O P T 3    Aug 14, 2009 23.2.1 WEX 12168.12582 WEI x86_64/MS Windows 
+ BalanceSum was not called.
+=1
+ 
+ 
+    C O N O P T 3   version 3.14T
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+=2
+=1
+ Using default options.
+ 
+=2
+    1  INPUT                                                                  (DEFAULT)
+    2  BRANCH * MAJERR MINERR JACERR                                          (DEFAULT)
+    3  OPTIMIZE                                                               (DEFAULT)
+    4  BRANCH * * * * * * MAJERR                                              (DEFAULT)
+    5  OUTPUT                                                                 (DEFAULT)
+    6  EXIT                                                                   (DEFAULT)
+    7  MAJERR MESSAGE MAJOR ERROR - TERMINATE                                 (DEFAULT)
+    8  EXIT                                                                   (DEFAULT)
+    9  MINERR MESSAGE MINOR ERROR - TERMINATE                                 (DEFAULT)
+   10  EXIT                                                                   (DEFAULT)
+   11  JACERR MESSAGE FUNCTION OR DERIVATIVE ERROR                            (DEFAULT)
+   12  OUTPUT                                                                 (DEFAULT)
+   13  EXIT                                                                   (DEFAULT)
+ 
+  ***  Line    1  INPUT
+=1
+ 
+    The model has 164311 variables and 6631 constraints
+    with 490231 Jacobian elements, 159870 of which are nonlinear.
+    The Hessian of the Lagrangian has 159870 elements on the diagonal,
+    0 elements below the diagonal, and 159870 nonlinear variables.
+=2
+ 
+  ***  Line    2  BRANCH with Lbranch =  1
+ 
+  ***  Line    3  OPTIMIZE
+ 
+Search for a first feasible solution
+ 
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        5.9181879459E+10 (Input point)
+=1
+ 
+ ** Warning **  The number of nonlinear derivatives equal to zero
+                in the initial point is large (= 32 percent).
+                A better initial point will probably help the
+                optimization.
+ 
+=2
+                                Pre-triangular equations:        0
+                                Post-triangular equations:      61
+      1   0        5.5735336457E+10 (After pre-processing)
+      2   0        1.3209726432E+04 (After scaling)

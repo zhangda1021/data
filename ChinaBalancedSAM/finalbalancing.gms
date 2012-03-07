@@ -125,16 +125,16 @@ parameter ebt2(i,r,ebti)        EBT for OPT
 parameter pricerange(i,prange)  Price range of energy products
 parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
 parameter poilng
-$gdxin '%inputfolder1%\aggregation.gdx'
+$gdxin '%inputfolder1%/aggregation.gdx'
 $load sam2
 display sam2
-$gdxin '%inputfolder2%\merged.gdx'
+$gdxin '%inputfolder2%/merged.gdx'
 $load ebt
 display ebt
-$gdxin '%inputfolder3%\oilgasratio.gdx'
+$gdxin '%inputfolder3%/oilgasratio.gdx'
 $load oilngratio
 display oilngratio
-$gdxin '%inputfolder3%\pricerange.gdx'
+$gdxin '%inputfolder3%/pricerange.gdx'
 $load pricerange
 display pricerange
 *ebt2
