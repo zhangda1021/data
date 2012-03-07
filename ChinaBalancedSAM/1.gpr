@@ -783,12 +783,9 @@ RowDim=1
 Squeeze=1
 Order=1,4,2,3
 Decim=7
-PlaneRownr=6
+PlaneRownr=-1
 PlaneFilter1=HEB
 PlaneFilter2=Level
-
-[RP:FINALBALANCING]
-1=
 
 [GDXDISP: sam3 Par 3]
 PlaneDim=1
@@ -814,20 +811,37 @@ Order=1
 Decim=7
 PlaneRownr=-1
 
+[RP:FINALBALANCING]
+1=
+
+[RP:MCP]
+1=
+
+[RP:DATA]
+1=
+
+[RP:MPS]
+1=
+
+[RP:3B-MPS_BU-TD]
+1=
+
 [MRUFILES]
-1=C:\Users\dzhang\data\ChinaBalancedSAM\readpricerange.gms
-2=C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
-3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\pricerange.gdx
-4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
-5=C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
-6=C:\Users\dzhang\data\ChinaBalancedSAM\oilgasratio.gms
-7=C:\Users\dzhang\data\ChinaBalancedSAM\ebtmerge.gms
+1=C:\Users\dzhang\USREP\cge\CHRIS??\Chris??\TopDown_BottomUp\TopDown_BottomUp\Models\3b-mps_bu-td.gms
+2=C:\Users\dzhang\USREP\cge\CHRIS??\Chris??\TopDown_BottomUp\TopDown_BottomUp\Models\mps.gms
+3=C:\Users\dzhang\USREP\cge\CHRIS??\Chris??\TopDown_BottomUp\TopDown_BottomUp\Models\data.gms
+4=C:\Users\dzhang\USREP\cge\CHRIS??\Chris??\TopDown_BottomUp\TopDown_BottomUp\Models\mcp.gms
+5=C:\Users\dzhang\data\ChinaBalancedSAM\readpricerange.gms
+6=C:\Users\dzhang\data\ChinaBalancedSAM\egyintestimation.gms
+7=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\pricerange.gdx
+8=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+9=C:\Users\dzhang\data\ChinaBalancedSAM\readegydata.gms
 
 [OPENWINDOW_1]
 FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
 FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
 FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
-FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
 MAXIM=1
 TOP=105
 LEFT=220

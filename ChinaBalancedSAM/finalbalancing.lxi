@@ -1,22 +1,43 @@
 B 2 C o m p i l a t i o n
-B 397 Include File Summary
-B 417 E x e c u t i o n
-I 418 sam2
-I 8221 ebt
-I 9578 oilngratio
-I 9589 pricerange
-B 9603 Equation Listing    SOLVE gua Using NLP From line 339
-D 9604 rsum
-D 9766 csum
-D 9927 sumbalance
-D 9938 drcsum
-D 10015 dxsum
-D 10092 obj
-B 157639 Column Listing      SOLVE gua Using NLP From line 339
-E 157640 finalsam
-E 157663 rowsum
-E 157682 columnsum
-E 157701 domesticinsum
-E 157717 domesticoutsum
-E 157733 jj
-B 157742 Model Statistics    SOLVE gua Using NLP From line 339
+B 403 Include File Summary
+B 423 E x e c u t i o n
+I 424 sam2
+I 8227 ebt
+I 9584 oilngratio
+I 9595 pricerange
+B 9609 Equation Listing    SOLVE gua Using NLP From line 339
+D 9610 rsum
+D 9772 csum
+D 9933 sumbalance
+D 9944 drcsum
+D 10021 dxsum
+D 10098 tradebalance
+D 10109 obj
+B 157656 Column Listing      SOLVE gua Using NLP From line 339
+E 157657 finalsam
+E 157680 rowsum
+E 157699 columnsum
+E 157718 domesticinsum
+E 157737 domesticoutsum
+E 157756 jj
+B 157765 Model Statistics    SOLVE gua Using NLP From line 339
+B 157783 Solution Report     SOLVE gua Using NLP From line 339
+F 157844 rsum
+F 160039 csum
+F 162234 sumbalance
+F 164429 drcsum
+F 164464 dxsum
+F 164499 tradebalance
+F 164532 obj
+G 164533 finalsam
+G 324408 rowsum
+G 326603 columnsum
+G 328798 domesticinsum
+G 328833 domesticoutsum
+G 328868 jj
+B 328880 E x e c u t i o n
+I 328881 finalsam
+I 329460 rowsum
+I 329737 columnsum
+I 330014 domesticinsum
+I 330024 domesticoutsum

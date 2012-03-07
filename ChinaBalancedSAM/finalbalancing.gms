@@ -255,7 +255,7 @@ Equations
         sumbalance
         drcsum
         dxsum
-*        tradebalance
+        tradebalance
 *       price_prod
 *       price_dx
 *       price_x
@@ -302,8 +302,8 @@ domesticinsum(i)=e=sum(r,finalsam(r,"70",i));
 dxsum(i)$((ord(i)>=31) and (ord(i)<=60))..
 domesticoutsum(i)=e=sum(r,finalsam(r,i,"70"));
 
-*tradebalance(i)$((ord(i)>=31) and (ord(i)<=60))..
-*domesticinsum(i)=e=domesticoutsum(i);
+tradebalance(i)$((ord(i)>=31) and (ord(i)<=60))..
+domesticinsum(i)=e=domesticoutsum(i);
 
 
 $ontext
@@ -317,7 +317,7 @@ $offtext
 
 
 obj..
-jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))))/100000000;
+jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))))/100000000000000;
 
 
 Model gua /all/;
@@ -337,3 +337,8 @@ finalsam.fx(r,i,j)=0;
 );
 gua.iterlim=100000;
 Solve gua minimizing jj using nlp;
+display finalsam.l;
+display rowsum.l;
+display columnsum.l;
+display domesticinsum.l;
+display domesticoutsum.l;
