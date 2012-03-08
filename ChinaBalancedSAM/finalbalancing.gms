@@ -241,6 +241,54 @@ sam3(r,i,"60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=sam3(r,i,"60")*ebt(
 );
 );
 
+
+*Calculation of sum of previous values
+parameter allsamsum1,allsamsum2,changeofoutput;
+allsamsum1=0;
+allsamsum2=0;
+loop(r,
+loop(i,
+loop(j,
+sam2(r,i,j)=sam2(r,i,j)/100000;
+allsamsum1=allsamsum1+sam2(r,i,j);
+);
+);
+);
+*Filter of small values
+parameter incsparcity;
+incsparcity=0;
+loop(r,
+loop(i,
+loop(j,
+if(sam2(r,i,j)<0.01,
+sam2(r,i,j)=0;
+);
+allsamsum2=allsamsum2+sam2(r,i,j);
+incsparcity=incsparcity+1;
+);
+);
+);
+changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
+display changeofoutput
+display incsparcity;
+set     negval3(r,i,j)     Flag for negative elements;
+set     empty3(r,i,*)      Flag for empty rows and columns;
+parameter       chksam3(r,i,*)       Consistency check of social accounts;
+*chksam
+loop(r,
+negval3(r,i,j) = yes$(sam3(r,i,j) < 0);
+
+empty3(r,i,"row") = 1$(sum(j, sam3(r,i,j)) = 0);
+empty3(r,j,"col") = 1$(sum(i, sam3(r,i,j)) = 0);
+
+chksam3(r,i,"before") = sum(j, sam3(r,i,j)-sam3(r,j,i));
+chksam3(r,i,"scale") = sum(j, sam3(r,j,i));
+chksam3(r,i,"%dev")$sum(j, sam3(r,i,j)) = 100 * sum(j, sam3(r,i,j)-sam3(r,j,i)) / sum(j, sam3(r,i,j));
+
+);
+
+
+
 positive variables finalsam (r,i,j)
 positive variables rowsum(r,i)
 positive variables columnsum(r,i)

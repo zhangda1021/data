@@ -85,7 +85,7 @@ set     negval2(r,i,j)     Flag for negative elements;
 set     empty2(r,i,*)      Flag for empty rows and columns;
 parameter       chksam2(r,i,*)       Consistency check of social accounts;
 
-*SAM15
+*SAM15: row is aggregated
 loop(r,
 
 loop(ri$((ord(ri) le 27)),
@@ -179,7 +179,7 @@ sam2(r,i,"28")=sam15(r,ni,"30")+sam15(r,ni,"31");
 
 
 *AGGREGATION OF OTH PRODUCTION(other service industry)
-loop(nj$(((ord(nj) ge 31) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(nj) = 29)),
+loop(nj$(((ord(nj) ge 32) and (ord(nj) le 42)) or (ord(nj) = 28) or (ord(nj) = 29)),
 loop(ni,
 loop(i$(ord(i)=ord(ni)),
 sam2(r,i,"29")=sam2(r,i,"29")+sam15(r,ni,nj);
@@ -226,9 +226,79 @@ sam2(r,i,j)=sam15(r,ni,nj);
 );
 
 
+*Calculation of sum of previous values
+parameter allsamsum1,allsamsum2,changeofoutput;
+allsamsum1=0;
+allsamsum2=0;
+loop(r,
+loop(i,
+loop(j,
+sam2(r,i,j)=sam2(r,i,j)/100000;
+allsamsum1=allsamsum1+sam2(r,i,j);
+);
+);
+);
+****
+*Filter 1: Diminish sectors which take smaller than 0.5% of the total out
+parameter sumcolumn(r,i),sumrow(r,i);
+loop(r,
+loop(i,
+sumcolumn(r,i)=0;
+sumrow(r,i)=0;
+););
+loop(r,
+loop(i,
+sumcolumn(r,i)=sum(j,sumcolumn(r,i)+sam2(r,j,i));
+);
+);
+loop(r,
+loop(i,
+sumrow(r,i)=sum(j,sumrow(r,i)+sam2(r,i,j));
+);
+);
+display sumcolumn,sumrow;
+
+parameter totoutput(r);
+parameter smallsector(r,i);
+loop(r,
+totoutput(r)=0;
+);
+loop(r,
+loop(i$((ord(i)>=31) and (ord(i)<=60)),
+totoutput(r)=totoutput(r)+sumcolumn(r,i);
+););
+loop(r,
+loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.00001)),
+loop(j,
+sam2(r,i,j)=0;
+sam2(r,j,i)=0;
+);
+smallsector(r,i)=1;
+););
 
 
 
+
+parameter incsparcity;
+incsparcity=0;
+loop(r,
+loop(i,
+loop(j,
+*if(((sam2(r,i,j)<0.01) AND (sam2(r,i,j)>0)),
+*sam2(r,i,j)=0;
+*incsparcity=incsparcity+1;
+*);
+allsamsum2=allsamsum2+sam2(r,i,j);
+);
+);
+);
+
+changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
+display changeofoutput
+display incsparcity;
+
+
+*chksam
 loop(r,
 negval2(r,i,j) = yes$(sam2(r,i,j) < 0);
 

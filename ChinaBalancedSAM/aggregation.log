@@ -1,13 +1,14 @@
 
---- Job aggregation.gms Start 02/27/12 15:25:42 WEX-WEI 23.2.1 x86_64/MS Windows     
+--- Job aggregation.gms Start 03/08/12 17:28:36 WEX-WEI 23.2.1 x86_64/MS Windows     
 GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
-Licensee: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
-          Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
 --- Starting compilation
 --- aggregation.gms(79) 3 Mb
 --- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
---- aggregation.gms(244) 5 Mb
---- Starting execution: elapsed 0:00:00.047
---- aggregation.gms(231) 10 Mb
+--- aggregation.gms(315) 5 Mb
+--- Starting execution: elapsed 0:00:00.011
+--- aggregation.gms(302) 10 Mb
 *** Status: Normal completion
---- Job aggregation.gms Stop 02/27/12 15:25:45 elapsed 0:00:03.170
+--- Job aggregation.gms Stop 03/08/12 17:28:39 elapsed 0:00:03.159

@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -20,13 +20,13 @@ C o m p i l a t i o n
               ------------------------------------------------------------------------------------------------
        
                  AGR     IND     CON     TR     WRHR    OTH      FU       INV
-              ------------------------------------------------------------------------------------------------
-      BEJ     |       |       |       |       |       |       |       |       |       |       |       |       |
-              ------------------------------------------------------------------------------------------------
+              -----------------------------------------------------------------
+      BEJ     |       |       |       |       |       |       |       |       |
+              -----------------------------------------------------------------
       ...
-              ------------------------------------------------------------------------------------------------
-      XIN     |       |       |       |       |       |       |       |       |       |       |       |       |
-              ------------------------------------------------------------------------------------------------
+              -----------------------------------------------------------------
+      XIN     |       |       |       |       |       |       |       |       |
+              -----------------------------------------------------------------
        
       We need rebalance EBT in order to:
       a) All the data is consitent with the national EBT (0401.xls)
@@ -76,7 +76,7 @@ C o m p i l a t i o n
   76           X       Export,
   77           DRC     Domestic inflow,
   78           RC      Import,
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 2
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -118,10 +118,10 @@ C o m p i l a t i o n
  112  parameter columnsum(i)
  113  parameter benchvalue(i)
  114   
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
 --- LOAD  fg = 1:fg
  118  display FG
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG_bench.gdx
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\FG_bench.gdx
 --- LOAD  fg_bench = 1:fg_bench
  121  display FG_bench
  122   
@@ -154,7 +154,7 @@ GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG_bench.gdx
  149             balance_eleh
  150             balance_othe
  151             trade   domestic trade balance
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 3
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -232,7 +232,7 @@ C o m p i l a t i o n
  214  Model gua /all/;
  215  x.l(r,i)= FG(r,i);
  216  x.l(r,i)$((ord(i)<>2) and (ord(i)<>4) and (abs(columnsum(i))>0.01))= FG(r,i)/columnsum(i)*benchvalue(i);
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 4
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -256,21 +256,21 @@ C o m p i l a t i o n
  233   
  234   
  235   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 5
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-     2      115 IF EXIST       1     115  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
-     3      116 GDXIN          1     120  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
-     4      119 GDXIN          1     123  C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\FG_bench.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+     2      115 IF EXIST       1     115  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
+     3      116 GDXIN          1     120  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\FG.gdx
+     4      119 GDXIN          1     123  C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\FG_bench.gdx
 
 
-COMPILATION TIME     =        0.015 SECONDS      3 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 6
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -343,7 +343,7 @@ NXA                                           7.353                             
 QIH                                          21.829                                                       4.834
 XIN      57.869                             180.985                   4.286       6.514       3.549      25.892
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 7
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -417,7 +417,7 @@ GAN       3.444      43.406                                                     
 NXA                   6.600                                                                             -23.969
 QIH       0.093       9.420                                                                             -37.130
 XIN      54.914     122.459                                                                            -257.848
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 8
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 8
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -457,7 +457,7 @@ NXA                                           4.773                             
 QIH                                          14.171                                                       5.266
 XIN      21.128                             117.493                   4.024       3.925       2.851      28.206
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/04/12 14:55:44 Page 9
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/08/12 16:45:38 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -535,7 +535,7 @@ criterion_fg..  (1.22508472013755)*x(BEJ,PROD) + (0)*x(BEJ,DX) + (5984264866.480
      
       + (0)*x(JIL,TR) + (0.7390017252475)*x(JIL,WRHR) - (3.49224549462435E-17)*x(JIL,OTH) - (0.00184022548958066)*x(JIL,FU)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 10
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 10
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -613,7 +613,7 @@ Equation Listing    SOLVE gua Using NLP From line 223
       + (0.00011491866439956)*x(SHD,ROILT) + (0.00642089703957999)*x(SHD,ELEHT) + (0)*x(SHD,AGR)
      
       + (0.00234018033295528)*x(SHD,IND) + (0)*x(SHD,CON) + (0.0090842306855503)*x(SHD,TR)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 11
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -691,7 +691,7 @@ Equation Listing    SOLVE gua Using NLP From line 223
       - (0.0244786569762721)*x(CHQ,FU) + (0)*x(CHQ,INV) + (1.24619975214772E-18)*x(SIC,PROD) + (0)*x(SIC,DX)
      
       - (1.8395134684849E-16)*x(SIC,X) + (0)*x(SIC,DRC) + (2.56449548071904E-11)*x(SIC,RC)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 12
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 12
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -768,7 +768,7 @@ Equation Listing    SOLVE gua Using NLP From line 223
      
       (LHS = -35811495.5658031, INFES = 35811495.5658031 ****)
      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 13
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -841,7 +841,7 @@ REMAINING 27 ENTRIES SKIPPED
 
                 NONE
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 14
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 14
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE gua Using NLP From line 223
 
@@ -895,7 +895,7 @@ sign(BEJ,X)..  x(BEJ,X) =G= 0 ; (LHS = -0.00299113243324029, INFES = 0.002991132
      
 REMAINING 387 ENTRIES SKIPPED
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 15
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE gua Using NLP From line 223
 
@@ -929,7 +929,7 @@ j
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       criterion_fg
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 16
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 16
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE gua Using NLP From line 223
 
@@ -943,11 +943,11 @@ DERIVATIVE POOL             737     CONSTANT POOL             321
 CODE LENGTH               5,786
 
 
-GENERATION TIME      =        0.047 SECONDS      4 Mb  WIN234-234 May 21, 2010
+GENERATION TIME      =        0.047 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
 
 
-EXECUTION TIME       =        0.047 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 17
+EXECUTION TIME       =        0.047 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 17
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -962,7 +962,7 @@ Solution Report     SOLVE gua Using NLP From line 223
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE               48.4170
 
- RESOURCE USAGE, LIMIT          1.264      1000.000
+ RESOURCE USAGE, LIMIT          0.406      1000.000
  ITERATION COUNT, LIMIT        23          1000
  EVALUATION ERRORS              0             0
  
@@ -985,10 +985,10 @@ Solution Report     SOLVE gua Using NLP From line 223
  ** Optimal solution. Reduced gradient less than tolerance.
  
  
- CONOPT time Total                            1.566 seconds
-   of which: Function evaluations             0.000 =  0.0%
-             1st Derivative evaluations       0.005 =  0.3%
-             Directional 2nd Derivative       0.316 = 20.2%
+ CONOPT time Total                            0.425 seconds
+   of which: Function evaluations             0.002 =  0.5%
+             1st Derivative evaluations       0.001 =  0.2%
+             Directional 2nd Derivative       0.066 = 15.5%
  
  Workspace           =     2.43 Mbytes
     Estimate         =     2.43 Mbytes
@@ -997,7 +997,7 @@ Solution Report     SOLVE gua Using NLP From line 223
                 NONE
 
 ---- EQU criterion_coal                  (EMPTY)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 18
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 18
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1008,7 +1008,7 @@ Solution Report     SOLVE gua Using NLP From line 223
 ---- EQU criterion_ng                  (EMPTY)
 ---- EQU criterion_eleh                  (EMPTY)
 ---- EQU criterion_othe                  (EMPTY)
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 19
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 19
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1031,17 +1031,17 @@ TAJ          .              .              .             0.0003
 HEB          .              .              .             0.0001      
 SHX          .              .              .            -0.0005      
 NMG          .              .              .             0.0004      
-LIA          .              .              .       -2.362932E-5      
+LIA          .              .              .       -2.362896E-5      
 JIL          .              .              .             0.0001      
-HLJ          .              .              .       -9.242876E-5      
+HLJ          .              .              .       -9.243115E-5      
 SHH          .              .              .            -0.0006      
-JSU          .              .              .       1.7300048E-5      
+JSU          .              .              .       1.7300781E-5      
 ZHJ          .              .              .             0.0002      
 ANH          .              .              .            -0.0007      
 FUJ          .              .              .             0.0012      
 JXI          .              .              .             0.0005      
 SHD          .              .              .            -0.0003      
-HEN          .              .              .       1.7241172E-5      
+HEN          .              .              .       1.7241627E-5      
 HUB          .              .              .            -0.0007      
 HUN          .              .              .             0.0001      
 GUD          .              .              .             0.0003      
@@ -1054,7 +1054,7 @@ YUN          .              .              .             0.0012
 SHA          .              .              .            -0.0022      
 GAN          .              .              .            -0.0003      
 NXA          .              .              .             0.0002      
-QIH          .              .              .       -3.617772E-5      
+QIH          .              .              .       -3.617767E-5      
 XIN          .              .              .             0.0006      
 
 ---- EQU balance_oil  
@@ -1081,7 +1081,7 @@ XIN          .              .              .             0.0006
 
                 NONE
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 20
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1105,7 +1105,7 @@ BEJ.AGR           .             0.1029        +INF            EPS
 BEJ.IND           .           292.1408        +INF            EPS         
 BEJ.CON           .             1.1148        +INF            EPS         
 BEJ.TR            .             1.0958        +INF            EPS         
-BEJ.WRHR          .            32.4066        +INF            EPS         
+BEJ.WRHR          .            32.4067        +INF            EPS         
 BEJ.OTH           .             3.4170        +INF            EPS         
 BEJ.FU            .            47.2882        +INF            EPS         
 BEJ.INV           .             0.1359        +INF            EPS         
@@ -1122,44 +1122,44 @@ TAJ.WRHR          .             5.4269        +INF            EPS
 TAJ.OTH           .             2.9288        +INF            EPS         
 TAJ.FU            .            17.3447        +INF            EPS         
 TAJ.INV           .             0.2135        +INF            EPS         
-HEB.PROD          .            21.7424        +INF            EPS         
+HEB.PROD          .            21.7422        +INF            EPS         
 HEB.DX            .            95.3754        +INF            EPS         
 HEB.X             .              .            +INF             .          
-HEB.DRC           .            35.8982        +INF            EPS         
+HEB.DRC           .            35.8983        +INF            EPS         
 HEB.RC            .             0.0171        +INF            EPS         
 HEB.AGR           .             0.2743        +INF            EPS         
-HEB.IND           .           499.5286        +INF             .          
+HEB.IND           .           499.5285        +INF             .          
 HEB.CON           .             0.1372        +INF            EPS         
 HEB.TR            .             0.0727        +INF            EPS         
 HEB.WRHR          .             1.6705        +INF            EPS         
 HEB.OTH           .             9.0669        +INF            EPS         
-HEB.FU            .           149.4217        +INF            EPS         
+HEB.FU            .           149.4218        +INF            EPS         
 HEB.INV           .             0.0483        +INF            EPS         
-SHX.PROD          .           192.8780        +INF            EPS         
+SHX.PROD          .           192.8783        +INF            EPS         
 SHX.DX            .              .            +INF             .          
 SHX.X             .              .            +INF             .          
 SHX.DRC           .            11.2192        +INF            EPS         
 SHX.RC            .              .            +INF             .          
 SHX.AGR           .              .            +INF             .          
-SHX.IND           .           817.2203        +INF            EPS         
+SHX.IND           .           817.2205        +INF            EPS         
 SHX.CON           .             0.1029        +INF            EPS         
 SHX.TR            .              .            +INF             .          
 SHX.WRHR          .            20.3418        +INF            EPS         
 SHX.OTH           .             0.1028        +INF            EPS         
 SHX.FU            .            84.0858        +INF            EPS         
 SHX.INV           .              .            +INF             .          
-NMG.PROD          .           294.5662        +INF            EPS         
+NMG.PROD          .           294.5650        +INF            EPS         
 NMG.DX            .             0.0074        +INF            EPS         
 NMG.X             .              .            +INF             .          
 NMG.DRC           .            10.6767        +INF            EPS         
 NMG.RC            .              .            +INF             .          
 NMG.AGR           .              .            +INF             .          
-NMG.IND           .           314.2393        +INF            EPS         
+NMG.IND           .           314.2384        +INF            EPS         
 NMG.CON           .              .            +INF             .          
 NMG.TR            .              .            +INF             .          
 NMG.WRHR          .              .            +INF             .          
 NMG.OTH           .              .            +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 21
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1170,26 +1170,26 @@ Solution Report     SOLVE gua Using NLP From line 223
 
 NMG.FU            .            27.4779        +INF            EPS         
 NMG.INV           .              .            +INF             .          
-LIA.PROD          .           161.1633        +INF            EPS         
+LIA.PROD          .           161.1632        +INF            EPS         
 LIA.DX            .           262.3910        +INF             .          
 LIA.X             .             0.0517        +INF            EPS         
 LIA.DRC           .            22.3088        +INF            EPS         
 LIA.RC            .             0.0686        +INF            EPS         
 LIA.AGR           .              .            +INF             .          
-LIA.IND           .           341.9932        +INF            EPS         
+LIA.IND           .           341.9933        +INF            EPS         
 LIA.CON           .             6.9506        +INF            EPS         
 LIA.TR            .             0.2742        +INF            EPS         
-LIA.WRHR          .            32.8554        +INF            EPS         
+LIA.WRHR          .            32.8553        +INF            EPS         
 LIA.OTH           .            10.2736        +INF            EPS         
 LIA.FU            .           161.8967        +INF            EPS         
 LIA.INV           .             0.2108        +INF            EPS         
-JIL.PROD          .           129.2916        +INF            EPS         
+JIL.PROD          .           129.2917        +INF            EPS         
 JIL.DX            .              .            +INF             .          
 JIL.X             .              .            +INF             .          
 JIL.DRC           .            49.1424        +INF            EPS         
 JIL.RC            .              .            +INF             .          
 JIL.AGR           .              .            +INF             .          
-JIL.IND           .           205.6990        +INF            EPS         
+JIL.IND           .           205.6991        +INF            EPS         
 JIL.CON           .              .            +INF             .          
 JIL.TR            .              .            +INF             .          
 JIL.WRHR          .             1.0681        +INF            EPS         
@@ -1202,42 +1202,42 @@ HLJ.X             .              .            +INF             .
 HLJ.DRC           .              .            +INF             .          
 HLJ.RC            .              .            +INF             .          
 HLJ.AGR           .              .            +INF             .          
-HLJ.IND           .           201.8968        +INF            EPS         
+HLJ.IND           .           201.8969        +INF            EPS         
 HLJ.CON           .              .            +INF             .          
 HLJ.TR            .              .            +INF             .          
 HLJ.WRHR          .              .            +INF             .          
 HLJ.OTH           .              .            +INF             .          
-HLJ.FU            .           163.4224        +INF            EPS         
+HLJ.FU            .           163.4222        +INF            EPS         
 HLJ.INV           .             0.0329        +INF            EPS         
-SHH.PROD          .           183.2664        +INF            EPS         
+SHH.PROD          .           183.2666        +INF            EPS         
 SHH.DX            .             9.4869        +INF            EPS         
 SHH.X             .              .            +INF             .          
 SHH.DRC           .            37.3939        +INF            EPS         
 SHH.RC            .            29.5946        +INF            EPS         
 SHH.AGR           .              .            +INF             .          
-SHH.IND           .           382.6801        +INF            EPS         
+SHH.IND           .           382.6802        +INF            EPS         
 SHH.CON           .             0.2345        +INF            EPS         
 SHH.TR            .            11.6735        +INF            EPS         
 SHH.WRHR          .            20.2325        +INF            EPS         
 SHH.OTH           .            19.6718        +INF            EPS         
 SHH.FU            .            91.3814        +INF            EPS         
 SHH.INV           .              .            +INF            1.8415      
-JSU.PROD          .           226.1060        +INF            EPS         
+JSU.PROD          .           226.1058        +INF            EPS         
 JSU.DX            .            34.8530        +INF            EPS         
 JSU.X             .              .            +INF             .          
 JSU.DRC           .             0.4794        +INF            EPS         
 JSU.RC            .            54.7022        +INF            EPS         
 JSU.AGR           .              .            +INF             .          
-JSU.IND           .           455.7383        +INF            EPS         
+JSU.IND           .           455.7382        +INF            EPS         
 JSU.CON           .              .            +INF             .          
 JSU.TR            .             0.3085        +INF            EPS         
 JSU.WRHR          .            11.1172        +INF            EPS         
 JSU.OTH           .              .            +INF             .          
-JSU.FU            .           122.7878        +INF            EPS         
+JSU.FU            .           122.7877        +INF            EPS         
 JSU.INV           .             0.1967        +INF            EPS         
 ZHJ.PROD          .            42.4921        +INF            EPS         
 ZHJ.DX            .              .            +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 22
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1248,14 +1248,14 @@ Solution Report     SOLVE gua Using NLP From line 223
 
 ZHJ.X             .              .            +INF            2.8552      
 ZHJ.DRC           .            90.5696        +INF            EPS         
-ZHJ.RC            .            88.8337        +INF            EPS         
+ZHJ.RC            .            88.8335        +INF            EPS         
 ZHJ.AGR           .              .            +INF             .          
-ZHJ.IND           .           169.2814        +INF            EPS         
+ZHJ.IND           .           169.2813        +INF            EPS         
 ZHJ.CON           .              .            +INF             .          
 ZHJ.TR            .              .            +INF             .          
 ZHJ.WRHR          .            30.6317        +INF            EPS         
 ZHJ.OTH           .            14.8289        +INF            EPS         
-ZHJ.FU            .           301.5445        +INF            EPS         
+ZHJ.FU            .           301.5448        +INF            EPS         
 ZHJ.INV           .              .            +INF            1.5479      
 ANH.PROD          .           102.0352        +INF            EPS         
 ANH.DX            .             0.2281        +INF            EPS         
@@ -1276,20 +1276,20 @@ FUJ.X             .              .            +INF             .
 FUJ.DRC           .           101.7253        +INF            EPS         
 FUJ.RC            .              .            +INF             .          
 FUJ.AGR           .             0.0343        +INF            EPS         
-FUJ.IND           .           145.7908        +INF            EPS         
+FUJ.IND           .           145.7909        +INF            EPS         
 FUJ.CON           .              .            +INF             .          
 FUJ.TR            .             0.0171        +INF            EPS         
 FUJ.WRHR          .             5.9927        +INF            EPS         
 FUJ.OTH           .              .            +INF             .          
 FUJ.FU            .           136.7417        +INF            EPS         
 FUJ.INV           .             0.1798        +INF            EPS         
-JXI.PROD          .           311.1340        +INF            EPS         
+JXI.PROD          .           311.1332        +INF            EPS         
 JXI.DX            .            31.1058        +INF            EPS         
 JXI.X             .              .            +INF             .          
 JXI.DRC           .            54.8230        +INF            EPS         
 JXI.RC            .              .            +INF             .          
 JXI.AGR           .              .            +INF             .          
-JXI.IND           .           349.3913        +INF            EPS         
+JXI.IND           .           349.3906        +INF            EPS         
 JXI.CON           .              .            +INF             .          
 JXI.TR            .             0.0343        +INF            EPS         
 JXI.WRHR          .            17.3801        +INF            EPS         
@@ -1307,7 +1307,7 @@ SHD.CON           .              .            +INF             .
 SHD.TR            .            13.3105        +INF            EPS         
 SHD.WRHR          .            29.2658        +INF            EPS         
 SHD.OTH           .            15.4519        +INF            EPS         
-SHD.FU            .           300.4040        +INF            EPS         
+SHD.FU            .           300.4038        +INF            EPS         
 SHD.INV           .              .            +INF            1.9639      
 HEN.PROD          .           215.2969        +INF            EPS         
 HEN.DX            .            34.0107        +INF            EPS         
@@ -1315,7 +1315,7 @@ HEN.X             .              .            +INF             .
 HEN.DRC           .            19.0117        +INF            EPS         
 HEN.RC            .              .            +INF             .          
 HEN.AGR           .              .            +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 23
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1350,38 +1350,38 @@ HUN.X             .              .            +INF             .
 HUN.DRC           .            41.2023        +INF            EPS         
 HUN.RC            .              .            +INF             .          
 HUN.AGR           .              .            +INF             .          
-HUN.IND           .           261.2625        +INF            EPS         
+HUN.IND           .           261.2626        +INF            EPS         
 HUN.CON           .             1.5096        +INF            EPS         
 HUN.TR            .             0.0343        +INF            EPS         
 HUN.WRHR          .            31.0942        +INF            EPS         
 HUN.OTH           .              .            +INF             .          
 HUN.FU            .            70.9831        +INF            EPS         
 HUN.INV           .              .            +INF           41.2272      
-GUD.PROD          .           212.9903        +INF            EPS         
+GUD.PROD          .           212.9898        +INF            EPS         
 GUD.DX            .             4.3307        +INF            EPS         
 GUD.X             .              .            +INF             .          
 GUD.DRC           .            54.2939        +INF            EPS         
-GUD.RC            .           525.7407        +INF            EPS         
+GUD.RC            .           525.7414        +INF            EPS         
 GUD.AGR           .              .            +INF             .          
-GUD.IND           .           390.3135        +INF            EPS         
+GUD.IND           .           390.3142        +INF            EPS         
 GUD.CON           .             1.0976        +INF            EPS         
 GUD.TR            .            58.0247        +INF            EPS         
 GUD.WRHR          .            32.5563        +INF            EPS         
 GUD.OTH           .             2.6176        +INF            EPS         
-GUD.FU            .           703.4969        +INF            EPS         
+GUD.FU            .           703.4963        +INF            EPS         
 GUD.INV           .              .            +INF            2.1331      
-GXI.PROD          .           241.7293        +INF            EPS         
+GXI.PROD          .           241.7301        +INF            EPS         
 GXI.DX            .              .            +INF             .          
 GXI.X             .              .            +INF             .          
-GXI.DRC           .            98.6343        +INF            EPS         
+GXI.DRC           .            98.6342        +INF            EPS         
 GXI.RC            .              .            +INF             .          
 GXI.AGR           .             8.3408        +INF            EPS         
-GXI.IND           .           219.7436        +INF            EPS         
+GXI.IND           .           219.7440        +INF            EPS         
 GXI.CON           .              .            +INF             .          
 GXI.TR            .              .            +INF             .          
 GXI.WRHR          .            19.5161        +INF            EPS         
 GXI.OTH           .             1.5068        +INF            EPS         
-GXI.FU            .           121.6006        +INF            EPS         
+GXI.FU            .           121.6008        +INF            EPS         
 GXI.INV           .              .            +INF            2.1826      
 HAI.PROD          .              .            +INF             .          
 HAI.DX            .            88.9088        +INF            EPS         
@@ -1393,7 +1393,7 @@ HAI.IND           .            32.0866        +INF            EPS
 HAI.CON           .              .            +INF             .          
 HAI.TR            .              .            +INF             .          
 HAI.WRHR          .             5.7434        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 24
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1460,7 +1460,7 @@ YUN.INV           .              .            +INF            0.6240
 SHA.PROD          .              .            +INF             .          
 SHA.DX            .             0.2917        +INF            EPS         
 SHA.X             .              .            +INF             .          
-SHA.DRC           .            61.4704        +INF            EPS         
+SHA.DRC           .            61.4703        +INF            EPS         
 SHA.RC            .              .            +INF             .          
 SHA.AGR           .             0.0489        +INF            EPS         
 SHA.IND           .            39.8928        +INF            EPS         
@@ -1468,10 +1468,10 @@ SHA.CON           .              .            +INF             .
 SHA.TR            .              .            +INF             .          
 SHA.WRHR          .             0.6272        +INF            EPS         
 SHA.OTH           .              .            +INF             .          
-SHA.FU            .           101.8203        +INF            EPS         
+SHA.FU            .           101.8201        +INF            EPS         
 SHA.INV           .              .            +INF            2.3064      
 GAN.PROD          .             9.4764        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 25
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 25
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1518,7 +1518,7 @@ QIH.WRHR          .              .            +INF             .
 QIH.OTH           .              .            +INF             .          
 QIH.FU            .             4.8379        +INF            EPS         
 QIH.INV           .              .            +INF             .          
-XIN.PROD          .           135.6114        +INF            EPS         
+XIN.PROD          .           135.6115        +INF            EPS         
 XIN.DX            .           157.3568        +INF            EPS         
 XIN.X             .              .            +INF             .          
 XIN.DRC           .              .            +INF             .          
@@ -1549,7 +1549,7 @@ BEJ.NGT            .              .              .       -2.000000E+6
 BEJ.ELEHT        -INF           76.6434        +INF            EPS         
 BEJ.OTHET          .              .              .       -2.000000E+6      
 BEJ.AGR          -INF            0.1029        +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 26
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1561,7 +1561,7 @@ Solution Report     SOLVE gua Using NLP From line 223
 BEJ.IND          -INF          292.1408        +INF             .          
 BEJ.CON          -INF            1.1148        +INF             .          
 BEJ.TR           -INF            1.0958        +INF             .          
-BEJ.WRHR         -INF           32.4066        +INF             .          
+BEJ.WRHR         -INF           32.4067        +INF             .          
 BEJ.OTH          -INF            3.4170        +INF             .          
 BEJ.FU           -INF           47.2882        +INF             .          
 BEJ.INV          -INF            0.1359        +INF             .          
@@ -1585,27 +1585,27 @@ TAJ.WRHR         -INF            5.4269        +INF             .
 TAJ.OTH          -INF            2.9288        +INF             .          
 TAJ.FU           -INF           17.3447        +INF             .          
 TAJ.INV          -INF            0.2135        +INF             .          
-HEB.PROD         -INF           21.7424        +INF             .          
+HEB.PROD         -INF           21.7422        +INF             .          
 HEB.DX           -INF           95.3754        +INF             .          
 HEB.X              .              .              .            -0.2046      
-HEB.DRC          -INF           35.8982        +INF             .          
+HEB.DRC          -INF           35.8983        +INF             .          
 HEB.RC           -INF            0.0171        +INF             .          
 HEB.COALT          .              .              .             0.0001      
 HEB.FGT          -INF           18.7962        +INF             .          
 HEB.OILT           .              .              .             0.0001      
-HEB.ROILT        -INF         -726.5449        +INF            EPS         
+HEB.ROILT        -INF         -726.5450        +INF            EPS         
 HEB.NGT            .              .              .             0.0001      
-HEB.ELEHT        -INF           47.4034        +INF            EPS         
+HEB.ELEHT        -INF           47.4033        +INF            EPS         
 HEB.OTHET          .              .              .             0.0001      
 HEB.AGR          -INF            0.2743        +INF             .          
-HEB.IND          -INF          499.5286        +INF             .          
+HEB.IND          -INF          499.5285        +INF             .          
 HEB.CON          -INF            0.1372        +INF             .          
 HEB.TR           -INF            0.0727        +INF             .          
 HEB.WRHR         -INF            1.6705        +INF             .          
 HEB.OTH          -INF            9.0669        +INF             .          
-HEB.FU           -INF          149.4217        +INF             .          
+HEB.FU           -INF          149.4218        +INF             .          
 HEB.INV          -INF            0.0483        +INF             .          
-SHX.PROD         -INF          192.8780        +INF             .          
+SHX.PROD         -INF          192.8783        +INF             .          
 SHX.DX             .              .              .            -0.0057      
 SHX.X              .              .              .            -0.2052      
 SHX.DRC          -INF           11.2192        +INF             .          
@@ -1613,21 +1613,21 @@ SHX.RC             .              .              .             0.0006
 SHX.COALT          .              .              .            -0.0005      
 SHX.FGT          -INF           30.2089        +INF             .          
 SHX.OILT           .              .              .            -0.0005      
-SHX.ROILT        -INF         -836.6948        +INF            EPS         
+SHX.ROILT        -INF         -836.6947        +INF            EPS         
 SHX.NGT            .              .              .            -0.0005      
 SHX.ELEHT        -INF          149.1475        +INF            EPS         
 SHX.OTHET          .              .              .            -0.0005      
-SHX.AGR            .              .              .       -3.989957E-5      
-SHX.IND          -INF          817.2203        +INF             .          
+SHX.AGR            .              .              .       -3.989261E-5      
+SHX.IND          -INF          817.2205        +INF             .          
 SHX.CON          -INF            0.1029        +INF             .          
 SHX.TR             .              .              .             0.0014      
 SHX.WRHR         -INF           20.3418        +INF             .          
 SHX.OTH          -INF            0.1028        +INF             .          
 SHX.FU           -INF           84.0858        +INF             .          
 SHX.INV            .              .              .             2.3380      
-NMG.PROD         -INF          294.5662        +INF             .          
+NMG.PROD         -INF          294.5650        +INF             .          
 NMG.DX           -INF            0.0074        +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 27
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 27
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1642,43 +1642,43 @@ NMG.RC             .              .              .            -0.0003
 NMG.COALT          .              .              .             0.0004      
 NMG.FGT            .              .              .             0.0022      
 NMG.OILT           .              .              .             0.0004      
-NMG.ROILT        -INF         -148.7833        +INF             .          
+NMG.ROILT        -INF         -148.7834        +INF             .          
 NMG.NGT            .              .              .             0.0004      
-NMG.ELEHT        -INF          112.3014        +INF            EPS         
+NMG.ELEHT        -INF          112.3012        +INF            EPS         
 NMG.OTHET          .              .              .             0.0004      
 NMG.AGR            .              .              .             0.0009      
-NMG.IND          -INF          314.2393        +INF             .          
+NMG.IND          -INF          314.2384        +INF             .          
 NMG.CON            .              .              .            -0.0006      
 NMG.TR             .              .              .             0.0023      
 NMG.WRHR           .              .              .             0.0135      
 NMG.OTH            .              .              .             0.0159      
 NMG.FU           -INF           27.4779        +INF             .          
 NMG.INV            .              .              .             2.3389      
-LIA.PROD         -INF          161.1633        +INF             .          
+LIA.PROD         -INF          161.1632        +INF             .          
 LIA.DX           -INF          262.3910        +INF             .          
 LIA.X            -INF            0.0517        +INF             .          
 LIA.DRC          -INF           22.3088        +INF             .          
 LIA.RC           -INF            0.0686        +INF             .          
-LIA.COALT          .              .              .       -2.362932E-5      
+LIA.COALT          .              .              .       -2.362896E-5      
 LIA.FGT          -INF         -315.7752        +INF             .          
-LIA.OILT           .              .              .       -2.362932E-5      
-LIA.ROILT        -INF        -1008.7270        +INF            EPS         
-LIA.NGT            .              .              .       -2.362932E-5      
+LIA.OILT           .              .              .       -2.362896E-5      
+LIA.ROILT        -INF        -1008.7271        +INF            EPS         
+LIA.NGT            .              .              .       -2.362896E-5      
 LIA.ELEHT        -INF           59.5952        +INF            EPS         
-LIA.OTHET          .              .              .       -2.362932E-5      
+LIA.OTHET          .              .              .       -2.362896E-5      
 LIA.AGR            .              .              .             0.0005      
-LIA.IND          -INF          341.9932        +INF             .          
+LIA.IND          -INF          341.9933        +INF             .          
 LIA.CON          -INF            6.9506        +INF             .          
 LIA.TR           -INF            0.2742        +INF             .          
-LIA.WRHR         -INF           32.8554        +INF             .          
+LIA.WRHR         -INF           32.8553        +INF             .          
 LIA.OTH          -INF           10.2736        +INF             .          
 LIA.FU           -INF          161.8967        +INF             .          
 LIA.INV          -INF            0.2108        +INF             .          
-JIL.PROD         -INF          129.2916        +INF             .          
+JIL.PROD         -INF          129.2917        +INF             .          
 JIL.DX             .              .              .            -0.0051      
 JIL.X              .              .              .            -0.2046      
 JIL.DRC          -INF           49.1424        +INF             .          
-JIL.RC             .              .              .       1.5797270E-6      
+JIL.RC             .              .              .       1.5953146E-6      
 JIL.COALT          .              .              .             0.0001      
 JIL.FGT          -INF           21.6913        +INF             .          
 JIL.OILT           .              .              .             0.0001      
@@ -1687,7 +1687,7 @@ JIL.NGT            .              .              .             0.0001
 JIL.ELEHT        -INF           32.5435        +INF            EPS         
 JIL.OTHET          .              .              .             0.0001      
 JIL.AGR            .              .              .             0.0006      
-JIL.IND          -INF          205.6990        +INF             .          
+JIL.IND          -INF          205.6991        +INF             .          
 JIL.CON            .              .              .            -0.0009      
 JIL.TR             .              .              .             0.0020      
 JIL.WRHR         -INF            1.0681        +INF             .          
@@ -1699,13 +1699,13 @@ HLJ.DX           -INF           38.2636        +INF             .
 HLJ.X              .              .              .            -0.2048      
 HLJ.DRC            .              .              .             0.0053      
 HLJ.RC             .              .              .             0.0002      
-HLJ.COALT          .              .              .       -9.242876E-5      
+HLJ.COALT          .              .              .       -9.243115E-5      
 HLJ.FGT          -INF           96.5252        +INF             .          
-HLJ.OILT           .              .              .       -9.242876E-5      
-HLJ.ROILT        -INF         -359.7970        +INF            EPS         
-HLJ.NGT            .              .              .       -9.242876E-5      
+HLJ.OILT           .              .              .       -9.243115E-5      
+HLJ.ROILT        -INF         -359.7969        +INF            EPS         
+HLJ.NGT            .              .              .       -9.243115E-5      
 HLJ.ELEHT        -INF           52.7407        +INF            EPS         
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 28
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 28
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1714,16 +1714,16 @@ Solution Report     SOLVE gua Using NLP From line 223
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-HLJ.OTHET          .              .              .       -9.242876E-5      
+HLJ.OTHET          .              .              .       -9.243115E-5      
 HLJ.AGR            .              .              .             0.0004      
-HLJ.IND          -INF          201.8968        +INF             .          
+HLJ.IND          -INF          201.8969        +INF             .          
 HLJ.CON            .              .              .            -0.0011      
 HLJ.TR             .              .              .             0.0018      
 HLJ.WRHR           .              .              .             0.0130      
 HLJ.OTH            .              .              .             0.0154      
-HLJ.FU           -INF          163.4224        +INF             .          
+HLJ.FU           -INF          163.4222        +INF             .          
 HLJ.INV          -INF            0.0329        +INF             .          
-SHH.PROD         -INF          183.2664        +INF             .          
+SHH.PROD         -INF          183.2666        +INF             .          
 SHH.DX           -INF            9.4869        +INF             .          
 SHH.X              .              .              .            -0.2053      
 SHH.DRC          -INF           37.3939        +INF             .          
@@ -1735,55 +1735,55 @@ SHH.ROILT        -INF         -380.5597        +INF            EPS
 SHH.NGT            .              .              .            -0.0006      
 SHH.ELEHT        -INF          155.6289        +INF            EPS         
 SHH.OTHET          .              .              .            -0.0006      
-SHH.AGR            .              .              .       -8.109236E-5      
-SHH.IND          -INF          382.6801        +INF             .          
+SHH.AGR            .              .              .       -8.108580E-5      
+SHH.IND          -INF          382.6802        +INF             .          
 SHH.CON          -INF            0.2345        +INF             .          
 SHH.TR           -INF           11.6735        +INF             .          
 SHH.WRHR         -INF           20.2325        +INF             .          
 SHH.OTH          -INF           19.6718        +INF             .          
 SHH.FU           -INF           91.3814        +INF             .          
 SHH.INV          -INF             .            +INF             .          
-JSU.PROD         -INF          226.1060        +INF             .          
+JSU.PROD         -INF          226.1058        +INF             .          
 JSU.DX           -INF           34.8530        +INF             .          
 JSU.X              .              .              .            -0.2047      
 JSU.DRC          -INF            0.4794        +INF             .          
 JSU.RC           -INF           54.7022        +INF             .          
-JSU.COALT          .              .              .       1.7300048E-5      
+JSU.COALT          .              .              .       1.7300781E-5      
 JSU.FGT          -INF            0.7261        +INF             .          
-JSU.OILT           .              .              .       1.7300048E-5      
-JSU.ROILT        -INF         -465.5496        +INF            EPS         
-JSU.NGT            .              .              .       1.7300048E-5      
+JSU.OILT           .              .              .       1.7300781E-5      
+JSU.ROILT        -INF         -465.5497        +INF      1.359189E-11      
+JSU.NGT            .              .              .       1.7300781E-5      
 JSU.ELEHT        -INF          122.5619        +INF            EPS         
-JSU.OTHET          .              .              .       1.7300048E-5      
+JSU.OTHET          .              .              .       1.7300781E-5      
 JSU.AGR            .              .              .             0.0005      
-JSU.IND          -INF          455.7383        +INF             .          
+JSU.IND          -INF          455.7382        +INF             .          
 JSU.CON            .              .              .            -0.0010      
 JSU.TR           -INF            0.3085        +INF             .          
 JSU.WRHR         -INF           11.1172        +INF             .          
 JSU.OTH            .              .              .             0.0155      
-JSU.FU           -INF          122.7878        +INF             .          
+JSU.FU           -INF          122.7877        +INF             .          
 JSU.INV          -INF            0.1967        +INF             .          
 ZHJ.PROD         -INF           42.4921        +INF             .          
 ZHJ.DX             .              .              .            -0.0050      
 ZHJ.X            -INF             .            +INF             .          
 ZHJ.DRC          -INF           90.5696        +INF             .          
-ZHJ.RC           -INF           88.8337        +INF             .          
+ZHJ.RC           -INF           88.8335        +INF             .          
 ZHJ.COALT          .              .              .             0.0002      
 ZHJ.FGT            .              .              .             0.0024      
 ZHJ.OILT           .              .              .             0.0002      
-ZHJ.ROILT        -INF         -307.0951        +INF             .          
+ZHJ.ROILT        -INF         -307.0953        +INF             .          
 ZHJ.NGT            .              .              .             0.0002      
 ZHJ.ELEHT        -INF           12.7040        +INF            EPS         
 ZHJ.OTHET          .              .              .             0.0002      
 ZHJ.AGR            .              .              .             0.0007      
-ZHJ.IND          -INF          169.2814        +INF             .          
+ZHJ.IND          -INF          169.2813        +INF             .          
 ZHJ.CON            .              .              .            -0.0008      
 ZHJ.TR             .              .              .             0.0022      
 ZHJ.WRHR         -INF           30.6317        +INF             .          
 ZHJ.OTH          -INF           14.8289        +INF             .          
-ZHJ.FU           -INF          301.5445        +INF             .          
+ZHJ.FU           -INF          301.5448        +INF             .          
 ZHJ.INV          -INF             .            +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 29
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 29
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1825,14 +1825,14 @@ FUJ.NGT            .              .              .             0.0012
 FUJ.ELEHT        -INF           40.4598        +INF            EPS         
 FUJ.OTHET          .              .              .             0.0012      
 FUJ.AGR          -INF            0.0343        +INF             .          
-FUJ.IND          -INF          145.7908        +INF             .          
+FUJ.IND          -INF          145.7909        +INF             .          
 FUJ.CON            .              .              .             0.0002      
 FUJ.TR           -INF            0.0171        +INF             .          
 FUJ.WRHR         -INF            5.9927        +INF             .          
 FUJ.OTH            .              .              .             0.0167      
 FUJ.FU           -INF          136.7417        +INF             .          
 FUJ.INV          -INF            0.1798        +INF             .          
-JXI.PROD         -INF          311.1340        +INF             .          
+JXI.PROD         -INF          311.1332        +INF             .          
 JXI.DX           -INF           31.1058        +INF             .          
 JXI.X              .              .              .            -0.2043      
 JXI.DRC          -INF           54.8230        +INF             .          
@@ -1845,7 +1845,7 @@ JXI.NGT            .              .              .             0.0005
 JXI.ELEHT        -INF           75.6567        +INF            EPS         
 JXI.OTHET          .              .              .             0.0005      
 JXI.AGR            .              .              .             0.0009      
-JXI.IND          -INF          349.3913        +INF             .          
+JXI.IND          -INF          349.3906        +INF             .          
 JXI.CON            .              .              .            -0.0005      
 JXI.TR           -INF            0.0343        +INF             .          
 JXI.WRHR         -INF           17.3801        +INF             .          
@@ -1860,8 +1860,8 @@ SHD.RC             .              .              .             0.0004
 SHD.COALT          .              .              .            -0.0003      
 SHD.FGT            .              .              .             0.0029      
 SHD.OILT           .              .              .            -0.0003      
-SHD.ROILT        -INF         -591.7421        +INF             .          
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 30
+SHD.ROILT        -INF         -591.7419        +INF             .          
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 30
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1879,20 +1879,20 @@ SHD.CON            .              .              .            -0.0013
 SHD.TR           -INF           13.3105        +INF             .          
 SHD.WRHR         -INF           29.2658        +INF             .          
 SHD.OTH          -INF           15.4519        +INF             .          
-SHD.FU           -INF          300.4040        +INF             .          
+SHD.FU           -INF          300.4038        +INF             .          
 SHD.INV          -INF             .            +INF             .          
 HEN.PROD         -INF          215.2969        +INF             .          
 HEN.DX           -INF           34.0107        +INF             .          
 HEN.X              .              .              .            -0.2047      
 HEN.DRC          -INF           19.0117        +INF             .          
 HEN.RC             .              .              .             0.0001      
-HEN.COALT          .              .              .       1.7241172E-5      
+HEN.COALT          .              .              .       1.7241627E-5      
 HEN.FGT          -INF          114.1654        +INF             .          
-HEN.OILT           .              .              .       1.7241172E-5      
+HEN.OILT           .              .              .       1.7241627E-5      
 HEN.ROILT        -INF         -225.4414        +INF            EPS         
-HEN.NGT            .              .              .       1.7241172E-5      
+HEN.NGT            .              .              .       1.7241627E-5      
 HEN.ELEHT        -INF           84.7740        +INF            EPS         
-HEN.OTHET          .              .              .       1.7241172E-5      
+HEN.OTHET          .              .              .       1.7241627E-5      
 HEN.AGR            .              .              .             0.0005      
 HEN.IND          -INF          377.0203        +INF             .          
 HEN.CON            .              .              .            -0.0010      
@@ -1925,7 +1925,7 @@ HUN.PROD         -INF            0.4798        +INF             .
 HUN.DX           -INF           17.3153        +INF             .          
 HUN.X              .              .              .            -0.2046      
 HUN.DRC          -INF           41.2023        +INF             .          
-HUN.RC             .              .              .       7.9806320E-6      
+HUN.RC             .              .              .       7.9945391E-6      
 HUN.COALT          .              .              .             0.0001      
 HUN.FGT          -INF          166.1464        +INF             .          
 HUN.OILT           .              .              .             0.0001      
@@ -1934,12 +1934,12 @@ HUN.NGT            .              .              .             0.0001
 HUN.ELEHT        -INF           67.0065        +INF            EPS         
 HUN.OTHET          .              .              .             0.0001      
 HUN.AGR            .              .              .             0.0006      
-HUN.IND          -INF          261.2625        +INF             .          
+HUN.IND          -INF          261.2626        +INF             .          
 HUN.CON          -INF            1.5096        +INF             .          
 HUN.TR           -INF            0.0343        +INF             .          
 HUN.WRHR         -INF           31.0942        +INF             .          
 HUN.OTH            .              .              .             0.0156      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 31
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -1950,45 +1950,45 @@ Solution Report     SOLVE gua Using NLP From line 223
 
 HUN.FU           -INF           70.9831        +INF             .          
 HUN.INV          -INF             .            +INF             .          
-GUD.PROD         -INF          212.9903        +INF             .          
+GUD.PROD         -INF          212.9898        +INF             .          
 GUD.DX           -INF            4.3307        +INF             .          
 GUD.X              .              .              .            -0.2044      
 GUD.DRC          -INF           54.2939        +INF             .          
-GUD.RC           -INF          525.7407        +INF             .          
+GUD.RC           -INF          525.7414        +INF             .          
 GUD.COALT          .              .              .             0.0003      
 GUD.FGT          -INF           39.9518        +INF             .          
 GUD.OILT           .              .              .             0.0003      
-GUD.ROILT        -INF         -380.1352        +INF            EPS         
+GUD.ROILT        -INF         -380.1350        +INF            EPS         
 GUD.NGT            .              .              .             0.0003      
 GUD.ELEHT        -INF           20.6746        +INF            EPS         
 GUD.OTHET          .              .              .             0.0003      
 GUD.AGR            .              .              .             0.0008      
-GUD.IND          -INF          390.3135        +INF             .          
+GUD.IND          -INF          390.3142        +INF             .          
 GUD.CON          -INF            1.0976        +INF             .          
 GUD.TR           -INF           58.0247        +INF             .          
 GUD.WRHR         -INF           32.5563        +INF             .          
 GUD.OTH          -INF            2.6176        +INF             .          
-GUD.FU           -INF          703.4969        +INF             .          
+GUD.FU           -INF          703.4963        +INF             .          
 GUD.INV          -INF             .            +INF             .          
-GXI.PROD         -INF          241.7293        +INF             .          
+GXI.PROD         -INF          241.7301        +INF             .          
 GXI.DX             .              .              .            -0.0045      
 GXI.X              .              .              .            -0.2040      
-GXI.DRC          -INF           98.6343        +INF             .          
+GXI.DRC          -INF           98.6342        +INF             .          
 GXI.RC             .              .              .            -0.0006      
 GXI.COALT          .              .              .             0.0007      
 GXI.FGT          -INF           19.5489        +INF             .          
 GXI.OILT           .              .              .             0.0007      
 GXI.ROILT        -INF          -85.9702        +INF            EPS         
 GXI.NGT            .              .              .             0.0007      
-GXI.ELEHT        -INF           75.1747        +INF            EPS         
+GXI.ELEHT        -INF           75.1748        +INF            EPS         
 GXI.OTHET          .              .              .             0.0007      
 GXI.AGR          -INF            8.3408        +INF             .          
-GXI.IND          -INF          219.7436        +INF             .          
+GXI.IND          -INF          219.7440        +INF             .          
 GXI.CON            .              .              .            -0.0003      
 GXI.TR             .              .              .             0.0026      
 GXI.WRHR         -INF           19.5161        +INF             .          
 GXI.OTH          -INF            1.5068        +INF             .          
-GXI.FU           -INF          121.6006        +INF             .          
+GXI.FU           -INF          121.6008        +INF             .          
 GXI.INV          -INF             .            +INF             .          
 HAI.PROD           .              .              .             0.0009      
 HAI.DX           -INF           88.9088        +INF             .          
@@ -2017,7 +2017,7 @@ CHQ.DRC          -INF           16.7240        +INF             .
 CHQ.RC             .              .              .            -0.0006      
 CHQ.COALT          .              .              .             0.0008      
 CHQ.FGT            .              .              .             0.0019      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 32
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -2095,7 +2095,7 @@ YUN.AGR            .              .              .             0.0017
 YUN.IND          -INF          184.6879        +INF             .          
 YUN.CON            .              .              .             0.0002      
 YUN.TR             .              .              .             0.0032      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 33
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 33
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -2111,12 +2111,12 @@ YUN.INV          -INF             .            +INF             .
 SHA.PROD           .              .              .             0.0042      
 SHA.DX           -INF            0.2917        +INF             .          
 SHA.X              .              .              .            -0.2069      
-SHA.DRC          -INF           61.4704        +INF             .          
+SHA.DRC          -INF           61.4703        +INF             .          
 SHA.RC             .              .              .             0.0023      
 SHA.COALT          .              .              .            -0.0022      
 SHA.FGT          -INF           -1.4906        +INF             .          
 SHA.OILT           .              .              .            -0.0022      
-SHA.ROILT        -INF         -127.7196        +INF            EPS         
+SHA.ROILT        -INF         -127.7195        +INF            EPS         
 SHA.NGT            .              .              .            -0.0022      
 SHA.ELEHT        -INF           45.0185        +INF            EPS         
 SHA.OTHET          .              .              .            -0.0022      
@@ -2126,7 +2126,7 @@ SHA.CON            .              .              .            -0.0032
 SHA.TR             .              .              .            -0.0003      
 SHA.WRHR         -INF            0.6272        +INF             .          
 SHA.OTH            .              .              .             0.0133      
-SHA.FU           -INF          101.8203        +INF             .          
+SHA.FU           -INF          101.8201        +INF             .          
 SHA.INV          -INF             .            +INF             .          
 GAN.PROD         -INF            9.4764        +INF             .          
 GAN.DX           -INF           48.5839        +INF             .          
@@ -2152,7 +2152,7 @@ NXA.PROD           .              .              .             0.0018
 NXA.DX           -INF            6.7092        +INF             .          
 NXA.X              .              .              .            -0.2045      
 NXA.DRC            .              .              .             0.0050      
-NXA.RC             .              .              .       -9.139189E-5      
+NXA.RC             .              .              .       -9.137761E-5      
 NXA.COALT          .              .              .             0.0002      
 NXA.FGT            .              .              .             0.0024      
 NXA.OILT           .              .              .             0.0002      
@@ -2173,7 +2173,7 @@ QIH.DX           -INF            9.6535        +INF             .
 QIH.X              .              .              .            -0.2048      
 QIH.DRC            .              .              .             0.0053      
 QIH.RC             .              .              .             0.0002      
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 34
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 34
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE gua Using NLP From line 223
 
@@ -2182,13 +2182,13 @@ Solution Report     SOLVE gua Using NLP From line 223
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-QIH.COALT          .              .              .       -3.617772E-5      
+QIH.COALT          .              .              .       -3.617767E-5      
 QIH.FGT            .              .              .             0.0027      
-QIH.OILT           .              .              .       -3.617772E-5      
+QIH.OILT           .              .              .       -3.617767E-5      
 QIH.ROILT        -INF          -35.8575        +INF             .          
-QIH.NGT            .              .              .       -3.617772E-5      
+QIH.NGT            .              .              .       -3.617767E-5      
 QIH.ELEHT          .              .              .             0.0037      
-QIH.OTHET          .              .              .       -3.617772E-5      
+QIH.OTHET          .              .              .       -3.617767E-5      
 QIH.AGR            .              .              .             0.0004      
 QIH.IND          -INF           21.6249        +INF             .          
 QIH.CON            .              .              .            -0.0010      
@@ -2197,7 +2197,7 @@ QIH.WRHR           .              .              .             0.0130
 QIH.OTH            .              .              .             0.0155      
 QIH.FU           -INF            4.8379        +INF             .          
 QIH.INV            .              .              .             2.3385      
-XIN.PROD         -INF          135.6114        +INF             .          
+XIN.PROD         -INF          135.6115        +INF             .          
 XIN.DX           -INF          157.3568        +INF             .          
 XIN.X              .              .              .            -0.2041      
 XIN.DRC            .              .              .             0.0047      
@@ -2229,12 +2229,12 @@ XIN.INV            .              .              .             2.3391
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/04/12 14:55:44 Page 35
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/08/12 16:45:38 Page 35
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        0.016 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -2244,5 +2244,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\egydatabalance.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\FG_balance.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\egydatabalance.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\FG_balance.lst

@@ -2,6 +2,7 @@ if not exist listings\nul mkdir listings
 :call gams readrawdata  o=listings\readrawdata.lst 
 :call gams allsam o=listings\allsam.lst gdx=data\gdx\allsam
 :call gams aggregation o=listings\aggregation.lst gdx=data\gdx\aggregation
+call gams aggregation o=listings\aggregation.lst gdx=data\gdx\aggregation2
 :call gams readegydata  o=listings\readegydata.lst 
 :call gams readegybench o=listings\readegybench.lst 
 :del data\gdx\egygdx\balance\*.gdx
@@ -11,6 +12,6 @@ if not exist listings\nul mkdir listings
 :call egyestimation COAL FG OIL ROIL NG ELEH OTHE
 :call gams ebtmerge  o=listings\ebtmerge.lst
 :call gams readpricerange o=listings\readpricerange.lst
-call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
+:call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
 
 pause
