@@ -225,7 +225,7 @@ sam2(r,i,j)=sam15(r,ni,nj);
 *end of loop r
 );
 
-
+$ontext
 *Calculation of sum of previous values
 parameter allsamsum1,allsamsum2,changeofoutput;
 allsamsum1=0;
@@ -296,7 +296,7 @@ allsamsum2=allsamsum2+sam2(r,i,j);
 changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
 display changeofoutput
 display incsparcity;
-
+$offtext
 
 *chksam
 loop(r,

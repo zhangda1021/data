@@ -268,7 +268,7 @@ loop(i$((ord(i)>=31) and (ord(i)<=60)),
 totoutput(r)=totoutput(r)+sumcolumn(r,i);
 ););
 loop(r,
-loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.005)),
+loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.00001)),
 loop(j,
 sam2(r,i,j)=0;
 sam2(r,j,i)=0;

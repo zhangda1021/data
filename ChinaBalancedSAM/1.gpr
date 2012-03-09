@@ -227,7 +227,7 @@ RowDim=1
 Squeeze=1
 Order=3,2,1
 Decim=7
-PlaneRownr=2
+PlaneRownr=-1
 PlaneFilter1=%dev
 
 [GDXDISP: chksam Par 3]
@@ -943,30 +943,60 @@ Order=1
 Decim=7
 PlaneRownr=-1
 
-[RP:FINALBALANCING]
-1=
-
 [RP:AGGREGATION]
 1=
 
+[GDXDISP: chksam3 Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=3,1,2
+Decim=7
+PlaneRownr=2
+PlaneFilter1=%dev
+
+[GDXDISP: allsamsum2 Par 0]
+PlaneDim=0
+RowDim=0
+Squeeze=1
+Order=
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: oilintinput Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: poilng Par 0]
+PlaneDim=0
+RowDim=0
+Squeeze=1
+Order=
+Decim=7
+PlaneRownr=-1
+
+[RP:FINALBALANCING]
+1=
+
 [MRUFILES]
-1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
-2=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
-3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
-4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\COAL.gdx
-5=C:\Users\dzhang\Desktop\egygdx\estimation\COAL.gdx
-6=C:\Users\dzhang\Desktop\3b-mps_bu-td.gms
-7=C:\Users\dzhang\Desktop\2b-activity_ge_carbon.gms
+1=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
+2=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
+3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
+4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation2.gdx
+5=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
+6=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\COAL.gdx
 
 [OPENWINDOW_1]
-FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
-FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
-FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation2.gdx
-FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-FILE4=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
-FILE5=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation2.gdx
+FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
 MAXIM=1
-TOP=84
-LEFT=206
+TOP=42
+LEFT=404
 HEIGHT=654
 WIDTH=1304
