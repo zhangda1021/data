@@ -187,7 +187,8 @@ RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
-PlaneRownr=-1
+PlaneRownr=23
+PlaneFilter1=GZH
 
 [GDXDISP: ta Par 1]
 PlaneDim=0
@@ -671,9 +672,6 @@ PlaneRownr=-1
 [RP:READDATA]
 1=
 
-[RP:OILGAS]
-1=
-
 [RP:EGYDATABALANCE]
 1=
 
@@ -701,9 +699,6 @@ Order=1
 Decim=7
 PlaneRownr=-1
 
-[RP:OILGASSPLIT]
-1=
-
 [GDXDISP: ebt Par 2]
 PlaneDim=0
 RowDim=1
@@ -713,9 +708,6 @@ Decim=7
 PlaneRownr=-1
 
 [RP:READRAWDATA]
-1=
-
-[RP:EBTMERGE]
 1=
 
 [GDXDISP: alli Set 2]
@@ -732,7 +724,8 @@ RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
-PlaneRownr=-1
+PlaneRownr=6
+PlaneFilter1=othe
 
 [GDXDISP: ebti Set 1]
 PlaneDim=0
@@ -763,9 +756,6 @@ PlaneFilter1=ELEH
 [RP:READPRICERANGE]
 1=
 
-[RP:EGYINTESTIMATION]
-1=
-
 [GDXDISP: columnsum Var 2]
 PlaneDim=1
 RowDim=1
@@ -791,6 +781,7 @@ Squeeze=1
 Order=1,2,3
 Decim=7
 PlaneRownr=-1
+PlaneFilter1=GZH
 
 [GDXDISP: jj Var 0]
 PlaneDim=0
@@ -864,8 +855,8 @@ Decim=7
 PlaneRownr=-1
 
 [GDXDISP: ebt2 Par 3]
-PlaneDim=0
-RowDim=3
+PlaneDim=1
+RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
@@ -979,24 +970,203 @@ Order=
 Decim=7
 PlaneRownr=-1
 
+[RP:OILGAS]
+1=
+
+[GDXDISP: chksam4 Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=3,2,1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: ii Alias 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: negval3 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: negval4 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: prange Set 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: rowsum Var 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: rsum Equ 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: empty4 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: empty3 Set 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: csum Equ 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: totoutput2 Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: sumbalance Equ 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: temp Par 0]
+PlaneDim=0
+RowDim=0
+Squeeze=1
+Order=
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: totchange Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[RP:OILGASSPLIT]
+1=
+
+[RP:EBTMERGE]
+1=
+
+[GDXDISP: ebt Par 4]
+PlaneDim=0
+RowDim=4
+Squeeze=1
+Order=1,2,3,4
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: sumbalance Equ 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3,4
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: totoutput2 Par 2]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: finalsam Var 4]
+PlaneDim=0
+RowDim=4
+Squeeze=1
+Order=1,2,3,4,5
+Decim=7
+PlaneRownr=-1
+
+[RP:SAM4MERGE]
+1=
+
+[RP:EGYINTESTIMATION]
+1=
+
+[GDXDISP: obj Equ 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: sam4 Par 3]
+PlaneDim=1
+RowDim=1
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
 [RP:FINALBALANCING]
 1=
 
 [MRUFILES]
-1=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.lst
-2=C:\Users\dzhang\data\ChinaBalancedSAM\aggregation.gms
-3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation.gdx
-4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\aggregation2.gdx
-5=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\allsam.gdx
-6=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\COAL.gdx
+1=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
+2=C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
+3=C:\Users\DaZHANG\data\ChinaBalancedSAM\ebtmerge.gms
+4=C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.lst
+5=C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.gms
+6=C:\Users\DaZHANG\Desktop\oilgassplit.gms
+7=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.gdx
+8=C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgas.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
-FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
-FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
+FILE0=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalbalancing\merged.gdx
+FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\sam3.gdx
+FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\egyintestimation.gms
+FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing.gms
+FILE4=C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing.lst
+FILE5=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalbalancing\merged.gdx
 MAXIM=1
-TOP=42
-LEFT=404
+TOP=10
+LEFT=110
 HEIGHT=654
-WIDTH=1304
+WIDTH=1296

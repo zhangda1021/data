@@ -1,0 +1,20 @@
+
+--- Job oilgassplit.gms Start 03/10/12 13:17:43 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- oilgassplit.gms(128) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
+--- oilgassplit.gms(131) 4 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
+--- oilgassplit.gms(134) 4 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
+--- oilgassplit.gms(137) 4 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
+--- oilgassplit.gms(372) 4 Mb
+--- Starting execution: elapsed 0:00:00.036
+--- oilgassplit.gms(363) 7 Mb
+*** Status: Normal completion
+--- Job oilgassplit.gms Stop 03/10/12 13:17:47 elapsed 0:00:03.832

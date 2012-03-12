@@ -1,25 +1,34 @@
 
---- Job finalbalancing.gms Start 03/09/12 13:41:01 WEX-WEI 23.2.1 x86_64/MS Windows     
-GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+--- Job finalbalancing.gms Start 03/10/12 13:53:44 WIN-VS8 23.4.3 x86/MS Windows        
+GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
           License for teaching and research at degree granting institutions
 --- Starting compilation
---- finalbalancing.gms(128) 3 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
---- finalbalancing.gms(131) 4 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
---- finalbalancing.gms(134) 4 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
---- finalbalancing.gms(137) 4 Mb
---- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
---- finalbalancing.gms(447) 4 Mb
---- Starting execution: elapsed 0:00:00.011
---- finalbalancing.gms(245) 7 Mb
-*** Error at line 247: division by zero (0)
---- finalbalancing.gms(245) 7 Mb 1 Error
-*** Error at line 248: division by zero (0)
---- finalbalancing.gms(332) 9 Mb 2 Errors
-*** Status: Execution error(s)
---- Job finalbalancing.gms Stop 03/09/12 13:41:03 elapsed 0:00:01.595
-Exit code = 3
+--- finalbalancing.gms(125) 3 Mb
+--- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
+--- finalbalancing.gms(262) 4 Mb
+--- Starting execution: elapsed 0:00:00.031
+--- finalbalancing.gms(230) 13 Mb
+--- Generating NLP model gua
+--- finalbalancing.gms(231) 17 Mb
+---   280 rows  7,276 columns  18,140 non-zeroes
+---   32,706 nl-code  5,329 nl-non-zeroes
+--- finalbalancing.gms(231) 14 Mb
+--- Executing MSNLP: elapsed 0:00:00.414
+--- finalbalancing.gms(231) 14 Mb
+*** No license found
+*** To update your license, please contact your distributor.
+*** Too many equations for global demo mode
+***   Number of equations          : 280
+***   Maximum allowed              : 10
+*** Too many variables for global demo mode
+***   Number of variables          : 7276
+***   Maximum allowed              : 10
+--- Restarting execution
+--- finalbalancing.gms(231) 0 Mb
+--- Reading solution for model gua
+--- Executing after solve: elapsed 0:00:00.828
+--- finalbalancing.gms(255) 12 Mb
+*** Status: Normal completion
+--- Job finalbalancing.gms Stop 03/10/12 13:53:45 elapsed 0:00:00.964

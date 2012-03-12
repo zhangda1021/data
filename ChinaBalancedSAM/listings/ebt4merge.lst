@@ -1,0 +1,33 @@
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:55:38 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1   
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:55:38 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
+     2        4 CALL           1       4  gdxmerge i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\finalbalancing\*.gdx 
+                                          o=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\finalbalancing\merged.gdx
+
+
+COMPILATION TIME     =       15.023 SECONDS      2 Mb  WIN234-234 May 21, 2010
+
+
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WIN234-234 May 21, 2010
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\ebt4merge.lst

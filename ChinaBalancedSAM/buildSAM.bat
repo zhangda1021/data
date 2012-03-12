@@ -12,6 +12,8 @@ if not exist listings\nul mkdir listings
 :call egyestimation COAL FG OIL ROIL NG ELEH OTHE
 :call gams ebtmerge  o=listings\ebtmerge.lst
 :call gams readpricerange o=listings\readpricerange.lst
-call gams finalbalancing o=listings\finalbalancing.lst gdx=data\gdx\finalsam
+:call gams oilgassplit o=listings\oilgassplit.lst gdx=data\gdx\sam3
+call finalbalancing BEJ TAJ HEB SHX NMG LIA JIL HLJ SHH JSU ZHJ ANH FUJ JXI SHD HEN HUB HUN GUD GXI HAI CHQ SIC GZH YUN SHA GAN NXA QIH XIN
+call gams sam4merge o=listings\ebt4merge.lst 
 
 pause
