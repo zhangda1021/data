@@ -1,34 +1,66 @@
 
---- Job finalbalancing.gms Start 03/10/12 13:53:44 WIN-VS8 23.4.3 x86/MS Windows        
-GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+--- Job finalbalancing.gms Start 03/12/12 15:29:42 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
           License for teaching and research at degree granting institutions
 --- Starting compilation
 --- finalbalancing.gms(125) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
---- finalbalancing.gms(262) 4 Mb
---- Starting execution: elapsed 0:00:00.031
---- finalbalancing.gms(230) 13 Mb
---- Generating NLP model gua
---- finalbalancing.gms(231) 17 Mb
----   280 rows  7,276 columns  18,140 non-zeroes
----   32,706 nl-code  5,329 nl-non-zeroes
---- finalbalancing.gms(231) 14 Mb
---- Executing MSNLP: elapsed 0:00:00.414
---- finalbalancing.gms(231) 14 Mb
-*** No license found
-*** To update your license, please contact your distributor.
-*** Too many equations for global demo mode
-***   Number of equations          : 280
-***   Maximum allowed              : 10
-*** Too many variables for global demo mode
-***   Number of variables          : 7276
-***   Maximum allowed              : 10
---- Restarting execution
---- finalbalancing.gms(231) 0 Mb
---- Reading solution for model gua
---- Executing after solve: elapsed 0:00:00.828
---- finalbalancing.gms(255) 12 Mb
-*** Status: Normal completion
---- Job finalbalancing.gms Stop 03/10/12 13:53:45 elapsed 0:00:00.964
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
+--- finalbalancing.gms(271) 4 Mb 2 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(272) 4 Mb 4 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(273) 4 Mb 6 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(274) 4 Mb 8 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(277) 4 Mb 10 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(280) 4 Mb 14 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(281) 4 Mb 16 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(282) 4 Mb 18 Errors
+*** Error 171 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Domain violation for set
+*** Error 148 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Dimension different - The symbol is referenced with more/less
+       indices as declared
+--- finalbalancing.gms(286) 4 Mb 18 Errors
+*** Status: Compilation error(s)
+--- Job finalbalancing.gms Stop 03/12/12 15:29:42 elapsed 0:00:00.105
+Exit code = 2

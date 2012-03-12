@@ -1,0 +1,218 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/12/12 10:19:40 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+       
+              Production activities   A (30)
+              Commodities             C (30)
+              Primary Factors         F (2)
+              Households              H (1)
+              Central Government      G1(1)
+              Provincial Government   G2(1)
+              Types of taxes          T (4)
+              Rest of country         DX(1)
+              Rest of world           X (1)
+              Investment-savings      I (2)
+       
+      Here is a "MAP" of the SAM with the names of the submatrices which
+      contain data.  All cells with no labels are empty:
+       
+       
+       
+                 A       C        F       H      G1      G2       T       DX    
+        X      I1      I2
+              ------------------------------------------------------------------
+      ----------------------
+      A       |       |   ac  |       |       |       |       |   sa  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      C       |   ca  |       |       |   ch  |       |  g2d  |       |   der | 
+        er  |  cs1  |  cs2  |
+              ------------------------------------------------------------------
+      ----------------------
+      F       |   fa  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      H       |       |       |   hf  |       |       |  hg2  |       |   dhr | 
+        hr  |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G1      |       |       |       |       |       |  g1g2 |       |       | 
+            |  cg1s |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G2      |       |       |       |       | g2g1  |       |   tr  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      T       |   ta  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      DX      |       |  drc  |       |  drh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      X       |       |   rc  |       |   rh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I1      |       |       |   dp  |  psv1 | g1sv  |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I2      |       |   ic  |       |  psv2 |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+       
+  47   
+  48  *SAM table
+  49  set     i   SAM rows and colums indices   /
+  50          1*30    Industries,
+  51          31*60   Commodities,
+  52          61      Labor,
+  53          62      Capital,
+  54          63      Household,
+  55          64      Central Government,
+  56          65      Local Government,
+  57          66      Production tax,
+  58          67      Commodity tax,
+  59          68      Factor tax,
+  60          69      Income tax,
+  61          70      Domestic trade,
+  62          71      Foreign trade,
+  63          72      Investment,
+  64          73      Inventory/;
+  65  alias (i,j);
+  66  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+      ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
+      H,XIN/;
+  67   
+  68  parameter sam4(r,i,j)           SAM v4.0 ready for rebalancing
+  69   
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/finalbalancing/sam4.gdx
+--- LOAD  sam4 = 31:sam4
+  72   
+  73  positive variables finalsam (r,i,j)
+  74  positive variables rowsum(r,i)
+  75  positive variables columnsum(r,i)
+  76  positive variables domesticinsum(i)
+  77  positive variables domesticoutsum(i)
+  78  variable jj
+  79   
+  80  Equations
+  81          rsum
+  82          csum
+  83          sumbalance
+  84          drcsum
+  85          dxsum
+  86          tradebalance
+  87          obj
+  88  ;
+  89   
+  90  rsum(r,i)..
+  91  sum(j,finalsam(r,i,j))=e=rowsum(r,i);
+  92   
+  93  csum(r,i)..
+  94  sum(j,finalsam(r,j,i))=e=columnsum(r,i);
+  95   
+  96  sumbalance(r,i)..
+  97  rowsum(r,i)=e=columnsum(r,i);
+  98   
+  99  drcsum(i)$((ord(i)>=31) and (ord(i)<=60))..
+ 100  domesticinsum(i)=e=sum(r,finalsam(r,"70",i));
+ 101   
+ 102  dxsum(i)$((ord(i)>=31) and (ord(i)<=60))..
+ 103  domesticoutsum(i)=e=sum(r,finalsam(r,i,"70"));
+ 104   
+ 105  tradebalance(i)$((ord(i)>=31) and (ord(i)<=60))..
+ 106  domesticinsum(i)=e=domesticoutsum(i);
+ 107   
+ 108  obj..
+ 109  jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam4(r,i,j)))));
+ 110   
+ 111   
+ 112  Model gua /all/;
+ 113  loop(r,
+ 114  loop(i,
+ 115  loop(j,
+ 116  finalsam.l(r,i,j)=sam4(r,i,j);
+ 117  );););
+ 118  loop(r,
+ 119  loop(i,
+ 120  loop(j,
+ 121  if (sam4(r,i,j)=0,
+ 122  finalsam.fx(r,i,j)=0;
+ 123  );
+ 124  );
+ 125  );
+ 126  );
+ 127  gua.iterlim=100000;
+ 128  Solve gua minimizing jj using nlp;
+ 129  display finalsam.l;
+ 130   
+ 131   
+ 132  set     negval5(i,j)     Flag for negative elements;
+ 133  set     empty5(i,*)      Flag for empty rows and columns;
+ 134  parameter       chkfinalsam(i,*)       Consistency check of social account
+      s;
+ 135  parameter totoutput3(r);
+ 136  loop(r,
+ 137  totoutput3(r)=0;
+ 138  );
+ 139  loop(r,
+ 140  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 141  totoutput3=totoutput3+sum(j,finalsam.l(r,i,j));
+****            $148       $148
+ 142  );
+ 143  );
+ 144   
+ 145  parameter sam5(r,i,j);
+ 146  loop(r,
+ 147  loop(i,
+ 148  loop(j,
+ 149  sam5(r,i,j)= finalsam.l(r,i,j);
+ 150  );
+ 151  );
+ 152  );
+ 153   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/12/12 10:19:40 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+148  Dimension different - The symbol is referenced with more/less
+        indices as declared
+
+**** 2 ERROR(S)   0 WARNING(S)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/12/12 10:19:40 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          tradebalancing.gms
+     2       70 GDXIN          1      70  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          /data/gdx/finalbalancing/sam4.gdx
+
+
+COMPILATION TIME     =        0.063 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\tradebalancing.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\tradebalancing.lst
+
+**** USER ERROR(S) ENCOUNTERED

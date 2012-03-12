@@ -1,4 +1,4 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -45,405 +45,407 @@ C o m p i l a t i o n
       I2      |       |   ic  |       |  psv2 |       |       |       |       |       |       |       |
               ----------------------------------------------------------------------------------------
        
-  50   
-  51  *SAM table
-  52  set     i   SAM rows and colums indices   /
-  53          1*30    Industries,
-  54          31*60   Commodities,
-  55          61      Labor,
-  56          62      Capital,
-  57          63      Household,
-  58          64      Central Government,
-  59          65      Local Government,
-  60          66      Production tax,
-  61          67      Commodity tax,
-  62          68      Factor tax,
-  63          69      Income tax,
-  64          70      Domestic trade,
-  65          71      Foreign trade,
-  66          72      Investment,
-  67          73      Inventory/;
-  68  alias (i,j,ii);
-  69  *Energy balance table
-  70  set ebti /
-  71           1       DX,
-  72           2       X,
-  73           3       DRC,
-  74           4       RC,
-  75           5       AGR,
-  76           6       COAL,
-  77           7       OIL,
-  78           8       MM,
-  79           9       NM,
-  80           10      FBT,
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 2
+  49   
+  50  *SAM table
+  51  set     i   SAM rows and colums indices   /
+  52          1*30    Industries,
+  53          31*60   Commodities,
+  54          61      Labor,
+  55          62      Capital,
+  56          63      Household,
+  57          64      Central Government,
+  58          65      Local Government,
+  59          66      Production tax,
+  60          67      Commodity tax,
+  61          68      Factor tax,
+  62          69      Income tax,
+  63          70      Domestic trade,
+  64          71      Foreign trade,
+  65          72      Investment,
+  66          73      Inventory/;
+  67  alias (i,j,ii);
+  68  *Energy balance table
+  69  set ebti /
+  70           1       DX,
+  71           2       X,
+  72           3       DRC,
+  73           4       RC,
+  74           5       AGR,
+  75           6       COAL,
+  76           7       OIL,
+  77           8       MM,
+  78           9       NM,
+  79           10      FBT,
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
-  81           11      TXT,
-  82           12      CLO,
-  83           13      LOG,
-  84           14      PAP,
-  85           15      ROIL,
-  86           16      CHE,
-  87           17      NMP,
-  88           18      MSP,
-  89           19      MP,
-  90           20      GSM,
-  91           21      TME,
-  92           22      EME,
-  93           23      CCE,
-  94           24      IM,
-  95           25      AC,
-  96           26      WAS,
-  97           27      ELEH,
-  98           28      FG,
-  99           29      WT,
- 100           30      CON,
- 101           31      TR,
- 102           32      WRHR,
- 103           33      OTH,
- 104           34      NG,
- 105           35      FU,
- 106           36      INV,
- 107           37      PROD
- 108  /;
- 109  set      e       energy product  /
- 110           coal    Coal,
- 111           fg      Fuel gas,
- 112           oil     Crude oil,
- 113           roil    Refined oil,
- 114           ng      Natural gas,
- 115           eleh    Electricity & heat,
- 116           othe    Other energy/;
- 117  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI
+  80           11      TXT,
+  81           12      CLO,
+  82           13      LOG,
+  83           14      PAP,
+  84           15      ROIL,
+  85           16      CHE,
+  86           17      NMP,
+  87           18      MSP,
+  88           19      MP,
+  89           20      GSM,
+  90           21      TME,
+  91           22      EME,
+  92           23      CCE,
+  93           24      IM,
+  94           25      AC,
+  95           26      WAS,
+  96           27      ELEH,
+  97           28      FG,
+  98           29      WT,
+  99           30      CON,
+ 100           31      TR,
+ 101           32      WRHR,
+ 102           33      OTH,
+ 103           34      NG,
+ 104           35      FU,
+ 105           36      INV,
+ 106           37      PROD
+ 107  /;
+ 108  set      e       energy product  /
+ 109           coal    Coal,
+ 110           fg      Fuel gas,
+ 111           oil     Crude oil,
+ 112           roil    Refined oil,
+ 113           ng      Natural gas,
+ 114           eleh    Electricity & heat,
+ 115           othe    Other energy/;
+ 116  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI
       ,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
- 118  set      prange/
- 119           LB,
- 120           UB/;
- 121  parameter sam2(r,i,j)           SAM v2.0
- 122  parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
- 123  parameter ebt(e,r,ebti)         EBT
- 124  parameter ebt2(i,r,ebti)        EBT for OPT
- 125  parameter pricerange(i,prange)  Price range of energy products
- 126  parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
- 127  parameter poilng
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
+ 117  set      prange/
+ 118           LB,
+ 119           UB/;
+ 120  parameter sam2(r,i,j)           SAM v2.0
+ 121  parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
+ 122  parameter ebt(e,r,ebti)         EBT
+ 123  parameter ebt2(i,r,ebti)        EBT for OPT
+ 124  parameter pricerange(i,prange)  Price range of energy products
+ 125  parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
+ 126  parameter poilng
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
 --- LOAD  sam2 = 5:sam2
- 130  display sam2
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
+ 129  display sam2
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
 --- LOAD  ebt = 23:ebt
- 133  display ebt
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
+ 132  display ebt
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
 --- LOAD  oilngratio = 8:oilngratio
- 136  display oilngratio
-GDXIN   C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
+ 135  display oilngratio
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
 --- LOAD  pricerange = 1:pricerange
- 139  display pricerange
- 140  *ebt2
- 141  loop(r,
- 142  loop(ebti,
- 143  loop(e,
- 144  if(sameas(e,"coal"),
- 145  ebt2("2",r,ebti)=ebt(e,r,ebti);
- 146  );
- 147  if(sameas(e,"fg"),
- 148  ebt2("3",r,ebti)=ebt(e,r,ebti);
- 149  );
- 150  if(sameas(e,"oil"),
- 151  ebt2("11",r,ebti)=ebt(e,r,ebti);
- 152  );
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 3
+ 138  display pricerange
+ 139  *ebt2
+ 140  loop(r,
+ 141  loop(ebti,
+ 142  loop(e,
+ 143  if(sameas(e,"coal"),
+ 144  ebt2("2",r,ebti)=ebt(e,r,ebti);
+ 145  );
+ 146  if(sameas(e,"fg"),
+ 147  ebt2("3",r,ebti)=ebt(e,r,ebti);
+ 148  );
+ 149  if(sameas(e,"oil"),
+ 150  ebt2("11",r,ebti)=ebt(e,r,ebti);
+ 151  );
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 153  if(sameas(e,"roil"),
- 154  ebt2("23",r,ebti)=ebt(e,r,ebti);
- 155  );
- 156  if(sameas(e,"ng"),
- 157  ebt2("24",r,ebti)=ebt(e,r,ebti);
- 158  );
- 159  if(sameas(e,"eleh"),
- 160  ebt2("30",r,ebti)=ebt(e,r,ebti);
+ 152  if(sameas(e,"roil"),
+ 153  ebt2("23",r,ebti)=ebt(e,r,ebti);
+ 154  );
+ 155  if(sameas(e,"ng"),
+ 156  ebt2("24",r,ebti)=ebt(e,r,ebti);
+ 157  );
+ 158  if(sameas(e,"eleh"),
+ 159  ebt2("30",r,ebti)=ebt(e,r,ebti);
+ 160  );
  161  );
  162  );
  163  );
- 164  );
- 165   
- 166  *price: oil/ng
- 167  poilng=3;
- 168  *oilgas
- 169  parameter temp;
- 170  *"Rough" split of crude oil and gas in sam3
- 171  loop(r,
- 172  loop(i,
- 173  loop(j,
- 174  sam3(r,i,j)=sam2(r,i,j);
+ 164   
+ 165  *price: oil/ng
+ 166  poilng=3;
+ 167  *oilgas
+ 168  parameter temp;
+ 169  *"Rough" split of crude oil and gas in sam3
+ 170  loop(r,
+ 171  loop(i,
+ 172  loop(j,
+ 173  sam3(r,i,j)=sam2(r,i,j);
+ 174  );
  175  );
  176  );
- 177  );
- 178   
- 179  * Production calibration
- 180  loop(r,
- 181  temp=sam3(r,"3","33");
- 182  sam3(r,"3","33")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37"
+ 177   
+ 178  * Production calibration
+ 179  loop(r,
+ 180  temp=sam3(r,"3","33");
+ 181  sam3(r,"3","33")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37"
       )+ebt("NG",r,"37"));
- 183  sam3(r,"30","60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("
+ 182  sam3(r,"30","60")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("
       NG",r,"37"));
- 184  );
- 185  *sa
- 186  loop(r,
- 187  temp=sam3(r,"3","66");
- 188  sam3(r,"3","66")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37"
+ 183  );
+ 184  *sa
+ 185  loop(r,
+ 186  temp=sam3(r,"3","66");
+ 187  sam3(r,"3","66")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37"
       )+ebt("NG",r,"37"));
- 189  sam3(r,"30","66")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("
+ 188  sam3(r,"30","66")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("
       NG",r,"37"));
- 190  );
- 191  * DRC calibration
- 192  loop(r,
- 193  temp=sam3(r,"70","33");
- 194  sam3(r,"70","33")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=temp*poilng*ebt("OIL",r,"3")/(poilng*ebt("OIL",r,"3")+e
+ 189  );
+ 190  * DRC calibration
+ 191  loop(r,
+ 192  temp=sam3(r,"70","33");
+ 193  sam3(r,"70","33")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=temp*poilng*ebt("OIL",r,"3")/(poilng*ebt("OIL",r,"3")+e
       bt("NG",r,"3"));
- 195  sam3(r,"70","60")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=temp*ebt("NG",r,"3")/(poilng*ebt("OIL",r,"3")+ebt("NG",
+ 194  sam3(r,"70","60")$(poilng*ebt("OIL",r,"3")+ebt("NG",r,"3")>0)=temp*ebt("NG",r,"3")/(poilng*ebt("OIL",r,"3")+ebt("NG",
       r,"3"));
- 196  );
- 197  * RC calibration
- 198  loop(r,
- 199  temp=sam3(r,"71","33");
- 200  sam3(r,"71","33")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=temp*poilng*ebt("OIL",r,"4")/(poilng*ebt("OIL",r,"4")+e
+ 195  );
+ 196  * RC calibration
+ 197  loop(r,
+ 198  temp=sam3(r,"71","33");
+ 199  sam3(r,"71","33")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=temp*poilng*ebt("OIL",r,"4")/(poilng*ebt("OIL",r,"4")+e
       bt("NG",r,"4"));
- 201  sam3(r,"71","60")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=temp*ebt("NG",r,"4")/(poilng*ebt("OIL",r,"4")+ebt("NG",
+ 200  sam3(r,"71","60")$(poilng*ebt("OIL",r,"4")+ebt("NG",r,"4")>0)=temp*ebt("NG",r,"4")/(poilng*ebt("OIL",r,"4")+ebt("NG",
       r,"4"));
- 202  );
- 203  * DX calibration
- 204  loop(r,
- 205  temp=sam3(r,"33","70");
- 206  sam3(r,"33","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=temp*poilng*ebt("OIL",r,"1")/(poilng*ebt("OIL",r,"1")+e
+ 201  );
+ 202  * DX calibration
+ 203  loop(r,
+ 204  temp=sam3(r,"33","70");
+ 205  sam3(r,"33","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=temp*poilng*ebt("OIL",r,"1")/(poilng*ebt("OIL",r,"1")+e
       bt("NG",r,"1"));
- 207  sam3(r,"60","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=temp*ebt("NG",r,"1")/(poilng*ebt("OIL",r,"1")+ebt("NG",
+ 206  sam3(r,"60","70")$(poilng*ebt("OIL",r,"1")+ebt("NG",r,"1")>0)=temp*ebt("NG",r,"1")/(poilng*ebt("OIL",r,"1")+ebt("NG",
       r,"1"));
- 208  );
- 209  * X calibration
- 210  loop(r,
- 211  temp=sam3(r,"33","71");
- 212  sam3(r,"33","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=temp*poilng*ebt("OIL",r,"2")/(poilng*ebt("OIL",r,"2")+e
+ 207  );
+ 208  * X calibration
+ 209  loop(r,
+ 210  temp=sam3(r,"33","71");
+ 211  sam3(r,"33","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=temp*poilng*ebt("OIL",r,"2")/(poilng*ebt("OIL",r,"2")+e
       bt("NG",r,"2"));
- 213  sam3(r,"60","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=temp*ebt("NG",r,"2")/(poilng*ebt("OIL",r,"2")+ebt("NG",
+ 212  sam3(r,"60","71")$(poilng*ebt("OIL",r,"2")+ebt("NG",r,"2")>0)=temp*ebt("NG",r,"2")/(poilng*ebt("OIL",r,"2")+ebt("NG",
       r,"2"));
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 4
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 214  );
- 215  * INV calibration
- 216  loop(r,
- 217  if(sam3(r,"73","33")>0,
- 218  temp=sam3(r,"73","33");
- 219  sam3(r,"73","33")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36
+ 213  );
+ 214  * INV calibration
+ 215  loop(r,
+ 216  if(sam3(r,"73","33")>0,
+ 217  temp=sam3(r,"73","33");
+ 218  sam3(r,"73","33")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36
       ")+ebt("NG",r,"36"));
- 220  sam3(r,"73","60")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("
+ 219  sam3(r,"73","60")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("
       NG",r,"36"));
- 221  else
- 222  temp=sam3(r,"33","73");
- 223  sam3(r,"33","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36
+ 220  else
+ 221  temp=sam3(r,"33","73");
+ 222  sam3(r,"33","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*poilng*ebt("OIL",r,"36")/(poilng*ebt("OIL",r,"36
       ")+ebt("NG",r,"36"));
- 224  *Oil in Guizhou
- 225  sam3(r,"33","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")=0)=0;
- 226  sam3(r,"60","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("
+ 223  *Oil in Guizhou
+ 224  sam3(r,"33","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")=0)=0;
+ 225  sam3(r,"60","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=temp*ebt("NG",r,"36")/(poilng*ebt("OIL",r,"36")+ebt("
       NG",r,"36"));
- 227  sam3(r,"60","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=0;
+ 226  sam3(r,"60","73")$(poilng*ebt("OIL",r,"36")+ebt("NG",r,"36")>0)=0;
+ 227  );
  228  );
- 229  );
- 230  * Capital formation calibration
- 231  loop(r,
- 232  temp=sam3(r,"33","72");
- 233  sam3(r,"33","72")=temp*poilng*oilngratio(r);
- 234  sam3(r,"60","72")=temp*(1-poilng*oilngratio(r));
- 235  );
- 236  * HH and GOV calibration
- 237  loop(r,
- 238  temp=sam3(r,"33","63");
- 239  sam3(r,"33","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=temp*poilng*ebt("OIL",r,"35")/(poilng*ebt("OIL",r,"35
+ 229  * Capital formation calibration
+ 230  loop(r,
+ 231  temp=sam3(r,"33","72");
+ 232  sam3(r,"33","72")=temp*poilng*oilngratio(r);
+ 233  sam3(r,"60","72")=temp*(1-poilng*oilngratio(r));
+ 234  );
+ 235  * HH and GOV calibration
+ 236  loop(r,
+ 237  temp=sam3(r,"33","63");
+ 238  sam3(r,"33","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=temp*poilng*ebt("OIL",r,"35")/(poilng*ebt("OIL",r,"35
       ")+ebt("NG",r,"35"));
- 240  sam3(r,"60","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=temp*ebt("NG",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("
+ 239  sam3(r,"60","63")$(poilng*ebt("OIL",r,"35")+ebt("NG",r,"35")>0)=temp*ebt("NG",r,"35")/(poilng*ebt("OIL",r,"35")+ebt("
       NG",r,"35"));
- 241  );
- 242   
- 243  * Other sectors calibration
- 244  loop(r,
- 245  loop(j$((ord(j)>=1) and (ord(j)<=30)),
- 246  loop(ebti$(ord(ebti)=ord(j)+4),
- 247  temp=sam3(r,"33",j);
- 248  sam3(r,"33",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=temp*poilng*ebt("OIL",r,ebti)/(poilng*ebt("OIL",r,ebti)+
+ 240  );
+ 241   
+ 242  * Other sectors calibration
+ 243  loop(r,
+ 244  loop(j$((ord(j)>=1) and (ord(j)<=30)),
+ 245  loop(ebti$(ord(ebti)=ord(j)+4),
+ 246  temp=sam3(r,"33",j);
+ 247  sam3(r,"33",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=temp*poilng*ebt("OIL",r,ebti)/(poilng*ebt("OIL",r,ebti)+
       ebt("NG",r,ebti));
- 249  sam3(r,"60",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=temp*ebt("NG",r,ebti)/(poilng*ebt("OIL",r,ebti)+ebt("NG"
+ 248  sam3(r,"60",j)$(poilng*ebt("OIL",r,ebti)+ebt("NG",r,ebti)>0)=temp*ebt("NG",r,ebti)/(poilng*ebt("OIL",r,ebti)+ebt("NG"
       ,r,ebti));
+ 249  );
  250  );
  251  );
- 252  );
- 253  *COLUMN calibration
- 254  *intinput
- 255  loop(r,
- 256  loop(i$(((ord(i)>=31) and (ord(i)<=60)) and (ord(i)<>33) and (ord(i)<>60)),
- 257  temp= sam3(r,i,"3");
- 258  sam3(r,i,"30")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+
+ 252  *COLUMN calibration
+ 253  *intinput
+ 254  loop(r,
+ 255  loop(i$(((ord(i)>=31) and (ord(i)<=60)) and (ord(i)<>33) and (ord(i)<>60)),
+ 256  temp= sam3(r,i,"3");
+ 257  sam3(r,i,"30")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+
       ebt("NG",r,"37"));
- 259  sam3(r,i,"3")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",
+ 258  sam3(r,i,"3")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37")>0)=temp*ebt("NG",r,"37")/(poilng*ebt("OIL",r,"37")+ebt("NG",
       r,"37"));
+ 259  );
  260  );
- 261  );
- 262  *othinput
- 263  loop(r,
- 264  loop(i$((ord(i)>=61) and (ord(i)<=69)),
- 265  temp=sam3(r,i,"3");
- 266  sam3(r,i,"30")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"))=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+eb
+ 261  *othinput
+ 262  loop(r,
+ 263  loop(i$((ord(i)>=61) and (ord(i)<=69)),
+ 264  temp=sam3(r,i,"3");
+ 265  sam3(r,i,"30")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"))=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+eb
       t("NG",r,"37"));
- 267  sam3(r,i,"3")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"))=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+ebt
+ 266  sam3(r,i,"3")$(poilng*ebt("OIL",r,"37")+ebt("NG",r,"37"))=temp*poilng*ebt("OIL",r,"37")/(poilng*ebt("OIL",r,"37")+ebt
       ("NG",r,"37"));
+ 267  );
  268  );
- 269  );
+ 269   
  270   
  271   
- 272   
- 273  ****Filter
- 274  *Calculation of sum of previous values
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 5
+ 272  ****Filter
+ 273  *Calculation of sum of previous values
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 275  parameter allsamsum1,allsamsum2,changeofoutput;
- 276  allsamsum1=0;
- 277  allsamsum2=0;
- 278  loop(r,
- 279  loop(i,
- 280  loop(j,
- 281  sam3(r,i,j)=sam3(r,i,j)/100000;
- 282  allsamsum1=allsamsum1+sam3(r,i,j);
+ 274  parameter allsamsum1,allsamsum2,changeofoutput;
+ 275  allsamsum1=0;
+ 276  allsamsum2=0;
+ 277  loop(r,
+ 278  loop(i,
+ 279  loop(j,
+ 280  sam3(r,i,j)=sam3(r,i,j)/100000;
+ 281  allsamsum1=allsamsum1+sam3(r,i,j);
+ 282  );
  283  );
  284  );
- 285  );
+ 285   
  286   
- 287   
- 288  ****
- 289  *Filter 1: Diminish sectors which take smaller than 0.5% of the total out
- 290  parameter sumcolumn(r,i),sumrow(r,i);
- 291  loop(r,
- 292  loop(i,
- 293  sumcolumn(r,i)=0;
- 294  sumrow(r,i)=0;
- 295  ););
- 296  loop(r,
- 297  loop(i,
- 298  sumcolumn(r,i)=sum(j,sumcolumn(r,i)+sam3(r,j,i));
+ 287  ****
+ 288  *Filter 1: Diminish sectors which take smaller than 0.5% of the total out
+ 289  parameter sumcolumn(r,i),sumrow(r,i);
+ 290  loop(r,
+ 291  loop(i,
+ 292  sumcolumn(r,i)=0;
+ 293  sumrow(r,i)=0;
+ 294  ););
+ 295  loop(r,
+ 296  loop(i,
+ 297  sumcolumn(r,i)=sum(j,sumcolumn(r,i)+sam3(r,j,i));
+ 298  );
  299  );
- 300  );
- 301  loop(r,
- 302  loop(i,
- 303  sumrow(r,i)=sum(j,sumrow(r,i)+sam3(r,i,j));
+ 300  loop(r,
+ 301  loop(i,
+ 302  sumrow(r,i)=sum(j,sumrow(r,i)+sam3(r,i,j));
+ 303  );
  304  );
- 305  );
- 306  display sumcolumn,sumrow;
- 307   
- 308  parameter totoutput(r);
- 309  parameter smallsector(r,i);
- 310  loop(r,
- 311  totoutput(r)=0;
- 312  );
- 313  loop(r,
- 314  loop(i$((ord(i)>=31) and (ord(i)<=60)),
- 315  totoutput(r)=totoutput(r)+sumcolumn(r,i);
- 316  ););
- 317  loop(r,
- 318  loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.005)),
- 319  loop(ii$((ord(ii)=ord(i)) or (ord(ii)=ord(i)-30)),
- 320  loop(j,
- 321  sam3(r,ii,j)=0;
- 322  sam3(r,j,ii)=0;
+ 305  display sumcolumn,sumrow;
+ 306   
+ 307  parameter totoutput(r);
+ 308  parameter smallsector(r,i);
+ 309  loop(r,
+ 310  totoutput(r)=0;
+ 311  );
+ 312  loop(r,
+ 313  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 314  totoutput(r)=totoutput(r)+sumcolumn(r,i);
+ 315  ););
+ 316  loop(r,
+ 317  loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.005) and not(((ord(i)=32) or (ord(i)=33) or 
+      (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60)))),
+ 318  loop(ii$((ord(ii)=ord(i)) or (ord(ii)=ord(i)-30)),
+ 319  loop(j,
+ 320  sam3(r,ii,j)=0;
+ 321  sam3(r,j,ii)=0;
+ 322  );
  323  );
- 324  );
- 325  smallsector(r,i)=1;
- 326  ););
- 327  loop(r,
- 328  totoutput(r)=0;
- 329  );
- 330  loop(r,
- 331  loop(i$((ord(i)>=31) and (ord(i)<=60)),
- 332  totoutput(r)=totoutput(r)+sumcolumn(r,i);
- 333  ););
- 334  parameter incsparcity;
- 335  incsparcity=0;
- 336  loop(r,
- 337  loop(i,
- 338  loop(j$((ord(j)>=1) and (ord(j)<=30)),
- 339  if(((sam3(r,i,j)<0.005*sumcolumn(r,j)) AND (sam3(r,i,j)<>0)),
- 340  sam3(r,j,i)=0;
- 341  incsparcity=incsparcity+1;
- 342  );
- 343  allsamsum2=allsamsum2+sam3(r,i,j);
+ 324  smallsector(r,i)=1;
+ 325  ););
+ 326  loop(r,
+ 327  totoutput(r)=0;
+ 328  );
+ 329  loop(r,
+ 330  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 331  totoutput(r)=totoutput(r)+sumcolumn(r,i);
+ 332  ););
+ 333  parameter incsparcity;
+ 334  incsparcity=0;
+ 335  loop(r,
+ 336  loop(i,
+ 337  loop(j$((ord(j)>=1) and (ord(j)<=30) and not(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) o
+      r (ord(i)=30)))),
+ 338  if(((sam3(r,i,j)<0.005*sumcolumn(r,j)) AND (sam3(r,i,j)<>0)),
+ 339  sam3(r,j,i)=0;
+ 340  incsparcity=incsparcity+1;
+ 341  );
+ 342  allsamsum2=allsamsum2+sam3(r,i,j);
+ 343  );
  344  );
- 345  );
- 346  );
- 347  parameter totoutput2(r);
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 6
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 348  loop(r,
- 349  totoutput2(r)=0;
- 350  );
- 351  loop(r,
- 352  loop(i$((ord(i)>=31) and (ord(i)<=60)),
- 353  totoutput2(r)=totoutput2(r)+sum(j,sam3(r,i,j));
- 354  ););
- 355  parameter totchange(r);
- 356  loop(r,
- 357  loop(i$((ord(i)>=31) and (ord(i)<=60)),
- 358  totchange(r)=(totoutput(r)-totoutput2(r))/totoutput(r);
- 359  ););
- 360  changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
- 361  display changeofoutput
- 362  display incsparcity;
- 363   
- 364  *chksam
- 365  set     negval3(r,i,j)     Flag for negative elements;
- 366  set     empty3(r,i,*)      Flag for empty rows and columns;
- 367  parameter       chksam3(r,i,*)       Consistency check of social accounts;
- 368  loop(r,
- 369  negval3(r,i,j) = yes$(sam3(r,i,j) < 0);
- 370   
- 371  empty3(r,i,"row") = 1$(sum(j, sam3(r,i,j)) = 0);
- 372  empty3(r,j,"col") = 1$(sum(i, sam3(r,i,j)) = 0);
- 373   
- 374  chksam3(r,i,"before") = sum(j, sam3(r,i,j)-sam3(r,j,i));
- 375  chksam3(r,i,"scale") = sum(j, sam3(r,j,i));
- 376  chksam3(r,i,"%dev")$sum(j, sam3(r,i,j)) = 100 * sum(j, sam3(r,i,j)-sam3(r,j,i)) / sum(j, sam3(r,i,j));
- 377  );
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 7
+ 345  );
+ 346  parameter totoutput2(r);
+ 347  loop(r,
+ 348  totoutput2(r)=0;
+ 349  );
+ 350  loop(r,
+ 351  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 352  totoutput2(r)=totoutput2(r)+sum(j,sam3(r,i,j));
+ 353  ););
+ 354  parameter totchange(r);
+ 355  loop(r,
+ 356  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 357  totchange(r)=(totoutput(r)-totoutput2(r))/totoutput(r);
+ 358  ););
+ 359  changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
+ 360  display changeofoutput
+ 361  display incsparcity;
+ 362   
+ 363  *chksam
+ 364  set     negval3(r,i,j)     Flag for negative elements;
+ 365  set     empty3(r,i,*)      Flag for empty rows and columns;
+ 366  parameter       chksam3(r,i,*)       Consistency check of social accounts;
+ 367  loop(r,
+ 368  negval3(r,i,j) = yes$(sam3(r,i,j) < 0);
+ 369   
+ 370  empty3(r,i,"row") = 1$(sum(j, sam3(r,i,j)) = 0);
+ 371  empty3(r,j,"col") = 1$(sum(i, sam3(r,i,j)) = 0);
+ 372   
+ 373  chksam3(r,i,"before") = sum(j, sam3(r,i,j)-sam3(r,j,i));
+ 374  chksam3(r,i,"scale") = sum(j, sam3(r,j,i));
+ 375  chksam3(r,i,"%dev")$sum(j, sam3(r,i,j)) = 100 * sum(j, sam3(r,i,j)-sam3(r,j,i)) / sum(j, sam3(r,i,j));
+ 376  );
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.gms
-     2      128 GDXIN          1     128  C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
-     3      131 GDXIN          1     131  C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
-     4      134 GDXIN          1     134  C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
-     5      137 GDXIN          1     137  C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.gms
+     2      127 GDXIN          1     127  C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/aggregation.gdx
+     3      130 GDXIN          1     130  C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/estimation/merged.gdx
+     4      133 GDXIN          1     133  C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/oilgasratio.gdx
+     5      136 GDXIN          1     136  C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/egygdx/pricerange.gdx
 
 
-COMPILATION TIME     =        0.032 SECONDS      4 Mb  WIN234-234 May 21, 2010
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 8
+COMPILATION TIME     =        0.000 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 8
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----    130 PARAMETER sam2  SAM v2.0
+----    129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -516,12 +518,12 @@ HEB.32  100574.405 1186821.065   10223.494   80878.726   14058.002  213838.215  
 HEB.33   53807.083      28.014       0.244  182080.906     111.080    1030.101    2581.881     160.499     145.159
 HEB.34  261121.719      21.509             2150245.147                                        5307.020
 HEB.35                  72.616     107.714     149.483   71783.053    6815.866     316.420     955.045     119.998
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/10/12 13:22:07 Page 9
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/12/12 13:11:32 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -594,12 +596,12 @@ NMG.37   12390.810     701.693      86.643    1334.088     140.307    8239.329  
 NMG.38    2626.300    5296.010    1052.219    4536.318     786.657   10015.921    5224.107   16481.506     346.780
 NMG.39    1234.210   21471.004      79.322    7074.476     851.075    5980.216     324.442       5.956  229664.231
 NMG.40     987.530    7465.733    1237.579    8063.243    6912.521  237900.015    4044.577    1561.502    1737.732
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 10
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 10
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -672,12 +674,12 @@ JIL.42  904375.780   26097.240   52085.060   33104.630   11223.760  305253.180  
 JIL.43   30040.030    7767.330   18536.440    8862.340   13241.690   40037.570     914.340      91.950    3770.950
 JIL.44   23292.720   20631.440   18850.550   39648.930     628.750    3241.550      69.290     912.300    1736.120
 JIL.45    8088.520   24138.350   27647.500   15453.460    5391.400   55389.630    1044.600    1671.060   24530.590
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 11
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -750,12 +752,12 @@ SHH.49     754.436                 198.853                            1515.722  
 SHH.50   12004.612                 532.265                           14160.415    4947.205    7533.800    6837.641
 SHH.51    1845.190                  77.621                             947.569    3402.342   71481.008    3592.253
 SHH.52                                                                 343.328     504.160     541.379   42737.769
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 12
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 12
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -828,12 +830,12 @@ ZHJ.54     568.000      15.000                 169.000   10699.000   15388.000  
 ZHJ.55     425.000      69.000                 220.000    2423.000   18092.000   42023.000   18249.000    8003.000
 ZHJ.56                  23.000                 893.000    1466.000   25207.000   48777.000   10947.000   40755.000
 ZHJ.57  165375.000     145.000               18730.000  247459.000  296064.000  612603.000  401631.000  289290.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 13
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -906,12 +908,12 @@ FUJ.59  575938.240   67537.280               40973.590   66879.990  307425.890  
 FUJ.61 9939574.610  210463.380               89163.440  136772.080  707892.950  659993.900 2605208.490  252558.670
 FUJ.62   52100.000  288825.140              301637.330  108739.600 2093334.580  938171.500 1383394.200  968821.520
 FUJ.66   29400.230  125378.660              102928.160  134996.030  618803.870  258659.960  946685.390  140509.030
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 14
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 14
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -984,12 +986,12 @@ HEN.32   35618.027 1928290.606    4982.867   32789.246    9381.866   35506.360  
 HEN.33   53758.407     569.810     736.220  224800.176  167618.908    3379.140    2979.896      11.967    1805.779
 HEN.34                 344.351     108.648 2409249.827                1677.041
 HEN.35    3497.467   36866.173    1502.641    4083.422  988242.436    8091.574     290.983     622.423    1034.937
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 15
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1062,12 +1064,12 @@ HUN.37    2139.980    1199.990                2228.500     746.340   27369.460  
 HUN.38    1382.690   34998.590               11030.510    8481.450    7283.830   35213.740  150795.960    3246.860
 HUN.39   53253.540   58551.180                3155.490    1739.580    3957.600     670.020    1078.850  639222.330
 HUN.40   15220.510    4472.220                7426.400   21753.590  490170.060   17799.490   17727.590   19361.870
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 16
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 16
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1140,12 +1142,12 @@ GXI.43   24655.420     911.350                9639.921     727.357   87367.430  
 GXI.44                4941.330               12073.962    1883.628    5103.990      17.380     812.870    6270.640
 GXI.45   55338.460    2680.750                3612.779     814.848   59210.040    1306.840    3411.080   27467.610
 GXI.46   21531.720    4852.780               48762.057    6780.694   35616.050    2854.920    2606.520    8282.330
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 17
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 17
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1218,12 +1220,12 @@ CHQ.49                 549.690     136.890     649.690    1636.820    1627.500  
 CHQ.50                4439.990    1158.000     444.110    1077.030    2721.090     885.110     477.700     790.460
 CHQ.51                  33.100       2.400       1.060     116.970      42.600       6.900      16.070       3.340
 CHQ.52                   0.040                                          28.640                             677.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 18
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 18
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1296,12 +1298,12 @@ GZH.54                                          90.980     230.600     874.010  
 GZH.55    1373.730    4861.110                  85.540     435.170    2566.660      66.430      31.110      75.240
 GZH.56                5932.720                 201.040      81.870    2602.100       6.040       5.050      13.110
 GZH.57  104365.850  422609.000              119572.230   60281.010   91609.980    1403.160    1720.190    2843.020
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 19
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 19
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1374,12 +1376,12 @@ SHA.59  157946.985  478332.127 1749445.808  140378.602    7165.340  164545.307  
 SHA.61 4744856.528  729691.494 1744992.446  358240.107   11111.345  276086.367  120671.692   37145.971   26334.890
 SHA.62 1378295.592 1510869.499 3092282.024  480451.084   19064.699  951242.434   64935.872   21831.550   31403.061
 SHA.66  100329.387  525505.477 1877624.061  156380.005    8487.758  353260.583   57299.889   12702.335   11488.211
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 20
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1452,12 +1454,12 @@ QIH.32    1720.510    6458.420     365.380      99.130    1390.780    3444.380  
 QIH.33                1191.470   15376.900                              54.580
 QIH.34                                      149626.830
 QIH.35                   9.370                                           2.160       1.730
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 21
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
                  1           2           3           4           5           6           7           8           9
 
@@ -1530,12 +1532,12 @@ BEJ.35     151.300     198.650   62705.670  361242.160   38190.740    3906.210  
 BEJ.36     291.530       6.850   29577.300    1185.120      77.970      40.410     208.970     149.070     222.050
 BEJ.37   37159.980     314.480   18656.130    2662.510    2436.130     738.320    5694.940   16139.500    2891.590
 BEJ.38    2643.240     596.230   10522.380    3317.260    1112.550    1319.190    6579.220   31115.210     982.410
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 22
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1608,12 +1610,12 @@ HEB.40 1897809.392    1958.485  268048.721  177427.283   23985.162   51717.438  
 HEB.41   29570.206  404228.626  655828.190  404440.650 5205933.748   34638.183  147094.224   24443.432   41073.674
 HEB.42  333879.342  394294.156 1.018926E+7 1163680.673  548251.624  124812.705  213468.263  200169.432  627304.729
 HEB.43    2317.161   11814.976  184025.909 3006068.081  418796.198   15033.499   30540.258   20819.337  243064.013
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 23
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1686,12 +1688,12 @@ NMG.45    2684.805     643.019   41634.164   20696.998  114042.382    6611.420  
 NMG.46    2941.572    1390.639   53325.154   31818.858  144000.623    2258.427   96448.450   65247.737    2161.021
 NMG.47    1091.414     272.628    2512.693   10294.567   20219.939     391.472   34214.227  935111.523     703.512
 NMG.48    1156.428    1086.770    4392.247    9510.100   31230.829     282.926   24889.681   26815.759   19428.817
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 24
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1764,12 +1766,12 @@ JIL.50     243.330    1121.220   22745.720    4799.780    3513.650     601.610  
 JIL.51     148.080     181.270    9794.550    9017.560    4299.530     186.810    4011.640   11052.950    4257.200
 JIL.52   10609.710    1282.240    7655.880   21337.260  173651.300   28472.310   78804.270    7754.330    1057.070
 JIL.53   33024.260   15698.070 1007543.450  246213.020  279844.560   22480.100   84383.460  292670.340   14417.330
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 25
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 25
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1842,12 +1844,12 @@ SHH.55    1568.394    3947.859   33599.780    2071.535    4788.079    1349.160  
 SHH.56    9748.363   11764.205   22275.011    3588.639    9192.579   10168.067   40388.858   46160.087   24702.858
 SHH.57  157278.660  309912.449 1015111.645  187790.173  848222.986  204066.395  724568.043  523732.300  514532.717
 SHH.58  358313.235  444180.428 1523993.248  224500.940 1031511.425  470873.957  688079.385  437288.839  791423.474
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 26
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1920,12 +1922,12 @@ ZHJ.61 1338351.000  111923.000 3312296.000  948506.000  791854.000 1791487.000 4
 ZHJ.62 1699412.000  103437.000 8767943.000 2053514.000 3215100.000 2068624.000 5381157.000 2655643.000 3001980.000
 ZHJ.66  359641.000  250994.000 1458628.000  195677.000  331766.000  481964.000  984999.000  625574.000  686648.000
 ANH.31   22871.820    1046.330  244323.380     267.670   65643.100                5454.000      12.560
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 27
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 27
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -1998,12 +2000,12 @@ JXI.33    3133.003 1204458.000  494284.257   23953.522     845.991     391.986  
 JXI.34                  24.000   12283.000   58828.926 1710620.527   80009.051    3020.984                8820.891
 JXI.35    2153.008    1179.003  139506.235  113435.221   20095.962      33.999     512.853     105.000     333.984
 JXI.36   16490.013      53.000   71718.872    1908.953     288.808                  39.976
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 28
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 28
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2076,12 +2078,12 @@ HEN.38   35981.514    2762.840  183167.752    7104.108    9007.360    2740.788  
 HEN.39  176430.477  106422.819   18776.630  100580.695   25066.929  188240.178  124687.037   90181.710   21910.472
 HEN.40 2516002.465   17496.308  214902.123  364086.478   45518.760   84877.482  201054.105   61468.841   64069.618
 HEN.41   10649.256   26074.482  554950.501  467476.553 1063870.564   62962.406  191187.579   56623.767   30240.967
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 29
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 29
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2154,12 +2156,12 @@ HUN.43    2927.520   18789.810  104876.930 1605389.760  342388.550  131914.020  
 HUN.44   10273.630    6136.730  916495.410   62249.290 3597853.500  725584.560 1643111.360  681384.990  940590.320
 HUN.45   14295.490    9056.470   57434.250   50567.550 1499779.550  194049.650  817582.430  265438.140   76132.580
 HUN.46   13458.990   36636.630  265619.790   60529.220  189421.800   21074.720 1304779.010  161820.620  128519.410
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 30
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 30
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2232,12 +2234,12 @@ GXI.48    4264.400     379.065   10732.720   14503.120   51479.740    3549.470  
 GXI.49     861.920      68.450    3482.180    2592.596    7230.090    1146.190   17902.760   21645.250   73518.750
 GXI.50    1738.330     263.845   10851.510    8405.646   22461.920    1475.560   12024.780   30045.690     870.590
 GXI.51     735.040     145.900   10045.950    7055.839    2566.610     450.450   46665.270    3040.340    1145.510
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 31
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2310,12 +2312,12 @@ CHQ.53   15410.550    3506.510  144965.850   76392.320  289922.200   16196.070  
 CHQ.54    1580.440    2968.540   26056.610    8479.970   20098.340    1605.740   13042.030   21064.510    7686.620
 CHQ.55     231.900      16.590    1004.240     161.530     494.670     136.320     693.800     949.290     249.200
 CHQ.56     341.390     167.170    3149.390   10592.480    1032.990     276.990     846.770    2472.410     425.340
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 32
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2388,12 +2390,12 @@ GZH.58   20378.950   56859.990  205828.120   45914.760  377722.370   26107.070  
 GZH.59    5896.710  112314.650  226845.570   43640.030   81180.210    8836.490   37379.140   72727.870   26432.920
 GZH.61   24410.610   44942.850  293645.750  155801.880  181012.850   22639.430   83774.880  153624.440   26436.250
 GZH.62   60843.710    7164.690  752097.250   73093.350  804622.520   24577.640   82108.180  120800.720   74827.960
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 33
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 33
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2466,12 +2468,12 @@ GAN.31    6877.500               35567.770                1202.880              
 GAN.32    7534.470   18306.360   70075.300  170659.460  231902.420    1183.540    3311.610     942.860    2189.770
 GAN.33     311.980 6407947.370   46627.850   10218.750   19021.340      29.930     748.860     347.190
 GAN.34                            5756.820     361.320 4561791.980                 283.480
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 34
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 34
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2544,12 +2546,12 @@ QIH.36                            6331.290
 QIH.37                           16388.170    2718.910     346.800      12.740     170.270                  87.400
 QIH.38       0.400      32.850     588.670     501.070    2168.620      68.870      59.520    4574.050
 QIH.39       8.060       0.760     286.130     126.550     467.110     833.220     840.640     111.310    1829.060
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 35
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 35
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          10          11          12          13          14          15          16          17          18
 
@@ -2622,12 +2624,12 @@ BEJ.38    6410.730     845.310    1687.850      28.780    3350.750    1738.140  
 BEJ.39   12889.650    2759.460    3315.300      15.510    1384.320     274.070    1179.050  459896.460   14952.800
 BEJ.40  118657.320    8583.340    3458.140     111.860    9218.260     828.890    5094.520   62738.160   26391.530
 BEJ.41   18998.570    3371.700     737.420     327.320   24481.310     781.230    5569.290  296833.640 2040847.640
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 36
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 36
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -2700,12 +2702,12 @@ HEB.43    5543.060    6521.041   15665.573               30116.248     834.775  
 HEB.44  248836.019   81547.236   43157.411      18.671   23579.944     199.855     560.993 4935927.556   42815.367
 HEB.45   98457.090   24703.342  471555.372     259.117   63757.030    4940.974    1196.412  597008.963   25682.187
 HEB.46    2864.077   11523.243    2559.207     103.630  172149.914    3091.672    3391.989  578238.466   51627.381
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 37
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 37
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -2778,12 +2780,12 @@ NMG.49  429042.776      31.171      20.120      34.815    3892.049     100.079  
 NMG.50   13844.585      99.808      11.466      18.172    4202.297    1192.229     300.110   96310.610   79624.017
 NMG.51      61.179      21.780       7.111      19.158     546.239      40.274      91.600   38094.020    2789.443
 NMG.52                 111.098                1791.596
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 38
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 38
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -2856,12 +2858,12 @@ JIL.54       6.420       1.180       3.320       2.440      34.880    5026.140  
 JIL.55    7950.230      49.080      92.420      83.230   10932.270    1496.440    1617.500   22767.710   12175.050
 JIL.56     149.830       1.270      29.070      17.450    1177.530      54.030      32.560               10143.200
 JIL.57    8610.480     490.650    4694.690     967.660   10583.090    5195.560    1356.950  285633.780  171585.350
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 39
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 39
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -2934,12 +2936,12 @@ SHH.61 1664393.287  290464.393  157223.947   11935.390  243562.689  105680.961  
 SHH.62 3641058.649  416728.660  140517.123   38307.400 1942566.654    7089.325    6791.232  657023.440 3617540.673
 SHH.66  780391.813  185813.378  102020.268    6941.220  664940.409   20216.371   19518.565  415206.698  570234.658
 JSU.31                 223.740  304706.780     626.720     350.150     117.290              191490.110  344656.520
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 40
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 40
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3012,12 +3014,12 @@ ANH.33      17.600                 556.620       0.430     114.140  115088.690
 ANH.34    2418.190                             208.950   14895.610
 ANH.35       4.900      13.280   18132.710       8.720     236.640       0.410       5.470  245364.020    1505.290
 ANH.36     423.530                             153.710                                                    2296.590
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 41
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 41
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3090,12 +3092,12 @@ JXI.39   12590.926     385.952   20430.871     358.000    1515.002      64.997  
 JXI.40    9603.269    7164.203    8791.945     260.000   11463.018     398.984    1751.991   29107.918   28766.764
 JXI.41    1530.880     988.875     970.994     152.000   14620.023     179.993     531.997  141095.585  536503.454
 JXI.42   52715.297   26397.599   47079.703     301.000   15939.026      87.997   20745.888  446102.717  125814.440
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 42
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 42
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3168,12 +3170,12 @@ HEN.44   47278.005   39974.844   23693.744     265.606   13638.201    1282.959  
 HEN.45    4315.605    7916.595    2273.907   30280.051   18892.203     320.708    1112.676   70579.776   20663.609
 HEN.46    1453.011    5610.081    9057.698    2170.997   59729.182    1219.162    1163.146   56095.168    4972.729
 HEN.47    1358.257    2708.875    7087.822     923.970   19343.785     607.145     818.295   42937.725  194214.097
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 43
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 43
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3246,12 +3248,12 @@ HUN.51    2317.530   17979.200   13736.170     281.730    9729.460     651.980  
 HUN.52    5340.970               64040.600  252270.530
 HUN.53   33433.090   16286.410    9198.470    8887.640  331647.000   84040.170   45815.160  370122.410  139960.940
 HUN.54     538.710     130.290    1410.090      71.100     669.300   41766.380     272.450    1333.910     520.190
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 44
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 44
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3324,12 +3326,12 @@ GXI.57   13122.940    1844.260   10548.920    3519.356  106028.470    3281.580  
 GXI.58   28287.210    3979.380   16699.780     395.967  174151.570     515.850    3355.843  816027.210  101552.640
 GXI.59   30869.820    3602.940    9861.280     783.845  344674.230    2602.970   57848.911  567336.560  475137.710
 GXI.61   59150.420   16796.090   52608.770    4192.200  337521.520    5935.190   31582.190 1730900.000  787382.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 45
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 45
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3402,12 +3404,12 @@ SIC.32    3619.774   37924.747    8727.449     270.736 1991109.261   20195.758  
 SIC.33     736.149      76.280    1041.822               50452.574  182211.611                           95918.561
 SIC.34    6744.555       7.857    1231.421               44259.566   32135.226
 SIC.35     161.819       8.992     937.709       3.165     256.542       2.556      25.351 2177597.462    2243.135
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 46
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 46
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3480,12 +3482,12 @@ YUN.38     156.000     522.000      13.000                6239.000     119.000  
 YUN.39      90.000     251.000      39.000                1093.000      15.000      34.000  116385.000    4449.000
 YUN.40     359.000    1942.000     483.000                3763.000      63.000     163.000   43099.000   14998.000
 YUN.41     282.000     749.000     117.000               40997.000    5631.000     556.000  555221.000 1050602.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 47
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 47
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3558,12 +3560,12 @@ GAN.44   27072.900    3860.700    6545.490      54.530    4632.030      36.240  
 GAN.45   10801.280    2190.340     787.280     683.940   11134.330      47.630    2387.740  408924.760    2256.430
 GAN.46     430.360    1179.650    1167.540       5.260   41766.180     217.160    1097.660  242258.680    7966.010
 GAN.47     104.570      42.260     463.300       3.630    5486.620     107.860     103.640   33772.720  136447.850
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 48
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 48
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3636,12 +3638,12 @@ QIH.52                                          68.590
 QIH.53                             106.940      18.240  954595.640      54.230     402.100   21047.020   14192.772
 QIH.54                                                                                                      70.220
 QIH.55                              23.070       2.810    6713.980       3.990       6.390   11649.390    2950.992
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 49
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 49
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          19          20          21          22          23          24          25          26          27
 
@@ -3714,12 +3716,12 @@ BEJ.49  152607.830 9548967.000
 BEJ.50    4833.760 1427426.880
 BEJ.51   27521.250  150023.580
 BEJ.53  385471.400 1577882.260
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 50
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 50
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -3792,12 +3794,12 @@ HEB.40   53531.876  963169.701
 HEB.41  174421.539 1712483.961
 HEB.42   79209.383 1401311.346
 HEB.43    8125.294  144446.461
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 51
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 51
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -3870,12 +3872,12 @@ NMG.5                                                                          1
 NMG.6                                                                                      1.146907E+7
 NMG.7                                                                                                  2695709.665
 NMG.31  313976.590   19610.132
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 52
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 52
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -3948,12 +3950,12 @@ LIA.62 5240900.000 8887064.520
 LIA.66 3849500.000 2515126.890
 LIA.70                          459219.390 2527067.340 4814743.580 1932351.400 1261953.640 1534683.150  954666.010
 LIA.71                          531574.140   81951.950 4468591.950 1598016.050   33954.070  810283.280  520085.810
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 53
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 53
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4026,12 +4028,12 @@ HLJ.51    1441.100    8773.600
 HLJ.53  314712.600  957997.500
 HLJ.54    9228.900    7005.800
 HLJ.55   28428.900  115380.200
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 54
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 54
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4104,12 +4106,12 @@ JSU.44   11216.440  102989.370
 JSU.45   24940.950  670001.000
 JSU.46   64782.210  668945.510
 JSU.47  324217.500 1446935.480
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 55
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 55
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4182,12 +4184,12 @@ ANH.38   22127.050  240985.510
 ANH.39    9618.630  137944.120
 ANH.40   28770.010  641646.960
 ANH.41   55772.720  417589.580
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 56
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 56
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4260,12 +4262,12 @@ JXI.6                                                                           
 JXI.7                                                                                                  3339800.000
 JXI.31  338569.996  253319.511
 JXI.32    1705.995       2.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 57
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 57
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4338,12 +4340,12 @@ SHD.66 3703095.487 3635733.577
 SHD.70                         3620120.502   31313.694   34797.700  265379.415   92917.010 1531936.461  128834.326
 SHD.71                         8715701.349    1742.850   33330.649  589102.048   15795.207  361849.292  110257.514
 HEN.1                          3.862497E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 58
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 58
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4416,12 +4418,12 @@ HUB.51   14771.276   36400.946
 HUB.53  315868.302  504168.210
 HUB.54   31552.844    5504.686
 HUB.55   39260.954  127898.671
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 59
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 59
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4494,12 +4496,12 @@ GUD.44    1353.469   54156.881
 GUD.45   44535.323 2077797.507
 GUD.46   10636.191 1101326.691
 GUD.47  448484.795  307605.592
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 60
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 60
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4572,12 +4574,12 @@ HAI.37   11285.235   15325.959
 HAI.38     509.390     430.214
 HAI.39    1470.909   12549.082
 HAI.40   16832.134  162116.700
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 61
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 61
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4650,12 +4652,12 @@ SIC.3                                                  2652246.017
 SIC.4                                                              1496192.311
 SIC.5                                                                           773060.262
 SIC.6                                                                                      2.114724E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 62
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 62
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4728,12 +4730,12 @@ GZH.59  534775.860 1235003.780
 GZH.61  523595.000 4164502.322
 GZH.62 1388914.000 2858913.920
 GZH.66  472098.000  452713.768
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 63
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 63
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4806,12 +4808,12 @@ SHA.49    6947.487  451142.192
 SHA.50    2920.981  499411.621
 SHA.51   11674.258   29439.502
 SHA.53  195720.689  777469.566
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 64
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 64
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4884,12 +4886,12 @@ NXA.40   13652.435  109709.252
 NXA.41   15427.582  172211.970
 NXA.42    8786.169  129937.009
 NXA.43    1162.630   21360.317
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 65
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 65
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -4962,12 +4964,12 @@ XIN.6                                                                           
 XIN.7                                                                                                   977223.068
 XIN.31  109926.293
 XIN.32                  68.080
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 66
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 66
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          28          29          31          32          33          34          35          36          37
 
@@ -5040,12 +5042,12 @@ HEB.70 1207679.251 2321902.348 2097651.812 1.470926E+7 1.136787E+7 2098393.683 1
 HEB.71   85274.100   11483.900  132783.400   12550.800  877850.100   44247.500  252454.000   55682.200  780292.200
 HEB.73                                                   75071.689  852688.690  172809.372
 SHX.8   244068.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 67
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 67
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          38          39          40          41          42          43          44          45          46
 
@@ -5118,12 +5120,12 @@ JSU.11                                     9997106.120
 JSU.12                                                 9.599264E+7
 JSU.13                                                             1.541560E+7
 JSU.14                                                                         7.677900E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 68
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 68
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          38          39          40          41          42          43          44          45          46
 
@@ -5196,12 +5198,12 @@ HEN.14                                                                         3
 HEN.15                                                                                     5342597.008
 HEN.16                                                                                                 2.082140E+7
 HEN.70 1325663.804  164011.151  873167.257 3397553.957 6401636.823  381196.843 1.353233E+7 2171658.674 1.611461E+7
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 69
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 69
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          38          39          40          41          42          43          44          45          46
 
@@ -5274,12 +5276,12 @@ CHQ.16                                                                          
 CHQ.70  290842.360  261367.390  492960.530 1214146.720 2604263.000 1707347.360 3602604.930  559805.040 2188420.390
 CHQ.71     232.430    5454.200   12479.020              171181.340    6707.960   70907.070   45815.200  622830.590
 SIC.8  2155283.779
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 70
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 70
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          38          39          40          41          42          43          44          45          46
 
@@ -5352,12 +5354,12 @@ QIH.8    47053.810
 QIH.9                25384.770
 QIH.10                            7237.030
 QIH.11                                       39779.310
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 71
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 71
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          38          39          40          41          42          43          44          45          46
 
@@ -5430,12 +5432,12 @@ SHX.25                                                                          
 SHX.70 2822647.000 1165340.000 2533646.000  627472.000   53138.000   10954.000   64925.000   76478.000
 SHX.73  766808.000  356444.000  607587.000  229047.000               68720.000
 NMG.17 2065849.244
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 72
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 72
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          47          48          49          50          51          52          53          54          55
 
@@ -5508,12 +5510,12 @@ ZHJ.17 2.716213E+7
 ZHJ.18             3.098597E+7
 ZHJ.19                         2.018630E+7
 ZHJ.20                                     4359692.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 73
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 73
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          47          48          49          50          51          52          53          54          55
 
@@ -5586,12 +5588,12 @@ HUB.19                         4101786.532
 HUB.20                                      927616.049
 HUB.21                                                 1063531.081
 HUB.22                                                              279901.631
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 74
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 74
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          47          48          49          50          51          52          53          54          55
 
@@ -5664,12 +5666,12 @@ SIC.18             4600592.831
 SIC.19                         5676558.901
 SIC.20                                     1211721.651
 SIC.21                                                  434879.947
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 75
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 75
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          47          48          49          50          51          52          53          54          55
 
@@ -5742,12 +5744,12 @@ QIH.22                                                                 683.780
 QIH.23                                                                         1274260.370
 QIH.24                                                                                        2665.660
 QIH.25                                                                                                    9591.870
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 76
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 76
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          47          48          49          50          51          52          53          54          55
 
@@ -5820,12 +5822,12 @@ TAJ.41                                                                          
 TAJ.42                                                                          984878.313
 TAJ.43                                                                           90713.931
 TAJ.45                                                                           55137.753
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 77
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 77
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -5898,12 +5900,12 @@ SHX.41                                                                          
 SHX.42                                                                          950453.000
 SHX.43                                                                          402761.000
 SHX.44                                                                          112416.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 78
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 78
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -5976,12 +5978,12 @@ LIA.42                                                                          
 LIA.43                                                                           99482.490
 LIA.45                                                                          140961.800
 LIA.46                                                                           43237.210
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 79
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 79
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6054,12 +6056,12 @@ HLJ.42                                                                          
 HLJ.43                                                                          193218.800
 HLJ.45                                                                           56806.700
 HLJ.46                                                                           67029.800
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 80
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 80
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6132,12 +6134,12 @@ JSU.46                                                                          
 JSU.47                                                                         1695489.730
 JSU.48                                                                         1493053.430
 JSU.49                                                                         1505192.310
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 81
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 81
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6210,12 +6212,12 @@ ANH.44                                                                          
 ANH.45                                                                          307356.220
 ANH.46                                                                           38010.150
 ANH.47                                                                          469177.410
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 82
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 82
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6288,12 +6290,12 @@ JXI.40                                                                          
 JXI.41                                                                          477617.000
 JXI.42                                                                          819168.000
 JXI.43                                                                          436900.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 83
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 83
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6366,12 +6368,12 @@ HEN.39                                                                          
 HEN.40                                                                          461179.689
 HEN.41                                                                          309301.031
 HEN.42                                                                         1817033.224
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 84
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 84
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6444,12 +6446,12 @@ HUN.37                                                                          
 HUN.38                                                                         2996170.660
 HUN.39                                                                          377789.550
 HUN.40                                                                          461987.170
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 85
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 85
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6522,12 +6524,12 @@ GXI.37                                                                          
 GXI.38                                                                          517121.310
 GXI.39                                                                          197186.020
 GXI.40                                                                          172032.630
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 86
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 86
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6600,12 +6602,12 @@ CHQ.36                                                                         3
 CHQ.37                                                                          843523.640
 CHQ.38                                                                          384973.630
 CHQ.39                                                                          220519.980
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 87
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 87
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6678,12 +6680,12 @@ GZH.33                                                                          
 GZH.36                                                                         1437892.190
 GZH.37                                                                          133796.390
 GZH.38                                                                          512097.330
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 88
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 88
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6756,12 +6758,12 @@ SHA.37                                                                          
 SHA.38                                                                         1196827.049
 SHA.39                                                                          229978.468
 SHA.40                                                                          318780.988
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 89
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 89
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6834,12 +6836,12 @@ NXA.37                                                                          
 NXA.38                                                                           18031.670
 NXA.39                                                                           29859.560
 NXA.40                                                                           62756.370
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 90
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 90
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6912,12 +6914,12 @@ XIN.32                                                                          
 XIN.33                                                                           32210.900
 XIN.36                                                                         1477365.858
 XIN.37                                                                          165499.836
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 91
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 91
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          56          57          58          59          61          62          63          64          65
 
@@ -6990,12 +6992,12 @@ TAJ.36             2521885.035  291039.674              125794.012
 TAJ.37              392371.639  226750.034                8247.563
 TAJ.38              165484.349  758605.663               40071.939
 TAJ.39               34263.707  457580.729  301677.667   26624.377
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 92
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 92
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7068,12 +7070,12 @@ SHX.44             1538357.000                         6595820.000
 SHX.45                6661.000              903537.000
 SHX.46              103576.000             6230604.000
 SHX.47                8752.000             3100994.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 93
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 93
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7146,12 +7148,12 @@ LIA.52                 729.930   14111.570
 LIA.53              893695.520  206069.480
 LIA.56                                     2.315814E+7
 LIA.57              443930.160  332491.620  231128.900   66073.780
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 94
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 94
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7224,12 +7226,12 @@ HLJ.57              218513.300              331870.900   57220.600
 HLJ.58              775058.700              865625.400  132888.200
 HLJ.59              431423.300              591800.000
 HLJ.64                                     3380995.800
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 95
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 95
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7302,12 +7304,12 @@ ZHJ.35               24861.000   36657.000                 234.000
 ZHJ.36             4636102.000 1452546.000               66679.000
 ZHJ.37             7129834.000 1.739595E+7              200324.000
 ZHJ.38             6496481.000 8995467.000              123368.000
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 96
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 96
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7380,12 +7382,12 @@ FUJ.41              119391.410   52309.100              127554.950
 FUJ.42             4576771.690 2848264.790              124144.660
 FUJ.43             1214655.560 1932750.970              158032.360
 FUJ.44             1267115.080  627828.550              245650.840
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 97
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 97
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7458,12 +7460,12 @@ SHD.52                  18.511    1296.281                1563.996
 SHD.53                4327.143     197.885               13959.836
 SHD.54                 853.497    6800.470                 217.116
 SHD.55                  20.307                            1483.980
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 98
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 98
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7536,12 +7538,12 @@ HUB.65 1.352872E+7
 HUN.22   73555.980
 HUN.31             1.219852E+7               38862.630
 HUN.32                7194.180
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                       03/10/12 13:22:07 Page 99
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                    03/12/12 13:11:32 Page 99
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7614,12 +7616,12 @@ GXI.37              236713.100  617783.270
 GXI.38              133566.460  182073.680
 GXI.39              916026.390  141549.510  141702.470
 GXI.40              579376.060   27869.850               65640.320
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 100
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 100
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7692,12 +7694,12 @@ CHQ.44              313465.880  326298.670  903785.370   46920.510
 CHQ.45               25214.370   20331.290   94455.260   25261.790
 CHQ.46              261908.920  581321.220 2237760.620   61355.400
 CHQ.47             1.183425E+7 1142063.390  144283.380  157092.050
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 101
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 101
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7770,12 +7772,12 @@ GZH.49              231044.420              350475.440
 GZH.50               56290.120              112461.310    2185.470
 GZH.51               89824.280
 GZH.52                1446.240                             732.780
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 102
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 102
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7848,12 +7850,12 @@ SHA.58             6253148.780              327733.506   42563.234
 SHA.59             8653083.715
 SHA.63             1412508.957
 SHA.65 9669502.749
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 103
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 103
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7926,12 +7928,12 @@ QIH.32                 223.910   15965.940   72244.610
 QIH.33               15122.930  117931.170  326222.370  608994.540
 QIH.34                5088.920   74830.170  113203.930  865625.760
 QIH.35                  47.350    7397.870   19170.560
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 104
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 104
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        130 PARAMETER sam2  SAM v2.0
+        129 PARAMETER sam2  SAM v2.0
 
      +          66          70          71          72          73
 
@@ -7995,7 +7997,7 @@ XIN.64                                     4176758.093
 XIN.65 2910914.227
 
 
-----    133 PARAMETER ebt  EBT
+----    132 PARAMETER ebt  EBT
 
                    1           2           3           4           5           6           7           8           9
 
@@ -8004,12 +8006,12 @@ coal.TAJ       0.036                2708.751                  12.299      32.497
 coal.HEB    1989.302     207.829    8538.328       8.965      15.758     123.588       0.968      15.414       1.464
 coal.SHX   51179.426    2397.626   13459.966                  69.352    1069.708                   0.297       0.255
 coal.NMG   15278.254     994.644    1133.586     567.006      80.375     230.876       0.166      10.268       7.620
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 105
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 105
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
                    1           2           3           4           5           6           7           8           9
 
@@ -8082,12 +8084,12 @@ oil .ANH       1.815                 369.057     262.566
 oil .FUJ                             475.355
 oil .JXI                             331.609     222.940
 oil .SHD    3024.579                1215.409    3932.265                               1.243
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 106
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 106
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
                    1           2           3           4           5           6           7           8           9
 
@@ -8160,12 +8162,12 @@ ng  .SIC     565.172                                                       0.427
 ng  .GZH                              69.052                                                       0.038       0.025
 ng  .YUN       0.023                  71.106                               0.089
 ng  .SHA     685.973                                                       0.126       0.726                   0.005
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 107
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 107
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
                    1           2           3           4           5           6           7           8           9
 
@@ -8238,12 +8240,12 @@ coal.SHH       3.192       0.532       0.596       1.126       0.044     996.119
 coal.JSU      12.455     244.299      17.781      13.574      17.572    1374.992    1040.537     186.892
 coal.ZHJ      21.057     258.308      21.823       3.942      50.991     131.900     123.651    1025.243      69.271
 coal.ANH      22.663      10.848       1.559       1.844      15.230     804.036    1233.436                 207.448
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 108
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 108
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          10          11          12          13          14          15          16          17          18
 
@@ -8316,12 +8318,12 @@ oil .GUD       0.010       0.003       0.196       0.013       0.007    4483.876
 oil .GXI                                                                 215.256       0.011                   0.001
 oil .HAI 6.646492E-5             5.635584E-7 3.171672E-5 4.722538E-4    1264.499 3.304882E-4 6.244562E-4       0.001
 oil .CHQ       0.004 7.591063E-4 4.435490E-4                   0.003       0.003       0.069       0.016       0.022
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 109
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 109
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          10          11          12          13          14          15          16          17          18
 
@@ -8394,12 +8396,12 @@ ng  .QIH       0.219                                                            
 ng  .XIN       0.027       0.001 4.730769E-5 9.152970E-4       0.183       4.408                   1.671       0.877
 eleh.BEJ       4.592       0.727       0.669       1.069       3.240       3.843      29.451       8.558      12.554
 eleh.TAJ      11.462       9.070       3.618       3.346       8.357      57.621      80.127       8.638     105.829
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 110
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 110
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          10          11          12          13          14          15          16          17          18
 
@@ -8472,12 +8474,12 @@ coal.HUB      10.879      16.612       6.341       3.976       8.275       0.090
 coal.HUN      14.068      13.292       7.523       1.127       1.787       0.482      35.889       0.374    2200.133
 coal.GUD       3.267       1.181       7.370       0.408       2.385       0.040       0.969                5764.373
 coal.GXI       0.797       1.330       2.951       0.322       1.361 2.099995E-5       0.076       0.090    1421.275
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 111
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 111
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          19          20          21          22          23          24          25          26          27
 
@@ -8550,12 +8552,12 @@ roil.SHX                  35.706       2.514       1.644       0.090       0.342
 roil.NMG       0.019      23.817       4.816       2.391       0.261       0.017       2.804       0.028       3.976
 roil.LIA      13.197      98.470      25.615      15.977      12.541       3.638       1.198       1.046      80.659
 roil.JIL       0.671       6.326      20.544       1.911       0.859       0.020       0.149       0.180       6.442
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 112
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 112
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          19          20          21          22          23          24          25          26          27
 
@@ -8628,12 +8630,12 @@ eleh.JXI       2.671       7.855       4.367       8.972       2.057       1.953
 eleh.SHD      77.512      18.196      73.257      55.231      48.830       7.291       9.427       0.662     309.039
 eleh.HEN      16.899     118.141      14.261       7.932       2.684       2.487       5.980       1.699
 eleh.HUB      15.531      46.156      74.885      27.935      27.032       6.069      15.557       0.361      43.846
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 113
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 113
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          19          20          21          22          23          24          25          26          27
 
@@ -8706,12 +8708,12 @@ coal.GZH                               4.635       6.129      42.082      52.472
 coal.YUN     126.190                  16.652      15.818      11.372      11.303                 193.154
 coal.SHA      11.358       0.773       8.206      16.288      29.629                   0.854      58.649
 coal.GAN      12.907       0.030      15.998      28.728      15.143      10.704       0.042     243.199
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 114
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 114
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          28          29          30          31          32          33          34          35          36
 
@@ -8784,12 +8786,12 @@ roil.NMG       0.624       0.286      42.912     645.874      99.664      98.077
 roil.LIA       1.196                  29.816    1117.807       8.612      85.059       2.208       1.421
 roil.JIL       1.356       0.310      35.863     283.199      63.598     209.563       2.933      62.465      25.989
 roil.HLJ      40.947                             400.093     146.687      88.370       6.761      73.475      23.442
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 115
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 115
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          28          29          30          31          32          33          34          35          36
 
@@ -8862,12 +8864,12 @@ eleh.JXI       0.130       8.419       4.838       9.216      16.164      29.123
 eleh.SHD       1.492      23.600      35.279      37.631     104.161     155.784       0.555     542.351
 eleh.HEN       5.763       7.634       9.920      41.187      43.389      78.521       9.016     436.228
 eleh.HUB       4.742      23.366      10.490      14.247      42.640      53.444       0.382     174.014
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 116
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 116
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          28          29          30          31          32          33          34          35          36
 
@@ -8940,12 +8942,12 @@ fg  .HEB     767.083
 fg  .SHX    1059.782
 fg  .NMG     443.348
 fg  .LIA     854.115
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 117
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 117
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          37
 
@@ -9018,12 +9020,12 @@ roil.JXI    1043.221
 roil.SHD    7761.778
 roil.HEN    2832.831
 roil.HUB    1786.912
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 118
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 118
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          37
 
@@ -9096,12 +9098,12 @@ othe.BEJ       5.902
 othe.TAJ      26.273
 othe.HEB      79.307
 othe.SHX      44.049
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 119
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 119
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        133 PARAMETER ebt  EBT
+        132 PARAMETER ebt  EBT
 
        +          37
 
@@ -9127,7 +9129,7 @@ othe.SHA      93.480
 othe.GAN      46.447
 
 
-----    136 PARAMETER oilngratio  Oil and gas ratio of (PROD+DRC+RC-X-DX)
+----    135 PARAMETER oilngratio  Oil and gas ratio of (PROD+DRC+RC-X-DX)
 
 BEJ       0.722,    TAJ       0.877,    HEB       0.910,    NMG       0.379,    LIA       0.970,    JIL       0.940
 HLJ       0.849,    SHH       0.890,    JSU       0.877,    ZHJ       0.950,    ANH       0.923,    FUJ       0.988
@@ -9136,7 +9138,7 @@ GXI       0.926,    HAI       0.799,    CHQ 4.752373E-4,    SIC       0.183,    
 GAN       0.914,    NXA       0.399,    QIH       0.651,    XIN       0.726
 
 
-----    139 PARAMETER pricerange  Price range of energy products
+----    138 PARAMETER pricerange  Price range of energy products
 
             LB          UB
 
@@ -9148,7 +9150,7 @@ GAN       0.914,    NXA       0.399,    QIH       0.651,    XIN       0.726
 30    3000.000   10000.000
 
 
-----    306 PARAMETER sumcolumn  
+----    305 PARAMETER sumcolumn  
 
               1           2           3           4           5           6           7           8           9          10
 
@@ -9174,12 +9176,12 @@ GUD     282.124                  48.204      16.169      17.099     294.094     
 GXI     213.466       1.671                  17.205       4.339     118.062       9.320       6.522      15.320      19.629
 HAI      54.832                               2.707       0.457      13.835       1.127       0.228       1.675       7.939
 CHQ      72.072      16.880       0.221       1.687       1.833      44.352      13.004       6.922       3.820      10.127
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 120
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 120
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumcolumn  
+        305 PARAMETER sumcolumn  
 
               1           2           3           4           5           6           7           8           9          10
 
@@ -9252,12 +9254,12 @@ CHQ       0.950       1.526      33.761       6.386       1.570     131.968     
 SIC       4.349       3.121      78.698      13.406       4.387     274.353     105.741     204.005     414.608       0.939
 GZH       2.367       3.023      71.565       1.344       1.062      57.286      34.786      43.860     116.743
 YUN       0.642       1.679      56.115       1.065       1.232     140.208      42.644      72.833     215.536
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 121
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 121
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumcolumn  
+        305 PARAMETER sumcolumn  
 
   +          21          22          23          24          25          26          27          28          29          30
 
@@ -9330,12 +9332,12 @@ YUN      41.229      73.051      20.197     179.184       9.753      79.375     
 SHA      93.331      94.917      51.692     127.414      33.770     113.032      84.589      51.375      36.941      14.009
 GAN      80.052      46.572      18.241     146.843       3.369      17.786       4.273       8.493       4.665       0.907
 NXA      18.681      26.241       6.089      29.609       4.888      21.782       2.895       6.889       2.282       1.531
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 122
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 122
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumcolumn  
+        305 PARAMETER sumcolumn  
 
   +          41          42          43          44          45          46          47          48          49          50
 
@@ -9408,12 +9410,12 @@ NXA      39.857      43.470     119.467       5.845      18.151      12.306     
 QIH      32.823      35.436      80.664      13.479      23.581      10.102       2.516      40.034      61.522      75.825
 XIN     183.809     146.721     325.201      41.768      70.877      34.769     252.309      27.780     226.249      13.073
 
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 123
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 123
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----    306 PARAMETER sumrow  
+----    305 PARAMETER sumrow  
 
               1           2           3           4           5           6           7           8           9          10
 
@@ -9486,12 +9488,12 @@ XIN      76.055      35.355       9.586      31.119       2.469       1.896     
 BEJ       5.183       0.353      87.671       2.472       3.345     193.212     140.058     220.297    1172.346
 TAJ       3.596      11.618      43.635       1.011       1.488     135.358     105.298      90.688     193.112       1.498
 HEB      16.450       8.413     158.291       3.023       2.336     216.377     241.997     139.938     513.586       1.361
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 124
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 124
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumrow  
+        305 PARAMETER sumrow  
 
   +          21          22          23          24          25          26          27          28          29          30
 
@@ -9564,12 +9566,12 @@ HEB     245.160     377.599     221.941     810.495     185.497     318.070     
 SHX     119.531      83.842      52.200     282.336      34.181      98.786      45.482      23.684      32.103       9.975
 NMG      34.702      76.033      45.298     187.853      11.330      60.781      28.726      22.008      19.297       4.356
 LIA     250.514     277.084     104.153     430.295      82.657     339.299     193.686     100.227     103.712      22.512
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 125
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 125
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumrow  
+        305 PARAMETER sumrow  
 
   +          41          42          43          44          45          46          47          48          49          50
 
@@ -9642,12 +9644,12 @@ LIA     468.371     482.962     763.420      84.135     188.821     191.688     
 JIL     216.576     268.065     622.188       7.591      82.335      80.210     748.073                 407.909      24.709
 HLJ     265.660     486.573     522.154      33.810     122.502     123.260     274.872                 321.594      17.367
 SHH     446.204     588.042     979.822      29.532     185.611     185.801    1043.220    1232.145     504.140      52.835
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                      03/10/12 13:22:07 Page 126
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                   03/12/12 13:11:32 Page 126
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-        306 PARAMETER sumrow  
+        305 PARAMETER sumrow  
 
   +          61          62          63          64          65          66          70          71          72          73
 
@@ -9674,12 +9676,12 @@ QIH      34.009      38.616      80.664      13.479      23.581      11.343     
 XIN     191.245     194.087     325.201      41.768      70.877      44.878     252.309      27.780     226.249      13.073
 
 
-----    361 PARAMETER changeofoutput       =       36.245  
+----    360 PARAMETER changeofoutput       =       36.060  
 
-----    362 PARAMETER incsparcity          =     7339.000  
+----    361 PARAMETER incsparcity          =     8826.000  
 
 
-EXECUTION TIME       =        3.666 SECONDS      7 Mb  WIN234-234 May 21, 2010
+EXECUTION TIME       =        1.217 SECONDS      8 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -9689,5 +9691,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.gms
-Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\oilgassplit.lst
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\oilgassplit.lst

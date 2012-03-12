@@ -42,7 +42,6 @@ I2      |       |   ic  |       |  psv2 |       |       |       |       |       
         ----------------------------------------------------------------------------------------
 
 $offtext
-$if not set prov   $set prov BEJ
 $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder1 '%projectfolder%/data/gdx'
 $setlocal inputfolder2 '%projectfolder%/data/gdx/egygdx/estimation'

@@ -1,20 +1,3 @@
 B 2 C o m p i l a t i o n
-B 293 Include File Summary
-B 307 Equation Listing    SOLVE gua Using NLP From line 231
-D 308 rsum
-D 470 csum
-D 631 sumbalance
-D 642 drcsum
-D 719 dxsum
-D 796 obj
-B 5719 Column Listing      SOLVE gua Using NLP From line 231
-E 5720 finalsam
-E 5743 rowsum
-E 5762 columnsum
-E 5781 domesticinsum
-E 5797 domesticoutsum
-E 5813 jj
-B 5822 Model Statistics    SOLVE gua Using NLP From line 231
-B 5840 Solution Report     SOLVE gua Using NLP From line 231
-B 5868 E x e c u t i o n
-I 5869 finalsam
+B 336 Error Messages
+B 346 Include File Summary

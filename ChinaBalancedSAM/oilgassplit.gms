@@ -314,7 +314,7 @@ loop(i$((ord(i)>=31) and (ord(i)<=60)),
 totoutput(r)=totoutput(r)+sumcolumn(r,i);
 ););
 loop(r,
-loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.005)),
+loop(i$((ord(i)>=31) and (ord(i)<=60) and (sumcolumn(r,i)/totoutput(r)<0.005) and not(((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60)))),
 loop(ii$((ord(ii)=ord(i)) or (ord(ii)=ord(i)-30)),
 loop(j,
 sam3(r,ii,j)=0;
@@ -334,7 +334,7 @@ parameter incsparcity;
 incsparcity=0;
 loop(r,
 loop(i,
-loop(j$((ord(j)>=1) and (ord(j)<=30)),
+loop(j$((ord(j)>=1) and (ord(j)<=30) and not(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)))),
 if(((sam3(r,i,j)<0.005*sumcolumn(r,j)) AND (sam3(r,i,j)<>0)),
 sam3(r,j,i)=0;
 incsparcity=incsparcity+1;
