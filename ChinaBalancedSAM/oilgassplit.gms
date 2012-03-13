@@ -120,7 +120,6 @@ set      prange/
 parameter sam2(r,i,j)           SAM v2.0
 parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
 parameter ebt(e,r,ebti)         EBT
-parameter ebt2(i,r,ebti)        EBT for OPT
 parameter pricerange(i,prange)  Price range of energy products
 parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
 parameter poilng
@@ -136,32 +135,8 @@ display oilngratio
 $gdxin '%inputfolder3%/pricerange.gdx'
 $load pricerange
 display pricerange
-*ebt2
-loop(r,
-loop(ebti,
-loop(e,
-if(sameas(e,"coal"),
-ebt2("2",r,ebti)=ebt(e,r,ebti);
-);
-if(sameas(e,"fg"),
-ebt2("3",r,ebti)=ebt(e,r,ebti);
-);
-if(sameas(e,"oil"),
-ebt2("11",r,ebti)=ebt(e,r,ebti);
-);
-if(sameas(e,"roil"),
-ebt2("23",r,ebti)=ebt(e,r,ebti);
-);
-if(sameas(e,"ng"),
-ebt2("24",r,ebti)=ebt(e,r,ebti);
-);
-if(sameas(e,"eleh"),
-ebt2("30",r,ebti)=ebt(e,r,ebti);
-);
-);
-);
-);
 
+parameter poilng;
 *price: oil/ng
 poilng=3;
 *oilgas
@@ -282,8 +257,6 @@ allsamsum1=allsamsum1+sam3(r,i,j);
 );
 );
 );
-
-
 ****
 *Filter 1: Diminish sectors which take smaller than 0.5% of the total out
 parameter sumcolumn(r,i),sumrow(r,i);
@@ -326,17 +299,45 @@ smallsector(r,i)=1;
 loop(r,
 totoutput(r)=0;
 );
+
+*sam after filter1
+parameter tempsam(r,i,j);
+loop(r,
+loop(i,
+loop(j,
+tempsam(r,i,j)=sam3(r,i,j);
+);
+);
+);
+****Filter 2: Diminishing all the input which is smaller than 1% of total output
+loop(r,
+loop(i,
+sumcolumn(r,i)=0;
+sumrow(r,i)=0;
+););
+loop(r,
+loop(i,
+sumcolumn(r,i)=sum(j,sumcolumn(r,i)+sam3(r,j,i));
+);
+);
+loop(r,
+loop(i,
+sumrow(r,i)=sum(j,sumrow(r,i)+sam3(r,i,j));
+);
+);
 loop(r,
 loop(i$((ord(i)>=31) and (ord(i)<=60)),
 totoutput(r)=totoutput(r)+sumcolumn(r,i);
 ););
 parameter incsparcity;
 incsparcity=0;
+
 loop(r,
 loop(i,
-loop(j$((ord(j)>=1) and (ord(j)<=30) and not(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)))),
-if(((sam3(r,i,j)<0.005*sumcolumn(r,j)) AND (sam3(r,i,j)<>0)),
-sam3(r,j,i)=0;
+*loop(j$((ord(j)>=1) and (ord(j)<=30) and not(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)))),
+loop(j$((ord(j)>=1) and (ord(j)<=30)),
+if(((sam3(r,i,j)<0.01*sumcolumn(r,j)) AND (sam3(r,i,j)<>0)),
+sam3(r,i,j)=0;
 incsparcity=incsparcity+1;
 );
 allsamsum2=allsamsum2+sam3(r,i,j);
@@ -356,9 +357,30 @@ loop(r,
 loop(i$((ord(i)>=31) and (ord(i)<=60)),
 totchange(r)=(totoutput(r)-totoutput2(r))/totoutput(r);
 ););
+
 changeofoutput=(allsamsum1-allsamsum2)/allsamsum1*100/2;
 display changeofoutput
 display incsparcity;
+
+*Original energy related data
+parameter egyvalue(i,r,ebti);
+loop(r,
+loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),
+loop(j$(ord(j)=ord(i)+30),
+egyvalue(i,r,"1")=sam3(r,j,"70");
+egyvalue(i,r,"2")=sam3(r,j,"71");
+egyvalue(i,r,"3")=sam3(r,"70",j);
+egyvalue(i,r,"4")=sam3(r,"71",j);
+loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+loop(ii$(ord(ii)=ord(ebti)-4),
+egyvalue(i,r,ebti)=sam3(r,j,ii);
+);
+);
+egyvalue(i,r,"35")=sam3(r,j,"63")+sam3(r,j,"65");
+egyvalue(i,r,"36")=sam3(r,j,"73");
+egyvalue(i,r,"37")=sam3(r,i,j);
+);););
+display egyvalue;
 
 *chksam
 set     negval3(r,i,j)     Flag for negative elements;
@@ -374,3 +396,48 @@ chksam3(r,i,"before") = sum(j, sam3(r,i,j)-sam3(r,j,i));
 chksam3(r,i,"scale") = sum(j, sam3(r,j,i));
 chksam3(r,i,"%dev")$sum(j, sam3(r,i,j)) = 100 * sum(j, sam3(r,i,j)-sam3(r,j,i)) / sum(j, sam3(r,i,j));
 );
+
+*Adjustment of energy data
+parameter ebt2(i,r,ebti)
+parameter isumebt(i,r)
+loop(i,
+loop(r,
+isumebt(i,r)=0;
+););
+loop(r,
+loop(ebti,
+loop(e,
+if(sameas(e,"coal"),
+ebt2("2",r,ebti)=ebt(e,r,ebti);
+);
+if(sameas(e,"fg"),
+ebt2("3",r,ebti)=ebt(e,r,ebti);
+);
+if(sameas(e,"oil"),
+ebt2("11",r,ebti)=ebt(e,r,ebti);
+);
+if(sameas(e,"roil"),
+ebt2("23",r,ebti)=ebt(e,r,ebti);
+);
+if(sameas(e,"ng"),
+ebt2("24",r,ebti)=ebt(e,r,ebti);
+);
+if(sameas(e,"eleh"),
+ebt2("30",r,ebti)=ebt(e,r,ebti);
+);
+);
+);
+);
+loop(i,
+loop(r,
+loop(ebti,
+isumebt(i,r)=isumebt(i,r)+ebt2(i,r,ebti);
+);););
+loop(i,
+loop(r,
+loop(ebti,
+if (ebt2(i,r,ebti)<0.01*isumebt(i,r),
+ebt2(i,r,ebti)=0;
+);
+);
+););
