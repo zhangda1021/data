@@ -1,0 +1,364 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 16:35:11 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+       
+              Production activities   A (30)
+              Commodities             C (30)
+              Primary Factors         F (2)
+              Households              H (1)
+              Central Government      G1(1)
+              Provincial Government   G2(1)
+              Types of taxes          T (4)
+              Rest of country         DX(1)
+              Rest of world           X (1)
+              Investment-savings      I (2)
+       
+      Here is a "MAP" of the SAM with the names of the submatrices which
+      contain data.  All cells with no labels are empty:
+       
+       
+       
+                 A       C        F       H      G1      G2       T       DX    
+        X      I1      I2
+              ------------------------------------------------------------------
+      ----------------------
+      A       |       |   ac  |       |       |       |       |   sa  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      C       |   ca  |       |       |   ch  |       |  g2d  |       |   der | 
+        er  |  cs1  |  cs2  |
+              ------------------------------------------------------------------
+      ----------------------
+      F       |   fa  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      H       |       |       |   hf  |       |       |  hg2  |       |   dhr | 
+        hr  |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G1      |       |       |       |       |       |  g1g2 |       |       | 
+            |  cg1s |       |
+              ------------------------------------------------------------------
+      ----------------------
+      G2      |       |       |       |       | g2g1  |       |   tr  |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      T       |   ta  |       |       |       |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      DX      |       |  drc  |       |  drh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      X       |       |   rc  |       |   rh  |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I1      |       |       |   dp  |  psv1 | g1sv  |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+      I2      |       |   ic  |       |  psv2 |       |       |       |       | 
+            |       |       |
+              ------------------------------------------------------------------
+      ----------------------
+       
+  48   
+  49  *SAM table
+  50  set     i   SAM rows and colums indices   /
+  51          1*30    Industries,
+  52          31*60   Commodities,
+  53          61      Labor,
+  54          62      Capital,
+  55          63      Household,
+  56          64      Central Government,
+  57          65      Local Government,
+  58          66      Production tax,
+  59          67      Commodity tax,
+  60          68      Factor tax,
+  61          69      Income tax,
+  62          70      Domestic trade,
+  63          71      Foreign trade,
+  64          72      Investment,
+  65          73      Inventory/;
+  66  alias (i,j,ii);
+  67  *Energy balance table
+  68  set ebti /
+  69           1       DX,
+  70           2       X,
+  71           3       DRC,
+  72           4       RC,
+  73           5       AGR,
+  74           6       COAL,
+  75           7       OIL,
+  76           8       MM,
+  77           9       NM,
+  78           10      FBT,
+  79           11      TXT,
+  80           12      CLO,
+  81           13      LOG,
+  82           14      PAP,
+  83           15      ROIL,
+  84           16      CHE,
+  85           17      NMP,
+  86           18      MSP,
+  87           19      MP,
+  88           20      GSM,
+  89           21      TME,
+  90           22      EME,
+  91           23      CCE,
+  92           24      IM,
+  93           25      AC,
+  94           26      WAS,
+  95           27      ELEH,
+  96           28      FG,
+  97           29      WT,
+  98           30      CON,
+  99           31      TR,
+ 100           32      WRHR,
+ 101           33      OTH,
+ 102           34      NG,
+ 103           35      FU,
+ 104           36      INV,
+ 105           37      PROD
+ 106  /;
+ 107  set      e       energy product  /
+ 108           coal    Coal,
+ 109           fg      Fuel gas,
+ 110           oil     Crude oil,
+ 111           roil    Refined oil,
+ 112           ng      Natural gas,
+ 113           eleh    Electricity & heat,
+ 114           othe    Other energy/;
+ 115  set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,
+      ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QI
+      H,XIN/;
+ 116   
+ 117   
+ 118  parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
+ 119  parameter ebt2(i,r,ebti)        EBT for OPT
+ 120  parameter poilng
+ 121  parameter p(i)
+GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
+--- LOAD  sam3 = 9:sam3
+--- LOAD  ebt2 = 30:ebt2
+ 125   
+ 126  loop(i,
+ 127  if(sameas(i,"2"),
+ 128  p(i)=500/100;
+ 129  );
+ 130  if(sameas(i,"3"),
+ 131  p(i)=3000/100;
+ 132  );
+ 133  if(sameas(i,"11"),
+ 134  p(i)=3000/100;
+ 135  );
+ 136  if(sameas(i,"23"),
+ 137  p(i)=1000/100;
+ 138  );
+ 139  if(sameas(i,"24"),
+ 140  p(i)=5000/100;
+ 141  );
+ 142  if(sameas(i,"30"),
+ 143  p(i)=1000/100;
+ 144  );
+ 145  );
+ 146  loop(i,
+ 147  loop(r,
+ 148  loop(ebti,
+ 149  ebt2(i,r,ebti)=ebt2(i,r,ebti)/1000;
+ 150  );););
+ 151   
+ 152   
+ 153  *$ontext
+ 154  positive variables finalsam (r,i,j)
+ 155  positive variables rowsum(r,i)
+ 156  positive variables columnsum(r,i)
+ 157  variable jj
+ 158   
+ 159  Equations
+ 160          rsum
+ 161          csum
+ 162          sumbalance
+ 163   
+ 164         obj
+ 165  ;
+ 166   
+ 167   
+ 168  *rsum(r,i)..
+ 169  rsum(r,i)$(sameas(r,'BEJ'))..
+ 170  sum(j,finalsam(r,i,j))=e=rowsum(r,i);
+ 171   
+ 172  *csum(r,i)..
+ 173  csum(r,i)$(sameas(r,'BEJ'))..
+ 174  sum(j,finalsam(r,j,i))=e=columnsum(r,i);
+ 175   
+ 176  *sumbalance(r,i)..
+ 177  sumbalance(r,i)$(sameas(r,'BEJ'))..
+ 178  rowsum(r,i)=e=columnsum(r,i);
+ 179   
+ 180   
+ 181  obj..
+ 182  jj=e=sum(r$(sameas(r,'BEJ')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))
+      ));
+ 183   
+ 184  Model gua /all/;
+ 185  loop(r$(sameas(r,'BEJ')),
+ 186  loop(i,
+ 187  loop(j,
+ 188  finalsam.l(r,i,j)=sam3(r,i,j);
+ 189  );););
+ 190  *If quantity is not zero, value is not zero
+ 191  loop(r$(sameas(r,'BEJ')),
+ 192  loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=
+      24) or (ord(i)=30)),
+ 193  loop(j$(ord(j)=ord(i)+30),
+ 194  if(ebt2(i,r,"1")>0,
+ 195  finalsam.fx(r,j,"70")=p(i)*ebt2(i,r,"1")/100;
+ 196  );
+ 197  if(ebt2(i,r,"2")>0,
+ 198  finalsam.fx(r,j,"71")=p(i)*ebt2(i,r,"2")/100;
+ 199  );
+ 200  if(ebt2(i,r,"3")>0,
+ 201  finalsam.fx(r,"70",j)=p(i)*ebt2(i,r,"3")/100;
+ 202  );
+ 203  if(ebt2(i,r,"4")>0,
+ 204  finalsam.fx(r,"71",j)=p(i)*ebt2(i,r,"4")/100;
+ 205  );
+ 206  if(ebt2(i,r,"35")>0,
+ 207  finalsam.fx(r,j,"63")=p(i)*ebt2(i,r,"35")/(sam3(r,j,"63")+sam3(r,j,"65"))*
+      sam3(r,j,"63")/100;
+ 208  finalsam.fx(r,j,"65")=p(i)*ebt2(i,r,"35")/(sam3(r,j,"63")+sam3(r,j,"65"))*
+      sam3(r,j,"65")/100;
+ 209  );
+ 210  if(ebt2(i,r,"36")>0,
+ 211  finalsam.fx(r,j,"73")=p(i)*ebt2(i,r,"36")/100;
+ 212  );
+ 213  if(ebt2(i,r,"37")>0,
+ 214  finalsam.fx(r,i,j)=p(i)*ebt2(i,r,"37")/100;
+ 215  );
+ 216  loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+ 217  loop(ii$(ord(ii)=ord(ebti)-4),
+ 218  if(ebt2(i,r,ebti)>0,
+ 219  finalsam.fx(r,j,ii)=p(i)*ebt2(i,r,ebti)/100;
+ 220  );
+ 221  );
+ 222  );
+ 223  );););
+ 224   
+ 225  *Fix sparcity
+ 226  loop(r$(sameas(r,'BEJ')),
+ 227  loop(i,
+ 228  loop(j,
+ 229  if (finalsam.l(r,i,j)=0,
+ 230  finalsam.fx(r,i,j)=0;
+ 231  );
+ 232  );
+ 233  );
+ 234  );
+ 235   
+ 236  gua.iterlim=100000;
+ 237  Solve gua minimizing jj using nlp;
+ 238  display finalsam.l;
+ 239   
+ 240  *chksam
+ 241  set     negval4(i,j)     Flag for negative elements;
+ 242  set     empty4(i,*)      Flag for empty rows and columns;
+ 243  parameter       chksam4(i,*)       Consistency check of social accounts;
+ 244  parameter totoutput2;
+ 245  totoutput2=0;
+ 246  loop(r$(sameas('BEJ',r)),
+ 247  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 248  totoutput2=totoutput2+sum(j,finalsam.l(r,i,j));
+ 249  );
+ 250  );
+ 251  loop(r$(sameas('BEJ',r)),
+ 252  negval4(i,j) = yes$(sam3(r,i,j) < 0);
+ 253  empty4(i,"row") = 1$(sum(j, finalsam.l(r,i,j)) = 0);
+ 254  empty4(j,"col") = 1$(sum(i, finalsam.l(r,i,j)) = 0);
+ 255  chksam4(i,"before") = sum(j, finalsam.l(r,i,j)-finalsam.l(r,j,i));
+ 256  chksam4(i,"scale") = sum(j, finalsam.l(r,j,i));
+ 257  chksam4(i,"%dev")$sum(j, finalsam.l(r,i,j)) = 100 * sum(j, finalsam.l(r,i,
+      j)-finalsam.l(r,j,i)) / sum(j, finalsam.l(r,i,j));
+ 258  );
+ 259  parameter sam4(i,j);
+ 260  loop(r$(sameas('BEJ',r)),
+ 261  loop(i,
+ 262  loop(j,
+ 263  sam4(i,j)= finalsam.l(r,i,j);
+ 264  );
+ 265  );
+ 266  );
+ 267   
+ 268  *Energy related data
+ 269  parameter egyvalue2(i,r,ebti);
+ 270  loop(r,
+ 271  loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=
+      24) or (ord(i)=30)),
+ 272  loop(j$(ord(j)=ord(i)+30),
+ 273  egyvalue2(i,r,"1")=sam4(j,"70");
+ 274  egyvalue2(i,r,"2")=sam4(j,"71");
+ 275  egyvalue2(i,r,"3")=sam4("70",j);
+ 276  egyvalue2(i,r,"4")=sam4("71",j);
+ 277  loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+ 278  loop(ii$(ord(ii)=ord(ebti)-4),
+ 279  egyvalue2(i,r,ebti)=sam4(j,ii);
+ 280  );
+ 281  );
+ 282  egyvalue2(i,r,"35")=sam4(j,"63")+sam4(j,"65");
+ 283  egyvalue2(i,r,"36")=sam4(j,"73");
+ 284  egyvalue2(i,r,"37")=sam4(i,j);
+ 285  );););
+ 286  display egyvalue2;
+ 287   
+ 288   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 16:35:11 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          finalbalancing2.gms
+     2      122 GDXIN          1     122  C:\Users\dzhang\data\ChinaBalancedSAM\
+                                          /data/gdx/sam3.gdx
+
+
+COMPILATION TIME     =        0.000 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 16:35:11 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+**** Exec Error at line 207: division by zero (0)
+**** Exec Error at line 208: division by zero (0)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 16:35:11 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Setup/Generation    SOLVE gua Using NLP From line 237
+
+
+**** SOLVE from line 237 ABORTED
+**** EXECERROR=2
+
+
+EXECUTION TIME       =        0.015 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing2.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing2.lst
+
+**** USER ERROR(S) ENCOUNTERED

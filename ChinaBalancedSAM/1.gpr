@@ -750,8 +750,8 @@ RowDim=1
 Squeeze=1
 Order=1,2
 Decim=7
-PlaneRownr=5
-PlaneFilter1=30
+PlaneRownr=2
+PlaneFilter1=11
 
 [RP:READPRICERANGE]
 1=
@@ -861,14 +861,17 @@ Squeeze=1
 Order=1,2,3
 Decim=7
 PlaneRownr=-1
+PlaneFilter1=30
 
 [GDXDISP: p Var 3]
-PlaneDim=0
-RowDim=3
+PlaneDim=2
+RowDim=1
 Squeeze=1
-Order=1,2,3,4
+Order=4,1,2,3
 Decim=7
-PlaneRownr=-1
+PlaneRownr=4
+PlaneFilter1=Level
+PlaneFilter2=24
 
 [GDXDISP: changeofoutput Par 0]
 PlaneDim=0
@@ -1165,7 +1168,8 @@ RowDim=1
 Squeeze=1
 Order=1,2,3
 Decim=7
-PlaneRownr=-1
+PlaneRownr=5
+PlaneFilter1=30
 
 [GDXDISP: price_inv Equ 3]
 PlaneDim=0
@@ -1208,10 +1212,10 @@ Decim=7
 PlaneRownr=-1
 
 [GDXDISP: pricelb Equ 3]
-PlaneDim=0
-RowDim=3
+PlaneDim=2
+RowDim=1
 Squeeze=1
-Order=1,2,3,4
+Order=4,2,1,3
 Decim=7
 PlaneRownr=-1
 
@@ -1225,9 +1229,41 @@ PlaneRownr=-1
 
 [GDXDISP: sam4 Par 2]
 PlaneDim=0
-RowDim=2
+RowDim=1
 Squeeze=1
 Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: price_drc Equ 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3,4
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: price_dx Equ 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3,4
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: price_fu Equ 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3,4
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: totoutput2 Par 0]
+PlaneDim=0
+RowDim=0
+Squeeze=1
+Order=
 Decim=7
 PlaneRownr=-1
 
@@ -1237,24 +1273,31 @@ PlaneRownr=-1
 [RP:FINALBALANCING]
 1=
 
+[GDXDISP: p Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[RP:FINALBALANCING2]
+1=
+
 [MRUFILES]
-1=C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.lst
-2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
-3=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalsam.gdx
-4=C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
-5=C:\Users\DaZHANG\data\ChinaBalancedSAM\ebtmerge.gms
-6=C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.lst
-7=C:\Users\DaZHANG\data\ChinaBalancedSAM\oilgassplit.gms
-8=C:\Users\DaZHANG\Desktop\oilgassplit.gms
-9=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\egygdx\estimation\merged.gdx
+1=C:\Users\dzhang\data\ChinaBalancedSAM\listings\BEJ_balance.lst
+2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing2.lst
+3=C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.gms
+4=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\sam3.gdx
+5=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.lst
+6=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+7=C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.lst
 
 [OPENWINDOW_1]
 FILE0=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalbalancing\BEJ.gdx
-FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\sam3.gdx
-FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\listings\BEJ_balance.lst
-FILE4=C:\Users\dzhang\data\ChinaBalancedSAM\oilgassplit.gms
-FILE5=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+FILE1=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalbalancing2\BEJ.gdx
+FILE2=C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing2.gms
+FILE3=C:\Users\dzhang\data\ChinaBalancedSAM\data\gdx\finalbalancing2\BEJ.gdx
 MAXIM=1
 TOP=14
 LEFT=44

@@ -1,0 +1,22 @@
+
+--- Job finalbalancing2.gms Start 03/15/12 16:35:11 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- finalbalancing2.gms(122) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
+--- finalbalancing2.gms(288) 4 Mb
+--- Starting execution: elapsed 0:00:00.007
+--- finalbalancing2.gms(191) 4 Mb
+*** Error at line 207: division by zero (0)
+--- finalbalancing2.gms(191) 4 Mb 1 Error
+*** Error at line 208: division by zero (0)
+--- finalbalancing2.gms(236) 4 Mb 2 Errors
+--- Generating NLP model gua
+*** SOLVE aborted
+--- finalbalancing2.gms(236) 4 Mb 2 Errors
+*** Status: Execution error(s)
+--- Job finalbalancing2.gms Stop 03/15/12 16:35:11 elapsed 0:00:00.033
+Exit code = 3

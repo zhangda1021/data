@@ -127,21 +127,26 @@ $load sam3
 $load ebt2
 $load pricerange
 
+loop(i,
+loop(r,
+loop(ebti,
+ebt2(i,r,ebti)=ebt2(i,r,ebti)/1000;
+);););
+
+
 *$ontext
 positive variables finalsam (r,i,j)
 positive variables rowsum(r,i)
 positive variables columnsum(r,i)
 positive variables domesticinsum(i)
 positive variables domesticoutsum(i)
-positive variables p(i,r,j)
+positive variables p(i,r,ebti)
 variable jj
 
 Equations
         rsum
         csum
         sumbalance
-        drcsum
-        dxsum
 
        price_dx
        price_x
@@ -171,66 +176,118 @@ sum(j,finalsam(r,j,i))=e=columnsum(r,i);
 sumbalance(r,i)$(sameas(r,'%prov%'))..
 rowsum(r,i)=e=columnsum(r,i);
 
-drcsum(i)$((ord(i)>=31) and (ord(i)<=60))..
-domesticinsum(i)=e=sum(r,finalsam(r,"70",i));
-
-dxsum(i)$((ord(i)>=31) and (ord(i)<=60))..
-domesticoutsum(i)=e=sum(r,finalsam(r,i,"70"));
-
-
 *dx
-price_dx(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"1")*ebt2(i,r,"1")=e=finalsam(r,j,"70");
+price_dx(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"1")*ebt2(i,r,"1")-finalsam(r,j,"70"))*finalsam(r,j,"70")=e=0;
 *x
-price_x(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"2")*ebt2(i,r,"2")=e=finalsam(r,j,"71");
+price_x(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"2")*ebt2(i,r,"2")-finalsam(r,j,"71"))*finalsam(r,j,"71")=e=0;
 *drc
-price_drc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"3")*ebt2(i,r,"3")=e=finalsam(r,"70",j);
+price_drc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"3")*ebt2(i,r,"3")-finalsam(r,"70",j))*finalsam(r,"70",j)=e=0;
 *rc
-price_rc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"4")*ebt2(i,r,"4")=e=finalsam(r,"71",j);
-*inv
-price_inv(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"35")*ebt2(i,r,"35")=e=finalsam(r,j,"63")+finalsam(r,j,"65");
+price_rc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"4")*ebt2(i,r,"4")-finalsam(r,"71",j))*finalsam(r,"71",j)=e=0;
 *fu
-price_fu(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"36")*ebt2(i,r,"36")=e=finalsam(r,j,"73");
+price_fu(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"35")*ebt2(i,r,"35")-(finalsam(r,j,"63")+finalsam(r,j,"65")))*(finalsam(r,j,"63")+finalsam(r,j,"65"))=e=0;
+*inv
+price_inv(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"36")*ebt2(i,r,"36")-finalsam(r,j,"73"))*finalsam(r,j,"73")=e=0;
 *prod
-price_prod(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
-p(i,r,"37")*ebt2(i,r,"37")=e=finalsam(r,i,j);
+price_prod(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'%prov%'))..
+(p(i,r,"37")*ebt2(i,r,"37")-finalsam(r,i,j))*finalsam(r,i,j)=e=0;
 
 *$ontext
 *sectors
-price_sectors(i,r,j,ebti,ii)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and ((ord(ebti)>=5) and (ord(ebti)<=34)) and (ord(ii)=ord(ebti)-4))..
-(p(i,r,ii)*ebt2(i,r,ebti)-finalsam(r,j,ii))*finalsam(r,j,ii)=e=0;
+price_sectors(i,r,j,ebti,ii)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and ((ord(ebti)>=5) and (ord(ebti)<=34)) and (ord(ii)=ord(ebti)-4) and sameas(r,'%prov%'))..
+(p(i,r,ebti)*ebt2(i,r,ebti)-finalsam(r,j,ii))*finalsam(r,j,ii)=e=0;
 *$offtext
 
 *lb
-pricelb(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and ((ord(j)>=1) and (ord(j)<=37)))..
-(p(i,r,j)-pricerange(i,"lb"))=g=0;
+pricelb(i,r,ebti)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and ((ord(ebti)>=1) and (ord(ebti)<=37)) and sameas(r,'%prov%'))..
+(p(i,r,ebti)-pricerange(i,"lb")/10000000)=g=0;
 *ub
-priceub(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and ((ord(j)>=1) and (ord(j)<=37)))..
-(p(i,r,j)-pricerange(i,"ub"))=l=0;
+priceub(i,r,ebti)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and ((ord(ebti)>=1) and (ord(ebti)<=37)) and sameas(r,'%prov%'))..
+(p(i,r,ebti)-pricerange(i,"ub")/10)=l=0;
 
 obj..
 jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))));
 
 Model gua /all/;
-loop(r,
+loop(r$(sameas(r,'%prov%')),
 loop(i,
 loop(j,
 finalsam.l(r,i,j)=sam3(r,i,j);
 );););
-loop(r,
+loop(i,
+loop(r$(sameas(r,'%prov%')),
+loop(ebti,
+if(sameas(i,"2"),
+p.l("2",r,ebti)=500/100;
+);
+if(sameas(i,"3"),
+p.l("3",r,ebti)=3000/100;
+);
+if(sameas(i,"11"),
+p.l("11",r,ebti)=3000/100;
+);
+if(sameas(i,"23"),
+p.l("23",r,ebti)=1000/100;
+);
+if(sameas(i,"24"),
+p.l("24",r,ebti)=5000/100;
+);
+if(sameas(i,"30"),
+p.l("30",r,ebti)=1000/100;
+);
+);););
+*If quantity is not zero, value is not zero
+loop(r$(sameas(r,'%prov%')),
+loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),
+loop(j$(ord(j)=ord(i)+30),
+if(ebt2(i,r,"1")>0,
+finalsam.l(r,j,"70")=p.l(i,r,"1")*ebt2(i,r,"1")/100;
+);
+if(ebt2(i,r,"2")>0,
+finalsam.l(r,j,"71")=p.l(i,r,"2")*ebt2(i,r,"2")/100;
+);
+if(ebt2(i,r,"3")>0,
+finalsam.l(r,"70",j)=p.l(i,r,"3")*ebt2(i,r,"3")/100;
+);
+if(ebt2(i,r,"4")>0,
+finalsam.l(r,"71",j)=p.l(i,r,"4")*ebt2(i,r,"4")/100;
+);
+if(ebt2(i,r,"35")>0,
+finalsam.l(r,j,"63")=p.l(i,r,"35")*ebt2(i,r,"35")/2/100;
+finalsam.l(r,j,"65")=p.l(i,r,"35")*ebt2(i,r,"35")/2/100;
+);
+if(ebt2(i,r,"36")>0,
+finalsam.l(r,j,"73")=p.l(i,r,"36")*ebt2(i,r,"36")/100;
+);
+if(ebt2(i,r,"37")>0,
+finalsam.l(r,i,j)=p.l(i,r,"37")*ebt2(i,r,"37")/100;
+);
+
+loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+loop(ii$(ord(ii)=ord(ebti)-4),
+if(ebt2(i,r,ebti)>0,
+finalsam.l(r,j,ii)=p.l(i,r,ebti)*ebt2(i,r,ebti)/100;
+);
+);
+);
+);););
+*Fix sparcity
+loop(r$(sameas(r,'%prov%')),
 loop(i,
 loop(j,
-if (sam3(r,i,j)=0,
+if (finalsam.l(r,i,j)=0,
 finalsam.fx(r,i,j)=0;
 );
 );
 );
 );
+
 gua.iterlim=100000;
 Solve gua minimizing jj using nlp;
 display finalsam.l;
@@ -264,23 +321,23 @@ sam4(i,j)= finalsam.l(r,i,j);
 );
 
 *Energy related data
-parameter egyvalue(i,r,ebti);
+parameter egyvalue2(i,r,ebti);
 loop(r,
 loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),
 loop(j$(ord(j)=ord(i)+30),
-egyvalue(i,r,"1")=sam4(j,"70");
-egyvalue(i,r,"2")=sam4(j,"71");
-egyvalue(i,r,"3")=sam4("70",j);
-egyvalue(i,r,"4")=sam4("71",j);
+egyvalue2(i,r,"1")=sam4(j,"70");
+egyvalue2(i,r,"2")=sam4(j,"71");
+egyvalue2(i,r,"3")=sam4("70",j);
+egyvalue2(i,r,"4")=sam4("71",j);
 loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
 loop(ii$(ord(ii)=ord(ebti)-4),
-egyvalue(i,r,ebti)=sam4(j,ii);
+egyvalue2(i,r,ebti)=sam4(j,ii);
 );
 );
-egyvalue(i,r,"35")=sam4(j,"63")+sam4(j,"65");
-egyvalue(i,r,"36")=sam4(j,"73");
-egyvalue(i,r,"37")=sam4(i,j);
+egyvalue2(i,r,"35")=sam4(j,"63")+sam4(j,"65");
+egyvalue2(i,r,"36")=sam4(j,"73");
+egyvalue2(i,r,"37")=sam4(i,j);
 );););
-display egyvalue;
+display egyvalue2;
 
 

@@ -1,5 +1,5 @@
 
---- Job finalbalancing.gms Start 03/13/12 14:55:07 WEX-WEI 23.2.1 x86_64/MS Windows     
+--- Job finalbalancing.gms Start 03/15/12 14:56:09 WEX-WEI 23.2.1 x86_64/MS Windows     
 GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
@@ -7,116 +7,108 @@ Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 --- Starting compilation
 --- finalbalancing.gms(125) 3 Mb
 --- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
---- finalbalancing.gms(223) 4 Mb 4 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
+--- finalbalancing.gms(243) 4 Mb 4 Errors
+*** Error 145 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Set identifier or quoted element expected
+*** Error  10 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    ',' expected
 *** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     ')' expected
 *** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Unrecognizable item - skip to find a new statement
       looking for a ';' or a key word to get started again
---- finalbalancing.gms(224) 4 Mb 5 Errors
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(225) 4 Mb 6 Errors
+--- finalbalancing.gms(244) 4 Mb 5 Errors
+*** Error 154 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Set for 'ord' is not controlled
+--- finalbalancing.gms(245) 4 Mb 7 Errors
 *** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Uncontrolled set entered as constant
---- finalbalancing.gms(226) 4 Mb 10 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
-*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    ')' expected
-*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- finalbalancing.gms(227) 4 Mb 11 Errors
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(228) 4 Mb 12 Errors
 *** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Uncontrolled set entered as constant
---- finalbalancing.gms(229) 4 Mb 16 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
-*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    ')' expected
-*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- finalbalancing.gms(230) 4 Mb 17 Errors
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(231) 4 Mb 18 Errors
+--- finalbalancing.gms(246) 4 Mb 9 Errors
 *** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Uncontrolled set entered as constant
---- finalbalancing.gms(232) 4 Mb 22 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
-*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    ')' expected
-*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- finalbalancing.gms(233) 4 Mb 23 Errors
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(234) 4 Mb 24 Errors
 *** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Uncontrolled set entered as constant
---- finalbalancing.gms(235) 4 Mb 28 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
-*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    ')' expected
-*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- finalbalancing.gms(236) 4 Mb 29 Errors
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(237) 4 Mb 30 Errors
+--- finalbalancing.gms(248) 4 Mb 11 Errors
 *** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Uncontrolled set entered as constant
---- finalbalancing.gms(238) 4 Mb 34 Errors
-*** Error 143 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    A suffix is missing
-*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    '=' or '..' or ':=' or '$=' operator expected
-    rest of statement ignored
-*** Error   8 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    ')' expected
-*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Unrecognizable item - skip to find a new statement
-      looking for a ';' or a key word to get started again
---- finalbalancing.gms(239) 4 Mb 35 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(249) 4 Mb 13 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(251) 4 Mb 15 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(252) 4 Mb 17 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(254) 4 Mb 19 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(255) 4 Mb 21 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(257) 4 Mb 23 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(258) 4 Mb 25 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(259) 4 Mb 27 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(261) 4 Mb 29 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(262) 4 Mb 31 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(264) 4 Mb 33 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(270) 4 Mb 35 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(271) 4 Mb 37 Errors
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+*** Error 149 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
+    Uncontrolled set entered as constant
+--- finalbalancing.gms(275) 4 Mb 39 Errors
 *** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Too many ),] or }
---- finalbalancing.gms(240) 4 Mb 38 Errors
 *** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Too many ),] or }
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
-*** Error 408 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
-    Too many ),] or }
---- finalbalancing.gms(251) 4 Mb 39 Errors
+--- finalbalancing.gms(288) 4 Mb 40 Errors
 *** Error 257 in C:\Users\dzhang\data\ChinaBalancedSAM\finalbalancing.gms
     Solve statement not checked because of previous errors
---- finalbalancing.gms(302) 4 Mb 39 Errors
+--- finalbalancing.gms(339) 4 Mb 40 Errors
 *** Status: Compilation error(s)
---- Job finalbalancing.gms Stop 03/13/12 14:55:07 elapsed 0:00:00.120
+--- Job finalbalancing.gms Stop 03/15/12 14:56:09 elapsed 0:00:00.126
 Exit code = 2

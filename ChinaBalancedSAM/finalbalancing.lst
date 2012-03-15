@@ -1,4 +1,4 @@
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/13/12 14:55:07 Page 1
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 14:56:09 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -162,7 +162,7 @@ GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
  136  positive variables columnsum(r,i)
  137  positive variables domesticinsum(i)
  138  positive variables domesticoutsum(i)
- 139  positive variables p(i,r,j)
+ 139  positive variables p(i,r,ebti)
  140  variable jj
  141   
  142  Equations
@@ -200,183 +200,231 @@ GDXIN   C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
  174   
  175  *dx
  176  price_dx(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) o
-      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 177  p(i,r,"1")*ebt2(i,r,"1")=e=finalsam(r,j,"70");
+      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ')).
+      .
+ 177  (p(i,r,"1")*ebt2(i,r,"1")-finalsam(r,j,"70"))*finalsam(r,j,"70")=e=0;
  178  *x
  179  price_x(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or
-       (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 180  p(i,r,"2")*ebt2(i,r,"2")=e=finalsam(r,j,"71");
+       (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ'))..
+ 180  (p(i,r,"2")*ebt2(i,r,"2")-finalsam(r,j,"71"))*finalsam(r,j,"71")=e=0;
  181  *drc
  182  price_drc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) 
-      or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 183  p(i,r,"3")*ebt2(i,r,"3")=e=finalsam(r,"70",j);
+      or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ'))
+      ..
+ 183  (p(i,r,"3")*ebt2(i,r,"3")-finalsam(r,"70",j))*finalsam(r,"70",j)=e=0;
  184  *rc
  185  price_rc(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) o
-      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 186  p(i,r,"4")*ebt2(i,r,"4")=e=finalsam(r,"71",j);
+      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ')).
+      .
+ 186  (p(i,r,"4")*ebt2(i,r,"4")-finalsam(r,"71",j))*finalsam(r,"71",j)=e=0;
  187  *fu
  188  price_fu(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) o
-      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 189  p(i,r,"35")*ebt2(i,r,"35")=e=finalsam(r,j,"63")+finalsam(r,j,"65");
+      r (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ')).
+      .
+ 189  (p(i,r,"35")*ebt2(i,r,"35")-(finalsam(r,j,"63")+finalsam(r,j,"65")))*(fina
+      lsam(r,j,"63")+finalsam(r,j,"65"))=e=0;
  190  *inv
  191  price_inv(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) 
-      or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 192  p(i,r,"36")*ebt2(i,r,"36")=e=finalsam(r,j,"73");
+      or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ'))
+      ..
+ 192  (p(i,r,"36")*ebt2(i,r,"36")-finalsam(r,j,"73"))*finalsam(r,j,"73")=e=0;
  193  *prod
  194  price_prod(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23)
-       or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30))..
- 195  p(i,r,"37")*ebt2(i,r,"37")=e=finalsam(r,i,j);
+       or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and sameas(r,'BEJ')
+      )..
+ 195  (p(i,r,"37")*ebt2(i,r,"37")-finalsam(r,i,j))*finalsam(r,i,j)=e=0;
  196   
  197  *$ontext
  198  *sectors
  199  price_sectors(i,r,j,ebti,ii)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or 
       (ord(i)=23) or (ord(i)=24) or (ord(i)=30)) and (ord(j)=ord(i)+30) and ((or
-      d(ebti)>=5) and (ord(ebti)<=34)) and (ord(ii)=ord(ebti)-4))..
- 200  p(i,r,ii)*ebt2(i,r,ebti)*finalsam(r,j,ii)-finalsam(r,j,ii)*finalsam(r,j,ii
-      )=e=0;
+      d(ebti)>=5) and (ord(ebti)<=34)) and (ord(ii)=ord(ebti)-4) and sameas(r,'B
+      EJ'))..
+ 200  (p(i,r,ebti)*ebt2(i,r,ebti)-finalsam(r,j,ii))*finalsam(r,j,ii)=e=0;
  201  *$offtext
  202   
  203  *lb
- 204  pricelb(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or
-       (ord(i)=24) or (ord(i)=30)) and ((ord(j)>=1) and (ord(j)<=37)))..
- 205  (p(i,r,j)-pricerange(i,"lb"))=g=0;
+ 204  pricelb(i,r,ebti)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23)
+       or (ord(i)=24) or (ord(i)=30)) and ((ord(ebti)>=1) and (ord(ebti)<=37)) a
+      nd sameas(r,'BEJ'))..
+ 205  (p(i,r,ebti)-pricerange(i,"lb")/100000)=g=0;
  206  *ub
- 207  priceub(i,r,j)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or
-       (ord(i)=24) or (ord(i)=30)) and ((ord(j)>=1) and (ord(j)<=37)))..
- 208  (p(i,r,j)-pricerange(i,"ub"))=l=0;
+ 207  priceub(i,r,ebti)$(((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23)
+       or (ord(i)=24) or (ord(i)=30)) and ((ord(ebti)>=1) and (ord(ebti)<=37)) a
+      nd sameas(r,'BEJ'))..
+ 208  (p(i,r,ebti)-pricerange(i,"ub")/100000)=l=0;
  209   
  210  obj..
  211  jj=e=sum(r$(sameas(r,'BEJ')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))
       ));
  212   
  213  Model gua /all/;
- 214  loop(r,
+ 214  loop(r$(sameas(r,'BEJ')),
  215  loop(i,
  216  loop(j,
  217  finalsam.l(r,i,j)=sam3(r,i,j);
  218  );););
  219  loop(i,
- 220  loop(r,
- 221  loop(j,
+ 220  loop(r$(sameas(r,'BEJ')),
+ 221  loop(ebti,
  222  if(sameas(i,"2"),
- 223  p("2",r,j).l=500;
-****  $143      $36,8,409
+ 223  p.l("2",r,ebti)=500/100000;
  224  );
-****  $408
  225  if(sameas(i,"3"),
-****             $149
- 226  p("3",r,j).l=3000;
-****  $143      $36,8,409
+ 226  p.l("3",r,ebti)=3000/100000;
  227  );
-****  $408
  228  if(sameas(i,"11"),
-****             $149
- 229  p("11",r,j).l=3000;
-****  $143       $36,8,409
+ 229  p.l("11",r,ebti)=3000/100000;
  230  );
-****  $408
  231  if(sameas(i,"23"),
-****             $149
- 232  p("23",r,j).l=1000;
-****  $143       $36,8,409
+ 232  p.l("23",r,ebti)=1000/100000;
  233  );
-****  $408
  234  if(sameas(i,"24"),
-****             $149
- 235  p("24",r,j).l=5000;
-****  $143       $36,8,409
+ 235  p.l("24",r,ebti)=5000/100000;
  236  );
-****  $408
  237  if(sameas(i,"30"),
-****             $149
- 238  p("30",r,j).l=1000;
-****  $143       $36,8,409
+ 238  p.l("30",r,ebti)=1000/100000;
  239  );
-****  $408
  240  );););
-****  $408,408,408
- 241  loop(r,
- 242  loop(i,
- 243  loop(j,
- 244  if (sam3(r,i,j)=0,
- 245  finalsam.fx(r,i,j)=0;
- 246  );
+ 241  *If quantity is not zero, value is not zero
+ 242  loop(r$(sameas(r,'BEJ')),
+ 243  loop(i((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=2
+****         $145   $10,8,409
+      4) or (ord(i)=30)),
+ 244  loop(j$(ord(j)=ord(i)+30),
+****                     $154
+ 245  if(ebt2(i,r,"1")>0,
+****           $149,149
+ 246  finalsam.l(r,j,"70")=p.l(i,r,"1")*ebt2(i,r,"1");
+****                            $149          $149
  247  );
- 248  );
- 249  );
- 250  gua.iterlim=100000;
- 251  Solve gua minimizing jj using nlp;
-****                                   $257
- 252  display finalsam.l;
- 253   
- 254  *chksam
- 255  set     negval4(i,j)     Flag for negative elements;
- 256  set     empty4(i,*)      Flag for empty rows and columns;
- 257  parameter       chksam4(i,*)       Consistency check of social accounts;
- 258  parameter totoutput2;
- 259  totoutput2=0;
- 260  loop(r$(sameas('BEJ',r)),
- 261  loop(i$((ord(i)>=31) and (ord(i)<=60)),
- 262  totoutput2=totoutput2+sum(j,finalsam.l(r,i,j));
+ 248  if(ebt2(i,r,"2")>0,
+****           $149,149
+ 249  finalsam.l(r,j,"71")=p.l(i,r,"2")*ebt2(i,r,"2");
+****                            $149          $149
+ 250  );
+ 251  if(ebt2(i,r,"3")>0,
+****           $149,149
+ 252  finalsam.l(r,"70",j)=p.l(i,r,"3")*ebt2(i,r,"3");
+****                            $149          $149
+ 253  );
+ 254  if(ebt2(i,r,"4")>0,
+****           $149,149
+ 255  finalsam.l(r,"71",j)=p.l(i,r,"4")*ebt2(i,r,"4");
+****                            $149          $149
+ 256  );
+ 257  if(ebt2(i,r,"35")>0,
+****           $149,149
+ 258  finalsam.l(r,j,"63")=p.l(i,r,"35")*ebt2(i,r,"35")/2;
+****                            $149           $149
+ 259  finalsam.l(r,j,"65")=p.l(i,r,"35")*ebt2(i,r,"35")/2;
+****                            $149           $149
+ 260  );
+ 261  if(ebt2(i,r,"36")>0,
+****           $149,149
+ 262  finalsam.l(r,j,"73")=p.l(i,r,"36")*ebt2(i,r,"36");
+****                            $149           $149
  263  );
- 264  );
- 265  loop(r$(sameas('BEJ',r)),
- 266  negval4(i,j) = yes$(sam3(r,i,j) < 0);
- 267  empty4(i,"row") = 1$(sum(j, finalsam.l(r,i,j)) = 0);
- 268  empty4(j,"col") = 1$(sum(i, finalsam.l(r,i,j)) = 0);
- 269  chksam4(i,"before") = sum(j, finalsam.l(r,i,j)-finalsam.l(r,j,i));
- 270  chksam4(i,"scale") = sum(j, finalsam.l(r,j,i));
- 271  chksam4(i,"%dev")$sum(j, finalsam.l(r,i,j)) = 100 * sum(j, finalsam.l(r,i,
-      j)-finalsam.l(r,j,i)) / sum(j, finalsam.l(r,i,j));
+ 264  if(ebt2(i,r,"37")>0,
+****           $149,149
+ 265  finalsam.l(r,i,j)=p.l(i,r,"37")*ebt2(i,r,"37");
+ 266  );
+ 267   
+ 268  loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+ 269  loop(ii$(ord(ii)=ord(ebti)-4),
+ 270  if(ebt2(i,r,ebti)>0,
+****           $149,149
+ 271  finalsam.l(r,j,ii)=p.l(i,r,ebti)*ebt2(i,r,ebti);
+****                          $149           $149
  272  );
- 273  parameter sam4(i,j);
- 274  loop(r$(sameas('BEJ',r)),
- 275  loop(i,
- 276  loop(j,
- 277  sam4(i,j)= finalsam.l(r,i,j);
- 278  );
- 279  );
- 280  );
- 281   
- 282  *Energy related data
- 283  parameter egyvalue2(i,r,ebti);
- 284  loop(r,
- 285  loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=
+ 273  );
+ 274  );
+ 275  );););
+****    $408,408
+ 276  *Fix sparcity
+ 277  loop(r$(sameas(r,'BEJ')),
+ 278  loop(i,
+ 279  loop(j,
+ 280  if (finalsam.l(r,i,j)=0,
+ 281  finalsam.fx(r,i,j)=0;
+ 282  );
+ 283  );
+ 284  );
+ 285  );
+ 286   
+ 287  gua.iterlim=100000;
+ 288  Solve gua minimizing jj using nlp;
+****                                   $257
+ 289  display finalsam.l;
+ 290   
+ 291  *chksam
+ 292  set     negval4(i,j)     Flag for negative elements;
+ 293  set     empty4(i,*)      Flag for empty rows and columns;
+ 294  parameter       chksam4(i,*)       Consistency check of social accounts;
+ 295  parameter totoutput2;
+ 296  totoutput2=0;
+ 297  loop(r$(sameas('BEJ',r)),
+ 298  loop(i$((ord(i)>=31) and (ord(i)<=60)),
+ 299  totoutput2=totoutput2+sum(j,finalsam.l(r,i,j));
+ 300  );
+ 301  );
+ 302  loop(r$(sameas('BEJ',r)),
+ 303  negval4(i,j) = yes$(sam3(r,i,j) < 0);
+ 304  empty4(i,"row") = 1$(sum(j, finalsam.l(r,i,j)) = 0);
+ 305  empty4(j,"col") = 1$(sum(i, finalsam.l(r,i,j)) = 0);
+ 306  chksam4(i,"before") = sum(j, finalsam.l(r,i,j)-finalsam.l(r,j,i));
+ 307  chksam4(i,"scale") = sum(j, finalsam.l(r,j,i));
+ 308  chksam4(i,"%dev")$sum(j, finalsam.l(r,i,j)) = 100 * sum(j, finalsam.l(r,i,
+      j)-finalsam.l(r,j,i)) / sum(j, finalsam.l(r,i,j));
+ 309  );
+ 310  parameter sam4(i,j);
+ 311  loop(r$(sameas('BEJ',r)),
+ 312  loop(i,
+ 313  loop(j,
+ 314  sam4(i,j)= finalsam.l(r,i,j);
+ 315  );
+ 316  );
+ 317  );
+ 318   
+ 319  *Energy related data
+ 320  parameter egyvalue2(i,r,ebti);
+ 321  loop(r,
+ 322  loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=
       24) or (ord(i)=30)),
- 286  loop(j$(ord(j)=ord(i)+30),
- 287  egyvalue2(i,r,"1")=sam4(j,"70");
- 288  egyvalue2(i,r,"2")=sam4(j,"71");
- 289  egyvalue2(i,r,"3")=sam4("70",j);
- 290  egyvalue2(i,r,"4")=sam4("71",j);
- 291  loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
- 292  loop(ii$(ord(ii)=ord(ebti)-4),
- 293  egyvalue2(i,r,ebti)=sam4(j,ii);
- 294  );
- 295  );
- 296  egyvalue2(i,r,"35")=sam4(j,"63")+sam4(j,"65");
- 297  egyvalue2(i,r,"36")=sam4(j,"73");
- 298  egyvalue2(i,r,"37")=sam4(i,j);
- 299  );););
- 300  display egyvalue2;
- 301   
- 302   
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/13/12 14:55:07 Page 2
+ 323  loop(j$(ord(j)=ord(i)+30),
+ 324  egyvalue2(i,r,"1")=sam4(j,"70");
+ 325  egyvalue2(i,r,"2")=sam4(j,"71");
+ 326  egyvalue2(i,r,"3")=sam4("70",j);
+ 327  egyvalue2(i,r,"4")=sam4("71",j);
+ 328  loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
+ 329  loop(ii$(ord(ii)=ord(ebti)-4),
+ 330  egyvalue2(i,r,ebti)=sam4(j,ii);
+ 331  );
+ 332  );
+ 333  egyvalue2(i,r,"35")=sam4(j,"63")+sam4(j,"65");
+ 334  egyvalue2(i,r,"36")=sam4(j,"73");
+ 335  egyvalue2(i,r,"37")=sam4(i,j);
+ 336  );););
+ 337  display egyvalue2;
+ 338   
+ 339   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 14:56:09 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Error Messages
 
 
   8  ')' expected
- 36  '=' or '..' or ':=' or '$=' operator expected
-     rest of statement ignored
-143  A suffix is missing
+ 10  ',' expected
+145  Set identifier or quoted element expected
 149  Uncontrolled set entered as constant
+154  Set for 'ord' is not controlled
 257  Solve statement not checked because of previous errors
 408  Too many ),] or }
 409  Unrecognizable item - skip to find a new statement
        looking for a ';' or a key word to get started again
 
-**** 39 ERROR(S)   0 WARNING(S)
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/13/12 14:55:07 Page 3
+**** 40 ERROR(S)   0 WARNING(S)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/15/12 14:56:09 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -389,7 +437,7 @@ Include File Summary
                                           /data/gdx/sam3.gdx
 
 
-COMPILATION TIME     =        0.094 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
+COMPILATION TIME     =        0.093 SECONDS      4 Mb  WEX232-232 Aug 11, 2009
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
