@@ -179,7 +179,7 @@ rowsum(r,i)=e=columnsum(r,i);
 
 
 obj..
-jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))));
+jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))))+100*sum(r$(sameas(r,'%prov%')),sum(i$((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60)),sum(j$((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30)),sqr(finalsam(r,i,j)-sam3(r,i,j)))));
 
 Model gua /all/;
 
@@ -187,42 +187,43 @@ Model gua /all/;
 loop(r$(sameas(r,'%prov%')),
 loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),
 loop(j$(ord(j)=ord(i)+30),
-if(ebt2(i,r,"1")>0,
 sam3(r,j,"70")=p(i)*ebt2(i,r,"1");
-);
-if(ebt2(i,r,"2")>0,
+finalsam.fx(r,j,"70")=sam3(r,j,"70");
+
 sam3(r,j,"71")=p(i)*ebt2(i,r,"2");
-);
-if(ebt2(i,r,"3")>0,
+finalsam.fx(r,j,"71")=sam3(r,j,"71");
+
 sam3(r,"70",j)=p(i)*ebt2(i,r,"3");
-);
-if(ebt2(i,r,"4")>0,
+finalsam.fx(r,"70",j)=sam3(r,"70",j);
+
 sam3(r,"71",j)=p(i)*ebt2(i,r,"4");
-);
-if(ebt2(i,r,"35")>0,
-if(sam3(r,j,"63")+sam3(r,j,"65")>0,
+finalsam.fx(r,"71",j)=sam3(r,"71",j);
+
+
+if((sam3(r,j,"63")+sam3(r,j,"65"))>0,
 sam3(r,j,"63")=p(i)*ebt2(i,r,"35")/(sam3(r,j,"63")+sam3(r,j,"65"))*sam3(r,j,"63");
-sam3(r,j,"65")=p(i)*ebt2(i,r,"35")/(sam3(r,j,"63")+sam3(r,j,"65"))*sam3(r,j,"65");
+sam3(r,j,"65")=p(i)*ebt2(i,r,"35")-sam3(r,j,"63");
 else
 **********************need adjustment*******************************
-sam3(r,j,"63")=p(i)*ebt2(i,r,"35")/2*sam3(r,j,"63");
-sam3(r,j,"65")=p(i)*ebt2(i,r,"35")/2*sam3(r,j,"65");
+sam3(r,j,"63")=p(i)*ebt2(i,r,"35")/2;
+sam3(r,j,"65")=p(i)*ebt2(i,r,"35")/2;
 );
-);
-if(ebt2(i,r,"36")>0,
+
 sam3(r,j,"73")=p(i)*ebt2(i,r,"36");
-);
-if(ebt2(i,r,"37")>0,
+
 sam3(r,i,j)=p(i)*ebt2(i,r,"37");
-);
+finalsam.fx(r,i,j)=sam3(r,i,j);
+
 loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
 loop(ii$(ord(ii)=ord(ebti)-4),
-if(ebt2(i,r,ebti)>0,
+
 sam3(r,j,ii)=p(i)*ebt2(i,r,ebti);
+*finalsam.fx(r,j,ii)=sam3(r,j,ii);
 );
 );
-);
+
 );););
+
 loop(r$(sameas(r,'%prov%')),
 loop(i,
 loop(j,
