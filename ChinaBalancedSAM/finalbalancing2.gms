@@ -47,7 +47,7 @@ $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder1 '%projectfolder%/data/gdx'
 
 *SAM table
-set     i   SAM rows and colums indices   /
+set     oldi   SAM rows and colums indices   /
         1*30    Industries,
         31*60   Commodities,
         61      Labor,
@@ -63,6 +63,9 @@ set     i   SAM rows and colums indices   /
         71      Foreign trade,
         72      Investment,
         73      Inventory/;
+set      i       SAM with trade margin/
+         1*74/;
+alias (oldi,oldj);
 alias (i,j,ii);
 *Energy balance table
 set ebti /
@@ -113,41 +116,43 @@ set      e       energy product  /
          eleh    Electricity & heat,
          othe    Other energy/;
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
-
-
-parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
-parameter ebt2(i,r,ebti)        EBT for OPT
+set      pmg     /1*60/;
+alias    (pmg,pmg2);
+parameter sam3(r,oldi,oldj)           SAM v3.0 ready for rebalancing
+parameter ebt2(oldi,r,ebti)           EBT v2.0 for OPT
 parameter poilng
 parameter p(i)
+parameter pricemargin(r,pmg)
 $gdxin '%inputfolder1%/sam3.gdx'
 $load sam3
 $load ebt2
-
-loop(i,
-if(sameas(i,"2"),
-p(i)=500/100;
+$load pricemargin
+parameter sam31(r,i,j)           SAM v3.1 ready for rebalancing
+parameter ebt21(i,r,ebti)           EBT v2.1 for OPT
+*SAM v3.1
+loop(r,
+loop(i$(ord(i)<=73),
+loop(j$(ord(j)<=73),
+loop(oldi$(ord(oldi)=ord(i)),
+loop(oldj$(ord(oldj)=ord(j)),
+sam31(r,i,j)=sam3(r,oldi,oldj);
+););););
 );
-if(sameas(i,"3"),
-p(i)=3000/100;
+loop(r,
+loop(i$(ord(i)=74),
+loop(j,
+sam31(r,i,j)=0;
+sam31(r,j,i)=0;
+););
 );
-if(sameas(i,"11"),
-p(i)=3000/100;
-);
-if(sameas(i,"23"),
-p(i)=1000/100;
-);
-if(sameas(i,"24"),
-p(i)=6000/100;
-);
-if(sameas(i,"30"),
-p(i)=1000/100;
-);
-);
-loop(i,
+*EBT v2.1
 loop(r,
 loop(ebti,
-ebt2(i,r,ebti)=ebt2(i,r,ebti)/1000;
-);););
+loop(i$(ord(i)<=73),
+loop(oldi$(ord(oldi)=ord(i)),
+ebt21(i,r,ebti)=ebt2(oldi,r,ebti)/1000;
+););););
+
 
 
 *$ontext
@@ -161,9 +166,8 @@ Equations
         csum
         sumbalance
 
-       obj
+        obj
 ;
-
 
 *rsum(r,i)..
 rsum(r,i)$(sameas(r,'%prov%'))..
@@ -177,70 +181,100 @@ sum(j,finalsam(r,j,i))=e=columnsum(r,i);
 sumbalance(r,i)$(sameas(r,'%prov%'))..
 rowsum(r,i)=e=columnsum(r,i);
 
-
 obj..
-jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam3(r,i,j)))))+100*sum(r$(sameas(r,'%prov%')),sum(i$((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60)),sum(j$((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30)),sqr(finalsam(r,i,j)-sam3(r,i,j)))));
+jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam31(r,i,j)))))+10000*sum(r$(sameas(r,'%prov%')),sum(i$((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60) or (ord(i)=70) or (ord(i)=71)),sum(j$((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71)),sqr(finalsam(r,i,j)-sam31(r,i,j)))));
 
 Model gua /all/;
+*ratio of hh and gov's cons
+parameter sam31csum(r,i)
+loop(r,
+loop(i,
+sam31csum(r,i)=0;
+););
+loop(r$(sameas(r,'%prov%')),
+loop(i,
+loop(j$((ord(j)>=31) and (ord(j)<=60)),
+sam31csum(r,i)=sam31csum(r,i)+sam31(r,j,i);
+);
+);
+);
+
+loop(r$(sameas(r,'%prov%')),
+loop(i,
+loop(j,
+finalsam.l(r,i,j)=sam31(r,i,j);
+);););
 
 *If quantity is not zero, value is not zero
+*Assuming trade margin is distributed equally between exporter and importer
 loop(r$(sameas(r,'%prov%')),
 loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30)),
 loop(j$(ord(j)=ord(i)+30),
-sam3(r,j,"70")=p(i)*ebt2(i,r,"1");
-finalsam.fx(r,j,"70")=sam3(r,j,"70");
+loop(pmg$(ord(pmg)=ord(i)),
+loop(pmg2$(ord(pmg2)=ord(i)*2),
+sam31(r,j,"70")=pricemargin(r,pmg)*ebt21(i,r,"1");
+sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"1");
+finalsam.fx(r,j,"70")=sam31(r,j,"70");
 
-sam3(r,j,"71")=p(i)*ebt2(i,r,"2");
-finalsam.fx(r,j,"71")=sam3(r,j,"71");
+sam31(r,j,"71")=pricemargin(r,pmg)*ebt21(i,r,"2");
+sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"2");
+finalsam.fx(r,j,"71")=sam31(r,j,"71");
 
-sam3(r,"70",j)=p(i)*ebt2(i,r,"3");
-finalsam.fx(r,"70",j)=sam3(r,"70",j);
+sam31(r,"70",j)=pricemargin(r,pmg)*ebt21(i,r,"3");
+sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"3");
+finalsam.fx(r,"70",j)=sam31(r,"70",j);
 
-sam3(r,"71",j)=p(i)*ebt2(i,r,"4");
-finalsam.fx(r,"71",j)=sam3(r,"71",j);
+sam31(r,"71",j)=pricemargin(r,pmg)*ebt21(i,r,"4");
+sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"4");
+finalsam.fx(r,"71",j)=sam31(r,"71",j);
 
-
-if((sam3(r,j,"63")+sam3(r,j,"65"))>0,
-sam3(r,j,"63")=p(i)*ebt2(i,r,"35")/(sam3(r,j,"63")+sam3(r,j,"65"))*sam3(r,j,"63");
-sam3(r,j,"65")=p(i)*ebt2(i,r,"35")-sam3(r,j,"63");
+if((sam31(r,j,"63")+sam31(r,j,"65"))>0,
+sam31(r,j,"63")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")/(sam31(r,j,"63")+sam31(r,j,"65"))*sam31(r,j,"63");
+sam31(r,j,"65")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")-sam31(r,j,"63");
 else
-**********************need adjustment*******************************
-sam3(r,j,"63")=p(i)*ebt2(i,r,"35")/2;
-sam3(r,j,"65")=p(i)*ebt2(i,r,"35")/2;
+sam31(r,j,"63")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")/(sam31csum(r,"63")+sam31csum(r,"65"))*sam31csum(r,"63");
+sam31(r,j,"65")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")/(sam31csum(r,"63")+sam31csum(r,"65"))*sam31csum(r,"65");
 );
 
-sam3(r,j,"73")=p(i)*ebt2(i,r,"36");
+sam31(r,j,"73")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"36");
 
-sam3(r,i,j)=p(i)*ebt2(i,r,"37");
-finalsam.fx(r,i,j)=sam3(r,i,j);
+sam31(r,i,j)=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"37");
+*finalsam.fx(r,i,j)=sam31(r,i,j);
 
 loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
 loop(ii$(ord(ii)=ord(ebti)-4),
-
-sam3(r,j,ii)=p(i)*ebt2(i,r,ebti);
+sam31(r,j,ii)=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,ebti);
 *finalsam.fx(r,j,ii)=sam3(r,j,ii);
 );
 );
+););
+);
+*end of j
+finalsam.fx(r,"74",i)=sam31(r,"74",i);
+*Balance trade margin
+sam31(r,"57","74")=sam31(r,"57","74")+sam31(r,"74",i);
+*end of i
+);
+finalsam.fx(r,"57","74")= sam31(r,"57","74");
+*Adjust transportation production
+sam31(r,"27","57")=sam31(r,"27","57")+sam31(r,"57","74");
+);
 
-);););
 
-loop(r$(sameas(r,'%prov%')),
-loop(i,
-loop(j,
-finalsam.l(r,i,j)=sam3(r,i,j);
-);););
+
 
 *Fix sparcity
 loop(r$(sameas(r,'%prov%')),
-loop(i,
-loop(j,
+*loop(i$(not ((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30) or (ord(i)=70) or (ord(i)=71))),
+*loop(j$(not ((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71))),
+loop(i$(not ((ord(i)=70) or (ord(i)=71))),
+loop(j$(not (((ord(j)=33) and (ord(i)>=31) and (ord(i)<=60)) or ((ord(j)=60) and (ord(i)>=31) and (ord(i)<=60)) or (ord(j)=70) or (ord(j)=71))),
 if (finalsam.l(r,i,j)=0,
 finalsam.fx(r,i,j)=0;
 );
 );
 );
 );
-
 gua.iterlim=100000;
 Solve gua minimizing jj using nlp;
 display finalsam.l;
@@ -257,7 +291,7 @@ totoutput2=totoutput2+sum(j,finalsam.l(r,i,j));
 );
 );
 loop(r$(sameas('%prov%',r)),
-negval4(i,j) = yes$(sam3(r,i,j) < 0);
+negval4(i,j) = yes$(finalsam.l(r,i,j) < 0);
 empty4(i,"row") = 1$(sum(j, finalsam.l(r,i,j)) = 0);
 empty4(j,"col") = 1$(sum(i, finalsam.l(r,i,j)) = 0);
 chksam4(i,"before") = sum(j, finalsam.l(r,i,j)-finalsam.l(r,j,i));
@@ -272,7 +306,6 @@ sam4(i,j)= finalsam.l(r,i,j);
 );
 );
 );
-
 *Energy related data
 parameter egyvalue2(i,r,ebti);
 loop(r,

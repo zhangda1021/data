@@ -43,7 +43,7 @@ I2      |       |   ic  |       |  psv2 |       |       |       |       |       
 
 $offtext
 $setglobal projectfolder '%gams.curdir%'
-$setlocal inputfolder1 '%projectfolder%/data/gdx/finalbalancing'
+$setlocal inputfolder1 '%projectfolder%/data/gdx/finalbalancing2'
 
 *SAM table
 set     i   SAM rows and colums indices   /
@@ -61,7 +61,8 @@ set     i   SAM rows and colums indices   /
         70      Domestic trade,
         71      Foreign trade,
         72      Investment,
-        73      Inventory/;
+        73      Inventory,
+        74      Trade margin/;
 alias (i,j);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
 
@@ -106,8 +107,8 @@ tradebalance(i)$((ord(i)>=31) and (ord(i)<=60))..
 domesticinsum(i)=e=domesticoutsum(i);
 
 obj..
-jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam4(r,i,j)))));
-
+*jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam4(r,i,j)))));
+jj=e=sum(r,sum(i,sum(j,sqr(finalsam(r,i,j)-sam4(r,i,j)))))+10000*sum(r,sum(i$((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60) or (ord(i)=70) or (ord(i)=71)),sum(j$((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71)),sqr(finalsam(r,i,j)-sam4(r,i,j)))));
 
 Model gua /all/;
 loop(r,
@@ -125,6 +126,7 @@ finalsam.fx(r,i,j)=0;
 );
 );
 gua.iterlim=100000;
+gua.reslim=100000000000;
 Solve gua minimizing jj using nlp;
 display finalsam.l;
 

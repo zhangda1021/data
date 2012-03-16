@@ -117,11 +117,14 @@ set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,AN
 set      prange/
          LB,
          UB/;
+set      pmg/
+         1*60/;
 parameter sam2(r,i,j)           SAM v2.0
 parameter sam3(r,i,j)           SAM v3.0 ready for rebalancing
 parameter ebt(e,r,ebti)         EBT
 parameter pricerange(i,prange)  Price range of energy products
 parameter oilngratio(r)         Oil and gas ratio of (PROD+DRC+RC-X-DX)
+parameter pricemargin(r,pmg);
 parameter poilng
 $gdxin '%inputfolder1%/aggregation.gdx'
 $load sam2
@@ -135,6 +138,9 @@ display oilngratio
 $gdxin '%inputfolder3%/pricerange.gdx'
 $load pricerange
 display pricerange
+$gdxin '%inputfolder3%/pricemargin.gdx'
+$load pricemargin
+display pricemargin
 
 parameter poilng;
 *price: oil/ng
