@@ -1,7 +1,0 @@
-Input=finalbalancing
-Output=listings\BEJ_balance.lst
-ScrDir=225c
-SysDir="C:\Program Files\GAMS23.2"
-ScriptNext=225c\gamsnext.cmd
-GDX=data\gdx\finalbalancing\BEJ
---prov=BEJ
