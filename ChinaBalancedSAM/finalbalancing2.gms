@@ -268,7 +268,7 @@ loop(r$(sameas(r,'%prov%')),
 *loop(i$(not ((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30) or (ord(i)=70) or (ord(i)=71))),
 *loop(j$(not ((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71))),
 loop(i$(not ((ord(i)=70) or (ord(i)=71))),
-loop(j$(not (((ord(j)=33) and (ord(i)>=31) and (ord(i)<=60)) or ((ord(j)=60) and (ord(i)>=31) and (ord(i)<=60)) or (ord(j)=70) or (ord(j)=71))),
+loop(j$(not (((ord(j)=3) and (ord(i)>=31) and (ord(i)<=60)) or ((ord(j)=30) and (ord(i)>=31) and (ord(i)<=60)) or (ord(j)=70) or (ord(j)=71))),
 if (finalsam.l(r,i,j)=0,
 finalsam.fx(r,i,j)=0;
 );
