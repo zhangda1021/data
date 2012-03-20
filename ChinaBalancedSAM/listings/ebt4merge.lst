@@ -1,25 +1,25 @@
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/16/12 13:48:04 Page 1
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/20/12 12:43:57 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
    1   
-GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows                                                     03/16/12 13:48:04 Page 2
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/20/12 12:43:57 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\dzhang\data\ChinaBalancedSAM\sam4merge.gms
-     2        4 CALL           1       4  gdxmerge i=C:\Users\dzhang\data\ChinaBalancedSAM\\data\gdx\finalbalancing2\*.gdx 
-                                          o=C:\Users\dzhang\data\ChinaBalancedSAM\\data\gdx\finalbalancing2\sam4.gdx
+     1        1 INPUT          0       0  C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
+     2        4 CALL           1       4  gdxmerge i=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\finalbalancing2\*.gdx
+                                          o=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\finalbalancing2\sam4.gdx
 
 
-COMPILATION TIME     =        0.843 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+COMPILATION TIME     =        2.932 SECONDS      2 Mb  WIN234-234 May 21, 2010
 
 
-EXECUTION TIME       =        0.000 SECONDS      2 Mb  WEX232-232 Aug 11, 2009
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  WIN234-234 May 21, 2010
 
 
 USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
@@ -29,5 +29,5 @@ USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\dzhang\data\ChinaBalancedSAM\sam4merge.gms
-Output     C:\Users\dzhang\data\ChinaBalancedSAM\listings\ebt4merge.lst
+Input      C:\Users\DaZHANG\data\ChinaBalancedSAM\sam4merge.gms
+Output     C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\ebt4merge.lst

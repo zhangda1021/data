@@ -43,7 +43,7 @@ I2      |       |   ic  |       |  psv2 |       |       |       |       |       
 
 $offtext
 $setglobal projectfolder '%gams.curdir%'
-$setlocal inputfolder1 '%projectfolder%/data/gdx/finalbalancing'
+$setlocal inputfolder1 '%projectfolder%/data/gdx/finalbalancing2'
 
 *SAM table
 set     i   SAM rows and colums indices   /

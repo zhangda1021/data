@@ -184,6 +184,7 @@ rowsum(r,i)=e=columnsum(r,i);
 obj..
 jj=e=sum(r$(sameas(r,'%prov%')),sum(i,sum(j,sqr(finalsam(r,i,j)-sam31(r,i,j)))))+10000*sum(r$(sameas(r,'%prov%')),sum(i$((ord(i)=32) or (ord(i)=33) or (ord(i)=41) or (ord(i)=53) or (ord(i)=54) or (ord(i)=60) or (ord(i)=70) or (ord(i)=71)),sum(j$((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71)),sqr(finalsam(r,i,j)-sam31(r,i,j)))));
 
+
 Model gua /all/;
 *ratio of hh and gov's cons
 parameter sam31csum(r,i)
@@ -255,26 +256,72 @@ finalsam.fx(r,"74",i)=sam31(r,"74",i);
 sam31(r,"57","74")=sam31(r,"57","74")+sam31(r,"74",i);
 *end of i
 );
-finalsam.fx(r,"57","74")= sam31(r,"57","74");
+
+*finalsam.fx(r,"57","74")= sam31(r,"57","74");
 *Adjust transportation production
 sam31(r,"27","57")=sam31(r,"27","57")+sam31(r,"57","74");
 );
 
-
-
+*Define sparcity
+set nonzero(i,j)
+loop(i$(ord(i) le 30),
+loop(j$((ord(j)=ord(i)+30) or (ord(j)=66)),
+nonzero(i,j)=yes;
+););
+loop(i$((ord(i) ge 31) and (ord(i) le 60)),
+loop(j$(((ord(j) ge 1) and (ord(j) le 30)) or (ord(j)=63) or (ord(j)=65) or (ord(j)=70) or (ord(j)=71) or (ord(j)=72) or (ord(j)=73)),
+nonzero(i,j)=yes;
+););
+nonzero("57","74")=yes;
+loop(i$((ord(i) ge 61) and (ord(i) le 62)),
+loop(j$((ord(j) ge 1) and (ord(j) le 30)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=63),
+loop(j$((ord(j)=61) or (ord(j)=65) or (ord(j)=70) or (ord(j)=71) or (ord(j)=62)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=64),
+loop(j$((ord(j)=65) or (ord(j)=62)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=65),
+loop(j$((ord(j)=64) or (ord(j)=66)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=66),
+loop(j$((ord(j) ge 1) and (ord(j) le 30)),
+nonzero(i,j)=yes;
+););
+loop(i$(((ord(i) ge 70) and (ord(i) le 71)) or (ord(i)=73)),
+loop(j$(((ord(j) ge 31) and (ord(j) le 60)) or (ord(j)=63)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=72),
+loop(j$((ord(j)=61) or (ord(j)=62) or (ord(j)=63) or (ord(j)=64)),
+nonzero(i,j)=yes;
+););
+loop(i$(ord(i)=74),
+loop(j$((ord(j) ge 31) and (ord(j) le 60)),
+nonzero(i,j)=yes;
+););
 
 *Fix sparcity
 loop(r$(sameas(r,'%prov%')),
 *loop(i$(not ((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or (ord(i)=30) or (ord(i)=70) or (ord(i)=71))),
 *loop(j$(not ((ord(j)=2) or (ord(j)=3) or (ord(j)=11) or (ord(j)=23) or (ord(j)=24) or (ord(j)=30) or (ord(j)=70) or (ord(j)=71))),
-loop(i$(not ((ord(i)=70) or (ord(i)=71))),
-loop(j$(not (((ord(j)=33) and (ord(i)>=31) and (ord(i)<=60)) or ((ord(j)=60) and (ord(i)>=31) and (ord(i)<=60)) or (ord(j)=70) or (ord(j)=71))),
-if (finalsam.l(r,i,j)=0,
-finalsam.fx(r,i,j)=0;
+*loop(i$(not ((ord(i)=70) or (ord(i)=71))),
+*loop(j$(not (((ord(j)=3) and (ord(i)>=31) and (ord(i)<=60)) or ((ord(j)=30) and (ord(i)>=31) and (ord(i)<=60)) or (ord(j)=70) or (ord(j)=71))),
+*if (finalsam.l(r,i,j)=0,
+*finalsam.fx(r,i,j)=0;
+*);
+*);
+finalsam.fx(r,i,j)$(not nonzero(i,j))=0;
+*);
 );
-);
-);
-);
+
+
+
 gua.iterlim=100000;
 Solve gua minimizing jj using nlp;
 display finalsam.l;
