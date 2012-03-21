@@ -1,7 +1,0 @@
-Input=finalbalancing2
-Output=listings\HEB_balance.lst
-ScrDir=225b
-SysDir="C:\Program Files\GAMS23.2"
-ScriptNext=225b\gamsnext.cmd
-GDX=data\gdx\finalbalancing2\HEB
---prov=HEB

@@ -1450,6 +1450,13 @@ PlaneRownr=-1
 [RP:TRADEBALANCING]
 1=
 
+[OPENWINDOW_1]
+MAXIM=1
+TOP=14
+LEFT=44
+HEIGHT=658
+WIDTH=1292
+
 [MRUFILES]
 1=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\sam5.gdx
 2=C:\Users\DaZHANG\data\ChinaBalancedSAM\listings\FUJ_balance.lst
@@ -1460,18 +1467,3 @@ PlaneRownr=-1
 7=C:\Users\DaZHANG\Desktop\China_model\China_model\parameter_sets\1_vintaging.gms
 8=C:\Users\DaZHANG\Desktop\China_model\China_model\parameter_sets\7_1_reportpar_loop.gms
 9=C:\Users\DaZHANG\Desktop\China_model\China_model\parameter_sets\eppatrend_e5.gms
-
-[OPENWINDOW_1]
-FILE0=C:\Users\DaZHANG\Chinamodel\core\core.gms
-FILE1=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\finalbalancing2\sam4.gdx
-FILE2=C:\Users\DaZHANG\data\ChinaBalancedSAM\data\gdx\sam3.gdx
-FILE3=C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing2.gms
-FILE4=C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing2.lst
-FILE5=C:\Users\DaZHANG\data\ChinaBalancedSAM\tradebalancing.gms
-FILE6=C:\Users\DaZHANG\Dropbox\China_model\model\model.gms
-FILE7=C:\Users\DaZHANG\Dropbox\China_model\model\model.gms
-MAXIM=1
-TOP=14
-LEFT=44
-HEIGHT=658
-WIDTH=1292
