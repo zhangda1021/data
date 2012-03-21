@@ -1,10 +1,10 @@
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/20/12 12:43:57 Page 1
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/21/12 12:37:35 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
    1   
-GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/20/12 12:43:57 Page 2
+GAMS Rev 234  WIN-VS8 23.4.3 x86/MS Windows                                                        03/21/12 12:37:35 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -16,7 +16,7 @@ Include File Summary
                                           o=C:\Users\DaZHANG\data\ChinaBalancedSAM\\data\gdx\finalbalancing2\sam4.gdx
 
 
-COMPILATION TIME     =        2.932 SECONDS      2 Mb  WIN234-234 May 21, 2010
+COMPILATION TIME     =        2.667 SECONDS      2 Mb  WIN234-234 May 21, 2010
 
 
 EXECUTION TIME       =        0.000 SECONDS      2 Mb  WIN234-234 May 21, 2010

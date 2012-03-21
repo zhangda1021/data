@@ -282,7 +282,7 @@ loop(j$((ord(j)=61) or (ord(j)=65) or (ord(j)=70) or (ord(j)=71) or (ord(j)=62))
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=64),
-loop(j$((ord(j)=65) or (ord(j)=62)),
+loop(j$((ord(j)=65) or (ord(j)=72)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=65),
@@ -298,7 +298,7 @@ loop(j$(((ord(j) ge 31) and (ord(j) le 60)) or (ord(j)=63)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=72),
-loop(j$((ord(j)=61) or (ord(j)=62) or (ord(j)=63) or (ord(j)=64)),
+loop(j$((ord(j)=62) or (ord(j)=63) or (ord(j)=64)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=74),
