@@ -447,3 +447,5 @@ ebt2(i,r,ebti)=0;
 );
 );
 ););
+parameter egycons(r);
+egycons(r)=sum(i,ebt2(i,r,"3")+ebt2(i,r,"4")-ebt2(i,r,"2")-ebt2(i,r,"1")+ebt2(i,r,"37"));

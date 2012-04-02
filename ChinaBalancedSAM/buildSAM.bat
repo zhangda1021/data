@@ -13,8 +13,8 @@ if not exist listings\nul mkdir listings
 :call gams ebtmerge  o=listings\ebtmerge.lst
 :call gams readpricerange o=listings\readpricerange.lst
 :call gams readpricemargin o=listings\readpricemargin.lst
-:call gams oilgassplit o=listings\oilgassplit.lst gdx=data\gdx\sam3
-call finalbalancing2 BEJ TAJ HEB SHX NMG LIA JIL HLJ SHH JSU ZHJ ANH FUJ JXI SHD HEN HUB HUN GUD GXI HAI CHQ SIC GZH YUN SHA GAN NXA QIH XIN
-call gams sam4merge o=listings\ebt4merge.lst 
-call gams tradebalancing o=listings\tradebalancing.lst gdx=data\gdx\sam5 
+call gams oilgassplit o=listings\oilgassplit.lst gdx=data\gdx\sam3
+:call finalbalancing2 BEJ TAJ HEB SHX NMG LIA JIL HLJ SHH JSU ZHJ ANH FUJ JXI SHD HEN HUB HUN GUD GXI HAI CHQ SIC GZH YUN SHA GAN NXA QIH XIN
+:call gams sam4merge o=listings\ebt4merge.lst 
+:call gams tradebalancing o=listings\tradebalancing.lst gdx=data\gdx\sam5 
 pause
