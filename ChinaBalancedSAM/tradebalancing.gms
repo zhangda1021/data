@@ -46,9 +46,9 @@ M       |       |   mrg |       |       |       |       |       |       |       
 $offtext
 $setglobal projectfolder '%gams.curdir%'
 $setlocal inputfolder1 '%projectfolder%/data/gdx/finalbalancing2'
-
+$setlocal inputfolder2 '%projectfolder%/data/gdx'
 *SAM table
-set     i   SAM rows and colums indices   /
+set     i_   SAM rows and colums indices   /
         1*30    Industries,
         31*60   Commodities,
         61      Labor,
@@ -65,14 +65,332 @@ set     i   SAM rows and colums indices   /
         72      Investment,
         73      Inventory,
         74      Trade margin/;
-alias (i,j);
+alias (i_,j_);
 set      r China provinces       /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,ZHJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH,XIN/;
 
-parameter sam4(r,i,j)           SAM v4.0 ready for rebalancing
+parameter sam4_(r,i_,j_)           SAM v4.0 ready for rebalancing
 
 $gdxin '%inputfolder1%/sam4.gdx'
-$load sam4
+$load sam4_=sam4
 
+*----------------------------------------------------------------------------------
+*        SECTOR AGGREGATION TO ACHIEVE THE CONSISTENCY WITH GTAP
+*----------------------------------------------------------------------------------
+set     i   SAM rows and colums indices   /
+        1*26    Industries,
+        27*52   Commodities,
+        53      Labor,
+        54      Capital,
+        55      Household,
+        56      Central Government,
+        57      Local Government,
+        58      Production tax,
+        59      Commodity tax,
+        60      Factor tax,
+        61      Income tax,
+        62      Domestic trade,
+        63      Foreign trade,
+        64      Investment,
+        65      Inventory,
+        66      Trade margin/;
+alias (i,j);
+set	mapi(i_,i)/
+	1.1
+	2.2
+	3.3
+	4.5
+	5.5
+	6.6
+	7.7
+	8.8
+	9.9
+	10.10
+	11.11
+	12.12
+	13.13
+	14.14
+	15.15
+	16.16
+	17.17
+	18.16
+	19.18
+	20.16
+	21.19
+	22.19
+	23.20
+	24.21
+	25.22
+	26.23
+	27.24
+	28.25
+	29.26
+	30.4
+	31.27
+	32.28
+	33.29
+	34.31
+	35.31
+	36.32
+	37.33
+	38.34
+	39.35
+	40.36
+	41.37
+	42.38
+	43.39
+	44.40
+	45.41
+	46.42
+	47.43
+	48.42
+	49.44
+	50.42
+	51.45
+	52.45
+	53.46
+	54.47
+	55.48
+	56.49
+	57.50
+	58.51
+	59.52
+	60.30
+	61.53
+	62.54
+	63.55
+	64.56
+	65.57
+	66.58
+	67.59
+	68.60
+	69.61
+	70.62
+	71.63
+	72.64
+	73.65
+	74.66
+/;
+set	mapj(j_,j)/
+	1.1
+	2.2
+	3.3
+	4.5
+	5.5
+	6.6
+	7.7
+	8.8
+	9.9
+	10.10
+	11.11
+	12.12
+	13.13
+	14.14
+	15.15
+	16.16
+	17.17
+	18.16
+	19.18
+	20.16
+	21.19
+	22.19
+	23.20
+	24.21
+	25.22
+	26.23
+	27.24
+	28.25
+	29.26
+	30.4
+	31.27
+	32.28
+	33.29
+	34.31
+	35.31
+	36.32
+	37.33
+	38.34
+	39.35
+	40.36
+	41.37
+	42.38
+	43.39
+	44.40
+	45.41
+	46.42
+	47.43
+	48.42
+	49.44
+	50.42
+	51.45
+	52.45
+	53.46
+	54.47
+	55.48
+	56.49
+	57.50
+	58.51
+	59.52
+	60.30
+	61.53
+	62.54
+	63.55
+	64.56
+	65.57
+	66.58
+	67.59
+	68.60
+	69.61
+	70.62
+	71.63
+	72.64
+	73.65
+	74.66
+/;
+parameter sam4(r,i,j) AGGREGATED SAM DATA;
+sam4(r,i,j)=sum(mapi(i_,i),sum(mapj(j_,j),sam4_(r,i_,j_)));
+display sam4;
+
+*-------------------------------------------------------------------
+*       Read GTAP data:
+*-------------------------------------------------------------------
+set
+        s   Inter-national regions (GTAP)   /
+AUS,NZL,XOC,CHN,HKG,JPN,KOR,TWN,XEA,KHM,IDN,LAO,MMR,MYS,PHL,SGP,THA,VNM,XSE,BGD,IND,PAK,LKA,XSA,CAN,USA,MEX,XNA,ARG,BOL,BRA,CHL,COL,ECU,PRY,PER,URY,VEN,XSM,CRI,GTM,NIC,PAN,XCA,XCB,AUT,BEL,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,SVK,SVN,ESP,SWE,GBR,CHE,NOR,XEF,ALB,BGR,BLR,HRV,ROU,RUS,UKR,XEE,XER,KAZ,KGZ,XSU,ARM,AZE,GEO,IRN,TUR,XWS,EGY,MAR,TUN,XNF,NGA,SEN,XWF,XCF,XAC,ETH,MDG,MWI,MUS,MOZ,TZA,UGA,ZMB,ZWE,XEC,BWA,ZAF,XSC
+        /;
+alias(s,ss);
+set
+        i__     /
+        pdr,
+        wht,
+        gro,
+        v_f,
+        osd,
+        pfb,
+        ocr,
+        ctl,
+        oap,
+        rmk,
+        wol,
+        frs,
+        fsh,
+        coa,
+        oil,
+        gas,
+        omn,
+        cmt,
+        omt,
+        vol,
+        mil,
+        pcr,
+        sgr,
+        ofd,
+        b_t,
+        tex,
+        wap,
+        lea,
+        lum,
+        ppp,
+        p_c,
+        crp,
+        nmm,
+        i_s,
+        nfm,
+        fmp,
+        mvh,
+        otn,
+        ele,
+        ome,
+        omf,
+        ely,
+        gdt,
+        wtr,
+        cns,
+        trd,
+        otp,
+        wtp,
+        atp,
+        cmn,
+        ofi,
+        isr,
+        obs,
+        ros,
+        osg,
+        dwe
+        /;
+parameter       vxmd_(i__,s,ss) Trade - bilateral exports at market prices
+$gdxin '%inputfolder2%/gsd_001.gdx'
+$load vxmd_=vxmd
+$gdxin
+set
+	mapii(i__,i) /
+	pdr.1
+	wht.1
+	gro.1
+	v_f.1
+	osd.1
+	pfb.1
+	ocr.1
+	ctl.1
+	oap.1
+	rmk.1
+	wol.1
+	frs.1
+	fsh.1
+	coa.2
+	oil.3
+	gas.4
+	omn.5
+	cmt.1
+	omt.1
+	vol.1
+	mil.1
+	pcr.1
+	sgr.1
+	ofd.6
+	b_t.6
+	tex.7
+	wap.8
+	lea.8
+	lum.9
+	ppp.10
+	p_c.11
+	crp.12
+	nmm.13
+	i_s.14
+	nfm.14
+	fmp.15
+	mvh.17
+	otn.17
+	ele.18
+	ome.16
+	omf.19
+	ely.20
+	gdt.21
+	wtr.22
+	cns.24
+	trd.24
+	otp.25
+	wtp.25
+	atp.25
+	cmn.26
+	ofi.26
+	isr.26
+	obs.26
+	ros.26
+	osg.26
+	dwe.26	
+        /;
+
+parameter
+       vxmd(i,s,ss) Trade - bilateral exports at market prices;
+vxmd(i,s,ss)=sum(mapii(i__,i),vxmd_(i__,s,ss));
+display vxmd;
+$exit
+
+
+*----------------------------------------------------------------------------------
+*        FINAL BALANCING
+*----------------------------------------------------------------------------------
 positive variables finalsam (r,i,j)
 positive variables rowsum(r,i)
 positive variables columnsum(r,i)
