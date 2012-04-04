@@ -1,19 +1,14 @@
 
---- Job finalbalancing2.gms Start 03/20/12 09:25:23 WIN-VS8 23.4.3 x86/MS Windows        
-GAMS Rev 234  Copyright (C) 1987-2010 GAMS Development. All rights reserved
+--- Job finalbalancing2.gms Start 04/02/12 10:58:57 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
 Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
           TsingHua Univerrsity                                       DC8455
           License for teaching and research at degree granting institutions
 --- Starting compilation
---- finalbalancing2.gms(126) 3 Mb
---- GDXin=C:\Users\DaZHANG\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
---- finalbalancing2.gms(321) 3 Mb 1 Error
-*** Error 408 in C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing2.gms
-    Too many ),] or }
---- finalbalancing2.gms(326) 3 Mb 2 Errors
-*** Error 257 in C:\Users\DaZHANG\data\ChinaBalancedSAM\finalbalancing2.gms
-    Solve statement not checked because of previous errors
---- finalbalancing2.gms(376) 3 Mb 2 Errors
-*** Status: Compilation error(s)
---- Job finalbalancing2.gms Stop 03/20/12 09:25:24 elapsed 0:00:00.460
-Exit code = 2
+--- finalbalancing2.gms(127) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/sam3.gdx
+--- finalbalancing2.gms(154) 4 Mb
+--- Starting execution: elapsed 0:00:00.010
+--- finalbalancing2.gms(153) 6 Mb
+*** Status: Normal completion
+--- Job finalbalancing2.gms Stop 04/02/12 10:58:58 elapsed 0:00:01.565

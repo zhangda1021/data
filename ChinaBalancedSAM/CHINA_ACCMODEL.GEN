@@ -1,0 +1,226 @@
+$OFFLISTING
+
+* MPS/GE MODEL GENERATOR FILE
+
+$OFFINLINE
+$INLINECOM { }
+PUT   MPS,'$MODEL:CHINA_ACCMODEL'/;
+
+{    3}  PUT /;
+ 
+{    3}  PUT'$SECTORS:'/;
+{    4}  LOOP((G,R)$(VOM(G,R)),
+{    4}    PUT /,'Y''.'G.TL'.'R.TL;
+{    4}  );
+{    5}  LOOP((I,R)$(VAM(I,R)),
+{    5}    PUT /,'A''.'I.TL'.'R.TL;
+{    5}  );
+{    6}  LOOP((I,R)$(VXM(I,R,"DTRD")),
+{    6}    PUT /,'DX''.'I.TL'.'R.TL;
+{    6}  );
+{    7}  LOOP((I,R)$(VXM(I,R,"FTRD")),
+{    7}    PUT /,'FX''.'I.TL'.'R.TL;
+{    7}  );
+{    9}  PUT /;
+ 
+{    9}  PUT'$COMMODITIES:'/;
+{   10}  LOOP((G,R)$(VOM(G,R)+VAM(G,R)),
+{   10}    PUT /,'P''.'G.TL'.'R.TL;
+{   10}  );
+{   11}  LOOP((F,R),
+{   11}    PUT /,'PF''.'F.TL'.'R.TL;
+{   11}  );
+{   12}  LOOP((G,R)$(VTAX(G,R)-VSUB(G,R)),
+{   12}    PUT /,'PTAX''.'G.TL'.'R.TL;
+{   12}  );
+{   13}  LOOP((I),
+{   13}    PUT /,'PEX''.'I.TL;
+{   13}  );
+{   14}  PUT /,'PFX';
+{   16}  PUT /;
+ 
+{   16}  PUT'$CONSUMERS:'/;
+{   17}  LOOP((R),
+{   17}    PUT /,'RH''.'R.TL;
+{   17}  );
+{   18}  LOOP((R)$(VOM("LG",R)),
+{   18}    PUT /,'GOVT''.'R.TL;
+{   18}  );
+{   19}  LOOP((R)$(VDEPR("CAP",R)),
+{   19}    PUT /,'INVS''.'R.TL;
+{   19}  );
+ 
+{   23}  LOOP((G,R)$(VOM(G,R)),
+{   23}    PUT /;
+{   23}    PUT /,'$PROD:Y''.'G.TL'.'R.TL;
+{   24}    IF(ABS(VOM(G,R)) GT MPSEPS,
+{   24}      PUT /,'O:P''.'G.TL'.'R.TL;
+{   24}      PUT /,'+Q:'VOM(G,R);
+{   25}    );
+{   25}    IF(ABS(VSUB(G,R)) GT MPSEPS,
+{   25}      PUT /,'O:PTAX''.'G.TL'.'R.TL;
+{   25}      PUT /,'+Q:'VSUB(G,R);
+{   26}    );
+{   26}    LOOP((I),
+{   26}      IF(ABS(VAFM(I,G,R)) GT MPSEPS,
+{   26}        PUT /,'I:P''.'I.TL'.'R.TL;
+{   26}        PUT /,'+Q:'VAFM(I,G,R);
+{   27}      );
+{   27}    );
+{   27}    LOOP((F),
+{   27}      IF(ABS(VFM(F,G,R)) GT MPSEPS,
+{   27}        PUT /,'I:PF''.'F.TL'.'R.TL;
+{   27}        PUT /,'+Q:'VFM(F,G,R);
+{   28}      );
+{   28}    );
+{   28}    IF(ABS(VTAX(G,R)) GT MPSEPS,
+{   28}      PUT /,'I:PTAX''.'G.TL'.'R.TL;
+{   28}      PUT /,'+Q:'VTAX(G,R);
+{   31}    );
+{   31}  );
+ 
+{   31}  LOOP((I,R)$(VXM(I,R,"DTRD")),
+{   31}    PUT /;
+{   31}    PUT /,'$PROD:DX''.'I.TL'.'R.TL;
+{   32}    IF(ABS(VXM(I,R,"DTRD")) GT MPSEPS,
+{   32}      PUT /,'O:PEX''.'I.TL;
+{   32}      PUT /,'+Q:'VXM(I,R,"DTRD");
+{   33}    );
+{   33}    IF(ABS(VXM(I,R,"DTRD")) GT MPSEPS,
+{   33}      PUT /,'I:P''.'I.TL'.'R.TL;
+{   33}      PUT /,'+Q:'VXM(I,R,"DTRD");
+{   36}    );
+{   36}  );
+ 
+{   36}  LOOP((I,R)$(VXM(I,R,"FTRD")),
+{   36}    PUT /;
+{   36}    PUT /,'$PROD:FX''.'I.TL'.'R.TL;
+{   37}    IF(ABS(VXM(I,R,"FTRD")) GT MPSEPS,
+{   37}      PUT /,'O:PFX';
+{   37}      PUT /,'+Q:'VXM(I,R,"FTRD");
+{   38}    );
+{   38}    IF(ABS(VXM(I,R,"FTRD")) GT MPSEPS,
+{   38}      PUT /,'I:P''.'I.TL'.'R.TL;
+{   38}      PUT /,'+Q:'VXM(I,R,"FTRD");
+{   41}    );
+{   41}  );
+ 
+{   41}  LOOP((I,R)$(VAM(I,R)),
+{   41}    PUT /;
+{   41}    PUT /,'$PROD:A''.'I.TL'.'R.TL;
+{   42}    IF(ABS(VAM(I,R)) GT MPSEPS,
+{   42}      PUT /,'O:P''.'I.TL'.'R.TL;
+{   42}      PUT /,'+Q:'VAM(I,R);
+{   43}    );
+{   43}    IF(ABS(VIM(I,R,"DTRD")) GT MPSEPS,
+{   43}      PUT /,'I:PEX''.'I.TL;
+{   43}      PUT /,'+Q:'VIM(I,R,"DTRD");
+{   44}    );
+{   44}    IF(ABS(VTRDM(I,R)) GT MPSEPS,
+{   44}      PUT /,'I:P''.TP''.'R.TL;
+{   44}      PUT /,'+Q:'VTRDM(I,R);
+{   45}    );
+{   45}    IF(ABS(VIM(I,R,"FTRD")) GT MPSEPS,
+{   45}      PUT /,'I:PFX';
+{   45}      PUT /,'+Q:'VIM(I,R,"FTRD");
+{   48}    );
+{   48}  );
+ 
+{   48}  LOOP((R),
+{   48}    PUT /;
+{   48}    PUT /,'$DEMAND:INVS''.'R.TL;
+{   49}    IF(ABS(VDEPR("CAP",R)) GT MPSEPS,
+{   49}      PUT /,'D:P''.I''.'R.TL;
+{   49}      PUT /,'+Q:'VDEPR("CAP",R);
+{   50}    );
+{   50}    IF(ABS(VDEPR("CAP",R)) GT MPSEPS,
+{   50}      PUT /,'E:PF''.CAP''.'R.TL;
+{   50}      PUT /,'+Q:'VDEPR("CAP",R);
+{   53}    );
+{   53}  );
+ 
+{   53}  LOOP((R),
+{   53}    PUT /;
+{   53}    PUT /,'$DEMAND:RH''.'R.TL;
+{   54}    IF(ABS(VOM("C",R)) GT MPSEPS,
+{   54}      PUT /,'D:P''.C''.'R.TL;
+{   54}      PUT /,'+Q:'VOM("C",R);
+{   56}    );
+{   56}    LOOP((F),
+{   56}      IF(ABS(EVOM(F,R)) GT MPSEPS,
+{   56}        PUT /,'E:PF''.'F.TL'.'R.TL;
+{   56}        PUT /,'+Q:'EVOM(F,R);
+{   58}      );
+{   58}    );
+{   58}    IF(ABS((VTTRN(R,"LG","C"))) GT MPSEPS,
+{   58}      PUT /,'E:PFX';
+{   58}      PUT /,'+Q:'(VTTRN(R,"LG","C"));
+{   60}    );
+{   60}    IF(ABS((-SUM(TRD,VTRDBAL(R,TRD,"S")-VTRDBAL(R,TRD,"D")))) GT MPSEPS,
+{   60}      PUT /,'E:PFX';
+{   60}      PUT /,'+Q:'(-SUM(TRD,VTRDBAL(R,TRD,"S")-VTRDBAL(R,TRD,"D")));
+{   62}    );
+{   62}    IF(ABS((-VINVS(R,"C"))) GT MPSEPS,
+{   62}      PUT /,'E:P''.I''.'R.TL;
+{   62}      PUT /,'+Q:'(-VINVS(R,"C"));
+{   64}    );
+{   64}    LOOP((I),
+{   64}      IF(ABS((-(VINVTA(I,R)-VINVTD(I,R)))) GT MPSEPS,
+{   64}        PUT /,'E:P''.'I.TL'.'R.TL;
+{   64}        PUT /,'+Q:'(-(VINVTA(I,R)-VINVTD(I,R)));
+{   68}      );
+{   68}    );
+{   68}  );
+ 
+{   68}  LOOP((R)$(VOM("LG",R)),
+{   68}    PUT /;
+{   68}    PUT /,'$DEMAND:GOVT''.'R.TL;
+{   70}    IF(ABS(VOM("LG",R)) GT MPSEPS,
+{   70}      PUT /,'D:P''.LG''.'R.TL;
+{   70}      PUT /,'+Q:'VOM("LG",R);
+{   74}    );
+{   74}    IF(ABS((-VTTRN(R,"CG","LG"))) GT MPSEPS,
+{   74}      PUT /,'E:PFX';
+{   74}      PUT /,'+Q:'(-VTTRN(R,"CG","LG"));
+{   76}    );
+{   76}    IF(ABS(VTTRN(R,"LG","CG")) GT MPSEPS,
+{   76}      PUT /,'E:PFX';
+{   76}      PUT /,'+Q:'VTTRN(R,"LG","CG");
+{   78}    );
+{   78}    IF(ABS(VINVSN(R,"CG")) GT MPSEPS,
+{   78}      PUT /,'E:P''.I''.'R.TL;
+{   78}      PUT /,'+Q:'VINVSN(R,"CG");
+{   80}    );
+{   80}    IF(ABS((-VINVS(R,"CG"))) GT MPSEPS,
+{   80}      PUT /,'E:P''.I''.'R.TL;
+{   80}      PUT /,'+Q:'(-VINVS(R,"CG"));
+{   84}    );
+{   84}    IF(ABS(VTTRN(R,"CG","LG")) GT MPSEPS,
+{   84}      PUT /,'E:PFX';
+{   84}      PUT /,'+Q:'VTTRN(R,"CG","LG");
+{   86}    );
+{   86}    IF(ABS((-VTTRN(R,"LG","C"))) GT MPSEPS,
+{   86}      PUT /,'E:PFX';
+{   86}      PUT /,'+Q:'(-VTTRN(R,"LG","C"));
+{   88}    );
+{   88}    IF(ABS((-VTTRN(R,"LG","CG"))) GT MPSEPS,
+{   88}      PUT /,'E:PFX';
+{   88}      PUT /,'+Q:'(-VTTRN(R,"LG","CG"));
+{   90}    );
+{   90}    LOOP((I),
+{   90}      IF(ABS((VTAX(I,R)-VSUB(I,R))) GT MPSEPS,
+{   90}        PUT /,'E:PTAX''.'I.TL'.'R.TL;
+{   90}        PUT /,'+Q:'(VTAX(I,R)-VSUB(I,R));
+{   92}      );
+{   92}    );
+{   92}  );
+ 
+OPTION LIMROW=0;
+OPTION LIMCOL=0;
+PUT / '$PEPS:1.E-6'/;
+PUT / '$SOLVE'/;
+PUTCLOSE   MPS;
+CHINA_ACCMODEL.INTEGER1 = CHINA_ACCMODEL.INTEGER1 + 1;
+$IF %CHINA_ACCMODEL%=="03/21/1214:38:00" $EXIT
+$error model.gen file is inconsistent
+$abort preprocessor must be reinvoked

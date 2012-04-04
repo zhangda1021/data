@@ -1,0 +1,37 @@
+
+--- Job model.gms Start 03/21/12 14:38:00 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- model.gms(31) 3 Mb
+*** GDXIN failed C:\Users\dzhang\data\ChinaBalancedSAM\sam5.gdx
+*** Msg: No such file or directory
+--- model.gms(31) 3 Mb 1 Error
+*** Error 510 in C:\Users\dzhang\Dropbox\China_model\model\model.gms
+    Unable to open gdx file for $GDXIN
+--- model.gms(32) 3 Mb 2 Errors
+*** Error 502 in C:\Users\dzhang\Dropbox\China_model\model\model.gms
+    GDXIN  file not open - ignore rest of line
+--- model.gms(268) 3 Mb 3 Errors
+*** Error 141 in C:\Users\dzhang\Dropbox\China_model\model\model.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- model.gms(464) 3 Mb
+--- Running the MPSGE preprocessor ...
+--- .mpsgeset(19) 3 Mb
+--- call gmsge_nx "C:\Users\dzhang\data\ChinaBalancedSAM\225a\gamscge.dat"
+--- .mpsgeset(20) 3 Mb
+--- ..gamsgeh.dat(216) 3 Mb
+--- .mpsgeset(22) 3 Mb
+--- model.gms(470) 3 Mb
+--- .china_accmodel.gen(224) 3 Mb
+--- model.gms(471) 3 Mb 4 Errors
+*** Error 257 in C:\Users\dzhang\Dropbox\China_model\model\model.gms
+    Solve statement not checked because of previous errors
+--- model.gms(485) 3 Mb 4 Errors
+*** Status: Compilation error(s)
+--- Job model.gms Stop 03/21/12 14:38:00 elapsed 0:00:00.164
+Exit code = 2

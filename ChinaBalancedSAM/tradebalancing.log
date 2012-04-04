@@ -1,0 +1,23 @@
+
+--- Job tradebalancing.gms Start 03/21/12 13:09:36 WEX-WEI 23.2.1 x86_64/MS Windows     
+GAMS Rev 232  Copyright (C) 1987-2009 GAMS Development. All rights reserved
+Licensee: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+          TsingHua Univerrsity                                       DC8455
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- tradebalancing.gms(73) 3 Mb
+--- GDXin=C:\Users\dzhang\data\ChinaBalancedSAM\/data/gdx/finalbalancing2/sam4.gdx
+--- tradebalancing.gms(119) 4 Mb 2 Errors
+*** Error  36 in C:\Users\dzhang\data\ChinaBalancedSAM\tradebalancing.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in C:\Users\dzhang\data\ChinaBalancedSAM\tradebalancing.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- tradebalancing.gms(147) 4 Mb 3 Errors
+*** Error 257 in C:\Users\dzhang\data\ChinaBalancedSAM\tradebalancing.gms
+    Solve statement not checked because of previous errors
+--- tradebalancing.gms(172) 4 Mb 3 Errors
+*** Status: Compilation error(s)
+--- Job tradebalancing.gms Stop 03/21/12 13:09:36 elapsed 0:00:00.084
+Exit code = 2

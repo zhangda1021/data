@@ -1,0 +1,738 @@
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/21/12 14:38:00 Page 1
+China model version 1
+C o m p i l a t i o n
+
+
+   2   
+   3  *-------------------------------------------------------------------
+   4  *       Read SAM data:
+   5  *-------------------------------------------------------------------
+   6   
+   7  set     i_   SAM rows and colums indices   /
+   8          1*30    Industries,
+   9          31*60   Commodities,
+  10          61      Labor,
+  11          62      Capital,
+  12          63      Household,
+  13          64      Central Government,
+  14          65      Local Government,
+  15          66      Production tax,
+  16          67      Commodity tax,
+  17          68      Factor tax,
+  18          69      Income tax,
+  19          70      Domestic trade,
+  20          71      Foreign trade,
+  21          72      Investment,
+  22          73      Inventory,
+  23          74      Trade margin/;
+  24   
+  25  alias (i_,j_);
+  26   
+  27  set      r China provinces      /BEJ,TAJ,HEB,SHX,NMG,LIA,JIL,HLJ,SHH,JSU,Z
+      HJ,ANH,FUJ,JXI,SHD,HEN,HUB,HUN,GUD,GXI,HAI,CHQ,SIC,GZH,YUN,SHA,GAN,NXA,QIH
+      ,XIN/;
+  28   
+  29  parameter sam(r,i_,j_)  SAM data;
+  30   
+**** File: C:\Users\dzhang\data\ChinaBalancedSAM\sam5.gdx
+**** Msg : No such file or directory
+  31  $gdxin sam5.gdx
+****                $510
+  32  $load sam=sam5
+****      $502
+  33   
+  34  *       Scale SAM data:
+  35  *sam(r,i_,j_) = sam(r,i_,j_)/10;
+  36   
+  37  *-------------------------------------------------------------------
+  38  *       RELABEL SETS:
+  39  *-------------------------------------------------------------------
+  40   
+  41  SET     f    Factors /cap,lab/
+  42          g    Goods and final demands/
+  43   
+  44          AGR     "Crop cultivation,Forestry,Livestock and livestock product
+      s and Fishery"
+  45          COAL    "Coal mining and processing"
+  46          OIL     "Crude petroleum products"
+  47          MM      "Metal minerals mining"
+  48          NMM     "Non-metal minerals and other mining"
+  49          FBT     "Food, baverage and tobacco"
+  50          TXT     "Textiles"
+  51          CLO     "Wearing apparel, leather, furs, down and related products
+      "
+  52          LOG     "Logging and transport of timber and furniture"
+  53          PAP     "Paper, printing, record medium reproduction, cultural goo
+      ds, toys, sporting and recreation products"
+  54          ROIL    "Petroleum refining, coking and nuclear fuels"
+  55          CHE     "Chemical engineering"
+  56          NMP     "Non-metallic mineral products"
+  57          MSP     "Metal smelting and processing"
+  58          MP      "Metal product"
+  59          GSM     "General and special  industrial machinery and equipment"
+  60          TME     "Transport machinery and equipment"
+  61          EME     "Electric machinery and equipment"
+  62          CCE     "Communicatoin, computer and other electronic machinery an
+      d equipment"
+  63          IM      "Instruments, meters ,other measuring equipment and cultur
+      al and office equipment"
+  64          AC      "Arts and crafts products and other manufacturing  product
+      s"
+  65          WAS     "Scrap and waste"
+  66          ELEH    "Electricity production and supply, and steam and hot wate
+      r production and supply"
+  67          FG      "Gas production and supply"
+  68          WT      "Water production and supply"
+  69          CON     "Construction"
+  70          TP      "Transportation and warehousing, Post"
+  71          WRHR    "Wholesale and retail trade, Hotels and restraunts"
+  72          OTH     "Other service industry"
+  73          NG      "natural gas products"
+  74   
+  75          c       "Private consumption"
+  76          cg      "Central Government"
+  77          lg      "Local Government"
+  78          i       "Investment"
+  79          /
+  80   
+  81          i(g)    "Goods and sectors" /
+  82          AGR     "Crop cultivation,Forestry,Livestock and livestock product
+      s and Fishery"
+  83          COAL    "Coal mining and processing"
+  84          OIL     "Crude petroleum products"
+  85          MM      "Metal minerals mining"
+  86          NMM     "Non-metal minerals and other mining"
+  87          FBT     "Food, baverage and tobacco"
+  88          TXT     "Textiles"
+  89          CLO     "Wearing apparel, leather, furs, down and related products
+      "
+  90          LOG     "Logging and transport of timber and furniture"
+  91          PAP     "Paper, printing, record medium reproduction, cultural goo
+      ds, toys, sporting and recreation products"
+  92          ROIL    "Petroleum refining, coking and nuclear fuels"
+  93          CHE     "Chemical engineering"
+  94          NMP     "Non-metallic mineral products"
+  95          MSP     "Metal smelting and processing"
+  96          MP      "Metal product"
+  97          GSM     "General and special  industrial machinery and equipment"
+  98          TME     "Transport machinery and equipment"
+  99          EME     "Electric machinery and equipment"
+ 100          CCE     "Communicatoin, computer and other electronic machinery an
+      d equipment"
+ 101          IM      "Instruments, meters ,other measuring equipment and cultur
+      al and office equipment"
+ 102          AC      "Arts and crafts products and other manufacturing  product
+      s"
+ 103          WAS     "Scrap and waste"
+ 104          ELEH    "Electricity production and supply, and steam and hot wate
+      r production and supply"
+ 105          FG      "Gas production and supply"
+ 106          WT      "Water production and supply"
+ 107          CON     "Construction"
+ 108          TP      "Transportation and warehousing, Post"
+ 109          WRHR    "Wholesale and retail trade, Hotels and restraunts"
+ 110          OTH     "Other service industry"
+ 111          NG      "Natural gas products"
+ 112          /
+ 113          ;
+ 114   
+ 115  alias (i,j) , (g,gg) , (r,rr);
+ 116   
+ 117  *       Map i set to new subsets:
+ 118   
+ 119  set     mapf(i_,f) /
+ 120          61.lab
+ 121          62.cap/,
+ 122   
+ 123          mapic(i_,i) /
+ 124          1.AGR
+ 125          2.COAL
+ 126          3.OIL
+ 127          4.MM
+ 128          5.NMM
+ 129          6.FBT
+ 130          7.TXT
+ 131          8.CLO
+ 132          9.LOG
+ 133          10.PAP
+ 134          11.ROIL
+ 135          12.CHE
+ 136          13.NMP
+ 137          14.MSP
+ 138          15.MP
+ 139          16.GSM
+ 140          17.TME
+ 141          18.EME
+ 142          19.CCE
+ 143          20.IM
+ 144          21.AC
+ 145          22.WAS
+ 146          23.ELEH
+ 147          24.FG
+ 148          25.WT
+ 149          26.CON
+ 150          27.TP
+ 151          28.WRHR
+ 152          29.OTH
+ 153          30.NG
+ 154          /
+ 155   
+ 156          mapjc(i_,i) /
+ 157          31.AGR
+ 158          32.COAL
+ 159          33.OIL
+ 160          34.MM
+ 161          35.NMM
+ 162          36.FBT
+ 163          37.TXT
+ 164          38.CLO
+ 165          39.LOG
+ 166          40.PAP
+ 167          41.ROIL
+ 168          42.CHE
+ 169          43.NMP
+ 170          44.MSP
+ 171          45.MP
+ 172          46.GSM
+ 173          47.TME
+ 174          48.EME
+ 175          49.CCE
+ 176          50.IM
+ 177          51.AC
+ 178          52.WAS
+ 179          53.ELEH
+ 180          54.FG
+ 181          55.WT
+ 182          56.CON
+ 183          57.TP
+ 184          58.WRHR
+ 185          59.OTH
+ 186          60.NG
+ 187          /
+ 188          gov(g) Government agents /
+ 189          cg Central government
+ 190          lg Local government
+ 191          /
+ 192          maph(i_,g) /63.c/
+ 193          mapg(i_,gov) /64.cg,65.lg/
+ 194          mapinv(i_,g) /72.i/
+ 195  ;
+ 196   
+ 197  alias (gov,govv);
+ 198   
+ 199  set     trd Domestic and foreign markets /dtrd,ftrd/
+ 200          tb  Trade surplus or deficit /s,d/;
+ 201   
+ 202  *-------------------------------------------------------------------
+ 203  *       LABEL DATA:
+ 204  *-------------------------------------------------------------------
+ 205   
+ 206  parameter
+ 207          vom(g,r)       "Aggregate output"
+ 208          vom_(i,j_,r)   "Aggregate output"
+ 209   
+ 210          vfm(f,g,r)     "Endowments "
+ 211          evom(f,r)      "Factor supply"
+ 212          vafm(i,g,r)    "Intermediate demand for Armington goods,"
+ 213          vafm_(i,j_,r)  "Intermediate demand for Armington goods"
+ 214  * no data on vdfm and vifm
+ 215  *        vdfm(i,g,rs)    Intermediates - firms' domestic purchases at mark
+      et prices,
+ 216  *        vifm(i,g,rs,trd)        Intermediates - firms' imports at market 
+      prices (ADDED DIMENSION),
+ 217   
+ 218          vfm(f,g,r)     "Endowments "
+ 219          evom(f,r)      "Factor supply"
+ 220   
+ 221          vafm(i,g,r)    "Intermediate demand for Armington goods,"
+ 222          vafm_(i,j_,r)  "Intermediate demand for Armington goods"
+ 223  *       no data on vdfm and vifm
+ 224  *       vdfm(i,g,rs)    Intermediates - firms' domestic purchases at marke
+      t prices,
+ 225  *       vifm(i,g,rs,trd)        Intermediates - firms' imports at market p
+      rices (ADDED DIMENSION),
+ 226          vxm(i,r,trd)   "Domestic and foreign exports "
+ 227          vim(i,r,trd)   "Aggregate imports"
+ 228          vtax(g,r)      "Output tax payments"
+ 229          vsub(g,r)      "Output subsidy payments"
+ 230          vtrdm(g,r)     "Trade margins"
+ 231          vinvta(i,r)     "Inventory additions (column) and deletions (row)"
+ 232          vinvtd(i,r)     "Inventory deletions (row)"
+ 233  *       vtrnm(g,r)      "Transportation margins"
+ 234   
+ 235          vdepr(f,r)      "Depreciation of capital"
+ 236          vtrdbal(r,trd,tb)   "Balance of payments surplus or deficit"
+ 237   
+ 238          vinvs(r,g)           "Investment demand by agent"
+ 239          vinvsn(r,g)           "Negative demand to close investement accoun
+      t (need to revisit)"
+ 240          vinvch(r)          "Inventory change in household account"
+ 241          vttrn(r,g,gg)   "Transfer payments between agents (from-to)"
+ 242   
+ 243          vtaxrev(r,g)    "Tax revenue for government agent"
+ 244          vinvta(i,r)     "Inventory additions (column)"
+ 245          vinvtd(i,r)     "Inventory deletions (row)"
+ 246          vtrnm(i,r)      "Transportation margins"
+ 247   
+ 248          vdepr(f,r)              "Depreciation of capital"
+ 249          vtrdbal(r,trd,tb)       "Balance of payments surplus or deficit"
+ 250   
+ 251          vinvs(r,g)              "Investment demand by agent"
+ 252          vinvsn(r,g)             "Negative demand to close investement acco
+      unt (need to revisit)"
+ 253          vinvch(r)               "Inventory change in household account"
+ 254          vttrn(r,g,gg)           "Transfer payments between agents (from-to
+      )"
+ 255   
+ 256          vtaxrev(r,g)            "Tax revenue for government agent"
+ 257   
+ 258  ;
+ 259   
+ 260   
+ 261  *       Aggregate output:
+ 262  loop(i$(ord(i) le 30),
+ 263  loop(i_$(ord(i_) eq ord(i)),
+ 264  loop(j_$(ord(j_) eq 30+ord(i)),
+ 265  *loop(i_$(ord(i_) le 30),
+ 266  *loop(j_$(ord(j_) eq 30+ord(i_)),
+ 267  *vom_(i,j_,r) = sum(mapic(i_,i), sam(r,i_,j_));
+ 268  vom(i,r) = sam(r,i_,j_);
+****               $141
+ 269  );
+ 270  );
+ 271  );
+ 272  *vom(i,r)=vom(i,r);
+ 273  *vom(i,r) = sum(j_,vom_(i,j_,r));
+ 274  *display vom;
+ 275   
+ 276  *       Factor payments by sector:
+ 277  vfm(f,i,r) = sum(mapf(j_,f),sum(mapic(i_,i),sam(r,j_,i_)));
+ 278  *display vfm;
+ 279   
+ 280  *       Intermediate demands for Armington goods:
+ 281  vafm(j,i,r) =  sum((mapic(i_,i),mapjc(j_,j)),sam(r,j_,i_));
+ 282  vafm(j,"c",r) =  sum((maph(i_,g),mapjc(j_,j)),sam(r,j_,i_));
+ 283  vafm(j,"i",r) =  sum((mapinv(i_,g),mapjc(j_,j)),sam(r,j_,i_));
+ 284  vafm(j,gov,r) =  sum((mapg(i_,gov),mapjc(j_,j)),sam(r,j_,i_));
+ 285   
+ 286  *       Domestic and foreign exports and immports:
+ 287  vxm(i,r,"dtrd")  = sum(mapjc(i_,i),sam(r,i_,"70"));
+ 288  vxm(i,r,"ftrd")  = sum(mapjc(i_,i),sam(r,i_,"71"));
+ 289   
+ 290  vim(i,r,"dtrd")  = sum(mapjc(i_,i),sam(r,"70",i_));
+ 291  vim(i,r,"ftrd")  = sum(mapjc(i_,i),sam(r,"71",i_));
+ 292   
+ 293  *       Output/subsidy taxes:
+ 294  vtax(i,r) = sum(mapic(i_,i),sam(r,"66",i_));
+ 295  vsub(i,r) = sum(mapic(i_,i),sam(r,i_,"66"));
+ 296   
+ 297  *       Trade margins:
+ 298  vtrdm(i,r) = sum(mapjc(i_,i),sam(r,"74",i_));
+ 299   
+ 300  *       Inventory additions and deletions:
+ 301  vinvtd(i,r) = sum(mapjc(i_,i),sam(r,"73",i_));
+ 302  vinvta(i,r)  = sum(mapjc(i_,i),sam(r,i_,"73"));
+ 303   
+ 304  *       Transport margins:
+ 305  vtrnm(i,r) = sum(mapjc(i_,i),sam(r,i_,"74"));
+ 306   
+ 307  *       Earnings from factor supply:
+ 308  evom(f,r) = sum(mapf(j_,f),sam(r,"63",j_));
+ 309  vdepr(f,r) = sum(mapf(j_,f),sam(r,"72",j_));
+ 310   
+ 311  *       Balance of payments surplus:
+ 312  vtrdbal(r,"dtrd","s") = sam(r,"70","63");
+ 313  vtrdbal(r,"ftrd","s") = sam(r,"71","63");
+ 314  vtrdbal(r,"dtrd","d") = sam(r,"63","70");
+ 315  vtrdbal(r,"ftrd","d") = sam(r,"63","71");
+ 316   
+ 317  *       Investment demand by agent:
+ 318  vinvs(r,"c") = sam(r,"72","63");
+ 319  vinvs(r,"cg") = sam(r,"72","64");
+ 320  display vinvs;
+ 321   
+ 322  *       Inventory change in household account:
+ 323  vinvch(r) = sam(r,"73","63");
+ 324   
+ 325  *       Transfer payments;
+ 326  vttrn(r,"lg","cg") = sam(r,"64","65");
+ 327  vttrn(r,"cg","lg") = sam(r,"65","64");
+ 328  vttrn(r,"lg","c") = sam(r,"63","65");
+ 329   
+ 330  *       Tax revenue:
+ 331  vtaxrev(r,"lg") = sam(r,"65","66");
+ 332   
+ 333  *       Negative demand to close investment account (need to revisit!):
+ 334  vinvsn(r,"cg") =  sam(r,"64","72");
+ 335   
+ 336   
+ 337  *       Compute additional parameter to define model:
+ 338  vom("c",r) = sum(j,vafm(j,"c",r));
+ 339  vom(gov,r) = sum(j,vafm(j,gov,r));
+ 340  vom("i",r) = sum(j,vafm(j,"i",r));
+ 341   
+ 342  parameter
+ 343          vam(g,r)     Armginton production;
+ 344   
+ 345  vam(i,r) = sum(trd,vim(i,r,trd)) + vtrdm(i,r)
+ 346  * + (vinvta(i,r)-vinvtd(i,r))
+ 347  ;
+ 348   
+ 349   
+ 350  *       Check sparsity:
+ 351   
+ 352  parameter total_supply,intermediate_demand;
+ 353  total_supply(i,r) = vom(i,r) + sum(trd,vim(i,r,trd)) + vinvtd(i,r);
+ 354  intermediate_demand(j,i,r) = vafm(j,i,r);
+ 355   
+ 356  parameter chk_vafm;
+ 357  *chk_vafm(i,g,r) = yes$(vafm(i,g,r) and (not sum(trd,vim(i,r,trd))));
+ 358  chk_vafm(i,j,r) = yes$(intermediate_demand(i,j,r) and (not total_supply(i,
+      r)));
+ 359   
+ 360  display chk_vafm;
+ 361   
+ 362   
+ 363   
+ 364   
+ 365  *-------------------------------------------------------------------
+ 366  *       ACCOUNTING MODEL IN MPSGE TO ILLUSTRATE IDENTITIES
+ 367  *       IN SAM TABLES
+ 368  *-------------------------------------------------------------------
+ 369   
+      $model:china_accmodel
+       
+       
+      $sectors:
+              Y(g,r)$vom(g,r)                              ! Sectoral production
+       and final demands
+              A(i,r)$vam(i,r)                              ! Armington composite
+       supply
+              DX(i,r)$vxm(i,r,"dtrd")                      ! Domestic exports
+              FX(i,r)$vxm(i,r,"ftrd")                      ! International expor
+      ts
+       
+      $commodities:
+              P(g,r)$(vom(g,r)+vam(g,r))                   ! Domestic supply
+              PF(f,r)                                      ! Factor prices
+              PTAX(g,r)$(vtax(g,r)-vsub(g,r))              ! Tax payments
+              PEX(i)                                       ! Price of domestic e
+      xports
+              PFX                                          ! Price for foreign e
+      xchange
+       
+      $consumers:
+              RH(r)                                        ! Representative hous
+      ehold
+              GOVT(r)$vom("lg",r)                          ! Government entity b
+      y province comprising local and central government activity
+              INVS(r)$vdepr("cap",r)                       ! Investment account
+       
+       
+      * SECTORAL PRODUCTION AND FINAL DEMANDS:
+      $prod:Y(g,r)$vom(g,r)
+              o:P(g,r)                                q:vom(g,r)
+              o:PTAX(g,r)                             q:vsub(g,r)
+              i:P(i,r)                                q:vafm(i,g,r)
+              i:PF(f,r)                               q:vfm(f,g,r)
+              i:PTAX(g,r)                             q:vtax(g,r)
+       
+      * DOMESTIC EXPORTS:
+      $prod:DX(i,r)$vxm(i,r,"dtrd")
+              o:PEX(i)                       q:vxm(i,r,"dtrd")
+              i:P(i,r)                       q:vxm(i,r,"dtrd")
+       
+      * FOREIGN EXPORTS
+      $prod:FX(i,r)$vxm(i,r,"ftrd")
+              o:PFX                          q:vxm(i,r,"ftrd")
+              i:P(i,r)                       q:vxm(i,r,"ftrd")
+       
+      * ARMINGTON AGGREGATION FOR DOMESTIC AND IMPORTED VARITIES:
+      $prod:A(i,r)$vam(i,r)
+              o:P(i,r)                       q:vam(i,r)
+              i:PEX(i)                       q:vim(i,r,"dtrd")
+              i:P("tp",r)                    q:vtrdm(i,r)
+              i:PFX                          q:vim(i,r,"ftrd")
+       
+      * Investment
+      $demand:INVS(r)
+              d:P("i",r)                     q:vdepr("cap",r)
+              e:PF("cap",r)                  q:vdepr("cap",r)
+       
+      * HOUSEHOLD INCOME BY INCOME CLASS:
+      $demand:RH(r)
+              d:P("c",r)       q:vom("c",r)
+      * hf --- factor income net of depreciation
+              e:PF(f,r)        q:evom(f,r)
+      * hg2 --- transfers from government
+              e:PFX            q:(vttrn(r,"lg","c"))
+      * dhr + hr - drh - rh --- trade deficit:
+              e:PFX            q:(-sum(trd,vtrdbal(r,trd,"s")-vtrdbal(r,trd,"d")
+      ))
+      * psv1 -- investment
+              e:P("i",r)       q:(-vinvs(r,"c"))
+      * psv2 --- inventory net additions:
+              e:P(i,r)         q:(-(vinvta(i,r)-vinvtd(i,r)))
+       
+       
+      * GOVERNMENT ENTITY BY PROVINCE:
+      $demand:GOVT(r)$vom("lg",r)
+      * g2d --- government consumption
+              d:P("lg",r)       q:vom("lg",r)
+       
+      * "Central government" portion of income:
+      *   g2g1 --- transfers paid to local governments
+              e:PFX             q:(-vttrn(r,"cg","lg"))
+      *   g1g2 --- tranfer income from local governments
+              e:PFX             q:vttrn(r,"lg","cg")
+      *   cg1s --- income adjustment for central government
+              e:P("i",r)        q:vinvsn(r,"cg")
+      *   g1sv --- investment adjustment for central government
+              e:P("i",r)        q:(-vinvs(r,"cg"))
+       
+      * "Local government" portion of income:
+      *   g2g1 --- transfer income from central government
+              e:PFX             q:vttrn(r,"cg","lg")
+      *   hg2 --- transfers to household
+              e:PFX             q:(-vttrn(r,"lg","c"))
+      *   g1g2 --- tranfers paid to central government
+              e:PFX             q:(-vttrn(r,"lg","cg"))
+      *   tr --- tax revenue from local government
+              e:PTAX(i,r)      q:(vtax(i,r)-vsub(i,r))
+       
+SYSINCLUDE C:\Program Files\GAMS23.2\mpsgeset
+INCLUDE    C:\Users\dzhang\data\ChinaBalancedSAM\225a\gamsgeh.dat
+       
+      MPSGE PREPROCESSOR VERSION 12/95
+          1
+          2
+          3  $sectors:
+          4          Y(g,r)$vom(g,r)                              ! Sectoral pro
+      duction and final demands
+          5          A(i,r)$vam(i,r)                              ! Armington co
+      mposite supply
+          6          DX(i,r)$vxm(i,r,"dtrd")                      ! Domestic exp
+      orts
+          7          FX(i,r)$vxm(i,r,"ftrd")                      ! Internationa
+      l exports
+          8
+          9  $commodities:
+         10          P(g,r)$(vom(g,r)+vam(g,r))                   ! Domestic sup
+      ply
+         11          PF(f,r)                                      ! Factor price
+      s
+         12          PTAX(g,r)$(vtax(g,r)-vsub(g,r))              ! Tax payments
+         13          PEX(i)                                       ! Price of dom
+      estic exports
+         14          PFX                                          ! Price for fo
+      reign exchange
+         15
+         16  $consumers:
+         17          RH(r)                                        ! Representati
+      ve household
+         18          GOVT(r)$vom("lg",r)                          ! Government e
+      ntity by province comprising local and central government activity
+         19          INVS(r)$vdepr("cap",r)                       ! Investment a
+      ccount
+         20
+         21
+         22  * SECTORAL PRODUCTION AND FINAL DEMANDS:
+         23  $prod:Y(g,r)$vom(g,r)
+         24          o:P(g,r)                                q:vom(g,r)
+         25          o:PTAX(g,r)                             q:vsub(g,r)
+         26          i:P(i,r)                                q:vafm(i,g,r)
+         27          i:PF(f,r)                               q:vfm(f,g,r)
+         28          i:PTAX(g,r)                             q:vtax(g,r)
+         29
+         30  * DOMESTIC EXPORTS:
+         31  $prod:DX(i,r)$vxm(i,r,"dtrd")
+         32          o:PEX(i)                       q:vxm(i,r,"dtrd")
+         33          i:P(i,r)                       q:vxm(i,r,"dtrd")
+         34
+         35  * FOREIGN EXPORTS
+         36  $prod:FX(i,r)$vxm(i,r,"ftrd")
+         37          o:PFX                          q:vxm(i,r,"ftrd")
+         38          i:P(i,r)                       q:vxm(i,r,"ftrd")
+         39
+         40  * ARMINGTON AGGREGATION FOR DOMESTIC AND IMPORTED VARITIES:
+         41  $prod:A(i,r)$vam(i,r)
+         42          o:P(i,r)                       q:vam(i,r)
+         43          i:PEX(i)                       q:vim(i,r,"dtrd")
+         44          i:P("tp",r)                    q:vtrdm(i,r)
+         45          i:PFX                          q:vim(i,r,"ftrd")
+         46
+         47  * Investment
+         48  $demand:INVS(r)
+         49          d:P("i",r)                     q:vdepr("cap",r)
+         50          e:PF("cap",r)                  q:vdepr("cap",r)
+         51
+         52  * HOUSEHOLD INCOME BY INCOME CLASS:
+         53  $demand:RH(r)
+         54          d:P("c",r)       q:vom("c",r)
+         55  * hf --- factor income net of depreciation
+         56          e:PF(f,r)        q:evom(f,r)
+         57  * hg2 --- transfers from government
+         58          e:PFX            q:(vttrn(r,"lg","c"))
+         59  * dhr + hr - drh - rh --- trade deficit:
+         60          e:PFX            q:(-sum(trd,vtrdbal(r,trd,"s")-vtrdbal(r,t
+      rd,"d")))
+         61  * psv1 -- investment
+         62          e:P("i",r)       q:(-vinvs(r,"c"))
+         63  * psv2 --- inventory net additions:
+         64          e:P(i,r)         q:(-(vinvta(i,r)-vinvtd(i,r)))
+         65
+         66
+         67  * GOVERNMENT ENTITY BY PROVINCE:
+         68  $demand:GOVT(r)$vom("lg",r)
+         69  * g2d --- government consumption
+         70          d:P("lg",r)       q:vom("lg",r)
+         71
+         72  * "Central government" portion of income:
+         73  *   g2g1 --- transfers paid to local governments
+         74          e:PFX             q:(-vttrn(r,"cg","lg"))
+         75  *   g1g2 --- tranfer income from local governments
+         76          e:PFX             q:vttrn(r,"lg","cg")
+         77  *   cg1s --- income adjustment for central government
+         78          e:P("i",r)        q:vinvsn(r,"cg")
+         79  *   g1sv --- investment adjustment for central government
+         80          e:P("i",r)        q:(-vinvs(r,"cg"))
+         81
+         82  * "Local government" portion of income:
+         83  *   g2g1 --- transfer income from central government
+         84          e:PFX             q:vttrn(r,"cg","lg")
+         85  *   hg2 --- transfers to household
+         86          e:PFX             q:(-vttrn(r,"lg","c"))
+         87  *   g1g2 --- tranfers paid to central government
+         88          e:PFX             q:(-vttrn(r,"lg","cg"))
+         89  *   tr --- tax revenue from local government
+         90          e:PTAX(i,r)      q:(vtax(i,r)-vsub(i,r))
+         91
+         92  $offtext
+       
+       
+      Symbol Listing
+       
+      Note:   Parameter and set references appearing within
+              parentheses are not identified by the preprocessor.
+       
+      Symbol      Type       References
+      ==========  =====      ==================================================
+      "C"         SET            54   54
+      "CAP"       SET            49   50   50
+      "CG"        SET            76   78   84
+      "DTRD"      SET            32   33   43
+      "FTRD"      SET            37   38   45
+      "I"         SET            49   62   78   80
+      "LG"        SET            70   70   76   84
+      "TP"        SET            44
+      A           ACTIV           5   41
+      DX          ACTIV           6   31
+      EVOM        PARAM          56
+      F           SET            11   27   27   56   56
+      FX          ACTIV           7   36
+      G           SET             4   23   24   24   25   25   26   27   28   28
+      GOVT        CONSU          18   68
+      I           SET             5   26   26   31   32   32   33   33   36   37
+                                 38   38   41   42   42   43   43   44   45   64
+                                 90
+      INVS        CONSU          19   48
+      P           PRICE          10   24   26   33   38   42   44   49   54   62
+                                 64   70   78   80
+      PEX         PRICE          13   32   43
+      PF          PRICE          11   27   50   56
+      PFX         PRICE          14   37   45   58   60   74   76   84   86   88
+      PTAX        PRICE          12   25   28   90
+      R           SET             4   23   24   24   25   25   26   26   27   27
+                                 28   28   31   32   33   33   36   37   38   38
+                                 41   42   42   43   44   44   45   48   49   49
+                                 50   50   53   54   54   56   56   62   64   68
+                                 70   70   76   78   78   80   84   90
+      RH          CONSU          17   53
+      VAFM        PARAM          26
+      VAM         PARAM          42
+      VDEPR       PARAM          49   50
+      VFM         PARAM          27
+      VIM         PARAM          43   45
+      VINVSN      PARAM          78
+      VOM         PARAM          24   54   70
+      VSUB        PARAM          25
+      VTAX        PARAM          28
+      VTRDM       PARAM          44
+      VTTRN       PARAM          76   84
+      VXM         PARAM          32   33   37   38
+      Y           ACTIV           4   23
+       
+ 697   
+ 700  CHINA_ACCMODEL.INTEGER1=1;
+EXIT C:\Program Files\GAMS23.2\mpsgeset
+ 703   
+ 704   
+ 705  *       Replicate benchmark equilibrium:
+ 706  china_accmodel.iterlim = 10000;
+ 707  china_accmodel.workspace = 100;
+INCLUDE    C:\Users\dzhang\data\ChinaBalancedSAM\china_accmodel.gen
+ 933  solve china_accmodel using mcp;
+****                                $257
+**** LINE    471 INPUT       C:\Users\dzhang\Dropbox\China_model\model\model.gms
+ 934   
+ 935  parameter marginals;
+ 936   
+ 937  marginals("y",i,r) = y.m(i,r)$(abs(y.m(i,r)) gt 1e-6);
+ 938  marginals("p",i,r) = p.m(i,r)$(abs(p.m(i,r)) gt 1e-6);
+ 939  marginals("dx",i,r) = dx.m(i,r)$(abs(dx.m(i,r)) gt 1e-6);
+ 940  marginals("fx",i,r) = fx.m(i,r)$(abs(fx.m(i,r)) gt 1e-6);
+ 941  marginals("a",i,r) = a.m(i,r)$(abs(a.m(i,r)) gt 1e-6);
+ 942  marginals("pf",f,r) = pf.m(f,r)$(abs(pf.m(f,r)) gt 1e-6);
+ 943  marginals("pfx",i,r) = pfx.m$(abs(pfx.m) gt 1e-5);
+ 944  marginals("ptax",g,r) = ptax.m(g,r)$(abs(ptax.m(g,r)) gt 1e-6);
+ 945   
+ 946  display marginals;
+ 947   
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/21/12 14:38:00 Page 2
+China model version 1
+Error Messages
+
+
+141  Symbol neither initialized nor assigned
+        A wild shot: You may have spurious commas in the explanatory
+        text of a declaration. Check symbol reference list.
+257  Solve statement not checked because of previous errors
+502  GDXIN  file not open - ignore rest of line
+510  Unable to open gdx file for $GDXIN
+
+**** 4 ERROR(S)   0 WARNING(S)
+GAMS Rev 232  WEX-WEI 23.2.1 x86_64/MS Windows          03/21/12 14:38:00 Page 3
+China model version 1
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\dzhang\Dropbox\China_model\mo
+                                          del\model.gms
+     2      464 SYSINCLUDE     1     464  .C:\Program Files\GAMS23.2\mpsgeset
+     3      483 CALL           2      19  .gmsge_nx "C:\Users\dzhang\data\ChinaB
+                                           alancedSAM\225a\gamscge.dat"
+     4      484 INCLUDE        2      20  ..C:\Users\dzhang\data\ChinaBalancedSA
+                                            M\225a\gamsgeh.dat
+     5      702 EXIT           2      22  .C:\Program Files\GAMS23.2\mpsgeset
+     6      708 INCLUDE        1     470  .C:\Users\dzhang\data\ChinaBalancedSAM
+                                           \china_accmodel.gen
+     7      932 EXIT           6     224  .C:\Users\dzhang\data\ChinaBalancedSAM
+                                           \china_accmodel.gen
+
+
+COMPILATION TIME     =        0.140 SECONDS      3 Mb  WEX232-232 Aug 11, 2009
+
+
+USER: Institute of Nuclear and New Energy Technology G101217:1031AV-WIN
+      TsingHua Univerrsity                                       DC8455
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\dzhang\Dropbox\China_model\model\model.gms
+Output     C:\Users\dzhang\data\ChinaBalancedSAM\model.lst
+
+**** USER ERROR(S) ENCOUNTERED

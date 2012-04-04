@@ -1,3 +1,4 @@
+
 $ontext
 
         Production activities   A (30)
@@ -145,6 +146,15 @@ sam31(r,i,j)=0;
 sam31(r,j,i)=0;
 ););
 );
+
+$ontext
+parameter totftrd;
+totftrd=sum((i,r)$((ord(i)>=31) and (ord(i)<=60)),sam31(r,i,"71"));
+display totftrd;
+$exit
+$offtext
+
+
 *EBT v2.1
 loop(r,
 loop(ebti,
@@ -153,21 +163,32 @@ loop(oldi$(ord(oldi)=ord(i)),
 ebt21(i,r,ebti)=ebt2(oldi,r,ebti)/1000;
 ););););
 
-
-
 *$ontext
 positive variables finalsam (r,i,j)
 positive variables rowsum(r,i)
 positive variables columnsum(r,i)
+positive variables vom(r,i)
+positive variables vxm(r,i)
 variable jj
 
 Equations
         rsum
         csum
         sumbalance
-
+        vomdef
+        vxmdef
+        vxmltvom
         obj
 ;
+vomdef(r,i)$(sameas(r,'%prov%') and (ord(i) le 30))..
+vom(r,i)=e=sum(j$(ord(j)=ord(i)+30),finalsam(r,i,j));
+
+vxmdef(r,i)$(sameas(r,'%prov%') and (ord(i) le 30))..
+vxm(r,i)=e=sum(j$(ord(j)=ord(i)+30),finalsam(r,j,"70"))+sum(j$(ord(j)=ord(i)+30),finalsam(r,j,"71"));
+
+* export should be smaller than production
+vxmltvom(r,i)$(sameas(r,'%prov%') and (ord(i) le 30))..
+vom(r,i)=g=vxm(r,i);
 
 *rsum(r,i)..
 rsum(r,i)$(sameas(r,'%prov%'))..
@@ -200,11 +221,6 @@ sam31csum(r,i)=sam31csum(r,i)+sam31(r,j,i);
 );
 );
 
-loop(r$(sameas(r,'%prov%')),
-loop(i,
-loop(j,
-finalsam.l(r,i,j)=sam31(r,i,j);
-);););
 
 *If quantity is not zero, value is not zero
 *Assuming trade margin is distributed equally between exporter and importer
@@ -213,6 +229,7 @@ loop(i$((ord(i)=2) or (ord(i)=3) or (ord(i)=11) or (ord(i)=23) or (ord(i)=24) or
 loop(j$(ord(j)=ord(i)+30),
 loop(pmg$(ord(pmg)=ord(i)),
 loop(pmg2$(ord(pmg2)=ord(i)*2),
+
 sam31(r,j,"70")=pricemargin(r,pmg)*ebt21(i,r,"1");
 sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"1");
 finalsam.fx(r,j,"70")=sam31(r,j,"70");
@@ -220,6 +237,7 @@ finalsam.fx(r,j,"70")=sam31(r,j,"70");
 sam31(r,j,"71")=pricemargin(r,pmg)*ebt21(i,r,"2");
 sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"2");
 finalsam.fx(r,j,"71")=sam31(r,j,"71");
+
 
 sam31(r,"70",j)=pricemargin(r,pmg)*ebt21(i,r,"3");
 sam31(r,"74",i)=sam31(r,"74",i)+pricemargin(r,pmg2)*ebt21(i,r,"3");
@@ -236,12 +254,13 @@ else
 sam31(r,j,"63")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")/(sam31csum(r,"63")+sam31csum(r,"65"))*sam31csum(r,"63");
 sam31(r,j,"65")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"35")/(sam31csum(r,"63")+sam31csum(r,"65"))*sam31csum(r,"65");
 );
-
+*inventory
 sam31(r,j,"73")=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"36");
-
+*production
 sam31(r,i,j)=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,"37");
 *finalsam.fx(r,i,j)=sam31(r,i,j);
 
+*intermediate use
 loop(ebti$((ord(ebti)>=5) and (ord(ebti)<=34)),
 loop(ii$(ord(ii)=ord(ebti)-4),
 sam31(r,j,ii)=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,ebti);
@@ -254,13 +273,22 @@ sam31(r,j,ii)=(pricemargin(r,pmg)+2*pricemargin(r,pmg2))*ebt21(i,r,ebti);
 finalsam.fx(r,"74",i)=sam31(r,"74",i);
 *Balance trade margin
 sam31(r,"57","74")=sam31(r,"57","74")+sam31(r,"74",i);
+
 *end of i
 );
 
-*finalsam.fx(r,"57","74")= sam31(r,"57","74");
+finalsam.fx(r,"57","74")= sam31(r,"57","74");
 *Adjust transportation production
 sam31(r,"27","57")=sam31(r,"27","57")+sam31(r,"57","74");
 );
+
+
+
+loop(r$(sameas(r,'%prov%')),
+loop(i,
+loop(j,
+finalsam.l(r,i,j)=sam31(r,i,j);
+);););
 
 *Define sparcity
 set nonzero(i,j)
@@ -282,7 +310,7 @@ loop(j$((ord(j)=61) or (ord(j)=65) or (ord(j)=70) or (ord(j)=71) or (ord(j)=62))
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=64),
-loop(j$((ord(j)=65) or (ord(j)=62)),
+loop(j$((ord(j)=65) or (ord(j)=72)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=65),
@@ -298,7 +326,7 @@ loop(j$(((ord(j) ge 31) and (ord(j) le 60)) or (ord(j)=63)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=72),
-loop(j$((ord(j)=61) or (ord(j)=62) or (ord(j)=63) or (ord(j)=64)),
+loop(j$((ord(j)=62) or (ord(j)=63) or (ord(j)=64)),
 nonzero(i,j)=yes;
 ););
 loop(i$(ord(i)=74),
